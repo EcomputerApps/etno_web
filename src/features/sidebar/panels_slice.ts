@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { title } from "process";
 import { PanelHandler } from "../../models/panel/Panel";
 
 const initialState: PanelHandler = {
+    section: 'Eventos',
     open: true,
     menu: 
     [
@@ -21,9 +21,12 @@ const panelSlice = createSlice({
     reducers: {
         panelHandler(state){
             state.open ? state.open = false : state.open = true 
+        },
+        updateSection(state, action: PayloadAction<string>){
+            state.section = action.payload
         }
     }
 })
 
-export const { panelHandler } = panelSlice.actions
+export const { panelHandler, updateSection } = panelSlice.actions
 export default panelSlice.reducer
