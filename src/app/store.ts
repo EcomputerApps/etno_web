@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import panelReducer from "../features/sidebar/panels_slice";
 
 export const store = configureStore({
     reducer: {
-        
+        panelStore: panelReducer
     }
 })
 
