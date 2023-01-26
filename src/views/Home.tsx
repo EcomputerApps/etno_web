@@ -1,5 +1,8 @@
 import { useAppSelector, useAppDispatch } from "../app/hooks"
 import { panelHandler } from "../features/sidebar/panels_slice"
+import arrowLogo from '../assets/control.png'
+import etnoLogo from '../assets/logo_etno.png'
+import 'tailwindcss/tailwind.css'
 
 const Home = () => {
     const dispatcher = useAppDispatch()
@@ -13,15 +16,15 @@ const Home = () => {
         } bg-dark-purple h-screen p-5  pt-8 relative duration-300`}
       >
         <img
-          src="./src/assets/control.png"
+          src={arrowLogo}
           className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
            border-2 rounded-full  ${!open && "rotate-180"}`}
           onClick={() => dispatcher(panelHandler())}
         />
         <div className="flex gap-x-4 items-center">
           <img
-            src="./src/assets/logo.png"
-            className={`cursor-pointer duration-500 ${
+            src={etnoLogo}
+            className={`cursor-pointer duration-500 w-8 ${
               open && "rotate-[360deg]"
             }`}
           />
@@ -30,21 +33,21 @@ const Home = () => {
               !open && "scale-0"
             }`}
           >
-            Designer
+            ETNO
           </h1>
         </div>
         <ul className="pt-6">
-          {menu.map((Menu, index) => (
+          {menu.map((item, index) => (
             <li
               key={index}
               className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
-              ${Menu.gap ? "mt-9" : "mt-2"} ${
+              ${item.gap ? "mt-9" : "mt-2"} ${
                 index === 0 && "bg-light-white"
               } `}
             >
-              <img src={`../assets/menu/${Menu.src}`} />
+              <img className="w-7 h-7" src={require(`../assets/menu/${item.src}`)} />
               <span className={`${!open && "hidden"} origin-left duration-200`}>
-                {Menu.title}
+                {item.title}
               </span>
             </li>
           ))}
