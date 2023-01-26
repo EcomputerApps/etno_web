@@ -5,8 +5,9 @@ type Menu = {
 }
 
 interface PanelHandler{
+    section: string,
     open: Boolean,
     menu: Menu[]
 }
 
-export type { PanelHandler }
+export type { PanelHandler, Menu }
