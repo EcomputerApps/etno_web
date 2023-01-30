@@ -44,8 +44,20 @@ interface Event{
     long?: string
 }
 
+interface Tourism{
+    idTourism?: string,
+    type?: string,
+    username?: string,
+    title?: string,
+    description?: string,
+    imageUrl?: string,
+    longitude?: string,
+    latitude?: string
+}
+
+
 interface EventList{
     list: Event[]
 }
 
-export type {EventList, Event}
+export type {EventList, Event, Tourism}
