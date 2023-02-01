@@ -1,13 +1,13 @@
-import { observer } from "mobx-react-lite"
-import TourismStore from "../../../viewmodels/tourism/TourismStore"
-const tourismStore = TourismStore.getTourismStore()
+import { observer, Observer } from "mobx-react-lite";
+import PharmacyStore from "../../../viewmodels/pharmacy/PharmacyStore";
+const pharmacyStore = PharmacyStore.getPharmacyStore()
 
-interface PropTable {
+interface PropTable{
     headerList: string[],
     list?: any
 }
 
-const TableTourism = (prop: PropTable) => {
+const TablePharmacy = (prop : PropTable) =>{
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -21,28 +21,38 @@ const TableTourism = (prop: PropTable) => {
                     </tr>
                 </thead>
                 <tbody>
-                {prop.list.map((tourism: any, index: any) => (
+                {prop.list.map((pharmacy: any, index: any) => (
                         prop.list.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {tourism.type}
+                            {pharmacy.type}
                         </th>
                         <td className="px-6 py-4">
-                            {tourism.title}
+                            {pharmacy.name}
                         </td>
                         <td className="px-6 py-4">
-                            {tourism.description}€
+                            {pharmacy.link}
                         </td>
                         <td className="px-6 py-4">
-                            {tourism.longitude}
+                            {pharmacy.phone}
                         </td>
                         <td className="px-6 py-4">
-                            {tourism.latitude}
+                            {pharmacy.schedule}
                         </td>
+                        <td className="px-6 py-4">
+                            {pharmacy.description}
+                        </td>
+                        <td className="px-6 py-4">
+                            {pharmacy.Latitud}
+                        </td>
+                        <td className="px-6 py-4">
+                            {pharmacy.Longitud}
+                        </td>
+                      
                         <td className="px-6 py-4">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => tourismStore.deleteTourism('Bolea', tourism.title)}>Eliminar</a>
+                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => pharmacyStore.deletePharmacy('Bolea', pharmacy.name)}>Eliminar</a>
                         </td>
                     </tr>
                     ))}
@@ -50,6 +60,6 @@ const TableTourism = (prop: PropTable) => {
             </table>
         </div>
     )
-}
 
-export default observer( TableTourism )
+}
+export default observer( TablePharmacy)

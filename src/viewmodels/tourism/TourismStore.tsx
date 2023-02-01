@@ -24,8 +24,8 @@ class TourismStore{
         })
     }
 
-    async getRequestTourism(localidad: string){
-        const response = await fetch(`http://192.168.137.1:8080/tourism?username=${localidad}`, {
+    async getRequestTourism(locality: string){
+        const response = await fetch(`http://192.168.137.1:8080/tourism?username=${locality}`, {
         method: 'GET',
         'headers': {
             'Access-Control-Allow-Origin': '*',

@@ -7,15 +7,13 @@ const CreateScreen = () => {
 
   const navigate = useNavigate()
 
-  const onDrop = useCallback((acceptedFiles: any) => {
-    console.log(acceptedFiles);
-  }, []);
+
   const {
     getRootProps, getInputProps, isDragActive
 
   } = useDropzone({
-    onDrop, accept: { "image/png": [".png"], "image/jpeg": [".jpeg", ".jpg"], "image/gif": [".gif"] },
-    maxFiles: 7, maxSize: 10485760, noClick: true
+    accept: { "image/png": [".png"], "image/jpeg": [".jpeg", ".jpg"], "image/gif": [".gif"] },
+    maxFiles: 1, maxSize: 10485760, noClick: true
   })
   return (
     <div>
@@ -121,10 +119,10 @@ const CreateScreen = () => {
             <input type="date" name="eventFinish" className="w-40 border-2 rounded-sm" />
           </div>
         </div>
-        <div >
-          <button name="eventBtnSave" className="bg-indigo-600 p-3 m-5 rounded-md focus:ring-2 ring-blue-800 hover:bg-indigo-700 text-white">Publicar</button>
-          <button name="eventBtnCancel" className="bg-indigo-600 p-3 rounded-md focus:ring-2 ring-blue-800 hover:bg-indigo-700 text-white" onClick={() => navigate("/home")}>Cancelar</button>
-        </div>
+        <div className="flex m-auto justify-center p-3">
+                    <button name="pharmacyBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">Publicar</button>
+                    <button name="pharmacyBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={()=>navigate("/home")}>Cancelar</button>
+            </div>
       </div>
     </div>
   )

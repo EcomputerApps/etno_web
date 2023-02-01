@@ -55,9 +55,60 @@ interface Tourism{
     latitude?: string
 }
 
+interface Band{
+    idBand?: string,
+    username?: string,
+    title?: string,
+    description?: string,
+    issuedDate?:string,
+    imageUrl?: string,
+}
+
+interface Pharmacy{
+    idPharmacy?: string,
+    username?: string,
+    type?: string,
+    name?: string,
+    link?: string,
+    imageUrl?: string,
+    phone?: string,
+    schedule?:string,
+    description?: string,
+    lat?: string,
+    long?: string
+   
+}
+
+interface Service{
+    idService?: string,
+    username?: string,
+    category?: string,
+    owner?: string,
+    phoneNumber?:string,
+    schedule?:string,
+    imageUrl?: string,
+}
+interface Sponsor{
+    idSponsor?: string,
+    username?: string,
+    title?: string,
+    description?: string,
+    phoneNumber?:string,
+    imageUrl?: string,
+}
+
+interface Necrologue{
+    idNecro?: string,
+    username?: string,
+    name?: string,
+    deathDate?: string,
+    description?:string,
+    imageUrl?: string,
+}
+
 
 interface EventList{
     list: Event[]
 }
 
-export type {EventList, Event, Tourism}
+export type {EventList, Event, Tourism, Band, Pharmacy, Service, Necrologue, Sponsor}

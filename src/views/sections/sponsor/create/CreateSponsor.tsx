@@ -1,37 +1,38 @@
-import { useDropzone } from "react-dropzone"
+import React from "react";
+import { useDropzone } from 'react-dropzone';
 import { useNavigate } from "react-router-dom"
 
-const CreateTourism = () => {
+const CreateSponsor = () =>{
     const navigate = useNavigate()
-
-    const{acceptedFiles, getRootProps, getInputProps, isDragActive} = useDropzone(
+    const{
+        acceptedFiles, getRootProps, getInputProps, isDragActive} = useDropzone(
         {accept: {"image/png" : [".png"],"image/jpeg":[".jpeg", ".jpg"], "image/gif": [".gif"] },
          maxFiles:1, maxSize:10485760, noClick:true })
-
     return(
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
         <div className="h-20 w-full flex  bg-blue-900 rounded-t-md ">
             <div className="w-full flex flex-row p-2 justify-between">
             <img src="https://etno.ecomputer.es/images/app.png"></img>
-            <p className='flex  text-white text-3xl p-3'>TURISMO</p>
+            <p className='flex  text-white text-3xl p-3'>PATROCINADOR</p>
             </div>
-            </div>
-            <div className="w-full flex flex-1 flex-col pl-3">
-                <div className="flex flex-col p-1">
-                    <label className="text-left text-2xl p-1">Tipo</label>
-                    <input placeholder="Tipo" name="tourismType" type="text"  className="border-2 rounded-md p-2"></input>
-                </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Titulo</label>
-                    <input placeholder="Titulo" name="tourismTitle"  type="text"  className="border-2 rounded-md p-2"></input>
+                    <input placeholder="Titulo" name="sponsorTitle" type="text"  className="border-2 rounded-md p-2"></input>
                 </div>
-            </div >
+            </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Descripcion</label>
-                    <textarea placeholder="Descripcion" name="tourismDescription"  rows={3}  className="border-2 rounded-md p-2"></textarea>
+                    <textarea placeholder="Descripcion" name="sponsorDescription"  rows={3}  className="border-2 rounded-md p-2"></textarea>
+                </div>
+            </div>
+            <div className="w-full flex flex-1 flex-col pl-3 ">
+                <div className="flex flex-col p-1">
+                    <label className="text-left text-2xl p-1">Telefono</label>
+                    <input placeholder="Telefono" name="sponsorTel" type="text" onInput={(e)=>
+                    e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/,"")} className="border-2 rounded-md p-2 w-1/2"></input>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
@@ -72,23 +73,13 @@ const CreateTourism = () => {
                     </div>
                 </div>
             </div>
-            <div className="w-full flex flex-1 flex-col pl-3">
-                <div className="flex flex-col p-1">
-                    <label className="text-left text-2xl p-1">Longitud</label>
-                    <input placeholder="Longitud" type="text" name="tourismLong" className="border-2 rounded-md p-2"></input>
-                </div>
-            </div>
-            <div className="w-full flex flex-1 flex-col pl-3">
-                <div className="flex flex-col p-1">
-                    <label className="text-left text-2xl p-1">Latitude</label>
-                    <input placeholder="Latitud" type="text" name="tourismLat" className="border-2 rounded-md p-2"></input>
-                </div>
-            </div>
             <div className="flex m-auto justify-center p-3">
                     <button name="pharmacyBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">Publicar</button>
                     <button name="pharmacyBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={()=>navigate("/home")}>Cancelar</button>
             </div>
-        </div>
+            </div>
+
     )
 }
-export default CreateTourism
+
+export default CreateSponsor

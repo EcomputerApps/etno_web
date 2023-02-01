@@ -5,12 +5,13 @@ import arrowLogo from '../assets/control.png'
 import etnoLogo from '../assets/logo_etno.png'
 import 'tailwindcss/tailwind.css'
 import Tourism from './sections/tourism/Tourism'
-import Bandos from './sections/Bandos'
-import Services from './sections/Services'
-import Sponsors from './sections/Sponsors'
+import Band from './sections/bands/Band'
+import Sponsor from './sections/sponsor/Sponsor'
+import Service from './sections/service/Service'
 import News from './sections/News'
-
 import SideBarStore from '../viewmodels/sidebar/SideBarStore'
+import Pharmacy from './sections/pharmacy/Pharmacy'
+import Necrologue from './sections/necrologue/Necrologue'
 const sideBarStore = SideBarStore.getSideBarStore()
 
 const Home = () => { 
@@ -20,10 +21,12 @@ const Home = () => {
       switch(sideBarStore.getPanel.section){
         case 'Eventos': return <Event/>
         case 'Turismo': return <Tourism/>
-        case 'Bandos': return <Bandos/>
-        case 'Servicios': return <Services/>
-        case 'Patrocinadores': return <Sponsors/>
+        case 'Bandos': return <Band/>
+        case 'Framacias' : return <Pharmacy/>
+        case 'Servicios': return <Service/>
+        case 'Patrocinadores': return <Sponsor/>
         case 'Noticias': return <News/>
+        case 'Fallesimientos' : return <Necrologue/>
       }
   }
 
@@ -32,7 +35,7 @@ const Home = () => {
       <div
         className={` ${
           sideBarStore.getPanel.open ? "w-72" : "w-20 "
-        } bg-dark-purple h-screen p-5  pt-8 relative duration-300`}
+        } bg-indigo-800 h-screen p-5  pt-8 relative duration-300`}
       >
         <img
           src={arrowLogo}
