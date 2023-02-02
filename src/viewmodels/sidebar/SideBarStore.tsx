@@ -16,12 +16,15 @@ class SideBarStore{
         open: true,
         menu: 
     [
-        {title: 'Eventos', src: "event.svg"},
+        {title: 'Noticias', src: "new.svg"},
         {title: 'Turismo', src: "tourism.svg", gap: true},
+        {title: 'Eventos', src: "event.svg"},
         {title: 'Bandos', src: "bando.svg"},
-        {title: 'Servicios', src: "service.svg", gap: true},
+        {title: 'Framacias', src: "new.svg", gap: true},
+        {title: 'Servicios', src: "service.svg"},
         {title: 'Patrocinadores', src: "sponsor.svg"},
-        {title: 'Noticias', src: "new.svg"}
+        {title: 'Fallesimientos', src: "new.svg", gap: true},
+       
     ]}
 
     constructor(){
