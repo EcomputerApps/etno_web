@@ -21,22 +21,25 @@ const TableNews = (prop : PropTable) =>{
                     </tr>
                 </thead>
                 <tbody>
-                {prop.list.map((band: any, index: any) => (
+                {prop.list.map((news: any, index: any) => (
                         prop.list.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {band.title}
+                            {news.category}
                         </th>
                         <td className="px-6 py-4">
-                            {band.description}
+                            {news.title}
                         </td>
                         <td className="px-6 py-4">
-                            {band.date}
+                            {news.newsDate}
+                        </td>
+                        <td className="px-6 py-4">
+                            {news.description}
                         </td>
                         <td className="px-6 py-4">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => newsStore.deleteNews('Bolea', news.name)}>Eliminar</a>
+                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => newsStore.deleteNews('Bolea', news.title)}>Eliminar</a>
                         </td>
                     </tr>
                     ))}

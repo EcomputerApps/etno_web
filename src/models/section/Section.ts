@@ -109,9 +109,10 @@ interface Necrologue{
 interface News{
     idNews?: string,
     username?: string,
-    name?: string,
+    category?: string,
+    title?: string,
+    publicationDate?: string,
     description?:string,
-    link?: string,
     imageUrl?: string,
 }
 

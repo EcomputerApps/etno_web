@@ -41,14 +41,14 @@ class NewsStore{
         this.updateNewsList(news)
 
     }
-    async deleteNews(locality: string, name : string){
-        const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}&name=${name}`,{
+    async deleteNews(locality: string, title : string){
+        const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}&name=${title}`,{
             method : 'DELETE',
             'headers' : {
                 'Access-Control-Allow-Origin':'*'
             }
         })
-        const newNewsList = this.newsList.filter((item)=>item.name !== name)
+        const newNewsList = this.newsList.filter((item)=>item.title !== title)
         this. updateNewsList(newNewsList)
     }
 

@@ -18,8 +18,20 @@ const CreateNews = () =>{
             </div> 
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
-                    <label className="text-left text-2xl p-1">Asunto</label>
-                    <input placeholder="Asunto" name="newsType" type="text"  className="border-2 rounded-md p-2"></input>
+                    <label className="text-left text-2xl p-1">Categoria</label>
+                    <input placeholder="Categoria" name="newsCategory" type="text"  className="border-2 rounded-md p-2"></input>
+                </div>
+            </div>
+            <div className="w-full flex flex-1 flex-col pl-3">
+                <div className="flex flex-col p-1">
+                    <label className="text-left text-2xl p-1">Titulo</label>
+                    <input placeholder="Titulo" name="newsTitle" type="text"  className="border-2 rounded-md p-2"></input>
+                </div>
+            </div>
+            <div className="w-full flex flex-1 flex-col pl-3">
+                <div className="flex flex-col p-1">
+                    <label className="text-left text-2xl p-1">Fecha</label>
+                    <input type="date" name="bandDate" className="w-40 border-2 rounded-sm"/>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
