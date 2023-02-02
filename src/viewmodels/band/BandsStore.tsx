@@ -1,11 +1,10 @@
 import { makeObservable, action, computed, observable } from "mobx";
-import { json } from "react-router-dom";
 import { Band } from "../../models/section/Section";
 
 class BandStore{
     static bandStore: BandStore
 
-    static getBandSore(){
+    static getBandStore(){
         if(this.bandStore === undefined){
             this.bandStore = new BandStore()
         }
@@ -37,7 +36,7 @@ class BandStore{
     async deleteBand( locality : string, title: string){
         const response = await fetch(`http://192.168.137.1:8080/users/delete/tourism?username=${locality}&title=${title}`,{
             method: 'DELETE',
-            'headers':{
+            headers:{
                 'Access-Control-Allow-Origin':'*',
             }
         })
@@ -45,7 +44,7 @@ class BandStore{
         this.updateBandList(newBandList)
     }
     updateBandList(bands: Band[]){
-        return this.bandList = bands
+        this.bandList = bands
     }
     get getBandList(){
         return this.bandList

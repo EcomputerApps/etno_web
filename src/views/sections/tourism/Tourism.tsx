@@ -28,7 +28,7 @@ const Tourism = () => {
               </button>
             </div>
           </div>
-          <TableTourism list={tourisStore.getTourismList} headerList={['tipo', 'titulo', 'descripción', 'longitud', 'lactitud', 'Operación']} />
+          <TableTourism list={tourisStore.getTourismList} headerList={['tipo', 'Título', 'Descripción', 'longitud', 'latitud', 'Operación']} />
         </div>
       </>
     )

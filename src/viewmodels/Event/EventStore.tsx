@@ -47,7 +47,7 @@ class EventStore {
    async deleteEvent(username: string, title: string){
     const response = await fetch(`http://192.168.137.1:8080/users/delete/event?username=${username}&title=${title}`, {
         method: 'DELETE',
-        'headers': {
+        headers: {
             'Access-Control-Allow-Origin': '*'
         }
     })

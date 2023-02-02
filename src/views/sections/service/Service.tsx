@@ -27,7 +27,7 @@ const Service =() =>{
               </button>
             </div>
           </div>
-          <TableService list={serviceStore.getServiceList} headerList={['categoria', 'nombre', 'telefono', 'horario']} />
+          <TableService list={serviceStore.getServiceList} headerList={['Categoría', 'nombre', 'Teléfono', 'horario']} />
         </div>
       
     )

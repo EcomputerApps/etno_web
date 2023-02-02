@@ -1,8 +1,8 @@
-import CreateScreen from "../../views/sections/event/create/CreateScreen"
+import CreateEvent from "../../views/sections/event/create/CreateEvent"
 
 const CreateEventPage = () => {
     return(
-        <CreateScreen/>
+        <CreateEvent/>
     )
 }
 export default CreateEventPage

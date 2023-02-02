@@ -25,7 +25,7 @@ class NewsStore{
         })
     }
     updateNewsList( news : News[]){
-        return this.newsList = news
+        this.newsList = news
     }
     get getNewsList(){
         return this.newsList
@@ -33,7 +33,7 @@ class NewsStore{
     async getRequestNews( locality : string){
         const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}`,{
             method: 'GET',
-            'headers' : {
+            headers : {
                 'Access-Control-Allow-Origin': '*'
             }
         })
@@ -49,7 +49,7 @@ class NewsStore{
             }
         })
         const newNewsList = this.newsList.filter((item)=>item.title !== title)
-        this. updateNewsList(newNewsList)
+        this.updateNewsList(newNewsList)
     }
 
 

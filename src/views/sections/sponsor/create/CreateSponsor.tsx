@@ -18,19 +18,19 @@ const CreateSponsor = () =>{
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
-                    <label className="text-left text-2xl p-1">Titulo</label>
+                    <label className="text-left text-2xl p-1">Título</label>
                     <input placeholder="Titulo" name="sponsorTitle" type="text"  className="border-2 rounded-md p-2"></input>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
-                    <label className="text-left text-2xl p-1">Descripcion</label>
+                    <label className="text-left text-2xl p-1">Descripción</label>
                     <textarea placeholder="Descripcion" name="sponsorDescription"  rows={3}  className="border-2 rounded-md p-2"></textarea>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 ">
                 <div className="flex flex-col p-1">
-                    <label className="text-left text-2xl p-1">Telefono</label>
+                    <label className="text-left text-2xl p-1">Teléfono</label>
                     <input placeholder="Telefono" name="sponsorTel" type="text" onInput={(e)=>
                     e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/,"")} className="border-2 rounded-md p-2 w-1/2"></input>
                 </div>
@@ -74,8 +74,8 @@ const CreateSponsor = () =>{
                 </div>
             </div>
             <div className="flex m-auto justify-center p-3">
-                    <button name="pharmacyBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">Publicar</button>
-                    <button name="pharmacyBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={()=>navigate("/home")}>Cancelar</button>
+                    <button name="sponsorBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">Publicar</button>
+                    <button name="sponsorBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={()=>navigate("/home")}>Cancelar</button>
             </div>
             </div>
 
