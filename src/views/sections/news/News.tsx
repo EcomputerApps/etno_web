@@ -27,7 +27,7 @@ const News = () =>{
               </button>
             </div>
           </div>
-          <TableNews list={newsStore.getNewsList} headerList={['categoria', 'titulo', 'fecha', 'descripcion']} />
+          <TableNews list={newsStore.getNewsList} headerList={['Categoría', 'Título', 'fecha', 'Descripción']} />
         </div>
     )
 }

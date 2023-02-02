@@ -12,7 +12,7 @@ const CreateNecrologue = () =>{
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
             <div className="w-full flex flex-row p-2 justify-between">
-            <img src="https://etno.ecomputer.es/images/app.png"></img>
+            <img src="https://etno.ecomputer.es/images/app.png" alt="logo_etno"></img>
             <p className='flex  text-white text-3xl p-3'>FALLECIMIENTO</p>
             </div>
             </div>
@@ -30,7 +30,7 @@ const CreateNecrologue = () =>{
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col  p-1">
-                    <label className="text-left text-2xl p-1">Descripcion</label>
+                    <label className="text-left text-2xl p-1">Descripción</label>
                     <textarea placeholder="Description" name="eventDescription" rows={3}  className="border-2 rounded-md p-2"></textarea>
                 </div>
             </div>

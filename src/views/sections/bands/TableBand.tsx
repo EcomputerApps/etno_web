@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import BandStore from "../../../viewmodels/band/BandsStore"
-const bandStore = BandStore.getBandSore()
+const bandStore = BandStore.getBandStore()
 
 interface PropTable {
     headerList: string[],
