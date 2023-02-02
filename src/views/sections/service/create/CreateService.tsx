@@ -12,7 +12,7 @@ const CreateService = () =>{
          maxFiles:1, maxSize:10485760, noClick:true })
     return(
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
-        <div className="h-20 w-full flex  bg-blue-900 rounded-t-md ">
+        <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
             <div className="w-full flex flex-row p-2 justify-between">
             <img src="https://etno.ecomputer.es/images/app.png"></img>
             <p className='flex  text-white text-3xl p-3'>SERVICIOS</p>

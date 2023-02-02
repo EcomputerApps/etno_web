@@ -106,9 +106,18 @@ interface Necrologue{
     imageUrl?: string,
 }
 
+interface News{
+    idNews?: string,
+    username?: string,
+    name?: string,
+    description?:string,
+    link?: string,
+    imageUrl?: string,
+}
+
 
 interface EventList{
     list: Event[]
 }
 
-export type {EventList, Event, Tourism, Band, Pharmacy, Service, Necrologue, Sponsor}
+export type {EventList, Event, Tourism, Band, Pharmacy, Service, News,  Necrologue, Sponsor}
