@@ -8,10 +8,10 @@ import Tourism from './sections/tourism/Tourism'
 import Band from './sections/bands/Band'
 import Sponsor from './sections/sponsor/Sponsor'
 import Service from './sections/service/Service'
-import News from './sections/News'
 import SideBarStore from '../viewmodels/sidebar/SideBarStore'
 import Pharmacy from './sections/pharmacy/Pharmacy'
 import Necrologue from './sections/necrologue/Necrologue'
+import News from './sections/news/News'
 const sideBarStore = SideBarStore.getSideBarStore()
 
 const Home = () => { 
@@ -27,6 +27,7 @@ const Home = () => {
         case 'Patrocinadores': return <Sponsor/>
         case 'Noticias': return <News/>
         case 'Fallesimientos' : return <Necrologue/>
+
       }
   }
 
