@@ -27,7 +27,7 @@ const Sponsor= () =>{
               </button>
             </div>
           </div>
-          <TableSponsor list={sponsorStore.getSponsorList} headerList={[ 'titulo', 'descripción', 'telefono']} />
+          <TableSponsor list={sponsorStore.getSponsorList} headerList={['Título', 'Descripción', 'Teléfono']} />
         </div>
     )
 }

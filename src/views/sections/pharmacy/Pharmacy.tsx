@@ -26,7 +26,7 @@ const Pharmacy = () =>{
             </button>
           </div>
         </div>
-        <TablePharmacy list={pharmacyStore.getPharmacyList} headerList={['tipo', 'nombre', 'enlace', 'telefono', 'horario' , 'descripcion']} />
+        <TablePharmacy list={pharmacyStore.getPharmacyList} headerList={['tipo', 'nombre', 'enlace', 'Teléfono', 'horario' , 'Descripción']} />
       </div>
     
   )

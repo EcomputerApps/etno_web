@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { observer } from 'mobx-react-lite'
 
 import EventStore from "../../../viewmodels/Event/EventStore"
@@ -43,10 +42,13 @@ const TableEvent = (prop: PropTable) => {
                             {event.capacity}
                         </td>
                         <td className="px-6 py-4">
-                            {event.username}
+                            {event.locality}
                         </td>
                         <td className="px-6 py-4">
                             {event.address}
+                        </td>
+                        <td className="px-6 py-4">
+                            {event.organization}
                         </td>
                         <td className="px-6 py-4">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>

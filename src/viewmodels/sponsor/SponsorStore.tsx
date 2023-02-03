@@ -27,7 +27,7 @@ class SposnsorStore{
     async getRequestSponsor( locality : string){
         const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}`,{
             method: 'GET',
-            'headers' :{
+            headers :{
                 'Access-Control-Allow-Origin' : '*'
             }
         })
@@ -46,7 +46,7 @@ class SposnsorStore{
     }
 
     updateSponsorList( sponsors: Sponsor[]){
-        return this.sposnsorList = sponsors
+        this.sposnsorList = sponsors
     }
     get getSponsorList(){
         return this.sposnsorList

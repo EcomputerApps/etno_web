@@ -11,12 +11,15 @@ import CreateServicePage from "../pages/sections/CreateServicePage"
 import CreatePharamcyPage from "../pages/sections/CreatePharmacyPage"
 import CreateNecrologuePage from "../pages/sections/CreateNecrologuePage"
 import CreateNewsPage from "../pages/sections/CreateNewsPage"
+
+import LogoutPage from "../pages/LogoutPage"
 const Router = () => {
     return(
         <BrowserRouter>
             <Routes>
                 <Route path="/home" element={ <ViewRender element={<HomePage/>}/> }/>
                 <Route path="/login" element={ <ViewRender element={<LoginPage/>}/> }/>
+                <Route path="/logout" element={<ViewRender element={<LogoutPage/>}/>}/>
                 <Route path="/addEvent" element={<ViewRender element={<CreateEventPage/>}/>}/>
                 <Route path="/tourism" element={<ViewRender element={<CreateTourismPage/>}/>}/>
                 <Route path="/band" element={<ViewRender element={<CreateBandPage/>}/>}/>
@@ -25,6 +28,8 @@ const Router = () => {
                 <Route path="/pharmacy" element={<ViewRender element={<CreatePharamcyPage/>}/>}/>
                 <Route path="/necrologue" element={<ViewRender element={<CreateNecrologuePage/>}/>}/>
                 <Route path="/news" element={<ViewRender element={<CreateNewsPage/>}/>}/>
+               
+               
             </Routes>
         </BrowserRouter>
     )

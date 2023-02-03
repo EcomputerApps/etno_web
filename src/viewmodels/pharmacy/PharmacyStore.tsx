@@ -24,7 +24,7 @@ class PharmacyStore{
 
     }
     updatePharmacyList( pharmacys : Pharmacy[]){
-        return this.pharmacyList = pharmacys
+        this.pharmacyList = pharmacys
     }
     get getPharmacyList(){
         return this.pharmacyList
@@ -33,7 +33,7 @@ class PharmacyStore{
     async getRequestPharmacy( locality : string){
         const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}`,{
             method: 'GET',
-            'headers': {
+            headers: {
                 'Access-Control-Allow-Origin' : '*'
             }
         })
@@ -43,7 +43,7 @@ class PharmacyStore{
     async deletePharmacy(locality : string, name : string){
         const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}&name=${name}`,{
             method: 'DELETE',
-            'headers' : {
+            headers : {
                 'Access-Control-Allow-Origin' : '*'
             }
      })

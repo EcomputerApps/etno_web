@@ -1,9 +1,8 @@
-import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import CurrencyInput from "react-currency-input-field";
 import { useDropzone } from "react-dropzone";
+import { useNavigate } from "react-router-dom";
 
-const CreateScreen = () => {
+const CreateEvent = () => {
 
   const navigate = useNavigate()
 
@@ -20,29 +19,27 @@ const CreateScreen = () => {
       <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
         <div className="h-20 w-full flex bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row gap-8 p-2 justify-between">
-            <img src="https://etno.ecomputer.es/images/app.png"></img>
+          <img src="https://etno.ecomputer.es/images/app.png" alt="logo_etno"></img>
             <p className='flex  text-white text-3xl p-3'>EVENTO</p>
           </div>
-
         </div>
         <div className="w-full flex flex-1 flex-col  pl-3">
           <div className="flex flex-col  p-1">
-            <label className="text-left text-2xl p-1">Titulo</label>
+            <label className="text-left text-2xl p-1">Título</label>
             <input placeholder="Titulo" type="text" name="eventTitle" className="border-2 rounded-md p-2"></input>
           </div>
           <div className="flex flex-col  p-1">
-            <label className="text-left text-2xl p-1">Direccion</label>
-            <input placeholder="Direccion" type="text" name="eventDireccion" className="border-2 rounded-md p-2"></input>
+            <label className="text-left text-2xl p-1">Dirección</label>
+            <input placeholder="Direccion" type="text" name="eventDirection" className="border-2 rounded-md p-2"></input>
           </div>
           <div className="flex flex-col  p-1">
-            <label className="text-left text-2xl p-1">Descripcion</label>
+            <label className="text-left text-2xl p-1">Descripción</label>
             <textarea placeholder="Description" name="eventDescription" rows={3} className="border-2 rounded-sm p-2"></textarea>
           </div>
           <div className="flex flex-col  p-1">
-            <label className="text-left text-2xl p-1">Organizacion</label>
+            <label className="text-left text-2xl p-1">Organización</label>
             <input placeholder="Organizacion" type="text" name="eventOrganization" className="border-2 rounded-sm p-2"></input>
           </div>
-
           <div className="flex flex-col  p-1">
             <label className="text-left text-2xl p-1">Precio de reserva</label>
             <div className="relative flex flex-row mt-1 rounded-md">
@@ -52,10 +49,8 @@ const CreateScreen = () => {
               <CurrencyInput name="eventPrice" className="pl-7 p-2 md:w-1/4 w-1/2 border-2 rounded-sm"
                 placeholder="0,00" decimalsLimit={2} onValueChange={(value, name) => console.log(value, name)}
                 onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace('-', "")} />
-
             </div>
           </div>
-
           <div className="flex flex-col p-1">
             <label className="text-left text-2xl p-1">Aforo</label>
             <input type="text" name="eventSeats" placeholder="0" onInput={(e) => (
@@ -106,8 +101,8 @@ const CreateScreen = () => {
             </div>
           </div>
 
-          <div className="flex flex-1 m-auto justify-center p-3 shadow-md">
-            <img src="https://static1.anpoimages.com/wordpress/wp-content/uploads/2022/07/googleMapsTricksHero.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5"></img>
+          <div className="flex flex-1 m-auto justify-center p-3">
+            <img className='rounded-md' src="https://static1.anpoimages.com/wordpress/wp-content/uploads/2022/07/googleMapsTricksHero.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5" alt="googlemap"></img>
           </div>
 
           <div className="flex flex-col p-1">
@@ -120,11 +115,11 @@ const CreateScreen = () => {
           </div>
         </div>
         <div className="flex m-auto justify-center p-3">
-                    <button name="pharmacyBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">Publicar</button>
-                    <button name="pharmacyBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={()=>navigate("/home")}>Cancelar</button>
-            </div>
+          <button name="eventBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">Publicar</button>
+          <button name="eventBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => navigate("/home")}>Cancelar</button>
+        </div>
       </div>
     </div>
   )
 }
-export default CreateScreen
+export default CreateEvent

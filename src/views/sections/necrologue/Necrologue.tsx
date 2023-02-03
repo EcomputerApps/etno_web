@@ -17,7 +17,7 @@ const Necrologue = () =>{
         <>
         <div className="flex flex-col gap-4">
           <div className="flex flex-row">
-            <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Fallesimientos</h2>
+            <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Fallecimientos</h2>
             <div className="ml-auto">
               <button onClick={() => navigate("/necrologue")} type="button" className="inline-flex items-center rounded-md border border-gray-300 bg-indigo-600 px-4 py-2 text-sm font-medium text-white    shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">
                 <svg className="-ml-1 mr-2 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -27,7 +27,7 @@ const Necrologue = () =>{
               </button>
             </div>
           </div>
-          <TableNecrologue list={necrologueStore.getNecrologueList} headerList={['nombre', 'fecha de fallesimiento', 'descripción']} />
+          <TableNecrologue list={necrologueStore.getNecrologueList} headerList={['nombre', 'fecha de fallecimiento', 'Descripción']} />
         </div>
       </>
     )

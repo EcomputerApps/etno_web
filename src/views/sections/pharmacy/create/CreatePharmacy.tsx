@@ -15,7 +15,7 @@ const CreatePharmacy = () =>{
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
             <div className="w-full flex flex-row p-2 justify-between">
-            <img src="https://etno.ecomputer.es/images/app.png"></img>
+            <img src="https://etno.ecomputer.es/images/app.png" alt="logo_etno"></img>
             <p className='flex  text-white text-3xl p-3'>FARMACIA</p>
             </div>
             </div>
@@ -23,9 +23,9 @@ const CreatePharmacy = () =>{
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Tipo</label>
                     <div className="flex flex-row text-left gap-4">
-                <button name="serviceBtnOp1" value="option1" className="w-fit h-10  bg-neutral-50 border-2 hover:bg-slate-200 focus:shadow-inner rounded-md focus:bg-indigo-400 p-2" >Normal</button>
+                <button name="pharmacyTypeBtn1" value="option1" className="w-fit h-10  bg-neutral-50 border-2 hover:bg-slate-200 focus:shadow-inner rounded-md focus:bg-indigo-400 p-2" >Normal</button>
                 
-                <button name="serviceBtnOp3" value="option3" className="w-fit h-10  bg-neutral-50 border-2 hover:bg-slate-200 hover:shadow-inner rounded-md focus:bg-indigo-400 p-2">De guardia</button>
+                <button name="pharmacyTypeBtn2" value="option3" className="w-fit h-10  bg-neutral-50 border-2 hover:bg-slate-200 hover:shadow-inner rounded-md focus:bg-indigo-400 p-2">De guardia</button>
                 </div>
                 </div>
             </div>
@@ -81,8 +81,8 @@ const CreatePharmacy = () =>{
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
-                    <label className="text-left text-2xl p-1">Telefono</label>
-                    <input placeholder="Telefono" name="serviceTel" type="text" onInput={(e)=>
+                    <label className="text-left text-2xl p-1">Teléfono</label>
+                    <input placeholder="Telefono" name="pharmacyTel" type="text" onInput={(e)=>
                     e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/,"")} className="border-2 rounded-md p-2"></input>
                 </div>
             </div>
@@ -102,19 +102,22 @@ const CreatePharmacy = () =>{
                         <option value="3">Otro horrario.</option>
                     </select>
                     <div className="p-3" >
-                        <input placeholder="Mañana:" hidden={value=="2"}  name="pharmacyShedulesMorning" type="text" className="border-2 rounded-md p-2"></input>
-                        <input placeholder="Tarde:"  hidden={value=="2"} name="pharmacyShedulesEvening" type="text" className="border-2 rounded-md p-2"></input>
-                        <input placeholder="ej. 9-21:30 "hidden={value=="1"}  name="pharmacyShedules" type="text" className="border-2 rounded-md p-2"></input>
+                        <input placeholder="Mañana:" hidden={value === "2"}  name="pharmacyShedulesMorning" type="text" className="border-2 rounded-md p-2"></input>
+                        <input placeholder="Tarde:"  hidden={value === "2"} name="pharmacyShedulesEvening" type="text" className="border-2 rounded-md p-2"></input>
+                        <input placeholder="ej. 9-21:30 "hidden={value === "1"}  name="pharmacyShedulesExtra" type="text" className="border-2 rounded-md p-2"></input>
                     </div>
                     </div>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
-                    <label className="text-left text-2xl p-1">Descripcion</label>
-                    <textarea placeholder="Descripcion" name="tpharmacyDescription"  rows={3}  className="border-2 rounded-md p-2"></textarea>
+                    <label className="text-left text-2xl p-1">Descripción</label>
+                    <textarea placeholder="Descripcion" name="pharmacyDescription"  rows={3}  className="border-2 rounded-md p-2"></textarea>
                 </div>
             </div>
+            <div className="flex flex-1 m-auto justify-center p-3">
+            <img className='rounded-md' src="https://static1.anpoimages.com/wordpress/wp-content/uploads/2022/07/googleMapsTricksHero.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5" alt="googlemap"></img>
+          </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Longitud</label>

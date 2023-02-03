@@ -12,7 +12,7 @@ class SideBarStore{
     }
 
     panel: PanelHandler = {
-        section: 'Eventos',
+        section: 'Noticias',
         open: true,
         menu: 
     [
@@ -20,10 +20,12 @@ class SideBarStore{
         {title: 'Turismo', src: "tourism.svg", gap: true},
         {title: 'Eventos', src: "event.svg"},
         {title: 'Bandos', src: "bando.svg"},
-        {title: 'Framacias', src: "pharmacyTemp.svg", gap: true},
+        {title: 'Framacias', src: "pharmacy.svg", gap: true},
         {title: 'Servicios', src: "service.svg"},
         {title: 'Patrocinadores', src: "sponsor.svg"},
-        {title: 'Fallesimientos', src: "deathTemp.svg", gap: true},
+        {title: 'Fallecimientos', src: "death.svg", gap: true},
+        {title: 'Incidencias', src: "incident.svg"},
+        {title: 'Salir', src: "logout.svg", gap: true},
        
     ]}
 

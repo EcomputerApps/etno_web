@@ -61,7 +61,7 @@ interface Band{
     title?: string,
     description?: string,
     issuedDate?:string,
-    imageUrl?: string,
+    imageUrl?: string
 }
 
 interface Pharmacy{
@@ -86,7 +86,7 @@ interface Service{
     owner?: string,
     phoneNumber?:string,
     schedule?:string,
-    imageUrl?: string,
+    imageUrl?: string
 }
 interface Sponsor{
     idSponsor?: string,
@@ -94,7 +94,7 @@ interface Sponsor{
     title?: string,
     description?: string,
     phoneNumber?:string,
-    imageUrl?: string,
+    imageUrl?: string
 }
 
 interface Necrologue{
@@ -103,7 +103,7 @@ interface Necrologue{
     name?: string,
     deathDate?: string,
     description?:string,
-    imageUrl?: string,
+    imageUrl?: string
 }
 
 interface News{
@@ -113,7 +113,15 @@ interface News{
     title?: string,
     publicationDate?: string,
     description?:string,
-    imageUrl?: string,
+    imageUrl?: string
+}
+
+interface Incident{
+    idIncident?: string,
+    username?: string,
+    fcmToken?: string,
+    title?: string,
+    description?: string
 }
 
 
@@ -121,4 +129,4 @@ interface EventList{
     list: Event[]
 }
 
-export type {EventList, Event, Tourism, Band, Pharmacy, Service, News,  Necrologue, Sponsor}
+export type {EventList, Event, Tourism, Band, Pharmacy, Service, News, Incident, Necrologue, Sponsor}

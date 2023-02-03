@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom"
-import Table from "../../../components/section/Table"
 import {observer} from 'mobx-react-lite'
 import { useEffect } from "react"
 
@@ -28,7 +27,7 @@ const Event = () => {
             </button>
           </div>
         </div>
-        <TableEvent list={eventStore.getEvents} headerList={['Título', 'Descripción', 'Precio de Reserva', 'Plazas', 'Capacidad', 'Localidad', 'Dirección', 'Operación']}/>
+        <TableEvent list={eventStore.getEvents} headerList={['Título', 'Descripción', 'Precio de Reserva', 'Plazas', 'Capacidad', 'Localidad', 'Dirección', 'Organización']}/>
       </div>
     </>
   )
