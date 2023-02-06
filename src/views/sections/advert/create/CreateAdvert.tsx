@@ -1,7 +1,13 @@
+import { useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { useNavigate } from "react-router-dom"
 
 const CreateAdvert = () => {
+
+    const [title, setTitle] = useState<string>('')
+    const [description, setDescription] = useState<string>('')
+    const [link, setLink] = useState<string>('')
+
     const navigate = useNavigate()
 
     const { acceptedFiles, getRootProps, getInputProps, isDragActive } = useDropzone(
@@ -21,13 +27,13 @@ const CreateAdvert = () => {
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Titulo</label>
-                    <input placeholder="titulo" name="advertTitle" type="text" className="border-2 rounded-md p-2"></input>
+                    <input onChange={(value) => setTitle(value.currentTarget.value)} placeholder="titulo" name="advertTitle" type="text" className="border-2 rounded-md p-2"></input>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Descripción</label>
-                    <textarea placeholder="Descripcion" name="advertDescription" rows={3} className="border-2 rounded-md p-2"></textarea>
+                    <textarea onChange={(value) => console.log(value.currentTarget.value)} placeholder="Descripcion" name="advertDescription" rows={3} className="border-2 rounded-md p-2"></textarea>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
@@ -71,7 +77,7 @@ const CreateAdvert = () => {
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Enlace</label>
-                    <input placeholder="www.ecomputer.es" name="advertUrl" type="text" className="border-2 rounded-md p-2"></input>
+                    <input onClick={(value) => setLink(value.currentTarget.value)} placeholder="www.ecomputer.es" name="advertUrl" type="text" className="border-2 rounded-md p-2"></input>
                 </div>
             </div>
             <div className="flex m-auto justify-center p-3">
