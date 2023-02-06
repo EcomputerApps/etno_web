@@ -44,7 +44,7 @@ class NewsStore{
     async deleteNews(locality: string, title : string){
         const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}&name=${title}`,{
             method : 'DELETE',
-            'headers' : {
+            headers : {
                 'Access-Control-Allow-Origin':'*'
             }
         })

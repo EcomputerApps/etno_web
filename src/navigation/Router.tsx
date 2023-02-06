@@ -11,8 +11,9 @@ import CreateServicePage from "../pages/sections/CreateServicePage"
 import CreatePharamcyPage from "../pages/sections/CreatePharmacyPage"
 import CreateNecrologuePage from "../pages/sections/CreateNecrologuePage"
 import CreateNewsPage from "../pages/sections/CreateNewsPage"
-
+import CreateAdvertPage from "../pages/sections/CreateAdvertPage"
 import LogoutPage from "../pages/LogoutPage"
+
 const Router = () => {
     return(
         <BrowserRouter>
@@ -28,6 +29,7 @@ const Router = () => {
                 <Route path="/pharmacy" element={<ViewRender element={<CreatePharamcyPage/>}/>}/>
                 <Route path="/necrologue" element={<ViewRender element={<CreateNecrologuePage/>}/>}/>
                 <Route path="/news" element={<ViewRender element={<CreateNewsPage/>}/>}/>
+                <Route path="/advert" element={<ViewRender element={<CreateAdvertPage/>}/>}/>
                
                
             </Routes>
