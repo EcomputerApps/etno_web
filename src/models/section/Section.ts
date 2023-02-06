@@ -24,7 +24,7 @@ type UserSubscription = {
     isSubscribe?: boolean
 }
 
-interface Event{
+interface Event {
     idEvent?: string,
     username?: string,
     title?: string,
@@ -44,7 +44,16 @@ interface Event{
     long?: string
 }
 
-interface Tourism{
+interface Advert {
+    idAdvert?: string,
+    username?: string,
+    title?: string,
+    description?: string,
+    imageUrl?: string,
+    link?: string
+}
+
+interface Tourism {
     idTourism?: string,
     type?: string,
     username?: string,
@@ -55,16 +64,16 @@ interface Tourism{
     latitude?: string
 }
 
-interface Band{
+interface Band {
     idBand?: string,
     username?: string,
     title?: string,
     description?: string,
-    issuedDate?:string,
+    issuedDate?: string,
     imageUrl?: string
 }
 
-interface Pharmacy{
+interface Pharmacy {
     idPharmacy?: string,
     username?: string,
     type?: string,
@@ -72,51 +81,51 @@ interface Pharmacy{
     link?: string,
     imageUrl?: string,
     phone?: string,
-    schedule?:string,
+    schedule?: string,
     description?: string,
     lat?: string,
     long?: string
-   
+
 }
 
-interface Service{
+interface Service {
     idService?: string,
     username?: string,
     category?: string,
     owner?: string,
-    phoneNumber?:string,
-    schedule?:string,
+    phoneNumber?: string,
+    schedule?: string,
     imageUrl?: string
 }
-interface Sponsor{
+interface Sponsor {
     idSponsor?: string,
     username?: string,
     title?: string,
     description?: string,
-    phoneNumber?:string,
+    phoneNumber?: string,
     imageUrl?: string
 }
 
-interface Necrologue{
+interface Necrologue {
     idNecro?: string,
     username?: string,
     name?: string,
     deathDate?: string,
-    description?:string,
+    description?: string,
     imageUrl?: string
 }
 
-interface News{
+interface News {
     idNews?: string,
     username?: string,
     category?: string,
     title?: string,
     publicationDate?: string,
-    description?:string,
+    description?: string,
     imageUrl?: string
 }
 
-interface Incident{
+interface Incident {
     idIncident?: string,
     username?: string,
     fcmToken?: string,
@@ -124,9 +133,16 @@ interface Incident{
     description?: string
 }
 
+interface Photos {
+    idPhoto?: string,
+    username?: string,
+    title?: string,
+    imageUrl?: string
+}
 
-interface EventList{
+
+interface EventList {
     list: Event[]
 }
 
-export type {EventList, Event, Tourism, Band, Pharmacy, Service, News, Incident, Necrologue, Sponsor}
+export type { EventList, Event, Advert, Tourism, Band, Pharmacy, Service, News, Incident, Photos, Necrologue, Sponsor }
