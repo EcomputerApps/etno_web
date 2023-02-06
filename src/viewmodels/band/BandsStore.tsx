@@ -26,8 +26,8 @@ class BandStore{
     async getRequestBand(locality : string){
         const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}`,{
             method: 'GET',
-            'headers':{
-                'Acces-Control-Allow-Origin':'*',
+            headers:{
+                'Access-Control-Allow-Origin': '*',
             }
         }) 
         const band = await response.json()

@@ -37,7 +37,7 @@ class SposnsorStore{
     async deleteSponsor( locality : string, title : string){
         const response = await fetch(`http://192.168.137.1:8080/users/delete/tourism?username=${locality}&title=${title}`,{
            method: 'DELETE',
-           'headers': {
+           headers: {
             'Access-Control-Allow-Origin' : '*'
            } 
         })

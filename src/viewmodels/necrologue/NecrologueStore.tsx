@@ -43,7 +43,7 @@ class NecrologueStore{
     async deleteNecrologue(locality: string, name: string){
         const response = await fetch(`http://192.168.137.1:8080/tourism?username=${locality}&name=${name}`, {
             method: 'DELETE',
-            'headers' : {
+            headers : {
                 'Access-Control-Allow-Origin': '*'
             }
         })

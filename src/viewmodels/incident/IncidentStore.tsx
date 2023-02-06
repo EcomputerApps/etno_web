@@ -31,7 +31,7 @@ class IncidentStore{
     async getRequestIncident(locality : string){
         const response = await fetch(`http://192.168.137.1:8080/tourism?username=${locality}`, {
             method : 'GET',
-            'headers' : {
+            headers : {
                 'Access-Control-Allow-Origin' : '*'
             }
         })

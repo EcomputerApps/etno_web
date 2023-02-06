@@ -17,6 +17,9 @@ import HoverSectionStore from '../viewmodels/hoverSection/HoverSectionStore'
 import LogoutPage from '../pages/LogoutPage'
 import { useNavigate } from 'react-router-dom'
 import Incident from './sections/incident/Incident'
+import Photo from './sections/photo/Photo'
+import Advert from './sections/advert/Advert'
+import MapGoogle from '../viewmodels/map/MapGoogle'
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
@@ -40,8 +43,11 @@ const Home = () => {
       case 'Servicios': return <Service />
       case 'Patrocinadores': return <Sponsor />
       case 'Noticias': return <News />
+      case 'Anuncios' : return <Advert/>
       case 'Fallecimientos': return <Necrologue />
       case 'Incidencias': return <Incident />
+      case 'Fotos' : return <Photo/>
+      case 'Mapa' : return <MapGoogle/>
       case 'Salir': return <LogoutPage />
     }
 

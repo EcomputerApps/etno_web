@@ -17,16 +17,18 @@ class SideBarStore{
         menu: 
     [
         {title: 'Noticias', src: "new.svg"},
-        {title: 'Turismo', src: "tourism.svg", gap: true},
-        {title: 'Eventos', src: "event.svg"},
-        {title: 'Bandos', src: "bando.svg"},
-        {title: 'Framacias', src: "pharmacy.svg", gap: true},
+        {title: 'Anuncios', src: "new.svg"},
+        {title: 'Turismo', src: "tourism.svg"},
+        {title: 'Eventos', src: "event.svg" },
+        {title: 'Bandos', src: "bando.svg", gap: true},
+        {title: 'Framacias', src: "pharmacy.svg"},
         {title: 'Servicios', src: "service.svg"},
-        {title: 'Patrocinadores', src: "sponsor.svg"},
-        {title: 'Fallecimientos', src: "death.svg", gap: true},
+        {title: 'Patrocinadores', src: "sponsor.svg", gap: true},
+        {title: 'Fallecimientos', src: "death.svg"},
         {title: 'Incidencias', src: "incident.svg"},
+        {title: 'Fotos', src: "photos.svg"},
+        {title: 'Mapa', src: "photos.svg"},
         {title: 'Salir', src: "logout.svg", gap: true},
-       
     ]}
 
     constructor(){

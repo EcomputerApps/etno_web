@@ -1,5 +1,6 @@
 import { useDropzone } from "react-dropzone"
 import { useNavigate } from "react-router-dom"
+import logoEtno from '../../../../assets/logo_etno.png'
 
 const CreateTourism = () => {
     const navigate = useNavigate()
@@ -12,7 +13,7 @@ const CreateTourism = () => {
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
             <div className="w-full flex flex-row p-2 justify-between">
-            <img src="https://etno.ecomputer.es/images/app.png"></img>
+            <img src={logoEtno} alt="logo_Etno"></img>
             <p className='flex  text-white text-3xl p-3'>TURISMO</p>
             </div>
             </div>
@@ -72,6 +73,9 @@ const CreateTourism = () => {
                     </div>
                 </div>
             </div>
+            <div className="flex flex-1 m-auto justify-center p-3">
+            <img className='rounded-md' src="https://static1.anpoimages.com/wordpress/wp-content/uploads/2022/07/googleMapsTricksHero.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5" alt="googlemap"></img>
+          </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Longitud</label>
