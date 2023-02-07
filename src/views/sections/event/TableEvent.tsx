@@ -1,24 +1,23 @@
+import { current } from '@reduxjs/toolkit'
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import EventStore from "../../../viewmodels/Event/EventStore"
 const eventStore = EventStore.getEventStore()
 
 interface PropTable {
     headerList: string[],
-    list?: Event[]
+    list?: Event[],
+    currentPage?: number
 }
 
 const TableEvent = (prop: PropTable) => {
-
-    useEffect(() => {
-      
-    }, [])
-
+    const deleteEvent = async (event: string) => {
+        await eventStore.deleteEvent('Bolea', event)
+    }
 
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase  bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                     <tr>
@@ -60,7 +59,7 @@ const TableEvent = (prop: PropTable) => {
                         </td>
                         <td className="px-6 py-4">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => eventStore.deleteEvent('Bolea', event.title!!)}>Eliminar</a>
+                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteEvent(event.title!!)}>Eliminar</a>
                         </td>
                     </tr>
                     ))}
@@ -70,3 +69,5 @@ const TableEvent = (prop: PropTable) => {
     )
 }
 export default observer(TableEvent)
+
+
