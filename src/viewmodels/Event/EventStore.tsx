@@ -13,15 +13,19 @@ class EventStore {
     
     //Observables =>
     paginatedEvent: PaginatedEvent = { }
+    dectectedTableEmpty: boolean = false
     
     constructor(){
         makeObservable(this, {
             paginatedEvent: observable,
+            dectectedTableEmpty: observable,
             getRequestEvents: action,
             updatePaginatedEvents: action,
-            updateEventList:action,
+            updateEventList: action,
+            updateDetectedTableEmpty: action,
             deleteEvent: action,
-            getPaginatedEvents: computed
+            getPaginatedEvents: computed,
+            getDetectedTableEmpty: computed
         })
     }
     
@@ -40,9 +44,15 @@ class EventStore {
    updateEventList(events: Event[]){
     this.paginatedEvent.content = events
    }
+   updateDetectedTableEmpty(detectedTableEmpty: boolean){
+    this.dectectedTableEmpty = detectedTableEmpty
+   }
 
    get getPaginatedEvents(){
     return this.paginatedEvent
+   }
+   get getDetectedTableEmpty(): boolean{
+    return this.dectectedTableEmpty
    }
 
    async deleteEvent(username: string, title: string){
