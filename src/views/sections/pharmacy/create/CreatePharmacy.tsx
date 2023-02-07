@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 const CreatePharmacy = () => {
     const navigate = useNavigate()
-    const [value, setValue] = useState("1")
+    const [pharmType, setPharmType] = useState("1")
 
     return (
 
@@ -19,10 +19,21 @@ const CreatePharmacy = () => {
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Tipo</label>
-                    <div className="flex flex-row text-left gap-4">
+                    <div className="flex flex-row text-left gap-4 bg-green-500">
+                        <div>
+                       <div className="h-20 w-20 bg-red-600 border-2 hover:bg-slate-500" >
+                       <input type="radio" name="pharmTypeRadio"></input>
+                       <label>NORMAL</label>
+                       </div>
+                       <div className="h-20 w-20 bg-red-600 border-2 hover:bg-slate-500" >
+                       <input type="radio" name="pharmTypeRadio"></input>
+                       <label>DE GUARDIA</label>
+                       </div>
+                       </div>
+                        
                         <button name="pharmacyTypeBtn1" value="option1" className="w-fit h-10  bg-neutral-50 border-2 hover:bg-slate-200 focus:shadow-inner rounded-md focus:bg-indigo-400 p-2" >Normal</button>
 
-                        <button name="pharmacyTypeBtn2" value="option3" className="w-fit h-10  bg-neutral-50 border-2 hover:bg-slate-200 hover:shadow-inner rounded-md focus:bg-indigo-400 p-2">De guardia</button>
+                        <button name="pharmacyTypeBtn2" value="option2" className="w-fit h-10  bg-neutral-50 border-2 hover:bg-slate-200 hover:shadow-inner rounded-md focus:bg-indigo-400 p-2">De guardia</button>
                     </div>
                 </div>
             </div>
@@ -67,7 +78,7 @@ const CreatePharmacy = () => {
                     <label className="text-left text-2xl p-1">Horrario</label>
                     <div className="flex flex-col border-2 rounded-md">
                         <select onChange={(e) => {
-                            setValue(e.target.value)
+                            setPharmType(e.target.value)
                         }}>
                             <option value="1">De lunes a viernes. Hornada parcial.</option>
                             <option value="2">De lunes a viernes. Hornada completa.</option>
@@ -78,9 +89,9 @@ const CreatePharmacy = () => {
                             <option value="3">Otro horrario.</option>
                         </select>
                         <div className="p-3" >
-                            <input placeholder="Mañana:" hidden={value === "2"} name="pharmacyShedulesMorning" type="text" className="border-2 rounded-md p-2"></input>
-                            <input placeholder="Tarde:" hidden={value === "2"} name="pharmacyShedulesEvening" type="text" className="border-2 rounded-md p-2"></input>
-                            <input placeholder="ej. 9-21:30 " hidden={value === "1"} name="pharmacyShedulesExtra" type="text" className="border-2 rounded-md p-2"></input>
+                            <input placeholder="Mañana:" hidden={pharmType === "2"} name="pharmacyShedulesMorning" type="text" className="border-2 rounded-md p-2"></input>
+                            <input placeholder="Tarde:" hidden={pharmType === "2"} name="pharmacyShedulesEvening" type="text" className="border-2 rounded-md p-2"></input>
+                            <input placeholder="ej. 9-21:30 " hidden={pharmType === "1"} name="pharmacyShedulesExtra" type="text" className="border-2 rounded-md p-2"></input>
                         </div>
                     </div>
                 </div>

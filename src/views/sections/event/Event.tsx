@@ -1,17 +1,25 @@
 import { useNavigate } from "react-router-dom"
 import { observer } from 'mobx-react-lite'
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import EventStore from "../../../viewmodels/Event/EventStore"
 import TableEvent from "./TableEvent"
 const eventStore = EventStore.getEventStore()
 
 const Event = () => {
+  const [pageNumber, setPageNumber] = useState(0)
   const navigate = useNavigate()
 
   useEffect(() => {
-    eventStore.getRequestEvents()
-  }, [])
+    eventStore.getRequestEvents('Bolea', pageNumber, 5)
+  }, [pageNumber])
+
+  const incrementPage = () => {
+      setPageNumber(pageNumber + 1) 
+  }
+  const decrementPage = () => {
+      setPageNumber(pageNumber - 1)
+  }
 
   return (
     <div className="w-full h-full  relative">
@@ -27,20 +35,19 @@ const Event = () => {
             </button>
           </div>
         </div>
-        <TableEvent list={eventStore.getEvents} headerList={['Título', 'Descripción', 'Precio de Reserva', 'Plazas', 'Capacidad', 'Localidad', 'Dirección', 'Operacíon']} />
+        <TableEvent currentPage={pageNumber} headerList={['Título', 'Descripción', 'Precio de Reserva', 'Plazas', 'Capacidad', 'Localidad', 'Dirección', 'Organización', 'Acciones']} />
       </div>
       <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
-        <button className="inline-flex disabled:bg-gray-500 w-fit items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">
+        <button onClick={decrementPage} disabled={pageNumber < 1} className="inline-flex disabled:bg-gray-500 w-fit items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">
           <svg aria-hidden="true" className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd"></path></svg>
           Anterior
         </button>
-        <button disabled={eventStore.getEvents.length < 10} className="inline-flex items-center rounded-md border  disabled:bg-gray-500 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">
+        <button onClick={incrementPage} disabled={pageNumber == eventStore.getPaginatedEvents.totalPages!! - 1 || eventStore.getPaginatedEvents.content?.length == 0} className="inline-flex items-center rounded-md border  disabled:bg-gray-500 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">
           Siguiente
           <svg aria-hidden="true" className="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
         </button>
       </div>
     </div>
-
   )
 }
 export default observer(Event)

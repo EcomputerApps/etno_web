@@ -1,14 +1,21 @@
+import { current } from '@reduxjs/toolkit'
 import { observer } from 'mobx-react-lite'
+import { useEffect, useState } from 'react'
 
 import EventStore from "../../../viewmodels/Event/EventStore"
 const eventStore = EventStore.getEventStore()
 
 interface PropTable {
     headerList: string[],
-    list?: any
+    list?: Event[],
+    currentPage?: number
 }
 
 const TableEvent = (prop: PropTable) => {
+    const deleteEvent = async (event: string) => {
+        await eventStore.deleteEvent('Bolea', event)
+    }
+
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -22,8 +29,8 @@ const TableEvent = (prop: PropTable) => {
                     </tr>
                 </thead>
                 <tbody>
-                {prop.list.map((event: any, index: any) => (
-                        prop.list.length > 0 &&
+                {eventStore.getPaginatedEvents.content?.map((event, index) => (
+                       eventStore.getPaginatedEvents.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -42,7 +49,7 @@ const TableEvent = (prop: PropTable) => {
                             {event.capacity}
                         </td>
                         <td className="px-6 py-4">
-                            {event.locality}
+                            {event.username}
                         </td>
                         <td className="px-6 py-4">
                             {event.address}
@@ -52,7 +59,7 @@ const TableEvent = (prop: PropTable) => {
                         </td>
                         <td className="px-6 py-4">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => eventStore.deleteEvent('Bolea', event.title!!)}>Eliminar</a>
+                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteEvent(event.title!!)}>Eliminar</a>
                         </td>
                     </tr>
                     ))}
@@ -62,3 +69,5 @@ const TableEvent = (prop: PropTable) => {
     )
 }
 export default observer(TableEvent)
+
+
