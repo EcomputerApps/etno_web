@@ -44,6 +44,13 @@ interface Event {
     long?: string
 }
 
+interface PaginatedEvent {
+    content?: Event[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
+}
+
 interface Advert {
     idAdvert?: string,
     username?: string,
@@ -145,4 +152,4 @@ interface EventList {
     list: Event[]
 }
 
-export type { EventList, Event, Advert, Tourism, Band, Pharmacy, Service, News, Incident, Photos, Necrologue, Sponsor }
+export type { EventList, Event, Advert, Tourism, Band, Pharmacy, Service, News, Incident, Photos, Necrologue, Sponsor, PaginatedEvent }

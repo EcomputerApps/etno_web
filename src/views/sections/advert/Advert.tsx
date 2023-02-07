@@ -27,7 +27,7 @@ const Advert = () => {
                         </button>
                     </div>
                 </div>
-                <TableAdvert list={adverStore.getAdvertList} headerList={['Título', 'Descripción', 'Enlace']} />
+                <TableAdvert list={adverStore.getAdvertList} headerList={['Título', 'Descripción', 'Enlace', 'Acciones']} />
             </div>
             <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
                 <button className="inline-flex disabled:bg-gray-500 w-fit items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">

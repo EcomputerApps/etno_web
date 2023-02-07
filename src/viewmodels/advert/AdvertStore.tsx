@@ -29,7 +29,7 @@ class AdvertStore {
         return this.advertList
     }
     async getRequestAdvert(locality: string) {
-        const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}`, {
+        const response = await fetch(`http://192.168.137.1:8080/ads?username=${locality}`, {
             method: 'GET',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -38,15 +38,18 @@ class AdvertStore {
         const advert = await response.json()
         this.updateAdvertList(advert)
     }
+ 
+
     async deleteAdvert(locality: string, title: string) {
-        const response = await fetch(`http://192.168.137.1:8080/users/delete/tourism?username=${locality}&title=${title}`, {
+        const response = await fetch(`http://192.168.137.1:8080/users/delete/ad?username=${locality}&title=${title}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
             }
-
         })
+        const newList = this.advertList.filter((item) => item.title !== title)
+            this.updateAdvertList(newList)
     }
+    
 }
-
 export default AdvertStore
