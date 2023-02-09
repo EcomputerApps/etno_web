@@ -1,4 +1,4 @@
-
+import logoEtno from '../../../../assets/logo_etno.png'
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom"
 
@@ -14,7 +14,6 @@ const CreateBand = () => {
   const [bandPhoto, setBandPhoto] = useState<string>("")
   const [bandDate, setbandDate] = useState<string>("")
 
-//funcion temporal para comprobar  datos  que guardamos con consol.log
   function checkState() {
     console.log(bandType)
     console.log(bandDescription)
@@ -24,17 +23,17 @@ const CreateBand = () => {
   }
 
   return (
-    <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
+    <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
       <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
         <div className="w-full flex flex-row p-2 justify-between">
-          <img src={"https://etno.ecomputer.es/images/app.png"} alt="logo_etno"></img>
+        <img src={logoEtno} alt="logo_Etno"></img>
           <p className='flex  text-white text-3xl p-3'>BANDOS</p>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1">
+        <div className="relative flex flex-col p-1">
           <label className="text-left text-2xl p-1">Asunto</label>
-          <input autoFocus placeholder="Tipo" name="bandType" type="text" className="border-2 rounded-md p-2" onChange={(value) => {
+          <input autoFocus placeholder="Tipo" name="bandType" id="test" type="text" className="block border-2 rounded-md p-2" onChange={(value) => {
             setBandType(value.currentTarget.value)
           }} onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -42,8 +41,8 @@ const CreateBand = () => {
                 txtAreaRef.current.focus()
               }
             }
-
-          }}></input>
+          }}/>
+          
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
@@ -57,7 +56,6 @@ const CreateBand = () => {
                 inputRef.current.focus()
               }
             }
-
           }}></textarea>
         </div>
       </div>

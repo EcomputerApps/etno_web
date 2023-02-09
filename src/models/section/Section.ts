@@ -57,18 +57,32 @@ interface Advert {
     title?: string,
     description?: string,
     imageUrl?: string,
-    link?: string
+    webUrl?: string
+}
+
+interface PaginatedAdvert {
+    content?: Advert[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
 }
 
 interface Tourism {
     idTourism?: string,
-    type?: string,
     username?: string,
+    type?: string,
     title?: string,
     description?: string,
     imageUrl?: string,
     longitude?: string,
     latitude?: string
+}
+
+interface PaginatedTourism {
+    content?: Tourism[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
 }
 
 interface Band {
@@ -80,12 +94,19 @@ interface Band {
     imageUrl?: string
 }
 
+interface PaginatedBand {
+    content?: Band[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
+}
+
 interface Pharmacy {
     idPharmacy?: string,
     username?: string,
     type?: string,
     name?: string,
-    link?: string,
+    webUrl?: string,
     imageUrl?: string,
     phone?: string,
     schedule?: string,
@@ -93,6 +114,13 @@ interface Pharmacy {
     lat?: string,
     long?: string
 
+}
+
+interface PaginatedPharmacy {
+    content?: Pharmacy[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
 }
 
 interface Service {
@@ -104,6 +132,14 @@ interface Service {
     schedule?: string,
     imageUrl?: string
 }
+
+interface PaginatedService {
+    content?: Service[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
+}
+
 interface Sponsor {
     idSponsor?: string,
     username?: string,
@@ -111,6 +147,13 @@ interface Sponsor {
     description?: string,
     phoneNumber?: string,
     imageUrl?: string
+}
+
+interface PaginatedSponsor {
+    content?: Sponsor[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
 }
 
 interface Necrologue {
@@ -122,6 +165,13 @@ interface Necrologue {
     imageUrl?: string
 }
 
+interface PaginatedNecro {
+    content?: Necrologue[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
+}
+
 interface News {
     idNews?: string,
     username?: string,
@@ -131,6 +181,12 @@ interface News {
     description?: string,
     imageUrl?: string
 }
+interface PaginatedNews {
+    content?: News[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
+}
 
 interface Incident {
     idIncident?: string,
@@ -138,6 +194,13 @@ interface Incident {
     fcmToken?: string,
     title?: string,
     description?: string
+}
+
+interface PaginatedIncident {
+    content?: Incident[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
 }
 
 interface Photos {
@@ -152,4 +215,11 @@ interface EventList {
     list: Event[]
 }
 
-export type { EventList, Event, Advert, Tourism, Band, Pharmacy, Service, News, Incident, Photos, Necrologue, Sponsor, PaginatedEvent }
+export type {
+    EventList, Event, Advert, Tourism, Band,
+    Pharmacy, Service, News, Incident, Photos,
+    Necrologue, Sponsor, PaginatedEvent, PaginatedAdvert,
+    PaginatedNews, PaginatedTourism, PaginatedBand,
+    PaginatedPharmacy, PaginatedService, PaginatedSponsor,
+    PaginatedNecro, PaginatedIncident
+}

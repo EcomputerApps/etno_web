@@ -1,4 +1,4 @@
-
+import logoEtno from '../../../../assets/logo_etno.png'
 import { useRef, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 
@@ -45,10 +45,10 @@ const CreateEvent = () => {
 
   return (
     <div>
-      <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
+      <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
         <div className="h-20 w-full flex bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row gap-8 p-2 justify-between">
-            <img src="https://etno.ecomputer.es/images/app.png" alt="logo_etno"></img>
+          <img src={logoEtno} alt="logo_Etno"></img>
             <p className='flex  text-white text-3xl p-3'>EVENTO</p>
           </div>
         </div>
@@ -75,7 +75,6 @@ const CreateEvent = () => {
                   txtAreaRef.current.focus()
                 }
               }
-
             }}></input>
           </div>
           <div className="flex flex-col  p-1">
@@ -88,7 +87,6 @@ const CreateEvent = () => {
                   inputRefOrg.current.focus()
                 }
               }
-
             }}></textarea>
           </div>
           <div className="flex flex-col  p-1">
@@ -101,7 +99,6 @@ const CreateEvent = () => {
                   inputRefPric.current.focus()
                 }
               }
-
             }}></input>
           </div>
           <div className="flex flex-col  p-1">
@@ -122,7 +119,6 @@ const CreateEvent = () => {
                         inputRefSeat.current.focus()
                       }
                     }
-
                   }} />
             </div>
           </div>
@@ -139,7 +135,6 @@ const CreateEvent = () => {
                   inputRefLink.current.focus()
                 }
               }
-
             }} />
           </div>
           <div className="flex flex-col  p-1">
@@ -153,7 +148,6 @@ const CreateEvent = () => {
                   inputRefDS.current.focus()
                 }
               }
-
             }}></input>
           </div>
           <div className="w-full flex flex-1 flex-col pl-3">
@@ -178,7 +172,6 @@ const CreateEvent = () => {
           <div className="flex flex-1 m-auto justify-center p-3">
             <img className='rounded-md' src="https://static1.anpoimages.com/wordpress/wp-content/uploads/2022/07/googleMapsTricksHero.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5" alt="googlemap"></img>
           </div>
-
           <div className="flex flex-col p-1">
             <label className="text-left text-2xl p-1">Fecha de Inicio</label>
             <input ref={inputRefDS} type="date" name="eventStart" className="w-40 border-2 rounded-sm" onChange={(value) => {
@@ -189,7 +182,6 @@ const CreateEvent = () => {
                   inputRefDF.current.focus()
                 }
               }
-
             }} />
           </div>
           <div className="flex flex-col p-1">
@@ -202,14 +194,12 @@ const CreateEvent = () => {
                   btnRef.current.focus()
                 }
               }
-
             }} />
           </div>
         </div>
         <div className="flex m-auto justify-center p-3">
           <button ref={btnRef} name="eventBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => {
             checkState()
-
           }}>Publicar</button>
           <button name="eventBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => navigate("/home")}>Cancelar</button>
         </div>

@@ -22,14 +22,14 @@ const Router = () => {
                 <Route path="/login" element={ <ViewRender element={<LoginPage/>}/> }/>
                 <Route path="/logout" element={<ViewRender element={<LogoutPage/>}/>}/>
                 <Route path="/addEvent" element={<ViewRender element={<CreateEventPage/>}/>}/>
-                <Route path="/tourism" element={<ViewRender element={<CreateTourismPage/>}/>}/>
-                <Route path="/band" element={<ViewRender element={<CreateBandPage/>}/>}/>
-                <Route path="/sponsor" element={<ViewRender element={<CreateSponsorPage/>}/>}/>
-                <Route path="/service" element={<ViewRender element={<CreateServicePage/>}/>}/>
-                <Route path="/pharmacy" element={<ViewRender element={<CreatePharamcyPage/>}/>}/>
-                <Route path="/necrologue" element={<ViewRender element={<CreateNecrologuePage/>}/>}/>
-                <Route path="/news" element={<ViewRender element={<CreateNewsPage/>}/>}/>
-                <Route path="/advert" element={<ViewRender element={<CreateAdvertPage/>}/>}/>
+                <Route path="/AddTourism" element={<ViewRender element={<CreateTourismPage/>}/>}/>
+                <Route path="/AddBand" element={<ViewRender element={<CreateBandPage/>}/>}/>
+                <Route path="/AddSponsor" element={<ViewRender element={<CreateSponsorPage/>}/>}/>
+                <Route path="/addService" element={<ViewRender element={<CreateServicePage/>}/>}/>
+                <Route path="/addPharmacy" element={<ViewRender element={<CreatePharamcyPage/>}/>}/>
+                <Route path="/addNecrologue" element={<ViewRender element={<CreateNecrologuePage/>}/>}/>
+                <Route path="/addNews" element={<ViewRender element={<CreateNewsPage/>}/>}/>
+                <Route path="/addAdvert" element={<ViewRender element={<CreateAdvertPage/>}/>}/>
                
                
             </Routes>

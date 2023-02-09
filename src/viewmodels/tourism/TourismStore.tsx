@@ -1,5 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
-import { Tourism } from "../../models/section/Section";
+import { Tourism , PaginatedTourism} from "../../models/section/Section";
 
 class TourismStore{
     static tourismStore: TourismStore
@@ -12,45 +12,52 @@ class TourismStore{
     }
 
     //Observables =>
-    tourismList: Tourism[] = []
+    paginatedTourism : PaginatedTourism = {}
+    
 
     constructor(){
         makeObservable(this, {
-            tourismList: observable,
+            paginatedTourism: observable,
             getRequestTourism: action,
             deleteTourism: action,
             updateTourismList: action,
-            getTourismList: computed
+            updatePaginatedTourism: action,
+            getPaginatedTourism : computed
+           
         })
     }
-
-    async getRequestTourism(locality: string){
-        const response = await fetch(`http://192.168.137.1:8080/tourism?username=${locality}`, {
+    updateTourismList(tourism: Tourism[]){
+        this.paginatedTourism.content = tourism
+    }
+     updatePaginatedTourism( paginatedTourism : PaginatedTourism){
+        this.paginatedTourism = paginatedTourism
+    }
+    get getPaginatedTourism(){
+        return this.paginatedTourism
+    }
+    async getRequestTourism(locality: string, pageNum: number, elementSize: number){
+        const response = await fetch(`http://192.168.137.1:8080/tourism?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
         method: 'GET',
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-        }
+   
     })
     const tourism = await response.json()
-    this.updateTourismList(tourism)
+    //console.log
+    console.log(tourism)
+    this.updatePaginatedTourism(tourism)
     }
-    async deleteTourism(locality: string, title: string){
-        const response = await fetch(`http://192.168.137.1:8080/users/delete/tourism?username=${locality}&title=${title}`, {
+    async deleteTourism(username: string, title: string){
+        const response = await fetch(`http://192.168.137.1:8080/users/delete/tourism?username=${username}&title=${title}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
-        const newTourismList = this.tourismList.filter((item) => item.title !== title)
-            this.updateTourismList(newTourismList)
+        const newPaginatedTourism = this.paginatedTourism.content!!.filter((item) => item.title !== title)
+            this.updateTourismList(newPaginatedTourism)
     }
     
-    updateTourismList(tourism: Tourism[]){
-        this.tourismList = tourism
-    }
+    
 
-    get getTourismList(){
-        return this.tourismList
-    }
+    
 }
 export default TourismStore

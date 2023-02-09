@@ -1,53 +1,56 @@
 import { makeObservable, action, computed, observable } from "mobx";
-import { Incident } from "../../models/section/Section";
+import { NumberLiteralType } from "typescript";
+import { Incident, PaginatedIncident } from "../../models/section/Section";
 
-class IncidentStore{
-    static incidentStore : IncidentStore
+class IncidentStore {
+    static incidentStore: IncidentStore
 
-    static getIncidentStore(){
-        if(this.incidentStore === undefined){
+    static getIncidentStore() {
+        if (this.incidentStore === undefined) {
             this.incidentStore = new IncidentStore()
         }
         return this.incidentStore
     }
+    //Observables =>
+    paginatedIncident: PaginatedIncident = {}
 
-    incidentList : Incident[] =[]
-
-    constructor(){
+    constructor() {
         makeObservable(this, {
-            incidentList : observable,
-            getRequestIncident : action,
-            deleteIncident : action,
-            updateIncidentList : action,
-            getIncidentList : computed
+            paginatedIncident: observable,
+            getRequestIncident: action,
+            deleteIncident: action,
+            updateIncidentList: action,
+            updatePaginatedIncident: action,
+            getPaginatedIncident: computed
         })
     }
-    updateIncidentList(incidents : Incident[]){
-        this.incidentList= incidents
+    updateIncidentList(incidents: Incident[]) {
+        this.paginatedIncident.content = incidents
     }
-    get getIncidentList(){
-        return this.incidentList
+    updatePaginatedIncident(paginatedEvent: PaginatedIncident) {
+        this.paginatedIncident = paginatedEvent
     }
-    async getRequestIncident(locality : string){
-        const response = await fetch(`http://192.168.137.1:8080/tourism?username=${locality}`, {
-            method : 'GET',
-            headers : {
-                'Access-Control-Allow-Origin' : '*'
-            }
+    get getPaginatedIncident() {
+        return this.paginatedIncident
+    }
+    async getRequestIncident(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://192.168.137.1:8080/incidents?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+            method: 'GET',
         })
         const incident = await response.json()
+        //console.log
+        console.log(incident)
         this.updateIncidentList(incident)
     }
-    async deleteIncident(locality: string, title : string){
-        const response = await fetch(`http://192.168.137.1:8080/tourism?username=${locality}&title=${title}`, {
+    async deleteIncident(username: string, title: string) {
+        const response = await fetch(`http://192.168.137.1:8080/incident?username=${username}&title=${title}`, {
             method: 'DELETE',
-            headers : {
-                'Access-Control-Allow-Origin' : '*'
-
+            headers: {
+                'Access-Control-Allow-Origin': '*'
             }
         })
-        const newIncidentList = this.incidentList.filter((item)=> item.title !== title)
-        this.updateIncidentList(newIncidentList)
+        const newPaginatedIncidentList = this.paginatedIncident.content!!.filter((item) => item.title !== title)
+        this.updateIncidentList(newPaginatedIncidentList)
     }
 }
 

@@ -1,56 +1,61 @@
 import { makeObservable, action, computed, observable } from "mobx";
-import { Pharmacy } from "../../models/section/Section";
+import { Pharmacy, PaginatedPharmacy } from "../../models/section/Section";
 
-class PharmacyStore{
+class PharmacyStore {
     static pharmacyStore: PharmacyStore
 
-    static getPharmacyStore(){
-        if(this.pharmacyStore===undefined){
+    static getPharmacyStore() {
+        if (this.pharmacyStore === undefined) {
             this.pharmacyStore = new PharmacyStore()
         }
         return this.pharmacyStore
     }
 
-    pharmacyList : Pharmacy[] = []
+    //Observables =>
+    paginatedPharmacy: PaginatedPharmacy = {}
+  
 
-    constructor(){
-        makeObservable(this,{
-            pharmacyList: observable,
-            getRequestPharmacy : action,
-            deletePharmacy : action,
+    constructor() {
+        makeObservable(this, {
+            paginatedPharmacy: observable,
+            getRequestPharmacy: action,
+            deletePharmacy: action,
+            updatePaginatedPharmacy: action,
             updatePharmacyList: action,
-            getPharmacyList: computed
+            getPaginatedPharmacy: computed
+            
         })
+    }
+    updatePharmacyList(pharmacys: Pharmacy[]) {
+        this.paginatedPharmacy.content = pharmacys
+    }
+    updatePaginatedPharmacy(paginatedPharmacy: PaginatedPharmacy) {
+        this.paginatedPharmacy = paginatedPharmacy
+    }
+    get getPaginatedPharmacy() {
+        return this.paginatedPharmacy
+    }
 
-    }
-    updatePharmacyList( pharmacys : Pharmacy[]){
-        this.pharmacyList = pharmacys
-    }
-    get getPharmacyList(){
-        return this.pharmacyList
-    }
-
-    async getRequestPharmacy( locality : string){
-        const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}`,{
+    async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://192.168.137.1:8080/pharmacy?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
-            headers: {
-                'Access-Control-Allow-Origin' : '*'
-            }
         })
         const pharmacy = await response.json()
+        //console.log
+        console.log(pharmacy)
         this.updatePharmacyList(pharmacy)
     }
-    async deletePharmacy(locality : string, name : string){
-        const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}&name=${name}`,{
+    async deletePharmacy(username: string, name: string) {
+        const response = await fetch(`http://192.168.137.1:8080/users/delete/pharmacy?username=${username}&name=${name}`, {
             method: 'DELETE',
-            headers : {
-                'Access-Control-Allow-Origin' : '*'
+            headers: {
+                'Access-Control-Allow-Origin': '*'
             }
-     })
-     const newPharmacyList = this.pharmacyList.filter((item)=>item.name !==name)
-     this.updatePharmacyList(newPharmacyList)
-        
-}
+        })
+        const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.name !== name)
+        this.updatePharmacyList(newPaginedPharmacy)
+
+    }
 }
 
 export default PharmacyStore

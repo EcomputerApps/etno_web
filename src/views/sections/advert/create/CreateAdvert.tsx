@@ -1,4 +1,4 @@
-
+import logoEtno from '../../../../assets/logo_etno.png'
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -23,10 +23,10 @@ const CreateAdvert = () => {
 
 
     return (
-        <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
+        <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
-                    <img src={"https://etno.ecomputer.es/images/app.png"} alt="logo_etno"></img>
+                    <img src={logoEtno} alt="logo_Etno"></img>
                     <p className='flex  text-white text-3xl p-3'>ANUNCIOS</p>
                 </div>
             </div>
@@ -36,7 +36,7 @@ const CreateAdvert = () => {
                     <input autoFocus placeholder="titulo" name="advertTitle" type="text" className="border-2 rounded-md p-2" onChange={(value) => {
                         setAdvertTitle(value.currentTarget.value)
                     }} onKeyUp={(e) => {
-                        if ((e.code === "Enter") || (e.code === "NumpadEnter")){
+                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (txtAreaRef.current != null) {
                                 txtAreaRef.current.focus()
                             }

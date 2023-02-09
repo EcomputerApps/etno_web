@@ -27,7 +27,6 @@ class SideBarStore{
         {title: 'Fallecimientos', src: "death.svg"},
         {title: 'Incidencias', src: "incident.svg", gap: true},
         {title: 'Fotos', src: "photos.svg"},
-        {title: 'Mapa', src: "photos.svg"},
         {title: 'Salir', src: "logout.svg", gap: true},
     ]}
 

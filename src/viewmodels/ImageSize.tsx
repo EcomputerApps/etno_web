@@ -1,40 +1,47 @@
 import { makeObservable, action, computed, observable } from "mobx";
 
-class ImageSize{
-    static imageBig: ImageSize
+class ImageSize {
+    static imageSize: ImageSize
 
-    static getImageSize(){
-        if(this.imageBig === undefined){
-            this.imageBig = new ImageSize()
+    static getImageSize() {
+        if (this.imageSize === undefined) {
+            this.imageSize = new ImageSize()
         }
-        return this.imageBig
+        return this.imageSize
     }
 
-    imgModalStatus : boolean = false
-    imgModalLink : string = ''
+    imgModalLink: string = ''
+    fotoPageStart: number = 0
+    fotoPageFin: number = 6
 
-    constructo(){
+    constructo() {
         makeObservable(this, {
-        imgModalStatus : observable,
-        imgModalLink : observable,
-        setEstado : action,
-        setLink : action,
-        getEstado: computed,
-        getLink : action,
+            imgModalLink: observable,
+            fotoPageStart: observable,
+            fotoPageFin: observable,
+            setLink: action,
+            getLink: computed,
+            getFPS: computed,
+            getFPF: computed,
         })
     }
 
-    setEstado( newEstado : boolean){
-        this.imgModalStatus = newEstado
-    }
-    get getEstado(){
-        return this.imgModalStatus
-    }
-    setLink( newLink : string){
+    setLink(newLink: string) {
         this.imgModalLink = newLink
+    } setFotoPageStart(newFPS: number) {
+        this.fotoPageStart = newFPS
     }
-    get getLink(){
+    setFotoPageFin(newFPF: number) {
+        this.fotoPageFin = newFPF
+    }
+    get getLink() {
         return this.imgModalLink
+    }
+    get getFPS() {
+        return this.fotoPageStart
+    }
+    get getFPF() {
+        return this.fotoPageFin
     }
 
 }

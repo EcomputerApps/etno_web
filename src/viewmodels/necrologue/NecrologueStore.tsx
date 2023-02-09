@@ -1,5 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
-import { Necrologue } from "../../models/section/Section";
+import { Necrologue, PaginatedNecro } from "../../models/section/Section";
 
 class NecrologueStore{
     static necrologueStore: NecrologueStore
@@ -11,43 +11,49 @@ class NecrologueStore{
         return this.necrologueStore
     }
 
-    necrologueList : Necrologue[] = []
+       //Observables =>
+    paginatedNecro : PaginatedNecro = {}
 
     constructor(){
         makeObservable(this,{
-            necrologueList: observable,
+            paginatedNecro: observable,
             getRequestNecrologue: action,
             updateNecrologueList : action,
+            updatePaginatedNecro: action,
             deleteNecrologue : action,
-            getNecrologueList: computed
+            getPaginatedNecro: computed
 
         })
     }
     updateNecrologueList(necrologues: Necrologue[]){
-        this.necrologueList = necrologues
+        this.paginatedNecro.content = necrologues
     }
-    get getNecrologueList(){
-        return this.necrologueList
+    updatePaginatedNecro( paginatedNecro : PaginatedNecro){
+        this.paginatedNecro = paginatedNecro
+    }
+    get getPaginatedNecro(){
+        return this.paginatedNecro
     }
 
-    async getRequestNecrologue( locality:string){
-        const response = await fetch(`http://192.168.137.1:8080/tourism?username=${locality}`,{
+    async getRequestNecrologue( locality:string, pageNum : number, elementSize: number){
+        const response = await fetch(`http://192.168.137.1:8080/necrologue?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
           method: 'GET',
-          headers : {
-            'Access-Control-Allow-Origin':'*'
-          }  
+          
         })
         const necrologue = await response.json()
+        //console.log
+        console.log(necrologue)
         this.updateNecrologueList(necrologue)
     }
-    async deleteNecrologue(locality: string, name: string){
-        const response = await fetch(`http://192.168.137.1:8080/tourism?username=${locality}&name=${name}`, {
+    async deleteNecrologue(username: string, name: string){
+        const response = await fetch(`http://192.168.137.1:8080/necrologue?username=${username}&name=${name}`, {
             method: 'DELETE',
             headers : {
                 'Access-Control-Allow-Origin': '*'
             }
         })
-
+        const newPaginatedNecro = this.paginatedNecro.content!!.filter((item)=> item.name !== name)
+        this.updateNecrologueList(newPaginatedNecro)
     }
 
 }
