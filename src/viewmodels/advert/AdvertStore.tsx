@@ -1,5 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
-import { Advert } from "../../models/section/Section";
+import { Advert, PaginatedAdvert } from "../../models/section/Section";
 
 class AdvertStore {
     static advertStore: AdvertStore
@@ -11,45 +11,53 @@ class AdvertStore {
         return this.advertStore
     }
 
-    advertList: Advert[] = []
+    //Observables =>
+    paginatedAdvert: PaginatedAdvert = {}
+
 
     constructor() {
         makeObservable(this, {
-            advertList: observable,
-            getRequestAdvert: action,
-            deleteAdvert: action,
+            paginatedAdvert: observable,
+            updatePaginatedAdverts: action,
             updateAdvertList: action,
-            getAdvertList: computed
+            deleteAdvert: action,
+            getRequestAdvert: action,
+            getPaginatedAdverts: computed
+
         })
+    }
+    updatePaginatedAdverts(paginatedAdverts: PaginatedAdvert) {
+        this.paginatedAdvert = paginatedAdverts
     }
     updateAdvertList(adverts: Advert[]) {
-        this.advertList = adverts
+        this.paginatedAdvert.content = adverts
     }
-    get getAdvertList() {
-        return this.advertList
+    get getPaginatedAdverts() {
+        return this.paginatedAdvert
     }
-    async getRequestAdvert(locality: string) {
-        const response = await fetch(`http://192.168.137.1:8080/ads?username=${locality}`, {
-            method: 'GET',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            }
-        })
-        const advert = await response.json()
-        this.updateAdvertList(advert)
-    }
- 
 
-    async deleteAdvert(locality: string, title: string) {
-        const response = await fetch(`http://192.168.137.1:8080/users/delete/ad?username=${locality}&title=${title}`, {
+    async getRequestAdvert(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://192.168.137.1:8080/adverts?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+            method: 'GET',
+
+        })
+        const adverts = await response.json()
+        //Consol.log
+        console.log(adverts)
+        this.updatePaginatedAdverts(adverts)
+    }
+
+
+    async deleteAdvert(username: string, title: string) {
+        const response = await fetch(`http://192.168.137.1:8080/users/delete/adverts?username=${username}&title=${title}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
             }
         })
-        const newList = this.advertList.filter((item) => item.title !== title)
-            this.updateAdvertList(newList)
+        const paginatedAdverts = this.paginatedAdvert.content!!.filter((item) => item.title !== title)
+        this.updateAdvertList(paginatedAdverts)
     }
-    
+
 }
 export default AdvertStore

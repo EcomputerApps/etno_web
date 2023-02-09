@@ -19,18 +19,19 @@ import { useNavigate } from 'react-router-dom'
 import Incident from './sections/incident/Incident'
 import Photo from './sections/photo/Photo'
 import Advert from './sections/advert/Advert'
-import MapGoogle from '../viewmodels/map/MapGoogle'
+import { useState } from 'react'
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 
 const Home = () => {
+
   const navigate = useNavigate()
+  
   function salida() {
     if (hoverSectionStore.getName === "Salir") {
       hoverSectionStore.setName(sideBarStore.panel.section)
       navigate("/logout")
-
     }
   }
 
@@ -47,12 +48,10 @@ const Home = () => {
       case 'Fallecimientos': return <Necrologue />
       case 'Incidencias': return <Incident />
       case 'Fotos' : return <Photo/>
-      case 'Mapa' : return <MapGoogle/>
-      case 'Salir': return <LogoutPage />
+ 
     }
 
   }
-
 
   return (
     <div className="flex">

@@ -1,6 +1,4 @@
-import { current } from '@reduxjs/toolkit'
 import { observer } from 'mobx-react-lite'
-import { useEffect, useState } from 'react'
 
 import EventStore from "../../../viewmodels/Event/EventStore"
 const eventStore = EventStore.getEventStore()

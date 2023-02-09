@@ -1,9 +1,7 @@
 import { makeObservable, action, computed, observable } from "mobx";
-import { News } from "../../models/section/Section";
-
+import { News, PaginatedNews } from "../../models/section/Section";
 
 class NewsStore{
-
     static newsStore : NewsStore
 
     static getNewsStore(){
@@ -13,43 +11,53 @@ class NewsStore{
         return this.newsStore
     }
 
-    newsList : News[]= []
+       //Observables =>
+       paginatedNews : PaginatedNews = {}
+      
 
     constructor(){
         makeObservable(this, {
-            newsList : observable,
+            paginatedNews : observable,
             getRequestNews : action,
             deleteNews : action,
             updateNewsList: action,
-            getNewsList: computed
+            updatePaginatedNews: action,
+            getPaginatedNews: computed,
+           
         })
     }
+
     updateNewsList( news : News[]){
-        this.newsList = news
+        this.paginatedNews.content = news
     }
-    get getNewsList(){
-        return this.newsList
+    updatePaginatedNews( pagiantedNews: PaginatedNews){
+        this.paginatedNews = pagiantedNews
     }
-    async getRequestNews( locality : string){
-        const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}`,{
+     get getPaginatedNews(){
+        return this.paginatedNews
+    }
+  
+
+    async getRequestNews( locality : string, pageNum: number, elementSize: number){
+        const response = await fetch(`http://192.168.137.1:8080/news?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
             method: 'GET',
-            headers : {
-                'Access-Control-Allow-Origin': '*'
-            }
+           
         })
         const news = await response.json()
-        this.updateNewsList(news)
+        //console.log
+        console.log(news)
+        this.updatePaginatedNews(news)
 
     }
-    async deleteNews(locality: string, title : string){
-        const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}&name=${title}`,{
+    async deleteNews(username: string, title : string){
+        const response = await fetch(`http://192.168.137.1:8080/users/delete/news?username=${username}&title=${title}`,{
             method : 'DELETE',
             headers : {
                 'Access-Control-Allow-Origin':'*'
             }
         })
-        const newNewsList = this.newsList.filter((item)=>item.title !== title)
-        this.updateNewsList(newNewsList)
+        const newPaginatedNews = this.paginatedNews.content!!.filter((item)=>item.title !== title)
+        this.updateNewsList(newPaginatedNews)
     }
 
 

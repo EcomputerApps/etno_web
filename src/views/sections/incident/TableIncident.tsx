@@ -4,7 +4,11 @@ const incidentStore = IncidentStore.getIncidentStore()
 
 interface PropTable{
     headerList : string[],
-    list?: any
+    list?: any,
+    currentPage?: number
+}
+const deleteIncident = async(incident : string)=>{
+    await incidentStore.deleteIncident('Bolea', incident)
 }
 
 const TableIncident = (prop : PropTable) =>{
@@ -21,12 +25,12 @@ const TableIncident = (prop : PropTable) =>{
                     </tr>
                 </thead>
                 <tbody>
-                {prop.list.map((incident: any, index: any) => (
-                        prop.list.length > 0 &&
+                {incidentStore.getPaginatedIncident.content?.map((incident, index)=>(
+                    incidentStore.getPaginatedIncident.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {incident.idDevice}
+                            {incident.fcmToken}
                         </th>
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {incident.title}
@@ -36,7 +40,7 @@ const TableIncident = (prop : PropTable) =>{
                         </td>
                         <td className="px-6 py-4">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => incidentStore.deleteIncident('Bolea', incident.title)}>Eliminar</a>
+                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() =>deleteIncident(incident.title!!)}>Eliminar</a>
                         </td>
                     </tr>
                     ))}

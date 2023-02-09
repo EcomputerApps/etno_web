@@ -1,56 +1,62 @@
 import { makeObservable, action, computed, observable } from "mobx";
-import { json } from "react-router-dom";
-import { Sponsor } from "../../models/section/Section";
+import { PaginatedSponsor, Sponsor } from "../../models/section/Section";
 
-class SposnsorStore{
+class SposnsorStore {
     static sponsorStore: SposnsorStore
 
-    static getSponsorStore(){
-        if(this.sponsorStore=== undefined){
+    static getSponsorStore() {
+        if (this.sponsorStore === undefined) {
             this.sponsorStore = new SposnsorStore()
         }
         return this.sponsorStore
     }
 
-    sposnsorList: Sponsor[] = []
+    //Observables =>
+    paginatedSponsor: PaginatedSponsor = {}
 
-    constructor(){
+
+    constructor() {
         makeObservable(this, {
-            sposnsorList:observable,
+            paginatedSponsor: observable,
             getRequestSponsor: action,
             deleteSponsor: action,
+            updatePaginatedSponsor: action,
             updateSponsorList: action,
-            getSponsorList: computed
+            getPaginatedSponsor: computed
+
         })
     }
+    updateSponsorList(sponsors: Sponsor[]) {
+        this.paginatedSponsor.content = sponsors
+    }
 
-    async getRequestSponsor( locality : string){
-        const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}`,{
+    updatePaginatedSponsor(paginatedSponsor: PaginatedSponsor) {
+        this.paginatedSponsor = paginatedSponsor
+    }
+    get getPaginatedSponsor() {
+        return this.paginatedSponsor
+    }
+
+
+    async getRequestSponsor(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://192.168.137.1:8080/sponsor?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
-            headers :{
-                'Access-Control-Allow-Origin' : '*'
-            }
         })
         const sponsor = await response.json()
         this.updateSponsorList(sponsor)
     }
-    async deleteSponsor( locality : string, title : string){
-        const response = await fetch(`http://192.168.137.1:8080/users/delete/tourism?username=${locality}&title=${title}`,{
-           method: 'DELETE',
-           headers: {
-            'Access-Control-Allow-Origin' : '*'
-           } 
+    async deleteSponsor(username: string, title: string) {
+        const response = await fetch(`http://192.168.137.1:8080/users/delete/sponsor?username=${username}&title=${title}`, {
+            method: 'DELETE',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
         })
-        const newSponsorList = this.sposnsorList.filter((item)=> item.title !== title)
-        this.updateSponsorList(newSponsorList)
+        const newPaginatedSponsor = this.paginatedSponsor.content!.filter((item) => item.title !== title)
+        this.updateSponsorList(newPaginatedSponsor)
     }
 
-    updateSponsorList( sponsors: Sponsor[]){
-        this.sposnsorList = sponsors
-    }
-    get getSponsorList(){
-        return this.sposnsorList
-    }
+
 }
 
 export default SposnsorStore

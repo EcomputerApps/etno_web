@@ -4,10 +4,14 @@ const bandStore = BandStore.getBandStore()
 
 interface PropTable {
     headerList: string[],
-    list?: any
+    list?: any,
+    currentPage?: number
 }
 
 const TableBand = (prop: PropTable) => {
+    const deleteBand = async (event: string) => {
+        await bandStore.deleteBand('Bolea', event)
+    }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -21,8 +25,8 @@ const TableBand = (prop: PropTable) => {
                     </tr>
                 </thead>
                 <tbody>
-                {prop.list.map((band: any, index: any) => (
-                        prop.list.length > 0 &&
+                {bandStore.getPaginatedBands.content ?.map((band, index)=> (
+                        bandStore.getPaginatedBands.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -32,11 +36,11 @@ const TableBand = (prop: PropTable) => {
                             {band.description}
                         </td>
                         <td className="px-6 py-4">
-                            {band.date}
+                            {band.issuedDate}
                         </td>
                         <td className="px-6 py-4">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => bandStore.deleteBand('Bolea', band.title)}>Eliminar</a>
+                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteBand(band.title!!)}>Eliminar</a>
                         </td>
                     </tr>
                     ))}

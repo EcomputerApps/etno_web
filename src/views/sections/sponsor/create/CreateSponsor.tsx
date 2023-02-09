@@ -1,35 +1,75 @@
-import React from "react";
-
+import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom"
+import logoEtno from '../../../../assets/logo_etno.png'
 
 const CreateSponsor = () => {
   const navigate = useNavigate()
 
+  const inputRef = useRef<HTMLInputElement>(null)
+  const txtAreaRef = useRef<HTMLTextAreaElement>(null)
+  const btnRef = useRef<HTMLButtonElement>(null)
+
+  const [sponsorTitle, setSponsorTitle] = useState<string>("")
+  const [sponsorDescription, setSponsorDescription] = useState<string>("")
+  const [sponsorPhoto, setSponsorPhoto] = useState<string>("")
+  const [sponsorTel, setSponsorTel] = useState<string>("")
+
+  //funcion temporal para comprobar entrada
+  function checkState() {
+    console.log(sponsorTitle)
+    console.log(sponsorDescription)
+    console.log(sponsorPhoto)
+    console.log(sponsorTel)
+  }
   return (
     <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
       <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
         <div className="w-full flex flex-row p-2 justify-between">
-          <img src="https://etno.ecomputer.es/images/app.png"></img>
+        <img src={logoEtno} alt="logo_Etno"></img>
           <p className='flex  text-white text-3xl p-3'>PATROCINADOR</p>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1">
           <label className="text-left text-2xl p-1">Título</label>
-          <input placeholder="Titulo" name="sponsorTitle" type="text" className="border-2 rounded-md p-2"></input>
+          <input autoFocus placeholder="Titulo" name="sponsorTitle" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
+            setSponsorTitle(e.currentTarget.value)
+          }} onKeyUp={(e) => {
+            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+              if (txtAreaRef.current != null) {
+                txtAreaRef.current.focus()
+              }
+            }
+          }} />
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1">
           <label className="text-left text-2xl p-1">Descripción</label>
-          <textarea placeholder="Descripcion" name="sponsorDescription" rows={3} className="border-2 rounded-md p-2"></textarea>
+          <textarea ref={txtAreaRef} placeholder="Descripcion" name="sponsorDescription" rows={3} className="border-2 rounded-md p-2" onChange={(e) => {
+            setSponsorDescription(e.currentTarget.value)
+          }} onKeyUp={(e) => {
+            if ((e.code === "NumpadEnter")) {
+              if (inputRef.current != null) {
+                inputRef.current.focus()
+              }
+            }
+          }} />
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3 ">
         <div className="flex flex-col p-1">
           <label className="text-left text-2xl p-1">Teléfono</label>
-          <input placeholder="Telefono" name="sponsorTel" type="text" onInput={(e) =>
-            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className="border-2 rounded-md p-2 w-1/2"></input>
+          <input ref={inputRef} placeholder="Telefono" name="sponsorTel" type="text" onInput={(e) =>
+            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className="border-2 rounded-md p-2 w-1/2" onChange={(e) => {
+              setSponsorTel(e.currentTarget.value)
+            }} onKeyUp={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (btnRef.current != null) {
+                  btnRef.current.focus()
+                }
+              }
+            }} />
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
@@ -37,7 +77,9 @@ const CreateSponsor = () => {
           <label className=" text-2xl">Fotos</label>
           <div className="flex justify-center rounded-md border-2 border-dashed border-gray-300  ">
             <form id="form-file-upload" className=" w-full flex justify-center">
-              <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" />
+              <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
+                setSponsorPhoto(e.currentTarget.value)
+              }} />
               <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                 <div className="flex m-auto flex-col items-center text-gray-400 text-xl">
                   <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" fill="#BDBDBD"><path d="M9 42q-1.25 0-2.125-.875T6 39V9q0-1.25.875-2.125T9 6h20.45v3H9v30h30V18.6h3V39q0 
@@ -50,11 +92,12 @@ const CreateSponsor = () => {
         </div>
       </div>
       <div className="flex m-auto justify-center p-3">
-        <button name="sponsorBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">Publicar</button>
+        <button ref={btnRef} name="sponsorBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => {
+          checkState()
+        }}>Publicar</button>
         <button name="sponsorBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
     </div>
-
   )
 }
 

@@ -1,34 +1,76 @@
-
+import logoEtno from '../../../../assets/logo_etno.png'
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom"
 
 
 const CreateBand = () => {
   const navigate = useNavigate()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const txtAreaRef = useRef<HTMLTextAreaElement>(null)
+  const btnRef = useRef<HTMLButtonElement>(null)
+
+  const [bandType, setBandType] = useState<string>("")
+  const [bandDescription, setBandDescription] = useState<string>("")
+  const [bandPhoto, setBandPhoto] = useState<string>("")
+  const [bandDate, setbandDate] = useState<string>("")
+
+  function checkState() {
+    console.log(bandType)
+    console.log(bandDescription)
+    console.log(bandPhoto)
+    console.log(bandDate)
+
+  }
 
   return (
-    <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
+    <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
       <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
         <div className="w-full flex flex-row p-2 justify-between">
-          <img src={"https://etno.ecomputer.es/images/app.png"} alt="logo_etno"></img>
+        <img src={logoEtno} alt="logo_Etno"></img>
           <p className='flex  text-white text-3xl p-3'>BANDOS</p>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1">
+        <div className="relative flex flex-col p-1">
           <label className="text-left text-2xl p-1">Asunto</label>
-          <input placeholder="Tipo" name="bandType" type="text" className="border-2 rounded-md p-2"></input>
+          <input autoFocus placeholder="Tipo" name="bandType" id="test" type="text" className="block border-2 rounded-md p-2" onChange={(value) => {
+            setBandType(value.currentTarget.value)
+          }} onKeyUp={(e) => {
+            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+              if (txtAreaRef.current != null) {
+                txtAreaRef.current.focus()
+              }
+            }
+          }}/>
+          
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1">
           <label className="text-left text-2xl p-1">Descripción</label>
-          <textarea placeholder="Descripcion" name="bandDescription" rows={3} className="border-2 rounded-md p-2"></textarea>
+          <textarea ref={txtAreaRef} placeholder="Descripcion" name="bandDescription" rows={3} className="border-2 rounded-md p-2" onChange={(value) => {
+            setBandDescription(value.currentTarget.value)
+          }} onKeyDown={(e) => {
+            if (e.code === "NumpadEnter") {
+              if (inputRef.current != null) {
+                inputRef.current.focus()
+              }
+            }
+          }}></textarea>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1">
           <label className="text-left text-2xl p-1">Fecha</label>
-          <input type="date" name="bandDate" className="w-40 border-2 rounded-md" />
+          <input ref={inputRef} type="date" name="bandDate" className="w-40 border-2 rounded-md" onChange={(value) => {
+            setbandDate(value.currentTarget.value)
+          }} onKeyDown={(e) => {
+            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+              if (btnRef.current != null) {
+                btnRef.current.focus()
+              }
+            }
+          }} />
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
@@ -36,7 +78,9 @@ const CreateBand = () => {
           <label className=" text-2xl">Fotos</label>
           <div className="flex justify-center rounded-md border-2 border-dashed border-gray-300  ">
             <form id="form-file-upload" className=" w-full flex justify-center">
-              <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" />
+              <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
+                setBandPhoto(value.currentTarget.value)
+              }} />
               <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                 <div className="flex m-auto flex-col items-center text-gray-400 text-xl">
                   <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" fill="#BDBDBD"><path d="M9 42q-1.25 0-2.125-.875T6 39V9q0-1.25.875-2.125T9 6h20.45v3H9v30h30V18.6h3V39q0 
@@ -49,7 +93,9 @@ const CreateBand = () => {
         </div>
       </div>
       <div className="flex m-auto justify-center p-3">
-        <button name="bandBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">Publicar</button>
+        <button ref={btnRef} name="bandBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => {
+          checkState()
+        }}>Publicar</button>
         <button name="bandBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
     </div>

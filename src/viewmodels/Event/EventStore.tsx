@@ -13,27 +13,26 @@ class EventStore {
     
     //Observables =>
     paginatedEvent: PaginatedEvent = { }
-    dectectedTableEmpty: boolean = false
+   
     
     constructor(){
         makeObservable(this, {
             paginatedEvent: observable,
-            dectectedTableEmpty: observable,
             getRequestEvents: action,
             updatePaginatedEvents: action,
             updateEventList: action,
-            updateDetectedTableEmpty: action,
             deleteEvent: action,
-            getPaginatedEvents: computed,
-            getDetectedTableEmpty: computed
+            getPaginatedEvents: computed
+           
         })
     }
     
    async getRequestEvents(locality: string, pageNum: number, elementSize: number){
-    const response = await fetch(`http://192.168.137.1:8080/events?username=Bolea&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    const response = await fetch(`http://192.168.137.1:8080/events?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
         method: 'GET'
     })
     const events = await response.json()
+    //console.log
     console.log(events)
     this.updatePaginatedEvents(events)
    }
@@ -44,16 +43,10 @@ class EventStore {
    updateEventList(events: Event[]){
     this.paginatedEvent.content = events
    }
-   updateDetectedTableEmpty(detectedTableEmpty: boolean){
-    this.dectectedTableEmpty = detectedTableEmpty
-   }
-
    get getPaginatedEvents(){
     return this.paginatedEvent
    }
-   get getDetectedTableEmpty(): boolean{
-    return this.dectectedTableEmpty
-   }
+
 
    async deleteEvent(username: string, title: string){
     const response = await fetch(`http://192.168.137.1:8080/users/delete/event?username=${username}&title=${title}`, {
@@ -62,8 +55,8 @@ class EventStore {
             'Access-Control-Allow-Origin': '*'
         }
     })
-    const paginatedEvents = this.paginatedEvent.content!!.filter((item)=> item.title !== title)
-        this.updateEventList(paginatedEvents)
+    const newPaginatedEvents = this.paginatedEvent.content!!.filter((item)=> item.title !== title)
+        this.updateEventList(newPaginatedEvents)
    }
 }
 export default EventStore
