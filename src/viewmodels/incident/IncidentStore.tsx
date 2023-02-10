@@ -1,5 +1,4 @@
 import { makeObservable, action, computed, observable } from "mobx";
-import { NumberLiteralType } from "typescript";
 import { Incident, PaginatedIncident } from "../../models/section/Section";
 
 class IncidentStore {
@@ -13,15 +12,21 @@ class IncidentStore {
     }
     //Observables =>
     paginatedIncident: PaginatedIncident = {}
+    description: string = ""
+
 
     constructor() {
         makeObservable(this, {
             paginatedIncident: observable,
+            description: observable,
+            updateDescription: action,
             getRequestIncident: action,
             deleteIncident: action,
             updateIncidentList: action,
             updatePaginatedIncident: action,
-            getPaginatedIncident: computed
+            getPaginatedIncident: computed,
+            getDescription: computed,
+           
         })
     }
     updateIncidentList(incidents: Incident[]) {
@@ -29,6 +34,12 @@ class IncidentStore {
     }
     updatePaginatedIncident(paginatedEvent: PaginatedIncident) {
         this.paginatedIncident = paginatedEvent
+    }
+    updateDescription(description: string) {
+        this.description = description
+    }
+    get getDescription() {
+        return this.description
     }
     get getPaginatedIncident() {
         return this.paginatedIncident

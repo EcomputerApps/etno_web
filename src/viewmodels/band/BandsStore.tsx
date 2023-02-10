@@ -54,10 +54,6 @@ paginatedBand : PaginatedBand = {}
         const newPaginatedBands = this.paginatedBand.content!!.filter((item)=>item.title !==title)
         this.updateBandList(newPaginatedBands)
     }
-    
-   
-
-          
-    
+ 
 }
 export default BandStore

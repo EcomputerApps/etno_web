@@ -39,6 +39,12 @@ const TableService = (prop: PropTable) => {
                             {service.phoneNumber}
                         </td>
                         <td className="px-6 py-4">
+                            {service.description}
+                        </td>
+                        <td className="px-6 py-4">
+                            {service.urlWeb}
+                        </td>
+                        <td className="px-6 py-4">
                             {service.schedule}
                         </td>
                       

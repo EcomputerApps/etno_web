@@ -1,10 +1,51 @@
 import logoEtno from '../../../../assets/logo_etno.png'
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-
+let arrayType: string[] = []
+let arraySchedules:{selector: string, morning:string, evening: string, complete:string} [] =[]
 const CreateService = () => {
     const navigate = useNavigate()
+    const arrayTypeChkBtn = [{
+        "id": "checkOne",
+        "value": "restaurante",
+        "title": "restaurante",
+    }, {
+        "id": "checkTwo",
+        "value": "alojamiento",
+        "title": "alojamiento",
+    }, {
+        "id": "checkThree",
+        "value": "boongalow",
+        "title": "boongalow",
+    }, {
+        "id": "checkFour",
+        "value": "piscina",
+        "title": "piscina",
+    }, {
+        "id": "checkFive",
+        "value": "discoteca",
+        "title": "discoteca",
+    }, {
+        "id": "checkSix",
+        "value": "productos",
+        "title": "productos",
+    }, {
+        "id": "checkSeven",
+        "value": "chupitos",
+        "title": "chupitos",
+    }]
 
+    function defineType(props: EventTarget & HTMLInputElement) {
+        if (props.checked) {
+            arrayType.push(props.value)
+        } else {
+            arrayType = arrayType.filter(item => item !== props.value)
+        }
+
+    }
+    
+
+    const inputWebUrl = useRef<HTMLInputElement>(null)
     const inputTel = useRef<HTMLInputElement>(null)
     const inputScheSelect = useRef<HTMLSelectElement>(null)
     const inputScheMorn = useRef<HTMLInputElement>(null)
@@ -13,105 +54,124 @@ const CreateService = () => {
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
 
-    const [serviceType, setServiceType] = useState("normal")
+    const [serviceType, setServiceType] = useState(arrayType)
+    const [serviceShcedul, setServiceShcedul] = useState(arraySchedules)
     const [serviceShcedulSelector, setServiceShcedulSelector] = useState<string>("L-V.Part")
     const [serviceName, setServiceName] = useState<string>("")
     const [servicePhoto, setServicePhoto] = useState<string>("")
+    const [serviceWebUrl, setServiceWebUrl] = useState<string>("")
+    const [serviceDescription, setServiceDescription] = useState<string>("")
     const [serviceTel, setServiceTel] = useState<string>("")
     const [serviceShcedulMorning, setServiceShcedulMorning] = useState<string>("")
     const [serviceShcedulEven, setServiceShcedulEven] = useState<string>("")
     const [serviceShcedulExtra, setServiceShcedulExtra] = useState<string>("")
+
+    function defineSchedule(selector: string, morning: string, evening:string, complete:string) {
+        arraySchedules.push({selector, morning, evening, complete} )
+        
+           
+
+    }
     //funcion temporal para comprobar entrada
+    const showarray = () => {
+        arrayType.map((elem, index) => {
+            console.log(elem)
+        })
+    }
     function checkState() {
+        //hay que meter en otro metodo para vuelcar array en serviceType useState
+        setServiceType(arrayType)
+        defineSchedule(serviceShcedulSelector,serviceShcedulMorning,serviceShcedulEven,serviceShcedulExtra)
+
         console.log(serviceType)
+        console.log(arraySchedules)
         console.log(serviceShcedulSelector)
         console.log(serviceName)
         console.log(servicePhoto)
         console.log(serviceTel)
+        console.log(serviceWebUrl)
+        console.log(serviceDescription)
         console.log(serviceShcedulMorning)
         console.log(serviceShcedulEven)
         console.log(serviceShcedulExtra)
     }
+
     return (
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
-                <img src={logoEtno} alt="logo_Etno"></img>
+                    <img src={logoEtno} alt="logo_Etno"></img>
                     <p className='flex  text-white text-3xl p-3'>SERVICIOS</p>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Categoría</label>
-                    <div className="flex pt-2">
-                        <div className='flex w-1/6'>
-                            <input type="radio" id="radioOne" value="restaurante" className="sr-only peer" name="pharmTypeRadio" onChange={(e) => {
-                                setServiceType(e.currentTarget.value)
-                            }} />
-                            <label htmlFor="radioOne" className="w-full text-center uppercase cursor-pointer p-2 mr-5 font-medium text-sm rounded-md peer-checked:bg-indigo-800 border 
+                    <div className="flex  flex-wrap pt-2">
+                        {arrayTypeChkBtn.map((chkBtn, index) => (
+                            <div key={index} className='flex lg:w-1/6 w-1/3'>
+                                <input type="checkbox" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => defineType(e.currentTarget)} />
+                                <label htmlFor={chkBtn.id} className="w-full text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
                             peer-checked:text-white 
-                            ring-indigo-500 peer-checked:ring-2 ">restaurante</label>
-                        </div>
-                        <div className='flex w-1/6' >
-                            <input type="radio" id="radioTwo" className="sr-only peer" value="general" name="pharmTypeRadio" onChange={(e) => {
-                                setServiceType(e.currentTarget.value)
-                            }} />
-                            <label htmlFor="radioTwo" className="w-full text-center uppercase cursor-pointer text-sm font-medium rounded-md p-2 mr-5 
-                            peer-checked:bg-indigo-800 border 
-                            border-gray-300 
-                            peer-checked:hover:bg-indigo-700 
-                            peer-checked:text-white 
-                            ring-indigo-500 peer-checked:ring-2 ">general</label>
-                        </div>
-                        <div className='flex w-1/6' >
-                            <input type="radio" id="radioTree" className="sr-only peer" value="alojamiento" name="pharmTypeRadio" onChange={(e) => {
-                                setServiceType(e.currentTarget.value)
-                            }} />
-                            <label htmlFor="radioTree" className="w-full text-center uppercase cursor-pointer text-sm font-medium rounded-md p-2 mr-5
-                            peer-checked:bg-indigo-800 border 
-                            border-gray-300 
-                            peer-checked:hover:bg-indigo-700 
-                            peer-checked:text-white 
-                            ring-indigo-500 peer-checked:ring-2 ">Alojamiento</label>
-                        </div>
-                        <div className='flex w-1/6' >
-                            <input type="radio" id="radioFour" className="sr-only peer" value="otro" name="pharmTypeRadio" onChange={(e) => {
-                                setServiceType(e.currentTarget.value)
-                            }} />
-                            <label htmlFor="radioFour" className="w-full text-center uppercase cursor-pointer text-sm font-medium rounded-md p-2 
-                            peer-checked:bg-indigo-800 border 
-                            border-gray-300 
-                            peer-checked:hover:bg-indigo-700 
-                            peer-checked:text-white 
-                            ring-indigo-500 peer-checked:ring-2 ">otro</label>
-                        </div>
+                            ring-indigo-500 peer-checked:ring-2 overflow-hidden ">{chkBtn.title}</label>
+                            </div>
+                        ))}
+
                     </div>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col  p-1">
                     <label className="text-left text-2xl p-1">Nombre</label>
-                    <input  autoFocus placeholder="Nombre" name="serviceOwner" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
+                    <input autoFocus placeholder="Nombre" name="serviceOwner" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
                         setServiceName(e.currentTarget.value)
+                    }} onKeyUp={(e) => {
+                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                            if (txtAreaRef.current != null) {
+                                txtAreaRef.current.focus()
+                            }
+                        }
+                    }} />
+                </div>
+            </div>
+            <div className="w-full flex flex-1 flex-col pl-3">
+                <div className="flex flex-col p-1">
+                    <label className="text-left text-2xl p-1">Descripción</label>
+                    <textarea ref={txtAreaRef} placeholder="Descripcion" name="newsDescription" rows={3} className="border-2 rounded-md p-2" onChange={(value) => {
+                        setServiceDescription(value.currentTarget.value)
                     }} onKeyDown={(e) => {
-                        if ((e.code === "Enter") ||(e.code === "NumpadEnter")) {
+                        if (e.code === "NumpadEnter") {
+                            if (inputWebUrl.current != null) {
+                                inputWebUrl.current.focus()
+                            }
+                        }
+                    }} />
+                </div>
+            </div>
+            <div className="w-full flex flex-1 flex-col pl-3">
+                <div className="flex flex-col p-1">
+                    <label className="text-left text-2xl p-1">Enlace</label>
+                    <input ref={inputWebUrl} placeholder="www.ecomputer.es" name="pharmacyUrl" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
+                        setServiceWebUrl(e.currentTarget.value)
+                    }} onKeyDown={(e) => {
+                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (inputTel.current != null) {
                                 inputTel.current.focus()
                             }
                         }
-                    }}/>
+                    }} />
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Teléfono</label>
-                    <input  ref={inputTel} placeholder="Telefono" name="serviceTel" type="text" onInput={(e) =>
+                    <input maxLength={9} ref={inputTel} placeholder="Telefono" name="serviceTel" type="text" onInput={(e) =>
                         e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className="border-2 rounded-md p-2" onChange={(e) => {
                             setServiceTel(e.currentTarget.value)
                         }} onKeyDown={(e) => {
-                            if ((e.code === "Enter") ||(e.code === "NumpadEnter")) {
+                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (inputScheSelect.current != null) {
                                     inputScheSelect.current.focus()
                                 }
@@ -119,6 +179,7 @@ const CreateService = () => {
                         }} />
                 </div>
             </div>
+
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1">
                     <label className="text-left text-2xl p-1">Horrario</label>
@@ -132,7 +193,7 @@ const CreateService = () => {
                                 }
                                 if (inputScheMorn.current != null) {
                                     inputScheMorn.current.focus()
-                                } 
+                                }
                             }
                         }}>
                             <option value="L-V.Part">De lunes a viernes. Hornada parcial.</option>
@@ -144,7 +205,7 @@ const CreateService = () => {
                             <option value="Otro">Otro horrario.</option>
                         </select>
                         <div className="p-3" >
-                            <input ref={inputScheMorn} placeholder="Mañana:" hidden={serviceShcedulSelector === "L-V.Compl" || serviceShcedulSelector === "L-S.Compl" || serviceShcedulSelector === "L-D.Compl"} name="serviceShedulesMorning" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
+                            <input maxLength={11} ref={inputScheMorn} placeholder="Mañana:" hidden={serviceShcedulSelector === "L-V.Compl" || serviceShcedulSelector === "L-S.Compl" || serviceShcedulSelector === "L-D.Compl"} name="serviceShedulesMorning" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
                                 setServiceShcedulMorning(e.currentTarget.value)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -152,8 +213,8 @@ const CreateService = () => {
                                         inputScheEven.current.focus()
                                     }
                                 }
-                            }}/>
-                            <input ref={inputScheEven} placeholder="Tarde:" hidden={serviceShcedulSelector === "L-V.Compl" || serviceShcedulSelector === "L-S.Compl" || serviceShcedulSelector === "L-D.Compl"} name="serviceShedulesEvening" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
+                            }} />
+                            <input maxLength={11}  ref={inputScheEven} placeholder="Tarde:" hidden={serviceShcedulSelector === "L-V.Compl" || serviceShcedulSelector === "L-S.Compl" || serviceShcedulSelector === "L-D.Compl"} name="serviceShedulesEvening" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
                                 setServiceShcedulEven(e.currentTarget.value)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -162,10 +223,10 @@ const CreateService = () => {
                                     }
                                     if (inputScheExtra.current != null) {
                                         inputScheExtra.current.focus()
-                                    } 
+                                    }
                                 }
-                            }}/>
-                            <input ref={inputScheExtra} placeholder="ej. 9-21:30 " hidden={serviceShcedulSelector === "L-V.Part" || serviceShcedulSelector === "L-S.Part" || serviceShcedulSelector === "L-D.Part"} name="serviceShedulesExtra" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
+                            }} />
+                            <input maxLength={11} ref={inputScheExtra} placeholder="ej. 9-21:30 " hidden={serviceShcedulSelector === "L-V.Part" || serviceShcedulSelector === "L-S.Part" || serviceShcedulSelector === "L-D.Part"} name="serviceShedulesExtra" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
                                 setServiceShcedulExtra(e.currentTarget.value)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -173,7 +234,7 @@ const CreateService = () => {
                                         btnRef.current.focus()
                                     }
                                 }
-                            }}/>
+                            }} />
                         </div>
                     </div>
                 </div>
@@ -198,7 +259,7 @@ const CreateService = () => {
                 </div>
             </div>
             <div className="flex m-auto justify-center p-3">
-                <button  ref={btnRef} name="serviceBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={()=>{
+                <button ref={btnRef} name="serviceBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => {
                     checkState()
                 }}>Publicar</button>
                 <button name="serviceBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => navigate("/home")}>Cancelar</button>
