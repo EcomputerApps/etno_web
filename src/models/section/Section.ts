@@ -128,6 +128,8 @@ interface Service {
     username?: string,
     category?: string,
     owner?: string,
+    description?: string,
+    urlWeb?: string,
     phoneNumber?: string,
     schedule?: string,
     imageUrl?: string

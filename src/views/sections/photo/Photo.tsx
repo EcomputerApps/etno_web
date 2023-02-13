@@ -43,19 +43,19 @@ const Photo = () => {
     const [showModal, setModal] = useState(false)
 
     function incrementPage(num: number) {
-        if ((num - start) >= 6) {
+        let localNumber = num % 6
+        if (localNumber >= 0) {
             setSart(start + 6)
             setFinish(finish + 6)
-            imageSize.setFotoPageStart(start)
-            imageSize.setFotoPageFin(finish)
+            localNumber--
+
         }
     }
     function decrementPage() {
         if (start >= 6) {
             setSart(start - 6)
             setFinish(finish - 6)
-            imageSize.setFotoPageStart(start)
-            imageSize.setFotoPageFin(finish)
+
         }
     }
 
@@ -108,11 +108,11 @@ const Photo = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col" >
-                <div className="flex md:flex-row flex-col w-full">
+            <div className="flex flex-col" > 
+               <div className="flex md:flex-row flex-col w-full">
                     <div className="container px-5 py-2 mx-auto lg:pt-12 lg:px-32">
                         <div className="flex flex-wrap -m-1 md:-m-2">
-                            {images.slice(imageSize.getFPS, imageSize.getFPF).map((image, index) => (
+                            {images.slice(start, finish).map((image, index) => (
                                 <div key={index} className="flex flex-wrap w-1/3">
                                     <div className="w-full p-1 md:p-2 ">
                                         <img alt="gallery" onClick={(e) => {
