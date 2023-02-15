@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import resolved from "../../../assets/menu/resolved.svg"
 import error from "../../../assets/menu/error.svg"
 import IncidentStore from "../../../viewmodels/incident/IncidentStore"
+import Search from "../../../assets/menu/search.svg"
 const incidentStore = IncidentStore.getIncidentStore()
 
 const Incident = () => {
@@ -91,20 +92,7 @@ const Incident = () => {
                 }}
 
                   name="photosSearchBtn" className="px-5 text-white bg-indigo-800 rounded-md shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500 ">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
+                  <img  className="w-6 h-6" src={Search} alt="search"/>
                 </button>
               </div>
             </div>
@@ -163,7 +151,7 @@ const Incident = () => {
           <svg aria-hidden="true" className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd"></path></svg>
           Anterior
         </button>
-        <button onClick={() => incrementPage()} disabled={pageNumber == incidentStore.getPaginatedIncident.totalPages!! - 1 || incidentStore.getPaginatedIncident.content?.length == 0}
+        <button onClick={() => incrementPage()} disabled={pageNumber === incidentStore.getPaginatedIncident.totalPages!! - 1 || incidentStore.getPaginatedIncident.content?.length === 0}
           className="inline-flex items-center rounded-md border 
          disabled:bg-gray-500 border-gray-300 bg-indigo-800
           px-4 py-3 text-sm font-medium text-gray-300 

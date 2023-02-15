@@ -2,6 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Pharmacy, PaginatedPharmacy } from "../../models/section/Section";
 
 class PharmacyStore {
+    serverIp : string = "192.168.241.51"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {
@@ -37,16 +38,16 @@ class PharmacyStore {
     }
 
     async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://192.168.137.1:8080/pharmacy?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
-            method: 'GET',
+        const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+            method: 'GET'
         })
         const pharmacy = await response.json()
         //console.log
         console.log(pharmacy)
-        this.updatePharmacyList(pharmacy)
+        this.updatePaginatedPharmacy(pharmacy)
     }
     async deletePharmacy(username: string, name: string) {
-        const response = await fetch(`http://192.168.137.1:8080/users/delete/pharmacy?username=${username}&name=${name}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/pharmacy?username=${username}&name=${name}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'

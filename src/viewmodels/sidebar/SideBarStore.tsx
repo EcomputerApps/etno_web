@@ -25,7 +25,8 @@ class SideBarStore{
         {title: 'Servicios', src: "service.svg", gap: true},
         {title: 'Patrocinadores', src: "sponsor.svg" },
         {title: 'Fallecimientos', src: "death.svg"},
-        {title: 'Incidencias', src: "incident.svg", gap: true},
+        {title: 'Enlaces', src: "link.svg", gap: true},
+        {title: 'Incidencias', src: "incident.svg"},
         {title: 'Fotos', src: "photos.svg"},
         {title: 'Salir', src: "logout.svg", gap: true},
     ]}

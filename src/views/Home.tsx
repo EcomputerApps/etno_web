@@ -1,25 +1,24 @@
 
 
 import { observer } from 'mobx-react-lite'
-import Event from './sections/event/Event'
+import { useNavigate } from 'react-router-dom'
+import 'tailwindcss/tailwind.css'
 import arrowLogo from '../assets/control.png'
 import etnoLogo from '../assets/logo_etno.png'
-import 'tailwindcss/tailwind.css'
-import Tourism from './sections/tourism/Tourism'
-import Band from './sections/bands/Band'
-import Sponsor from './sections/sponsor/Sponsor'
-import Service from './sections/service/Service'
+import HoverSectionStore from '../viewmodels/hoverSection/HoverSectionStore'
 import SideBarStore from '../viewmodels/sidebar/SideBarStore'
-import Pharmacy from './sections/pharmacy/Pharmacy'
+import Link from './sections/link/Link'
+import Advert from './sections/advert/Advert'
+import Band from './sections/bands/Band'
+import Event from './sections/event/Event'
+import Incident from './sections/incident/Incident'
 import Necrologue from './sections/necrologue/Necrologue'
 import News from './sections/news/News'
-import HoverSectionStore from '../viewmodels/hoverSection/HoverSectionStore'
-import LogoutPage from '../pages/LogoutPage'
-import { useNavigate } from 'react-router-dom'
-import Incident from './sections/incident/Incident'
+import Pharmacy from './sections/pharmacy/Pharmacy'
 import Photo from './sections/photo/Photo'
-import Advert from './sections/advert/Advert'
-import { useState } from 'react'
+import Service from './sections/service/Service'
+import Sponsor from './sections/sponsor/Sponsor'
+import Tourism from './sections/tourism/Tourism'
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
@@ -27,7 +26,7 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const Home = () => {
 
   const navigate = useNavigate()
-  
+
   function salida() {
     if (hoverSectionStore.getName === "Salir") {
       hoverSectionStore.setName(sideBarStore.panel.section)
@@ -43,12 +42,13 @@ const Home = () => {
       case 'Framacias': return <Pharmacy />
       case 'Servicios': return <Service />
       case 'Patrocinadores': return <Sponsor />
-      case 'Noticias': return <News />
-      case 'Anuncios' : return <Advert/>
+      case 'Noticias': return <News />  
+      case 'Anuncios': return <Advert />
       case 'Fallecimientos': return <Necrologue />
       case 'Incidencias': return <Incident />
-      case 'Fotos' : return <Photo/>
- 
+      case 'Fotos': return <Photo />
+      case 'Enlaces': return <Link />
+
     }
 
   }

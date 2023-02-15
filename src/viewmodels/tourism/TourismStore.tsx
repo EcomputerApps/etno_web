@@ -2,6 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Tourism , PaginatedTourism} from "../../models/section/Section";
 
 class TourismStore{
+    serverIp : string = "192.168.241.51"
     static tourismStore: TourismStore
 
     static getTourismStore(){
@@ -36,7 +37,7 @@ class TourismStore{
         return this.paginatedTourism
     }
     async getRequestTourism(locality: string, pageNum: number, elementSize: number){
-        const response = await fetch(`http://192.168.137.1:8080/tourism?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/tourism?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
         method: 'GET',
    
     })
@@ -46,7 +47,7 @@ class TourismStore{
     this.updatePaginatedTourism(tourism)
     }
     async deleteTourism(username: string, title: string){
-        const response = await fetch(`http://192.168.137.1:8080/users/delete/tourism?username=${username}&title=${title}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/tourism?username=${username}&title=${title}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'

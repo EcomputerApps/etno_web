@@ -25,8 +25,9 @@ const TablePharmacy = (prop: PropTable) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {pharmacyStore.getPaginatedPharmacy.content?.map((pharmacy, index)=>(
-                        pharmacyStore.getPaginatedPharmacy.content!!.length>0 &&
+                    {pharmacyStore.getPaginatedPharmacy.content?.map((pharmacy, index) => (
+                        pharmacyStore.getPaginatedPharmacy.content!!.length > 0 &&
+                        
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -36,7 +37,7 @@ const TablePharmacy = (prop: PropTable) => {
                                 {pharmacy.name}
                             </td>
                             <td className="px-6 py-4">
-                                {pharmacy.webUrl}
+                                {pharmacy.link}
                             </td>
                             <td className="px-6 py-4">
                                 {pharmacy.phone}

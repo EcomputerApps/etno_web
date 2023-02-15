@@ -2,6 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { News, PaginatedNews } from "../../models/section/Section";
 
 class NewsStore{
+    serverIp : string = "192.168.241.51"
     static newsStore : NewsStore
 
     static getNewsStore(){
@@ -39,7 +40,7 @@ class NewsStore{
   
 
     async getRequestNews( locality : string, pageNum: number, elementSize: number){
-        const response = await fetch(`http://192.168.137.1:8080/news?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
+        const response = await fetch(`http://${this.serverIp}:8080/news?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
             method: 'GET',
            
         })
@@ -50,7 +51,7 @@ class NewsStore{
 
     }
     async deleteNews(username: string, title : string){
-        const response = await fetch(`http://192.168.137.1:8080/users/delete/news?username=${username}&title=${title}`,{
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/news?username=${username}&title=${title}`,{
             method : 'DELETE',
             headers : {
                 'Access-Control-Allow-Origin':'*'

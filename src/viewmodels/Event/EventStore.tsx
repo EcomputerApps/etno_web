@@ -3,6 +3,7 @@ import { Event, PaginatedEvent} from "../../models/section/Section";
 
 class EventStore {
     static eventStore: EventStore
+    serverIp : string = "192.168.241.51"
 
     static getEventStore(){
         if(this.eventStore === undefined){
@@ -28,7 +29,7 @@ class EventStore {
     }
     
    async getRequestEvents(locality: string, pageNum: number, elementSize: number){
-    const response = await fetch(`http://192.168.137.1:8080/events?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    const response = await fetch(`http://${this.serverIp}:8080/events?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
         method: 'GET'
     })
     const events = await response.json()
@@ -49,7 +50,7 @@ class EventStore {
 
 
    async deleteEvent(username: string, title: string){
-    const response = await fetch(`http://192.168.137.1:8080/users/delete/event?username=${username}&title=${title}`, {
+    const response = await fetch(`http://192.168.241.51:8080/users/delete/event?username=${username}&title=${title}`, {
         method: 'DELETE',
         headers: {
             'Access-Control-Allow-Origin': '*'

@@ -2,6 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Incident, PaginatedIncident } from "../../models/section/Section";
 
 class IncidentStore {
+    serverIp : string = "192.168.241.51"
     static incidentStore: IncidentStore
 
     static getIncidentStore() {
@@ -45,7 +46,7 @@ class IncidentStore {
         return this.paginatedIncident
     }
     async getRequestIncident(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://192.168.137.1:8080/incidents?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/incident?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const incident = await response.json()
@@ -54,7 +55,7 @@ class IncidentStore {
         this.updateIncidentList(incident)
     }
     async deleteIncident(username: string, title: string) {
-        const response = await fetch(`http://192.168.137.1:8080/incident?username=${username}&title=${title}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/incident?username=${username}&title=${title}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'

@@ -2,6 +2,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 import { PaginatedService, Service } from "../../models/section/Section";
 
 class ServiceStore {
+    serverIp : string = "192.168.241.51"
     static serviceStore: ServiceStore
 
     static getServiceStore() {
@@ -37,17 +38,17 @@ class ServiceStore {
         return this.paginatedService
     }
     async getRequestService(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://192.168.137.1:8080/service?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/services?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
 
         })
         const service = await response.json()
         //console.log
         console.log(service)
-        this.updateServiceList(service)
+        this.updatePaginatedService(service)
     }
     async deleteService(username: string, owner: string) {
-        const response = await fetch(`http://192.168.137.1:8080/users/delete/service?username=${username}&owner=${owner}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/service?username=${username}&owner=${owner}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'

@@ -2,6 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { UserLogin } from "../../models/user/UserLogin";
 
 class UserStore {
+    serverIp : string = "192.168.241.51"
     static userStore: UserStore
 
     static getUserStore(){
@@ -31,7 +32,7 @@ class UserStore {
         })
     }
      async getUserLogin(username: string, password: string){
-        const request = await fetch(`http://192.168.137.1:8080/login?username=${username}&password=${password}`, {
+        const request = await fetch(`http://${this.serverIp}:8080/login?username=${username}&password=${password}`, {
             method: 'GET',
             'headers': {
                 'Access-Control-Allow-Origin': "*"

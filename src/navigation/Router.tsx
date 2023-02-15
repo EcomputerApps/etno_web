@@ -13,6 +13,7 @@ import CreateNecrologuePage from "../pages/sections/CreateNecrologuePage"
 import CreateNewsPage from "../pages/sections/CreateNewsPage"
 import CreateAdvertPage from "../pages/sections/CreateAdvertPage"
 import LogoutPage from "../pages/LogoutPage"
+import CreateLinkPage from "../pages/sections/CreateEnlacePage"
 
 const Router = () => {
     return(
@@ -30,6 +31,7 @@ const Router = () => {
                 <Route path="/addNecrologue" element={<ViewRender element={<CreateNecrologuePage/>}/>}/>
                 <Route path="/addNews" element={<ViewRender element={<CreateNewsPage/>}/>}/>
                 <Route path="/addAdvert" element={<ViewRender element={<CreateAdvertPage/>}/>}/>
+                <Route path="/addLink" element={<ViewRender element={<CreateLinkPage/>}/>}/>
                
                
             </Routes>
