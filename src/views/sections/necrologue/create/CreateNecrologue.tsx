@@ -3,7 +3,7 @@ import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
-import Buttons from '../../../../components/section/buttons'
+
 
 const CreateNecrologue = () => {
   const navigate = useNavigate()
