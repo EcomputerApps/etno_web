@@ -1,6 +1,8 @@
-import logoEtno from '../../../../assets/logo_etno.png'
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import logoEtno from '../../../../assets/logo_etno.png'
+import add_Photo from '../../../../assets/menu/add_photo.svg'
+import "../../../../index.css"
 
 
 const CreateTourism = () => {
@@ -37,10 +39,9 @@ const CreateTourism = () => {
           <p className='flex  text-white text-3xl p-3'>TURISMO</p>
         </div>
       </div>
-      <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1">
-          <label className="text-left text-2xl p-1">Tipo</label>
-          <input autoFocus placeholder="Tipo" name="tourismType" type="text" className="border-2 rounded-md p-2" onChange={(e) => {
+      <div className="w-full flex flex-1 flex-col mt-5 pl-3">
+        <div className="flex flex-col p-1 relative">
+          <input autoFocus placeholder=" " name="tourismType" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
             setTourismType(e.currentTarget.value)
           }} onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -49,12 +50,12 @@ const CreateTourism = () => {
               }
             }
           }} />
+          <label className={"float-input-lbl"}>Tipo</label>
         </div>
       </div>
-      <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1">
-          <label className="text-left text-2xl p-1">Título</label>
-          <input ref={inputTitle} placeholder="Titulo" name="tourismTitle" type="text" className="border-2 rounded-md p-2" onKeyUp={(e) => {
+      <div className="w-full flex flex-1 flex-col mt-3 pl-3">
+        <div className="flex flex-col p-1 relative">
+          <input ref={inputTitle} placeholder=" " name="tourismTitle" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (txtAreaRef.current != null) {
                 txtAreaRef.current.focus()
@@ -63,13 +64,13 @@ const CreateTourism = () => {
           }} onChange={(e) => {
             setTourismTitle(e.currentTarget.value)
           }} />
+          <label className="float-input-lbl">Título</label>
         </div>
       </div >
-      <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1">
-          <label className="text-left text-2xl p-1">Descripción</label>
-          <textarea ref={txtAreaRef} placeholder="Descripcion" name="tourismDescription" rows={3} className="border-2 rounded-md p-2" onKeyUp={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+      <div className="w-full flex flex-1 flex-col mt-3 pl-3">
+        <div className="flex flex-col p-1 relative">
+          <textarea ref={txtAreaRef} placeholder=" " name="tourismDescription" rows={3} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onKeyUp={(e) => {
+            if ((e.code === "NumpadEnter")) {
               if (inputLong.current != null) {
                 inputLong.current.focus()
               }
@@ -77,20 +78,22 @@ const CreateTourism = () => {
           }} onChange={(e) => {
             setTourismDescription(e.currentTarget.value)
           }} />
+          <label className={"float-txtArea-lbl"}>Descripcíon</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="text-left p-1">
-          <label className=" text-2xl">Fotos</label>
-          <div className="flex justify-center rounded-md border-2 border-dashed border-gray-300  ">
+          <div className={"photoBoard"}>
+            <div className='absolute left-2'>
+              Fotos
+            </div>
             <form id="form-file-upload" className=" w-full flex justify-center">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
                 setTourismPhoto(e.currentTarget.value)
               }} />
               <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
-                <div className="flex m-auto flex-col items-center text-gray-400 text-xl">
-                  <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" fill="#BDBDBD"><path d="M9 42q-1.25 0-2.125-.875T6 39V9q0-1.25.875-2.125T9 6h20.45v3H9v30h30V18.6h3V39q0 
-                  1.25-.875 2.125T39 42Zm26-24.9v-4.05h-4.05v-3H35V6h3v4.05h4.05v3H38v4.05ZM12 33.9h24l-7.2-9.6-6.35 8.35-4.7-6.2ZM9 9v30V9Z"/></svg>
+                <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
+                  <img src={add_Photo} alt="add_photo"/>
                   <p>Pulse en la zona para añadir una imagen</p>
                 </div>
               </label>
@@ -98,13 +101,11 @@ const CreateTourism = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-1 m-auto justify-center p-3">
-        <img className='rounded-md' src="https://static1.anpoimages.com/wordpress/wp-content/uploads/2022/07/googleMapsTricksHero.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5" alt="googlemap"></img>
-      </div>
-      <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1">
-          <label className="text-left text-2xl p-1">Longitud</label>
-          <input ref={inputLong} placeholder="Longitud" type="text" name="tourismLong" className="border-2 rounded-md p-2" onKeyUp={(e) => {
+     
+      <div className="w-full flex flex-1 flex-col mt-3 pl-3">
+        <div className="flex flex-col p-1 relative">
+
+          <input ref={inputLong} placeholder=" " type="text" name="tourismLong" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (inputLat.current != null) {
                 inputLat.current.focus()
@@ -113,12 +114,12 @@ const CreateTourism = () => {
           }} onChange={(e) => {
             setTourismLong(e.currentTarget.value)
           }} />
+          <label className={"float-input-lbl"}>Longitud</label>
         </div>
       </div>
-      <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1">
-          <label className="text-left text-2xl p-1">Latitude</label>
-          <input ref={inputLat} placeholder="Latitud" type="text" name="tourismLat" className="border-2 rounded-md p-2" onKeyUp={(e) => {
+      <div className="w-full flex flex-1 flex-col mt-3 pl-3">
+        <div className="flex flex-col p-1 relative">
+          <input ref={inputLat} placeholder=" " type="text" name="tourismLat" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (btnRef.current != null) {
                 btnRef.current.focus()
@@ -127,11 +128,13 @@ const CreateTourism = () => {
           }} onChange={(e) => {
             setTourismLat(e.currentTarget.value)
           }} />
+          <label className={"float-input-lbl"}>Latitud</label>
         </div>
       </div>
-      <div className="flex m-auto justify-center p-3">
-        <button ref={btnRef} name="tourismBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={()=>checkState()}>Publicar</button>
-        <button name="tourismBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => navigate("/home")}>Cancelar</button>
+      <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
+
+        <button ref={btnRef} name="tourismBtnSave" className={"post-btn"} onClick={() => checkState()}>Publicar</button>
+        <button name="tourismBtnCancel" className={"regular-btn"} onClick={() => navigate("/home")}>Cancelar</button>
       </div>
     </div>
   )

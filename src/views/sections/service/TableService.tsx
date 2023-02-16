@@ -27,28 +27,29 @@ const TableService = (prop: PropTable) => {
                 <tbody>
                 {serviceStore.getPaginatedService.content?.map((service, index)=>(
                     serviceStore.getPaginatedService.content!!.length>0 &&
-                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
                         
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                             {service.category}
                         </th>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-center">
                             {service.owner}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-center">
                             {service.phoneNumber}
                         </td>
-                        <td className="px-6 py-4">
-                            {service.description}
-                        </td>
-                        <td className="px-6 py-4">
-                            {service.urlWeb}
-                        </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-center ">
                             {service.schedule}
                         </td>
+                        <td className="px-6 py-4 text-center">
+                            {service.description}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                            {service.urlWeb}
+                        </td>
+                       
                       
-                        <td className="px-6 py-4">
+                        <td className="flex items-center justify-center px-6 py-4">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
                             <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteService(service.owner!!)}>Eliminar</a>
                         </td>

@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+.post-btn {
+    @apply inline-flex items-center rounded-md border mr-10
+    border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm
+     hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500
+  }
+  .regular-btn{
+    @apply inline-flex items-center rounded-md border 
+     border-gray-300 bg-indigo-800 px-4 py-2 text-sm font-medium
+      text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md
+       focus:ring-2 focus:ring-indigo-500
+  }
+  .float-input-lbl{
+    @apply duration-300 transform -translate-y-6 absolute text-gray-400 bg-white 
+    top-3.5  left-4 z-10 peer-focus:text-indigo-800 peer-focus:font-semibold peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-6 
+    peer-focus:scale-110  peer-focus:duration-300
+  }
+  .float-txtArea-lbl{
+    @apply duration-300 transform 
+    -translate-y-6 absolute bg-white text-gray-400  top-3.5 left-4 z-10
+    peer-focus:text-indigo-800 peer-focus:font-semibold peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-110  
+        peer-focus:duration-300
+  }
+  .float-date-lbl{
+    @apply duration-300 transform -translate-y-6 absolute  text-gray-400 top-1.5  left-4  peer-focus:text-indigo-800 peer-focus:font-semibold peer-focus:-translate-x-1 peer-focus:scale-110 peer-focus:duration-300 peer-focus:bg-transparent
+  }
+  .photoBoard{
+    @apply flex justify-center rounded-md border-2 border-dashed hover:font-bold border-gray-300 duration-100
+    hover:border-indigo-800 text-gray-400 hover:text-indigo-800  mt-3 relative z-10
+  }
+
+@tailwind utilities;

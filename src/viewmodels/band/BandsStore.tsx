@@ -2,6 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Band, PaginatedBand } from "../../models/section/Section";
 
 class BandStore{
+    serverIp : string = "192.168.241.51"
     static bandStore: BandStore
 
     static getBandStore(){
@@ -36,7 +37,7 @@ paginatedBand : PaginatedBand = {}
 
 
     async getRequestBand(locality : string, pageNum : number, elementSize: number){
-        const response = await fetch(`http://192.168.137.1:8080/band?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
+        const response = await fetch(`http://${this.serverIp}:8080/bandos?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
             method: 'GET',
           }) 
         const band = await response.json()
@@ -45,7 +46,7 @@ paginatedBand : PaginatedBand = {}
         this.updatePaginatedBand(band)
     }
     async deleteBand( username : string, title: string){
-        const response = await fetch(`http://192.168.137.1:8080/users/delete/band?username=${username}&title=${title}`,{
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/bando?username=${username}&title=${title}`,{
             method: 'DELETE',
             headers:{
                 'Access-Control-Allow-Origin':'*',
