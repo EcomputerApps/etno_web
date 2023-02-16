@@ -229,7 +229,7 @@ const CreatePharmacy = () => {
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
               
-                    <textarea ref={txtAreaRef} placeholder=" " name="pharmacyDescription" rows={3} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
+                    <textarea ref={txtAreaRef} placeholder=" " name="pharmacyDescription"  maxLength={495} rows={3} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
            border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onKeyDown={(e) => {
                         if ((e.code === "NumpadEnter")) {
                             if (inputLong.current != null) {

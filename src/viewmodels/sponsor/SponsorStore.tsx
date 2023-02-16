@@ -41,11 +41,13 @@ class SposnsorStore {
 
     async getRequestSponsor(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/sponsors?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
-            method: 'GET',
+            method: 'GET'
         })
         const sponsor = await response.json()
+        console.log(sponsor)
         this.updatePaginatedSponsor(sponsor)
     }
+    
     async deleteSponsor(username: string, title: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/sponsor?username=${username}&title=${title}`, {
             method: 'DELETE',

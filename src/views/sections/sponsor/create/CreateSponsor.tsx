@@ -24,7 +24,8 @@ const CreateSponsor = () => {
     console.log(sponsorTel)
   }
   return (
-    <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
+    <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
+      <div>
       <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
         <div className="w-full flex flex-row p-2 justify-between">
         <img src={logoEtno} alt="logo_Etno"></img>
@@ -107,6 +108,7 @@ const CreateSponsor = () => {
         }}>Publicar</button>
         <button name="sponsorBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
+    </div>
     </div>
   )
 }

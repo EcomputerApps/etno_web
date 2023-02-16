@@ -19,7 +19,7 @@ const CreateLink = () => {
             <div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className=" flex flex-col p-1 mt-5  relative">
-                    <input autoFocus placeholder=" " defaultValue={linkStore.getTitle} name="bandType" id="test" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800"
+                    <input autoFocus placeholder=" "  name="bandType" id="test" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800"
                     onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                           if (inputRef.current != null) {

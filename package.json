@@ -18,6 +18,7 @@
     "react-currency-input-field": "^3.6.9",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-edit-text": "^5.0.2",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.7.0",
     "react-scripts": "5.0.1",
@@ -53,6 +54,7 @@
     "@tailwindcss/typography": "^0.5.9",
     "@types/google-map-react": "^2.1.7",
     "@types/node": "^18.11.18",
+    "@types/react-edit-text": "^5.0.1",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4"
