@@ -23,7 +23,7 @@ const Advert = () => {
             setPageNumber(pageNumber - 1)
     }
     return (
-        <div className="w-full h-full  relative">
+        <div className="w-full md:h-screen h-full relative">
             <div className="flex flex-col gap-4">
                 <div className="flex flex-row">
                     <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Anuncios</h2>

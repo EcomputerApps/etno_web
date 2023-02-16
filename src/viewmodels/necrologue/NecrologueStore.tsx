@@ -47,7 +47,7 @@ class NecrologueStore{
         this.updatePaginatedNecro(necrologue)
     }
     async deleteNecrologue(username: string, name: string){
-        const response = await fetch(`http://${this.serverIp}:8080/death?username=${username}&name=${name}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/death?username=${username}&name=${name}`, {
             method: 'DELETE',
             headers : {
                 'Access-Control-Allow-Origin': '*'

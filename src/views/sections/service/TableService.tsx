@@ -30,28 +30,41 @@ const TableService = (prop: PropTable) => {
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
                         
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                        <div className="tableCamp">
                             {service.category}
+                            </div>
                         </th>
                         <td className="px-6 py-4 text-center">
+                        <div className="tableCamp">
                             {service.owner}
+                            </div>
                         </td>
                         <td className="px-6 py-4 text-center">
+                        <div className="tableCamp">
                             {service.phoneNumber}
+                            </div>
                         </td>
                         <td className="px-6 py-4 text-center ">
-                            {service.schedule}
+                        <div className="tableCamp">
+                           {service.schedule}
+                           </div>
                         </td>
                         <td className="px-6 py-4 text-center">
+                        <div className="tableCamp overflow-y-auto items-start min-w-full">
                             {service.description}
+                            </div>
                         </td>
                         <td className="px-6 py-4 text-center">
+                        <div className="tableCamp">
                             {service.urlWeb}
+                            </div>
                         </td>
-                       
-                      
+                                      
                         <td className="flex items-center justify-center px-6 py-4">
+                        <div className="h-20 flex items-center justify-center">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
                             <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteService(service.owner!!)}>Eliminar</a>
+                       </div>
                         </td>
                     </tr>
                     ))}

@@ -27,7 +27,7 @@ const CreateNecrologue = () => {
   }
 
   return (
-    <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 h-screen rounded-md" >
+    <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
       <div>
       <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
         <div className="w-full flex flex-row p-2 justify-between">

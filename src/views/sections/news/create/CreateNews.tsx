@@ -31,7 +31,8 @@ const CreateNews = () => {
   }
 
   return (
-    <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
+    <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
+      <div>
       <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
         <div className="w-full flex flex-row p-2 justify-between">
           <img src={logoEtno} alt="logo_Etno"></img>
@@ -138,6 +139,7 @@ const CreateNews = () => {
           checkState()
         }}>Publicar</button>
         <button name="pharmacyBtnCancel" className={"regular-btn"} onClick={() => navigate("/home")}>Cancelar</button>
+      </div>
       </div>
     </div>
   )

@@ -1,4 +1,5 @@
 import { observer, Observer } from "mobx-react-lite";
+import { useState } from "react";
 import PharmacyStore from "../../../viewmodels/pharmacy/PharmacyStore";
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
@@ -9,6 +10,7 @@ interface PropTable {
 }
 
 const TablePharmacy = (prop: PropTable) => {
+    const [si, setSi] = useState(false)
     const deletePharmacy = async (pharmacy: string) => {
         await pharmacyStore.deletePharmacy('Bolea', pharmacy)
     }
@@ -27,30 +29,44 @@ const TablePharmacy = (prop: PropTable) => {
                 <tbody>
                     {pharmacyStore.getPaginatedPharmacy.content?.map((pharmacy, index) => (
                         pharmacyStore.getPaginatedPharmacy.content!!.length > 0 &&
-                        
-                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {pharmacy.type}
+                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" >
+
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                <div className="tableCamp">
+                                    {pharmacy.type}
+                                </div>
                             </th>
-                            <td className="px-6 py-4">
-                                {pharmacy.name}
+                            <td className="px-6 py-4 ">
+                                <div className="tableCamp">
+                                    {pharmacy.name}
+                                </div>
                             </td>
                             <td className="px-6 py-4">
-                                {pharmacy.link}
+                                <div className="tableCamp">
+                                    <a className=" text-blue-500 hover:text-blue-600" href={pharmacy.link}>{pharmacy.link}</a>
+                                </div>
                             </td>
                             <td className="px-6 py-4">
-                                {pharmacy.phone}
+                                <div className="tableCamp">
+                                    {pharmacy.phone}
+                                </div>
+                            </td>
+                            <td className="px-6 py-4 ">
+                                <div className="tableCamp">
+                                    {pharmacy.schedule}
+                                </div>
+                            </td>
+                            <td className=" px-6 py-4">
+                                <div className="tableCamp overflow-y-auto items-start min-w-full">
+                                    {pharmacy.description}
+                                </div>
                             </td>
                             <td className="px-6 py-4">
-                                {pharmacy.schedule}
-                            </td>
-                            <td className="px-6 py-4">
-                                {pharmacy.description}
-                            </td>
-                            <td className="px-6 py-4">
+                            <div className="h-20 flex items-center justify-center">
                                 <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
                                 <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deletePharmacy(pharmacy.name!!)}>Eliminar</a>
+                            </div>
                             </td>
                         </tr>
                     ))}

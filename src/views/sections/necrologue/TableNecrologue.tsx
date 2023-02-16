@@ -29,18 +29,26 @@ const TableNecrologue = (prop: PropTable) => {
                 necrologueStore.getPaginatedNecro.content!!.length> 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center ">
+                        <div className="tableCamp">
                             {necrologue.name}
+                            </div>
                         </th>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-center">
+                        <div className="tableCamp">
                             {necrologue.deathDate}
+                            </div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-center overflow-y-auto items-start min-w-full">
+                        <div className="tableCamp">
                             {necrologue.description}
+                            </div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 flex items-center justify-center ">
+                        <div className="h-20 flex items-center justify-center">
                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
                             <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteNecro(necrologue.name!!)}>Eliminar</a>
+                        </div>
                         </td>
                     </tr>
                     ))}
