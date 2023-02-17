@@ -50,8 +50,6 @@ class IncidentStore {
             method: 'GET',
         })
         const incident = await response.json()
-        //console.log
-        console.log(incident)
         this.updateIncidentList(incident)
     }
     async deleteIncident(username: string, title: string) {
