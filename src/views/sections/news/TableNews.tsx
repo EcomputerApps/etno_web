@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite"
 import NewsStore from "../../../viewmodels/news/NewsStore"
 import "../../../index.css"
+import { ToastContainer } from "react-toastify"
 const newsStore = NewsStore.getNewsStore()
 
 interface PropTable {
@@ -64,6 +65,7 @@ const TableNews = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
+            <ToastContainer/>
         </div>
     )
 

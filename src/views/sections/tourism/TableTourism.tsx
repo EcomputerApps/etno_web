@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite"
 import TourismStore from "../../../viewmodels/tourism/TourismStore"
 import "../../../index.css"
+import { ToastContainer } from "react-toastify"
 const tourismStore = TourismStore.getTourismStore()
 
 interface PropTable {
@@ -55,6 +56,7 @@ const TableTourism = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
+            <ToastContainer/>
         </div>
     )
 }

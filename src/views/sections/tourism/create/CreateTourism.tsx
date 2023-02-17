@@ -144,7 +144,7 @@ const CreateTourism = () => {
         <button name="tourismBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
       </div>
-      <ToastContainer/>  
+      <ToastContainer/>
     </div>
   )
 }

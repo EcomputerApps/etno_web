@@ -88,12 +88,13 @@ class EventStore {
             'Access-Control-Allow-Origin': '*'
         }
     })
+
     if(response.ok){
         const newPaginatedEvents = this.paginatedEvent.content!!.filter((item)=> item.title !== title)
         this.updateEventList(newPaginatedEvents)
-        toast.success('Se ha borrado exitosamente', {
-            position: 'bottom-center',
-            autoClose: 500,
+        toast.success('Se ha eliminado exitosamente', {
+            position: 'top-center',
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
@@ -102,18 +103,17 @@ class EventStore {
             theme: "light"
       })
     }else{
-        toast.error('No se ha podido borrar', {
-            position: 'bottom-center',
-            autoClose: 500,
+        toast.error('No se ha eliminado exitosamente', {
+            position: 'top-center',
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
             draggable: true,
             progress: undefined,
             theme: "light"
-      })
+      }) 
     }
-    
    }
 }
 export default EventStore

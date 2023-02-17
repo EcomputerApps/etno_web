@@ -51,7 +51,7 @@ class NewsStore{
         if(response.ok){
             this.paginatedNews.content?.push(news)
             toast.success('Se ha añadido exitosamente', {
-                position: 'bottom-center',
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -61,8 +61,8 @@ class NewsStore{
                 theme: "light"
           })
         }else{
-            toast.error('No se ha añadido correctamente', {
-                position: 'bottom-center',
+            toast.error('No se ha añadido', {
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -90,34 +90,33 @@ class NewsStore{
                 'Access-Control-Allow-Origin':'*'
             }
         })
+
         if(response.ok){
-        const newPaginatedNews = this.paginatedNews.content!!.filter((item)=>item.title !== title)
-        this.updateNewsList(newPaginatedNews)
-        toast.success('Se ha borrado exitosamente', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-      })
-    }else{
-        toast.error('No se ha podido borrar', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-      })
+            const newPaginatedNews = this.paginatedNews.content!!.filter((item)=>item.title !== title)
+            this.updateNewsList(newPaginatedNews)
+            toast.success('Se ha borrado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha borrado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }
     }
-    }
-
-
 }
 
 export default NewsStore

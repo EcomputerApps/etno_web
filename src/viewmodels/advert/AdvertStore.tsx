@@ -55,7 +55,7 @@ class AdvertStore {
             this.paginatedAdvert.content?.push(ad)
             toast.success('Se ha añadido exitosamente', {
                 position: 'top-center',
-                autoClose: 500,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -66,7 +66,7 @@ class AdvertStore {
         }else{
             toast.error('No se ha añadido correctamente', {
                 position: 'top-center',
-                autoClose: 500,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,

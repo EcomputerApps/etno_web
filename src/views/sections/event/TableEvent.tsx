@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+import { ToastContainer } from 'react-toastify'
 
 import EventStore from "../../../viewmodels/Event/EventStore"
 const eventStore = EventStore.getEventStore()
@@ -83,6 +84,7 @@ const TableEvent = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
+            <ToastContainer/>
         </div>
     )
 }

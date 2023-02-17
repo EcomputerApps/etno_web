@@ -15,8 +15,6 @@ class BandStore {
     //Observables =>
     paginatedBand: PaginatedBand = {}
 
-
-
     constructor() {
         makeObservable(this, {
             paginatedBand: observable,
@@ -39,7 +37,6 @@ class BandStore {
     get getPaginatedBands() {
         return this.paginatedBand
     }
-
 
     async getRequestBand(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/bandos?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {

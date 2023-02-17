@@ -1,12 +1,13 @@
 import logoEtno from '../../../../assets/logo_etno.png'
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 
 import NewsStore from '../../../../viewmodels/news/NewsStore'
 import { News } from '../../../../models/section/Section'
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
+import { observer } from 'mobx-react-lite'
 
 const newsStore = NewsStore.getNewsStore()
 
@@ -26,15 +27,18 @@ const CreateNews = () => {
   const [newsLink, setNewstLink] = useState<string>("")
   const [newsPhoto, setNewsPhoto] = useState<string>("")
 
-  //funcion temporal para comprobar  datos  que guardamos con consol.log
+  useEffect(() => {
+      newsStore.getRequestNews('Bolea', 0, 5)
+  }, [])
+
   function addNews() {
     const news: News = {
         category: newsCategory,
         title: newsTitle,
         description: newsDescription,
         publicationDate: newsDate
-    }
-      newsStore.addRequestNews('Bolea', news)
+    } 
+    newsStore.addRequestNews('Bolea', news)
   }
 
   return (
@@ -150,4 +154,4 @@ const CreateNews = () => {
     </div>
   )
 }
-export default CreateNews
+export default observer(CreateNews)

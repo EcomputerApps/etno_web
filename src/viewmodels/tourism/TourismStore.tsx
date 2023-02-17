@@ -50,7 +50,7 @@ class TourismStore{
         if(response.ok){
             this.paginatedTourism.content?.push(tourism)
             toast.success('Se ha añadido exitosamente', {
-                position: 'bottom-center',
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -60,8 +60,8 @@ class TourismStore{
                 theme: "light"
           })
         }else{
-            toast.error('No se ha añadido correctamente', {
-                position: 'bottom-center',
+            toast.error('No se ha podido añadir exitosamente', {
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -88,11 +88,12 @@ class TourismStore{
                 'Access-Control-Allow-Origin': '*'
             }
         })
+
         if(response.ok){
-        const newPaginatedTourism = this.paginatedTourism.content!!.filter((item) => item.title !== title)
+            const newPaginatedTourism = this.paginatedTourism.content!!.filter((item) => item.title !== title)
             this.updateTourismList(newPaginatedTourism)
-            toast.success('Se ha borrado exitosamente', {
-                position: 'bottom-center',
+            toast.success('Se ha eliminado exitosamente', {
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -102,8 +103,8 @@ class TourismStore{
                 theme: "light"
           })
         }else{
-            toast.error('No se ha podido borrar', {
-                position: 'bottom-center',
+            toast.success('No se ha podido eliminar exitosamente', {
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -111,7 +112,7 @@ class TourismStore{
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
+          }) 
         }
     }    
 }
