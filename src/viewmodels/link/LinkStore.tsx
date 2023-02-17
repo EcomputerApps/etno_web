@@ -59,10 +59,7 @@ class LinkStore {
             method: 'GET',
         })
         const link = await response.json()
-        //console.log
-        console.log(link)
         this.updatePaginatedLink(link)
-
     }
     async deleteLink(username: string, title: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/link?username=${username}&title=${title}`, {

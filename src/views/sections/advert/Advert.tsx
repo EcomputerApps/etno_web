@@ -49,7 +49,6 @@ const Advert = () => {
                 </button>
             </div>
         </div>
-
     )
 }
 export default observer(Advert)

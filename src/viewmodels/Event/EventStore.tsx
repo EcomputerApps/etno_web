@@ -28,13 +28,24 @@ class EventStore {
         })
     }
     
+    async addRequestEvent(locality: string, event: Event){
+        const response = await fetch(`http://${this.serverIp}:8080/users/add/event?username=${locality}`, {
+            method: 'POST',
+            body: JSON.stringify(event),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        if(response.ok){
+            this.paginatedEvent.content?.push(event)
+        }
+    }
+
    async getRequestEvents(locality: string, pageNum: number, elementSize: number){
     const response = await fetch(`http://${this.serverIp}:8080/events?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
         method: 'GET'
     })
     const events = await response.json()
-    //console.log
-    console.log(events)
     this.updatePaginatedEvents(events)
    }
 

@@ -5,7 +5,10 @@ import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 
 import { useNavigate } from "react-router-dom";
+import { Event } from '../../../../models/section/Section';
 
+import EventStore from '../../../../viewmodels/Event/EventStore';
+const eventStore = EventStore.getEventStore()
 
 const CreateEvent = () => {
   const inputRefDir = useRef<HTMLInputElement>(null)
@@ -30,17 +33,19 @@ const CreateEvent = () => {
   const [eventDateFin, setEventDateFin] = useState<string>("")
 
   //funcion temporal para comprobar  datos  que guardamos con consol.log
-  function checkState() {
-    console.log(eventTitle)
-    console.log(eventDirection)
-    console.log(eventDescription)
-    console.log(eventOrganization)
-    console.log(eventPrice)
-    console.log(eventSeats)
-    console.log(eventLink)
-    console.log(eventPhoto)
-    console.log(eventDateStart)
-    console.log(eventDateFin)
+  function addEvent() {
+    const event: Event = {
+      title: eventTitle,
+      address: eventDirection,
+      description: eventDescription,
+      organization: eventOrganization,
+      reservePrice: Number(eventPrice),
+      capacity: Number(eventSeats),
+      link: eventLink,
+      startDate: eventDateStart,
+      endDate: eventDateFin
+    }
+    eventStore.addRequestEvent('Bolea', event)
   }
   const navigate = useNavigate()
 
@@ -204,9 +209,7 @@ const CreateEvent = () => {
           </div>
         </div>
         <div className="flex m-auto justify-center p-3">
-          <button ref={btnRef} name="eventBtnSave" className="btnStandard mr-10" onClick={() => {
-            checkState()
-          }}>Publicar</button>
+          <button ref={btnRef} name="eventBtnSave" className="btnStandard mr-10" onClick={addEvent}>Publicar</button>
           <button name="eventBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
         </div>
       </div>

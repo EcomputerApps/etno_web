@@ -18,31 +18,47 @@ class TourismStore{
     constructor(){
         makeObservable(this, {
             paginatedTourism: observable,
+            addRequestTourism: action,
             getRequestTourism: action,
             deleteTourism: action,
             updateTourismList: action,
             updatePaginatedTourism: action,
             getPaginatedTourism : computed
-           
         })
     }
     updateTourismList(tourism: Tourism[]){
         this.paginatedTourism.content = tourism
     }
+
      updatePaginatedTourism( paginatedTourism : PaginatedTourism){
         this.paginatedTourism = paginatedTourism
     }
+
     get getPaginatedTourism(){
         return this.paginatedTourism
     }
+
+    async addRequestTourism(locality: string, tourism: Tourism){
+        const response = await fetch(`http://${this.serverIp}:8080/users/add/tourism?username=${locality}`, {
+            method: 'POST',
+            body: JSON.stringify(tourism),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        if(response.ok){
+            this.paginatedTourism.content?.push(tourism)
+        }
+    }
+
     async getRequestTourism(locality: string, pageNum: number, elementSize: number){
-        const response = await fetch(`http://${this.serverIp}:8080/tourism/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/tourism/?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
         method: 'GET',
     })
     const tourism = await response.json()
-    console.log(JSON.stringify(tourism))
     this.updatePaginatedTourism(tourism)
     }
+
     async deleteTourism(username: string, title: string){
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/tourism?username=${username}&title=${title}`, {
             method: 'DELETE',

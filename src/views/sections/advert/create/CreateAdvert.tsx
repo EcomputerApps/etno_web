@@ -4,6 +4,11 @@ import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../../../../index.css"
 import 'react-toastify/dist/ReactToastify.css';
+import { Advert } from '../../../../models/section/Section'
+
+import AdvertStore from '../../../../viewmodels/advert/AdvertStore'
+import { toast, ToastContainer } from 'react-toastify'
+const advertStore = AdvertStore.getAdvertStore()
 
 const CreateAdvert = () => {
     const navigate = useNavigate()
@@ -17,11 +22,14 @@ const CreateAdvert = () => {
     const [advertLink, setAdvertLink] = useState<string>("")
 
     //funcion temporal para comprobar  datos  que guardamos con consol.log
-    function checkState() {
-        console.log(advertTitle)
-        console.log(advertDescription)
-        console.log(advertPhoto)
-        console.log(advertLink)
+   async function addAd() {
+       const ad: Advert = {
+        title: advertTitle,
+        description: advertDescription,
+        webUrl: advertLink
+       }
+      await advertStore.addRequestAdvert('Bolea', ad)
+      
     }
 
     return (
@@ -98,13 +106,13 @@ const CreateAdvert = () => {
                 </div>
             </div>
             <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-                <button ref={btnRef} name="advertBtnSave" className="btnStandard mr-10" >Publicar</button>
+                <button ref={btnRef} name="advertBtnSave" className="btnStandard mr-10" onClick={addAd}>Publicar</button>
              
                 <button name="advertBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
             </div>
+            <ToastContainer/>
         </div>
-
     )
 }
 

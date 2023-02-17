@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite"
+import { ToastContainer } from "react-toastify"
 import "../../../index.css" 
 import AdvertStore from "../../../viewmodels/advert/AdvertStore"
 const advertStore = AdvertStore.getAdvertStore()
@@ -58,6 +59,7 @@ const TableAdvert = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
+            <ToastContainer/>
         </div>
     )
 }

@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom"
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
+import { Tourism } from "../../../../models/section/Section"
 
+import TourismStore from "../../../../viewmodels/tourism/TourismStore"
+const tourismStore = TourismStore.getTourismStore()
 
 const CreateTourism = () => {
   const navigate = useNavigate()
@@ -22,13 +25,15 @@ const CreateTourism = () => {
   const [tourismLat, setTourismLat] = useState<string>("")
 
   //funcion temporal para comprobar entrada
-  function checkState() {
-    console.log(tourismType)
-    console.log(tourismTitle)
-    console.log(tourismDescription)
-    console.log(tourismPhoto)
-    console.log(tourismLong)
-    console.log(tourismLat)
+  function addTourism() {
+      const tourism: Tourism = {
+        type: tourismType,
+        title: tourismTitle,
+        description: tourismDescription,
+        longitude: tourismLong,
+        latitude: tourismLat
+      }
+      tourismStore.addRequestTourism('Bolea', tourism)
   }
 
   return (
@@ -134,7 +139,7 @@ const CreateTourism = () => {
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
 
-        <button ref={btnRef} name="tourismBtnSave" className="btnStandard mr-10" onClick={() => checkState()}>Publicar</button>
+        <button ref={btnRef} name="tourismBtnSave" className="btnStandard mr-10" onClick={addTourism}>Publicar</button>
         <button name="tourismBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
       </div>  

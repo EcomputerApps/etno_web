@@ -20,6 +20,7 @@ class NewsStore{
         makeObservable(this, {
             paginatedNews : observable,
             getRequestNews : action,
+            addRequestNews: action,
             deleteNews : action,
             updateNewsList: action,
             updatePaginatedNews: action,
@@ -57,10 +58,7 @@ class NewsStore{
            
         })
         const news = await response.json()
-        //console.log
-        console.log(news)
         this.updatePaginatedNews(news)
-
     }
 
     async deleteNews(username: string, title : string){

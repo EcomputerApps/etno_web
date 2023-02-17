@@ -15,8 +15,6 @@ class ServiceStore {
     //Observables =>
     paginatedService: PaginatedService = {}
     
-
-
     constructor() {
         makeObservable(this, {
             paginatedService: observable,
@@ -43,8 +41,6 @@ class ServiceStore {
 
         })
         const service = await response.json()
-        //console.log
-        console.log(service)
         this.updatePaginatedService(service)
     }
     async deleteService(username: string, owner: string) {

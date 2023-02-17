@@ -42,8 +42,6 @@ class NecrologueStore{
           
         })
         const necrologue = await response.json()
-        //console.log
-        console.log(necrologue)
         this.updatePaginatedNecro(necrologue)
     }
     async deleteNecrologue(username: string, name: string){
@@ -56,7 +54,6 @@ class NecrologueStore{
         const newPaginatedNecro = this.paginatedNecro.content!!.filter((item)=> item.name !== name)
         this.updateNecrologueList(newPaginatedNecro)
     }
-
 }
 
 export default NecrologueStore

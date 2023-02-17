@@ -44,7 +44,6 @@ class SposnsorStore {
             method: 'GET'
         })
         const sponsor = await response.json()
-        console.log(sponsor)
         this.updatePaginatedSponsor(sponsor)
     }
     

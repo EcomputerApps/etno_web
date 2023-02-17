@@ -42,8 +42,6 @@ class PharmacyStore {
             method: 'GET'
         })
         const pharmacy = await response.json()
-        //console.log
-        console.log(pharmacy)
         this.updatePaginatedPharmacy(pharmacy)
     }
     async deletePharmacy(username: string, name: string) {
