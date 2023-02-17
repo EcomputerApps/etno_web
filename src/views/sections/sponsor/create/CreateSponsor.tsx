@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom"
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
+import { Sponsor } from '../../../../models/section/Section';
+import SposnsorStore from '../../../../viewmodels/sponsor/SponsorStore';
 
+const sponsorStore = SposnsorStore.getSponsorStore()
 const CreateSponsor = () => {
   const navigate = useNavigate()
 
@@ -15,6 +18,16 @@ const CreateSponsor = () => {
   const [sponsorDescription, setSponsorDescription] = useState<string>("")
   const [sponsorPhoto, setSponsorPhoto] = useState<string>("")
   const [sponsorTel, setSponsorTel] = useState<string>("")
+
+function addSposor(){
+  const sponsor : Sponsor ={
+    title: sponsorTitle,
+    description: sponsorDescription,
+    phoneNumber: sponsorTel,
+    //imageUrl: sponsorPhoto
+  }
+  sponsorStore.addRequestSponsor('Bolea', sponsor)
+}
 
   //funcion temporal para comprobar entrada
   function checkState() {
@@ -104,7 +117,7 @@ const CreateSponsor = () => {
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
 
         <button ref={btnRef} name="sponsorBtnSave" className="btnStandard mr-10" onClick={() => {
-          checkState()
+          addSposor()
         }}>Publicar</button>
         <button name="sponsorBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>

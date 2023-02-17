@@ -19,8 +19,7 @@ class BandStore {
     constructor() {
         makeObservable(this, {
             paginatedBand: observable,
-
-
+            addRequestBand: action,
             getRequestBand: action,
             deleteBand: action,
             updateBandList: action,
@@ -63,16 +62,14 @@ class BandStore {
     async addRequestBand(username: string, bando: Band) {
         const response = await fetch(`http://${this.serverIp}:8080/users/add/bando?username=${username}`, {
             method: 'POST',
-            headers:{
-             "Content-type" :"application/json; charset=UTF-8"       
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
             },
             body: JSON.stringify(bando)
         })
         if (response.ok) {
             this.paginatedBand.content?.push(bando)
         }
-
-
     }
 
 }

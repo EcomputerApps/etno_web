@@ -2,7 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Pharmacy, PaginatedPharmacy } from "../../models/section/Section";
 
 class PharmacyStore {
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {
@@ -20,6 +20,7 @@ class PharmacyStore {
         makeObservable(this, {
             paginatedPharmacy: observable,
             getRequestPharmacy: action,
+            addRequestPharmacy: action,
             deletePharmacy: action,
             updatePaginatedPharmacy: action,
             updatePharmacyList: action,
@@ -54,6 +55,18 @@ class PharmacyStore {
         const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.name !== name)
         this.updatePharmacyList(newPaginedPharmacy)
 
+    }
+    async addRequestPharmacy(username: string, pharmacy: Pharmacy) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/add/pharmacy?username=${username}`, {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(pharmacy)
+        })
+        if (response.ok) {
+            this.paginatedPharmacy.content?.push(pharmacy)
+        }
     }
 }
 

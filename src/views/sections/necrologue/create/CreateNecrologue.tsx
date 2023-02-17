@@ -3,7 +3,10 @@ import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
+import NecrologueStore from '../../../../viewmodels/necrologue/NecrologueStore'
+import { Necrologue } from '../../../../models/section/Section'
 
+const necroStore = NecrologueStore.getNecrologueStore()
 
 const CreateNecrologue = () => {
   const navigate = useNavigate()
@@ -24,6 +27,16 @@ const CreateNecrologue = () => {
     console.log(necroDescription)
     console.log(necroPhoto)
 
+  }
+
+  function addNecrologue(){
+    const necro: Necrologue ={
+      name: necroName,
+      deathDate: necroDate,
+      description: necroDescription,
+     // imageUrl: necroPhoto
+    }
+    necroStore.addRequestNecro('Bolea', necro)
   }
 
   return (
@@ -106,7 +119,7 @@ const CreateNecrologue = () => {
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
         <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => {
-          checkState()
+          addNecrologue()
         }}>Publicar</button>
         <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>

@@ -20,7 +20,9 @@ const TableSponsor = (prop: PropTable) => {
                     <tr>
                         {prop.headerList.map((item, index) => (
                             <th key={index} scope="col" className="px-6 py-3">
-                                {item}
+                                <div className="min-w-max">
+                            {item}
+                            </div> 
                             </th>
                         ))}
                     </tr>
