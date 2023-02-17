@@ -7,7 +7,9 @@ import Pencil from "../../../assets/menu/create.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import LinkStore from "../../../viewmodels/link/LinkStore"
+
 const linkStore = LinkStore.getLinkStore()
+
 
 const Link = () => {
     const [pageNumber, setPageNumber] = useState(0)
@@ -93,8 +95,8 @@ const Link = () => {
                             <div className="h-1/3 p-2 md:text-center overflow-hidden  md:flex md:items-center md:justify-center">{link.title}</div>
                             <div className="h-1/3 md:flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={link.url}>{link.url}</a></div>
                             <div className="md:absolute flex m-auto md:justify-center md:bottom-1 md:left-0 md:right-0 h-1/5">
-                                <button className="regular-btn md:mr-5 mr-10" onClick={() => editLink(link.title!!, link.url!!, index)}>Editar</button>
-                                <button className="regular-btn" onClick={() => deleteLink(link.title!!)}>Borrar</button>
+                                <button className="btnStandard md:mr-5 mr-10" onClick={() => editLink(link.title!!, link.url!!, index)}>Editar</button>
+                                <button className="btnStandard" onClick={() => deleteLink(link.title!!)}>Borrar</button>
                             </div>
                         </div>
                     ))}

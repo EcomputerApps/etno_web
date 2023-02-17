@@ -42,7 +42,7 @@ const Necrologue = () => {
           <img src={arrowLeft} alt="backward"/>
           Anterior
         </button>
-        <button onClick={incrementPage} disabled={pageNumber === necrologueStore.getPaginatedNecro.totalElements!! - 1 || necrologueStore.getPaginatedNecro.content?.length === 0} 
+        <button onClick={incrementPage} disabled={pageNumber === necrologueStore.getPaginatedNecro.totalPages!! - 1 || necrologueStore.getPaginatedNecro.content?.length === 0} 
         className="btnStandard">
           Siguiente
           <img src={arrowRight} alt="forward"/>

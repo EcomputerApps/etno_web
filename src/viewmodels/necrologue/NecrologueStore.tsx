@@ -2,7 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Necrologue, PaginatedNecro } from "../../models/section/Section";
 
 class NecrologueStore{
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
     static necrologueStore: NecrologueStore
 
     static getNecrologueStore(){
@@ -19,6 +19,7 @@ class NecrologueStore{
         makeObservable(this,{
             paginatedNecro: observable,
             getRequestNecrologue: action,
+            addRequestNecro: action,
             updateNecrologueList : action,
             updatePaginatedNecro: action,
             deleteNecrologue : action,
@@ -55,6 +56,19 @@ class NecrologueStore{
         })
         const newPaginatedNecro = this.paginatedNecro.content!!.filter((item)=> item.name !== name)
         this.updateNecrologueList(newPaginatedNecro)
+    }
+
+    async addRequestNecro(username: string, necrologue: Necrologue) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/add/death?username=${username}`, {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(necrologue)
+        })
+        if (response.ok) {
+            this.paginatedNecro.content?.push(necrologue)
+        }
     }
 
 }

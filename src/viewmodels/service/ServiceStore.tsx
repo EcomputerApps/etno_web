@@ -2,7 +2,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 import { PaginatedService, Service } from "../../models/section/Section";
 
 class ServiceStore {
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
     static serviceStore: ServiceStore
 
     static getServiceStore() {
@@ -14,24 +14,25 @@ class ServiceStore {
 
     //Observables =>
     paginatedService: PaginatedService = {}
-    
+
 
 
     constructor() {
         makeObservable(this, {
             paginatedService: observable,
             getRequestService: action,
+            addRequestService: action,
             deleteService: action,
             updatePaginatedService: action,
             updateServiceList: action,
             getPaginatedService: computed
-          
+
         })
     }
     updateServiceList(services: Service[]) {
         this.paginatedService.content = services
     }
-      updatePaginatedService(paginatedService: PaginatedService) {
+    updatePaginatedService(paginatedService: PaginatedService) {
         this.paginatedService = paginatedService
     }
     get getPaginatedService() {
@@ -56,6 +57,19 @@ class ServiceStore {
         })
         const newPaginatedService = this.paginatedService.content!!.filter((item) => item.owner !== owner)
         this.updateServiceList(newPaginatedService)
+    }
+
+    async addRequestService(username: string, service: Service) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/add/service?username=${username}`, {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(service)
+        })
+        if (response.ok) {
+            this.paginatedService.content?.push(service)
+        }
     }
 }
 

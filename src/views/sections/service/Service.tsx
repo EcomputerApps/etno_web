@@ -42,7 +42,7 @@ const Service = () => {
         <img src={arrowLeft} alt="backward"/>
           Anterior
         </button>
-        <button onClick={incrementPage} disabled={ pageNumber === serviceStore.getPaginatedService.totalElements!! -1 || serviceStore.getPaginatedService.content?.length === 0}
+        <button onClick={incrementPage} disabled={ pageNumber === serviceStore.getPaginatedService.totalPages!! -1 || serviceStore.getPaginatedService.content?.length === 0}
          className="btnStandard">
           Siguiente
           <img src={arrowRight} alt="forward"/> 

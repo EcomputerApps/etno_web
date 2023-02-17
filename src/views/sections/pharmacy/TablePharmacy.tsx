@@ -19,7 +19,9 @@ const TablePharmacy = (prop: PropTable) => {
                     <tr>
                         {prop.headerList.map((item, index) => (
                             <th key={index} scope="col" className="px-6 py-3">
-                                {item}
+                                <div className="min-w-max">
+                                    {item}
+                                </div>
                             </th>
                         ))}
                     </tr>
@@ -44,7 +46,7 @@ const TablePharmacy = (prop: PropTable) => {
                                 </div>
                             </td>
                             <td className=" px-6 py-4">
-                                <div className="tableCamp">
+                                <div className="tableCamp overflow-y-auto items-start min-w-full ">
                                     {pharmacy.description}
                                 </div>
                             </td>

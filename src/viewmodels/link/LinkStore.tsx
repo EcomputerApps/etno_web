@@ -3,7 +3,7 @@ import { Link, PaginatedLink } from "../../models/section/Section";
 
 
 class LinkStore {
-    serverIp: string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
     static linkStore: LinkStore
 
     static getLinkStore() {
@@ -26,6 +26,7 @@ class LinkStore {
             setTitle: action,
             setLink: action,
             getRequestLink: action,
+            addRequestLink: action,
             updateLinkList: action,
             updatePaginatedLink: action,
             getPaginatedLink: computed,
@@ -75,17 +76,17 @@ class LinkStore {
         this.updateLinkList(newLinks)
     }
 
-    async editLink(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/links?username=${username}&title=${title}`, {
-            method: 'PUT',
+    async addRequestLink(username: string, link: Link) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/add/link?username=${username}`, {
+            method: 'POST',
             headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(link)
         })
-        const newLinks = this.paginatedLink.content!!.filter((item) => item.title !== title)
-        this.updateLinkList(newLinks)
-
-
+        if (response.ok) {
+            this.paginatedLink.content?.push(link)
+        }
     }
 }
 export default LinkStore

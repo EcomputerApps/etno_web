@@ -44,7 +44,7 @@ const Sponsor = () => {
           <img src={arrowLeft} alt="backward"/>
           Anterior
         </button>
-        <button  onClick={incrementPage} disabled={pageNumber === sponsorStore.getPaginatedSponsor.totalElements!! -1 || sponsorStore.getPaginatedSponsor.content?.length === 0} 
+        <button  onClick={incrementPage} disabled={pageNumber === sponsorStore.getPaginatedSponsor.totalPages!! -1 || sponsorStore.getPaginatedSponsor.content?.length === 0} 
         className="btnStandard">
           Siguiente
          <img src={arrowRight} alt="forward"/>
