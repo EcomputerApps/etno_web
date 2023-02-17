@@ -2,7 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Necrologue, PaginatedNecro } from "../../models/section/Section";
 
 class NecrologueStore{
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static necrologueStore: NecrologueStore
 
     static getNecrologueStore(){

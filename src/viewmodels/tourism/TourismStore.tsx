@@ -2,7 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Tourism , PaginatedTourism} from "../../models/section/Section";
 
 class TourismStore{
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static tourismStore: TourismStore
 
     static getTourismStore(){
@@ -15,7 +15,6 @@ class TourismStore{
     //Observables =>
     paginatedTourism : PaginatedTourism = {}
     
-
     constructor(){
         makeObservable(this, {
             paginatedTourism: observable,
@@ -39,11 +38,9 @@ class TourismStore{
     async getRequestTourism(locality: string, pageNum: number, elementSize: number){
         const response = await fetch(`http://${this.serverIp}:8080/tourism/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
         method: 'GET',
-   
     })
     const tourism = await response.json()
-    //console.log
-    console.log(tourism)
+    console.log(JSON.stringify(tourism))
     this.updatePaginatedTourism(tourism)
     }
     async deleteTourism(username: string, title: string){
@@ -55,10 +52,6 @@ class TourismStore{
         })
         const newPaginatedTourism = this.paginatedTourism.content!!.filter((item) => item.title !== title)
             this.updateTourismList(newPaginatedTourism)
-    }
-    
-    
-
-    
+    }    
 }
 export default TourismStore

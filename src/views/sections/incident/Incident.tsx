@@ -139,7 +139,7 @@ const Incident = () => {
                   <p className="font-medium  leading-8 p-2 md:line-clamp-2 line-clamp-1">{incident.description}</p>
                 </div>
                 <div className="flex flex-1 w-full items-center justify-center ">
-                  <p className="line-clamp-1 text-gray-700 font-medium hover:text-gray-500">Pulse para ver detalles</p>
+                  <p className="line-clamp-1 text-gray-700 font-medium hover:text-gray-500 cursor-pointer">Pulse para ver detalles</p>
                 </div>
 
               </div>

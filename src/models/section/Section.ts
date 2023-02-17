@@ -69,8 +69,8 @@ interface PaginatedAdvert {
 
 interface Tourism {
     idTourism?: string,
-    username?: string,
     type?: string,
+    username?: string,
     title?: string,
     description?: string,
     imageUrl?: string,

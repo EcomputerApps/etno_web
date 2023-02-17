@@ -3,7 +3,7 @@ import { Link, PaginatedLink } from "../../models/section/Section";
 
 
 class LinkStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static linkStore: LinkStore
 
     static getLinkStore() {

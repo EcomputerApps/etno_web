@@ -4,6 +4,11 @@ import { useNavigate } from "react-router-dom"
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 
+import NewsStore from '../../../../viewmodels/news/NewsStore'
+import { News } from '../../../../models/section/Section'
+
+const newsStore = NewsStore.getNewsStore()
+
 const CreateNews = () => {
   const navigate = useNavigate()
 
@@ -21,13 +26,14 @@ const CreateNews = () => {
   const [newsPhoto, setNewsPhoto] = useState<string>("")
 
   //funcion temporal para comprobar  datos  que guardamos con consol.log
-  function checkState() {
-    console.log(newsCategory)
-    console.log(newsTitle)
-    console.log(newsDate)
-    console.log(newsDescription)
-    console.log(newsLink)
-    console.log(newsPhoto)
+  function addNews() {
+    const news: News = {
+        category: newsCategory,
+        title: newsTitle,
+        description: newsDescription,
+        publicationDate: newsDate
+    }
+      newsStore.addRequestNews('Bolea', news)
   }
 
   return (
@@ -135,10 +141,8 @@ const CreateNews = () => {
         </div>
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-        <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => {
-          checkState()
-        }}>Publicar</button>
-        <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+        <button ref={btnRef} name="pharmacyBtnSave" className={"post-btn"} onClick={addNews}>Publicar</button>
+        <button name="pharmacyBtnCancel" className={"regular-btn"} onClick={() => navigate("/home")}>Cancelar</button>
       </div>
       </div>
     </div>
