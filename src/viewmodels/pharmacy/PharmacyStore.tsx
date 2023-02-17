@@ -2,7 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Pharmacy, PaginatedPharmacy } from "../../models/section/Section";
 
 class PharmacyStore {
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {

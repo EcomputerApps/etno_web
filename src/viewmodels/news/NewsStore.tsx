@@ -2,7 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { News, PaginatedNews } from "../../models/section/Section";
 
 class NewsStore{
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static newsStore : NewsStore
 
     static getNewsStore(){
@@ -23,8 +23,7 @@ class NewsStore{
             deleteNews : action,
             updateNewsList: action,
             updatePaginatedNews: action,
-            getPaginatedNews: computed,
-           
+            getPaginatedNews: computed
         })
     }
 
@@ -37,8 +36,21 @@ class NewsStore{
      get getPaginatedNews(){
         return this.paginatedNews
     }
-  
 
+    async addRequestNews(locality: String, news: News){
+        const response = await fetch(`http://${this.serverIp}:8080/users/add/news?username=${locality}`, {
+            method: 'POST',
+            body: JSON.stringify(news),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        },
+        )
+        if(response.ok){
+            this.paginatedNews.content?.push(news)
+        }
+    }
+  
     async getRequestNews( locality : string, pageNum: number, elementSize: number){
         const response = await fetch(`http://${this.serverIp}:8080/news?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
             method: 'GET',
@@ -50,6 +62,7 @@ class NewsStore{
         this.updatePaginatedNews(news)
 
     }
+
     async deleteNews(username: string, title : string){
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/news?username=${username}&title=${title}`,{
             method : 'DELETE',

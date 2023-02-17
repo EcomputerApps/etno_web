@@ -3,7 +3,7 @@ import { Event, PaginatedEvent} from "../../models/section/Section";
 
 class EventStore {
     static eventStore: EventStore
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
 
     static getEventStore(){
         if(this.eventStore === undefined){
