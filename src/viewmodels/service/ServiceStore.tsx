@@ -14,13 +14,7 @@ class ServiceStore {
 
     //Observables =>
     paginatedService: PaginatedService = {}
-<<<<<<< HEAD
     
-=======
-
-
-
->>>>>>> 239c3b1a73a06a8e52432f33ca86b8bbbac14607
     constructor() {
         makeObservable(this, {
             paginatedService: observable,

@@ -55,8 +55,6 @@ class NecrologueStore{
         const newPaginatedNecro = this.paginatedNecro.content!!.filter((item)=> item.name !== name)
         this.updateNecrologueList(newPaginatedNecro)
     }
-<<<<<<< HEAD
-=======
 
     async addRequestNecro(username: string, necrologue: Necrologue) {
         const response = await fetch(`http://${this.serverIp}:8080/users/add/death?username=${username}`, {
@@ -71,7 +69,6 @@ class NecrologueStore{
         }
     }
 
->>>>>>> 239c3b1a73a06a8e52432f33ca86b8bbbac14607
 }
 
 export default NecrologueStore
