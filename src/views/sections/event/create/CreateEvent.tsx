@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Event } from '../../../../models/section/Section';
 
 import EventStore from '../../../../viewmodels/Event/EventStore';
+import { ToastContainer } from 'react-toastify';
 const eventStore = EventStore.getEventStore()
 
 const CreateEvent = () => {
@@ -213,6 +214,7 @@ const CreateEvent = () => {
           <button name="eventBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

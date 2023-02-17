@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { Pharmacy, PaginatedPharmacy } from "../../models/section/Section";
 
 class PharmacyStore {
@@ -52,8 +53,31 @@ class PharmacyStore {
                 'Access-Control-Allow-Origin': '*'
             }
         })
+        if(response.ok){
         const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.name !== name)
         this.updatePharmacyList(newPaginedPharmacy)
+        toast.success('Se ha borrado exitosamente', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }else{
+        toast.error('No se ha podido borrar', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }
 
     }
     async addRequestPharmacy(username: string, pharmacy: Pharmacy) {
@@ -66,8 +90,29 @@ class PharmacyStore {
         })
         if (response.ok) {
             this.paginatedPharmacy.content?.push(pharmacy)
-        }
+            toast.success('Se ha añadido exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha añadido correctamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
     }
+}
 }
 
 export default PharmacyStore

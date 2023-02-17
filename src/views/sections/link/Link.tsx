@@ -7,6 +7,7 @@ import Pencil from "../../../assets/menu/create.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import LinkStore from "../../../viewmodels/link/LinkStore"
+import { ToastContainer } from "react-toastify"
 
 const linkStore = LinkStore.getLinkStore()
 
@@ -15,7 +16,7 @@ const Link = () => {
     const [pageNumber, setPageNumber] = useState(0)
     const navigate = useNavigate()
     const [showModal, setModal] = useState(false)
-   
+
     const [position, setPosition] = useState(0)
     const [newTitle, setNewTitle] = useState("")
     const [newLink, setNewLink] = useState("")
@@ -52,8 +53,8 @@ const Link = () => {
             <div className="flex flex-row">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces</h2>
                 <div className="ml-auto">
-                    <button onClick={() => navigate("/addLink")} type="button"  className="btnStandard">
-              <img src={Pencil} alt="Create"/>
+                    <button onClick={() => navigate("/addLink")} type="button" className="btnStandard">
+                        <img src={Pencil} alt="Create" />
                         Crear
                     </button>
                 </div>
@@ -105,16 +106,17 @@ const Link = () => {
             <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
                 <button
                     className="btnStandard mr-10" onClick={decrementPage} disabled={pageNumber === 0}>
-                    <img src={arrowLeft} alt="backward"/>
+                    <img src={arrowLeft} alt="backward" />
                     Anterior
                 </button>
                 <button
                     className="btnStandard"
                     onClick={incrementPage} disabled={pageNumber === linkStore.getPaginatedLink.totalPages!! - 1 || linkStore.getPaginatedLink.content?.length === 0}>
                     Siguiente
-                    <img src={arrowRight} alt="forward"/>
+                    <img src={arrowRight} alt="forward" />
                 </button>
             </div>
+            <ToastContainer />
         </div>
     )
 }

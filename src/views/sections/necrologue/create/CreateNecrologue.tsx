@@ -5,6 +5,7 @@ import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import NecrologueStore from '../../../../viewmodels/necrologue/NecrologueStore'
 import { Necrologue } from '../../../../models/section/Section'
+import { ToastContainer } from 'react-toastify'
 
 const necroStore = NecrologueStore.getNecrologueStore()
 
@@ -123,6 +124,7 @@ const CreateNecrologue = () => {
         }}>Publicar</button>
         <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

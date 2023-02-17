@@ -6,6 +6,7 @@ import "../../../../index.css"
 
 import NewsStore from '../../../../viewmodels/news/NewsStore'
 import { News } from '../../../../models/section/Section'
+import { ToastContainer } from 'react-toastify'
 
 const newsStore = NewsStore.getNewsStore()
 
@@ -141,10 +142,11 @@ const CreateNews = () => {
         </div>
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-        <button ref={btnRef} name="pharmacyBtnSave" className={"post-btn"} onClick={addNews}>Publicar</button>
-        <button name="pharmacyBtnCancel" className={"regular-btn"} onClick={() => navigate("/home")}>Cancelar</button>
+        <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={addNews}>Publicar</button>
+        <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

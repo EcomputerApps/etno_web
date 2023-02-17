@@ -6,6 +6,7 @@ import NecrologueStore from "../../../viewmodels/necrologue/NecrologueStore"
 import TableNecrologue from "./TableNecrologue"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
+import { ToastContainer } from "react-toastify"
 const necrologueStore = NecrologueStore.getNecrologueStore()
 
 const Necrologue = () => {
@@ -48,6 +49,7 @@ const Necrologue = () => {
           <img src={arrowRight} alt="forward"/>
         </button>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

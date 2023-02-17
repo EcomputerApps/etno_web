@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { Advert, PaginatedAdvert } from "../../models/section/Section";
 
 class AdvertStore {
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
     static advertStore: AdvertStore
 
     static getAdvertStore() {
@@ -54,8 +54,8 @@ class AdvertStore {
         if(response.ok){
             this.paginatedAdvert.content?.push(ad)
             toast.success('Se ha añadido exitosamente', {
-                position: 'bottom-center',
-                autoClose: 1000,
+                position: 'top-center',
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -65,8 +65,8 @@ class AdvertStore {
           })
         }else{
             toast.error('No se ha añadido correctamente', {
-                position: 'bottom-center',
-                autoClose: 1000,
+                position: 'top-center',
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -97,7 +97,7 @@ class AdvertStore {
             const paginatedAdverts = this.paginatedAdvert.content!!.filter((item) => item.title !== title)
             this.updateAdvertList(paginatedAdverts)
             toast.success('Se ha borrado exitosamente', {
-                position: 'bottom-center',
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -108,7 +108,7 @@ class AdvertStore {
           })
         }else{
             toast.error('No se ha podido borrar', {
-                position: 'bottom-center',
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,

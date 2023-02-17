@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import logoEtno from '../../../../assets/logo_etno.png';
 import LinkStore from '../../../../viewmodels/link/LinkStore';
 import { Link } from '../../../../models/section/Section';
+import { ToastContainer } from 'react-toastify';
 const linkStore = LinkStore.getLinkStore()
 
 const CreateLink = () => {
@@ -66,6 +67,7 @@ const CreateLink = () => {
                 <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => addLink()}>Publicar</button>
                 <button name="bandBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
+            <ToastContainer/>
         </div>
 
     )

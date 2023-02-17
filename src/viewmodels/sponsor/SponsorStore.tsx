@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { PaginatedSponsor, Sponsor } from "../../models/section/Section";
 
 class SposnsorStore {
@@ -55,8 +56,31 @@ class SposnsorStore {
                 'Access-Control-Allow-Origin': '*'
             }
         })
+        if(response.ok){
         const newSponsors = this.paginatedSponsor.content!.filter((item) => item.title !== title)
         this.updateSponsorList(newSponsors)
+        toast.success('Se ha borrado exitosamente', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }else{
+        toast.error('No se ha podido borrar', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }
     }
 
     async addRequestSponsor(username: string, sponsor: Sponsor) {
@@ -69,8 +93,29 @@ class SposnsorStore {
         })
         if (response.ok) {
             this.paginatedSponsor.content?.push(sponsor)
-        }
+            toast.success('Se ha añadido exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha añadido correctamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
     }
+}
 
 
 }

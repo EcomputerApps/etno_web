@@ -1,9 +1,10 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { Event, PaginatedEvent} from "../../models/section/Section";
 
 class EventStore {
     static eventStore: EventStore
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
 
     static getEventStore(){
         if(this.eventStore === undefined){
@@ -38,9 +39,29 @@ class EventStore {
         })
         if(response.ok){
             this.paginatedEvent.content?.push(event)
-        }
+            toast.success('Se ha añadido exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha añadido correctamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
     }
-
+}
    async getRequestEvents(locality: string, pageNum: number, elementSize: number){
     const response = await fetch(`http://${this.serverIp}:8080/events?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
         method: 'GET'
@@ -67,8 +88,32 @@ class EventStore {
             'Access-Control-Allow-Origin': '*'
         }
     })
-    const newPaginatedEvents = this.paginatedEvent.content!!.filter((item)=> item.title !== title)
+    if(response.ok){
+        const newPaginatedEvents = this.paginatedEvent.content!!.filter((item)=> item.title !== title)
         this.updateEventList(newPaginatedEvents)
+        toast.success('Se ha borrado exitosamente', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }else{
+        toast.error('No se ha podido borrar', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }
+    
    }
 }
 export default EventStore

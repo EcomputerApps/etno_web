@@ -6,6 +6,7 @@ import NewsStore from "../../../viewmodels/news/NewsStore"
 import TableNews from "./TableNews"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
+import { ToastContainer } from "react-toastify"
 const newsStore = NewsStore.getNewsStore()
 
 const News = () => {
@@ -50,6 +51,7 @@ const decrementPage = () => {
           <img src={arrowRight} alt="forward"/>
         </button>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

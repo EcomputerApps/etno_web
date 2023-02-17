@@ -5,6 +5,7 @@ import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import { Pharmacy } from '../../../../models/section/Section';
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
+import { ToastContainer } from 'react-toastify';
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
@@ -312,6 +313,7 @@ const CreatePharmacy = () => {
                 <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPharmacy()} onFocus={() => handleScheduleInput()}>Publicar</button>
                 <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
+            <ToastContainer/>
         </div>
     )
 }

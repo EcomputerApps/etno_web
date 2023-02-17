@@ -6,6 +6,7 @@ import EventStore from "../../../viewmodels/Event/EventStore"
 import TableEvent from "./TableEvent"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
+import { ToastContainer } from "react-toastify"
 const eventStore = EventStore.getEventStore()
 
 const Event = () => {
@@ -49,6 +50,7 @@ const Event = () => {
           <img src={arrowRight} alt="forward"/>
         </button>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

@@ -6,6 +6,7 @@ import BandStore from "../../../viewmodels/band/BandsStore"
 import TableBand from "./TableBand"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
+import { ToastContainer } from "react-toastify"
 const bandStore = BandStore.getBandStore()
 
 const Band = () => {
@@ -49,6 +50,7 @@ const Band = () => {
          <img src={arrowRight} alt="forward"/>
         </button>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

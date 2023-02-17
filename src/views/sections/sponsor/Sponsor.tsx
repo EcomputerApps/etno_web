@@ -6,6 +6,7 @@ import SposnsorStore from "../../../viewmodels/sponsor/SponsorStore"
 import TableSponsor from "./TableSponsor"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
+import { ToastContainer } from "react-toastify"
 const sponsorStore = SposnsorStore.getSponsorStore()
 
 const Sponsor = () => {
@@ -50,6 +51,7 @@ const Sponsor = () => {
          <img src={arrowRight} alt="forward"/>
         </button>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

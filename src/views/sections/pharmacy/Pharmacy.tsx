@@ -6,6 +6,7 @@ import TablePharmacy from "./TablePharmacy"
 import Pencil from "../../../assets/menu/create.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
+import { ToastContainer } from "react-toastify"
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 const Pharmacy = () => {
   const [pageNumber, setPageNumber] = useState(0)
@@ -48,6 +49,7 @@ const Pharmacy = () => {
          <img src={arrowRight} alt="forward"/>
         </button>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { Necrologue, PaginatedNecro } from "../../models/section/Section";
 
 class NecrologueStore{
@@ -52,8 +53,31 @@ class NecrologueStore{
                 'Access-Control-Allow-Origin': '*'
             }
         })
-        const newPaginatedNecro = this.paginatedNecro.content!!.filter((item)=> item.name !== name)
+        if(response.ok){
+         const newPaginatedNecro = this.paginatedNecro.content!!.filter((item)=> item.name !== name)
         this.updateNecrologueList(newPaginatedNecro)
+        toast.success('Se ha borrado exitosamente', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }else{
+        toast.error('No se ha podido borrar', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }
     }
 
     async addRequestNecro(username: string, necrologue: Necrologue) {
@@ -66,8 +90,29 @@ class NecrologueStore{
         })
         if (response.ok) {
             this.paginatedNecro.content?.push(necrologue)
-        }
+            toast.success('Se ha añadido exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha añadido correctamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
     }
+}
 
 }
 

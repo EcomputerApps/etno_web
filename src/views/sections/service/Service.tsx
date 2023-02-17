@@ -6,6 +6,7 @@ import ServiceStore from "../../../viewmodels/service/ServiceStore"
 import TableService from "./TableService"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
+import { ToastContainer } from "react-toastify"
 const serviceStore = ServiceStore.getServiceStore()
 
 const Service = () => {
@@ -48,6 +49,7 @@ const Service = () => {
           <img src={arrowRight} alt="forward"/> 
         </button>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

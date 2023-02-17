@@ -7,6 +7,7 @@ import TableAdvert from "./TableAdvert"
 import Pencil from "../../../assets/menu/create.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
+import { ToastContainer } from "react-toastify"
 const adverStore = AdvertStore.getAdvertStore()
 
 const Advert = () => {
@@ -48,6 +49,7 @@ const Advert = () => {
                     <img src={arrowRight} alt="forward"/>
                 </button>
             </div>
+            <ToastContainer />
         </div>
     )
 }

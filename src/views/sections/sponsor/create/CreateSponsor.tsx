@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom"
+import { ToastContainer } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
@@ -122,6 +123,7 @@ function addSposor(){
         <button name="sponsorBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
     </div>
+    <ToastContainer/>
     </div>
   )
 }

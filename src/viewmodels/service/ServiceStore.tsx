@@ -1,4 +1,5 @@
 import { action, computed, makeObservable, observable } from "mobx";
+import { toast } from "react-toastify";
 import { PaginatedService, Service } from "../../models/section/Section";
 
 class ServiceStore {
@@ -51,8 +52,31 @@ class ServiceStore {
                 'Access-Control-Allow-Origin': '*'
             }
         })
+        if(response.ok){
         const newPaginatedService = this.paginatedService.content!!.filter((item) => item.owner !== owner)
         this.updateServiceList(newPaginatedService)
+        toast.success('Se ha borrado exitosamente', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }else{
+        toast.error('No se ha podido borrar', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }
     }
 
     async addRequestService(username: string, service: Service) {
@@ -65,8 +89,29 @@ class ServiceStore {
         })
         if (response.ok) {
             this.paginatedService.content?.push(service)
-        }
+            toast.success('Se ha añadido exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha añadido correctamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
     }
+}
 }
 
 export default ServiceStore

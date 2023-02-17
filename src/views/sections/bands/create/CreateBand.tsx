@@ -5,10 +5,14 @@ import { useNavigate } from "react-router-dom"
 import "../../../../index.css"
 import BandStore from '../../../../viewmodels/band/BandsStore';
 import { Band } from "../../../../models/section/Section"
+import { ToastContainer } from 'react-toastify';
 
 const bandStore = BandStore.getBandStore()
 
 const CreateBand = () => {
+  const regEx = new RegExp(
+    '^[a-zA-Z0-9_.-]*$'
+ );
   const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
@@ -33,6 +37,15 @@ const CreateBand = () => {
     }
     bandStore.addRequestBand('Bolea', bando)
 
+  }
+
+  function validateInput(input: string):boolean{
+    if(input.length === 0){
+      return false
+    }if(!regEx.test(input)){
+      return false
+    }
+    return true
   }
 
   function checkState() {
@@ -153,6 +166,7 @@ const CreateBand = () => {
           <button name="bandBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

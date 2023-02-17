@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png';
 import add_Photo from '../../../../assets/menu/add_photo.svg';
 import "../../../../index.css";
@@ -297,6 +298,7 @@ const CreateService = () => {
                     <button name="serviceBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
                 </div>
             </div>
+            <ToastContainer/>
         </div>
     )
 }

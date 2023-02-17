@@ -1,8 +1,9 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { Band, PaginatedBand } from "../../models/section/Section";
 
 class BandStore {
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static bandStore: BandStore
 
     static getBandStore() {
@@ -54,8 +55,31 @@ class BandStore {
                 'Access-Control-Allow-Origin': '*',
             }
         })
+        if(response.ok){
         const newPaginatedBands = this.paginatedBand.content!!.filter((item) => item.title !== title)
         this.updateBandList(newPaginatedBands)
+        toast.success('Se ha borrado exitosamente', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }else{
+        toast.error('No se ha podido borrar', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }
     }
     async addRequestBand(username: string, bando: Band) {
         const response = await fetch(`http://${this.serverIp}:8080/users/add/bando?username=${username}`, {
@@ -67,8 +91,29 @@ class BandStore {
         })
         if (response.ok) {
             this.paginatedBand.content?.push(bando)
-        }
+            toast.success('Se ha añadido exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha añadido correctamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
     }
+}
 
 }
 export default BandStore
