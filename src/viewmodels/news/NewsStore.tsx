@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { News, PaginatedNews } from "../../models/section/Section";
 
 class NewsStore{
@@ -49,6 +50,27 @@ class NewsStore{
         )
         if(response.ok){
             this.paginatedNews.content?.push(news)
+            toast.success('Se ha añadido exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha añadido', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
         }
     }
   
@@ -68,11 +90,33 @@ class NewsStore{
                 'Access-Control-Allow-Origin':'*'
             }
         })
-        const newPaginatedNews = this.paginatedNews.content!!.filter((item)=>item.title !== title)
-        this.updateNewsList(newPaginatedNews)
+
+        if(response.ok){
+            const newPaginatedNews = this.paginatedNews.content!!.filter((item)=>item.title !== title)
+            this.updateNewsList(newPaginatedNews)
+            toast.success('Se ha borrado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha borrado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }
     }
-
-
 }
 
 export default NewsStore

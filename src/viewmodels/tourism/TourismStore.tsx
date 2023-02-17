@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { Tourism , PaginatedTourism} from "../../models/section/Section";
 
 class TourismStore{
@@ -48,6 +49,27 @@ class TourismStore{
         })
         if(response.ok){
             this.paginatedTourism.content?.push(tourism)
+            toast.success('Se ha añadido exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha podido añadir exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
         }
     }
 
@@ -66,8 +88,32 @@ class TourismStore{
                 'Access-Control-Allow-Origin': '*'
             }
         })
-        const newPaginatedTourism = this.paginatedTourism.content!!.filter((item) => item.title !== title)
+
+        if(response.ok){
+            const newPaginatedTourism = this.paginatedTourism.content!!.filter((item) => item.title !== title)
             this.updateTourismList(newPaginatedTourism)
+            toast.success('Se ha eliminado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.success('No se ha podido eliminar exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          }) 
+        }
     }    
 }
 export default TourismStore

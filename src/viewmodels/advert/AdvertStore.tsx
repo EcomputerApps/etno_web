@@ -54,7 +54,7 @@ class AdvertStore {
         if(response.ok){
             this.paginatedAdvert.content?.push(ad)
             toast.success('Se ha añadido exitosamente', {
-                position: 'bottom-center',
+                position: 'top-center',
                 autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -65,7 +65,7 @@ class AdvertStore {
           })
         }else{
             toast.error('No se ha añadido correctamente', {
-                position: 'bottom-center',
+                position: 'top-center',
                 autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -97,7 +97,7 @@ class AdvertStore {
             const paginatedAdverts = this.paginatedAdvert.content!!.filter((item) => item.title !== title)
             this.updateAdvertList(paginatedAdverts)
             toast.success('Se ha borrado exitosamente', {
-                position: 'bottom-center',
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -108,7 +108,7 @@ class AdvertStore {
           })
         }else{
             toast.error('No se ha podido borrar', {
-                position: 'bottom-center',
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,

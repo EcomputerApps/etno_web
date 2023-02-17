@@ -29,7 +29,6 @@ const CreateAdvert = () => {
         webUrl: advertLink
        }
       await advertStore.addRequestAdvert('Bolea', ad)
-      
     }
 
     return (

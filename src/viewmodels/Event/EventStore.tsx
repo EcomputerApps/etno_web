@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { Event, PaginatedEvent} from "../../models/section/Section";
 
 class EventStore {
@@ -38,6 +39,27 @@ class EventStore {
         })
         if(response.ok){
             this.paginatedEvent.content?.push(event)
+            toast.success('Se ha añadido exitosamente', {
+                position: 'top-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }else{
+            toast.error('No se ha añadido exitosamente', {
+                position: 'top-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
         }
     }
 
@@ -67,8 +89,32 @@ class EventStore {
             'Access-Control-Allow-Origin': '*'
         }
     })
-    const newPaginatedEvents = this.paginatedEvent.content!!.filter((item)=> item.title !== title)
+
+    if(response.ok){
+        const newPaginatedEvents = this.paginatedEvent.content!!.filter((item)=> item.title !== title)
         this.updateEventList(newPaginatedEvents)
+        toast.success('Se ha eliminado exitosamente', {
+            position: 'top-center',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      })
+    }else{
+        toast.error('No se ha eliminado exitosamente', {
+            position: 'top-center',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+      }) 
+    }
    }
 }
 export default EventStore
