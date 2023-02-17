@@ -3,6 +3,10 @@ import add_Photo from '../../../../assets/menu/add_photo.svg'
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom"
 import "../../../../index.css"
+import BandStore from '../../../../viewmodels/band/BandsStore';
+import {Band} from "../../../../models/section/Section"
+
+const bandStore = BandStore.getBandStore()
 
 const CreateBand = () => {
   const navigate = useNavigate()
@@ -11,16 +15,53 @@ const CreateBand = () => {
   const btnRef = useRef<HTMLButtonElement>(null)
 
   const [bandType, setBandType] = useState<string>("")
+  const [emptyType, setEmptyType] = useState<boolean>(false)
   const [bandDescription, setBandDescription] = useState<string>("")
+  const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
   const [bandPhoto, setBandPhoto] = useState<string>("")
+  const [emptyPhoto, setEmptyPhoto] = useState<boolean>(false)
   const [bandDate, setbandDate] = useState<string>("")
+  const [emptyDate, setEmptyDate] = useState<boolean>(false)
+  
+
+  function addBand(title: string, description: string, date : string, imageUrl : string){
+   const bando : Band = {title: title, description : description, issuedDate: date, imageUrl:imageUrl }
+    bandStore.addRequestBand('Bolea',bando )
+    navigate("/home")
+  }
 
   function checkState() {
+    var validate = true
     console.log(bandType)
     console.log(bandDescription)
     console.log(bandPhoto)
     console.log(bandDate)
+    if(bandType === ""){
+      setEmptyType(true)
+      validate = false
+    }else setEmptyType(false)
+    if(bandDescription === ""){
+      setEmptyDescription(true)
+      validate = false
+    }else setEmptyDescription(false)
+    if(bandDate === ""){
+      setEmptyDate(true)
+      validate = false
+    }else setEmptyDate(false)
+    if(bandPhoto === ""){
+      setEmptyPhoto(true)
+      validate = false
+    }else setEmptyPhoto(false)
+    if(validate){
+      navigate("/home")
+    }
 
+
+  }
+  const handleOnChange = (e : React.ChangeEvent<HTMLInputElement>) =>{
+    if(e.currentTarget.value ===""){
+console.log(e.currentTarget.id)
+    }
   }
 
   return (
@@ -34,8 +75,11 @@ const CreateBand = () => {
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className=" flex flex-col p-1 mt-5  relative">
-          <input autoFocus placeholder=" " name="bandType" id="test" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onChange={(value) => {
+          <input autoFocus  placeholder=" " name="bandType" id="test" type="text" required={true}
+          className={`autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 
+          rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800 ${ emptyType ? "border-red-600" : ""}`} onChange={(value) => {
             setBandType(value.currentTarget.value)
+       
           }} onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (txtAreaRef.current != null) {
@@ -44,15 +88,15 @@ const CreateBand = () => {
             }
           }} />
           <label className={"float-input-lbl"}>Asunto</label>
-
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3 mt-3">
         <div className="flex flex-col p-1  relative">
           <textarea ref={txtAreaRef} placeholder="  " name="bandDescription" rows={3}
-            className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800"
+            className={`autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800 ${ emptyDescription ? "border-red-600" : ""}`}
             onChange={(value) => {
               setBandDescription(value.currentTarget.value)
+             
             }} onKeyDown={(e) => {
               if (e.code === "NumpadEnter") {
                 if (inputRef.current != null) {
@@ -66,7 +110,7 @@ const CreateBand = () => {
       <div className="w-full flex flex-1 flex-col pl-3 mt-5">
         <div className="flex flex-col p-1 relative  ">
           <input ref={inputRef} placeholder=" dsdsdsd" type="date" name="bandDate"
-            className="w-40 border-2 rounded-md peer focus:outline-none focus:border-indigo-800 "
+            className={`w-40 border-2 rounded-md peer focus:outline-none focus:border-indigo-800 ${ emptyDate ? "border-red-600" : ""} `}
             onChange={(value) => {
               setbandDate(value.currentTarget.value)
             }} onKeyDown={(e) => {
@@ -81,12 +125,12 @@ const CreateBand = () => {
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="text-left p-1 ">
-          <div className={"photoBoard"}>
+          <div className={`photoBoard ${ emptyPhoto ? "border-red-600" : ""} `}>
             <div className='absolute left-2'>
               Fotos
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center ">
-              <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
+              <input type="file" id="input-file-upload" className={`visibility: hidden ${ emptyPhoto ? "border-red-600" : ""}`} size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
                 setBandPhoto(value.currentTarget.value)
               }} />
               <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
@@ -100,8 +144,8 @@ const CreateBand = () => {
         </div>
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-        <button ref={btnRef} name="bandBtnSave" className={"post-btn"} onClick={() => { checkState() }}>Publicar</button>
-        <button name="bandBtnCancel" className={"regular-btn"} onClick={() => navigate("/home")}>Cancelar</button>
+        <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => { addBand(bandType, bandDescription, bandDate, bandPhoto)}}>Publicar</button>
+        <button name="bandBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
     </div>
     </div>

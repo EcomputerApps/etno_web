@@ -276,8 +276,8 @@ const CreatePharmacy = () => {
                 </div>
             </div>
             <div className="flex m-auto justify-center p-3">
-                <button ref={btnRef} name="pharmacyBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => checkState()}>Publicar</button>
-                <button name="pharmacyBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => navigate("/home")}>Cancelar</button>
+                <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => checkState()}>Publicar</button>
+                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
         </div>
     )

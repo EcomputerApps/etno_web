@@ -82,8 +82,8 @@ const CreateService = () => {
         defineSchedule(serviceShcedulSelector, serviceShcedulMorning, serviceShcedulEven, serviceShcedulExtra)
 
         console.log(serviceType)
-        console.log(arraySchedules)
-        console.log(serviceShcedulSelector)
+        console.log(arraySchedules.toString())
+
         console.log(serviceName)
         console.log(servicePhoto)
         console.log(serviceTel)
@@ -273,10 +273,10 @@ const CreateService = () => {
             </div>
             <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
 
-                <button ref={btnRef} name="serviceBtnSave" className={"post-btn"} onClick={() => {
+                <button ref={btnRef} name="serviceBtnSave" className="btnStandard mr-10" onClick={() => {
                     checkState()
                 }}>Publicar</button>
-                <button name="serviceBtnCancel" className={"regular-btn"} onClick={() => navigate("/home")}>Cancelar</button>
+                <button name="serviceBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
         </div>
         </div>

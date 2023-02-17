@@ -37,7 +37,7 @@ class TourismStore{
         return this.paginatedTourism
     }
     async getRequestTourism(locality: string, pageNum: number, elementSize: number){
-        const response = await fetch(`http://${this.serverIp}:8080/tourism?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/tourism/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
         method: 'GET',
    
     })

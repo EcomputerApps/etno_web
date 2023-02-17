@@ -134,8 +134,8 @@ const CreateTourism = () => {
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
 
-        <button ref={btnRef} name="tourismBtnSave" className={"post-btn"} onClick={() => checkState()}>Publicar</button>
-        <button name="tourismBtnCancel" className={"regular-btn"} onClick={() => navigate("/home")}>Cancelar</button>
+        <button ref={btnRef} name="tourismBtnSave" className="btnStandard mr-10" onClick={() => checkState()}>Publicar</button>
+        <button name="tourismBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
       </div>  
     </div>

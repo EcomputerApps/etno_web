@@ -1,6 +1,7 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { Link, PaginatedLink } from "../../models/section/Section";
 
+
 class LinkStore {
     serverIp: string = "192.168.241.51"
     static linkStore: LinkStore

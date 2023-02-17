@@ -3,8 +3,7 @@ import add_Photo from '../../../../assets/menu/add_photo.svg'
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../../../../index.css"
-  import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateAdvert = () => {
     const navigate = useNavigate()
@@ -24,10 +23,6 @@ const CreateAdvert = () => {
         console.log(advertPhoto)
         console.log(advertLink)
     }
-   
-    
-       
-
 
     return (
         <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
@@ -103,9 +98,9 @@ const CreateAdvert = () => {
                 </div>
             </div>
             <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-                <button ref={btnRef} name="advertBtnSave" className={"post-btn"} >Publicar</button>
+                <button ref={btnRef} name="advertBtnSave" className="btnStandard mr-10" >Publicar</button>
              
-                <button name="advertBtnCancel" className={"regular-btn"} onClick={() => navigate("/home")}>Cancelar</button>
+                <button name="advertBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
             </div>
         </div>

@@ -204,10 +204,10 @@ const CreateEvent = () => {
           </div>
         </div>
         <div className="flex m-auto justify-center p-3">
-          <button ref={btnRef} name="eventBtnSave" className={"post-btn"} onClick={() => {
+          <button ref={btnRef} name="eventBtnSave" className="btnStandard mr-10" onClick={() => {
             checkState()
           }}>Publicar</button>
-          <button name="eventBtnCancel" className={"regular-btn"} onClick={() => navigate("/home")}>Cancelar</button>
+          <button name="eventBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
         </div>
       </div>
     </div>

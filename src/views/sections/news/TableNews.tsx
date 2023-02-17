@@ -32,12 +32,12 @@ const TableNews = (prop: PropTable) => {
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
 
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            <div className="tableCamp">
-                                {news.category}
+                                <div className="tableCamp">
+                                    {news.category}
                                 </div>
                             </th>
                             <td className="px-6 py-4">
-                                    <div className="tableCamp">
+                                <div className="tableCamp">
                                     {news.title}
                                 </div>
                             </td>
@@ -47,14 +47,15 @@ const TableNews = (prop: PropTable) => {
                                 </div>
                             </td>
                             <td className="px-6 py-4">
-                                <div className="tableCamp overflow-y-auto items-start min-w-full">
-                                    {news.description}
+                            <div className="tableCamp overflow-y-auto items-start min-w-full">
+                                        {news.description}
+
                                 </div>
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-cente">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                                <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteNews(news.title!!)}>Eliminar</a>
+                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteNews(news.title!!)}>Eliminar</a>
                                 </div>
                             </td>
                         </tr>

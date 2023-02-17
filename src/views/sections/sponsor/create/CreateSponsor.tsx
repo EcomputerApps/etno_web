@@ -103,10 +103,10 @@ const CreateSponsor = () => {
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
 
-        <button ref={btnRef} name="sponsorBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => {
+        <button ref={btnRef} name="sponsorBtnSave" className="btnStandard mr-10" onClick={() => {
           checkState()
         }}>Publicar</button>
-        <button name="sponsorBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => navigate("/home")}>Cancelar</button>
+        <button name="sponsorBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
     </div>
     </div>
