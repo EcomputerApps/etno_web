@@ -28,7 +28,6 @@ class ImageStore {
 
         const request = await fetch(`http://${this.serverIp}:8080/images?section=${section}&category=${category}&username=${locality}`, {
             method: 'POST',
-            
             body: data
         })
 

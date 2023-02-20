@@ -2,6 +2,8 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Band, PaginatedBand } from "../../models/section/Section";
+import ImageStore from "../image/ImageStore";
+const imageStore = ImageStore.getImageStore()
 
 class BandStore {
     serverIp: string = "192.168.137.1"
@@ -90,7 +92,9 @@ class BandStore {
       })
     }
     }
-    async addRequestBand(username: string, bando: Band) {
+    async addRequestBand(username: string, bando: Band, file: File) {
+        await imageStore.addImageAPI('Bolea', 'bando', 'bando', file)
+        bando.imageUrl = imageStore.getImage.link
         const response = await fetch(`http://${this.serverIp}:8080/users/add/bando?username=${username}`, {
             method: 'POST',
             headers: {

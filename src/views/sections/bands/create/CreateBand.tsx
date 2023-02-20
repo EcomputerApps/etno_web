@@ -9,15 +9,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 
 const bandStore = BandStore.getBandStore()
-interface BandInput {
-  asunto: string,
-  description: string,
-  date: string
-
-}
 
 const CreateBand = () => {
-
 
   const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -25,14 +18,10 @@ const CreateBand = () => {
   const btnRef = useRef<HTMLButtonElement>(null)
 
   const [bandType, setBandType] = useState<string>("")
-
   const [bandDescription, setBandDescription] = useState<string>("")
-  
   const [bandPhoto, setBandPhoto] = useState<string>("")
-
   const [bandDate, setbandDate] = useState<string>("")
-
-
+  const [file, setFile] = useState<File>()
 
   function addBand() {
     const bando: Band = {
@@ -63,27 +52,7 @@ const CreateBand = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) : bandStore.addRequestBand('Bolea', bando)
-    }
-
-
-
-
-  }
-
-  function checkState() {
-    var validate = true
-    console.log(bandType)
-    console.log(bandDescription)
-    console.log(bandPhoto)
-    console.log(bandDate)
-    
-
-
-  }
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value === "") {
-      console.log(e.currentTarget.id)
+        }) : bandStore.addRequestBand('Bolea', bando, file!!)
     }
   }
 
@@ -155,7 +124,7 @@ const CreateBand = () => {
               </div>
               <form id="form-file-upload" className=" w-full flex justify-center ">
                 <input type="file" id="input-file-upload" className="visibility: hidden" max={1} size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
-                  setBandPhoto(value.currentTarget.value)
+                  setFile(value.currentTarget.files!![0])
                 }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                   <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
