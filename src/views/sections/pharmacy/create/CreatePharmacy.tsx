@@ -5,7 +5,7 @@ import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import { Pharmacy } from '../../../../models/section/Section';
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
@@ -23,8 +23,8 @@ const CreatePharmacy = () => {
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
 
-    const [pharmType, setPharmType] = useState("normal")
-    const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("")
+    const [pharmType, setPharmType] = useState("")
+    const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
     const [pharmacyName, setPharmacyName] = useState<string>("")
     const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>("")
     const [pharmacyPhoto, setPharmacyPhoto] = useState<string>("")
@@ -58,7 +58,33 @@ const CreatePharmacy = () => {
             longitude: pharmacyLong,
             latitude: pharmacyLat
         }
-        pharmacyStore.addRequestPharmacy('Bolea', pharmacy)
+        if (pharmacyStore.getPharmacy.name === pharmacy.name) {
+            toast.info('Ya existe esta farmacia', {
+              position: 'bottom-center',
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "light"
+            })
+          }else{
+            pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
+            pharmacyTel === "" || pharmacySchedule === ""||  pharmacyDescption === "" || 
+            pharmacyLong === "" || pharmacyLat === ""?
+            toast.info('Rellene los campos', {
+              position: 'bottom-center',
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "light"
+            }) :  pharmacyStore.addRequestPharmacy('Bolea', pharmacy)
+          }
+       
 
     }
     //funcion temporal para comprobar entrada
@@ -86,7 +112,7 @@ const CreatePharmacy = () => {
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 mt-8">
-                <div className="flex flex-col p-1    relative">
+                <div className="flex flex-col p-1 relative">
 
                     <div className="flex pt-2">
                         <div className='flex w-1/6'>
@@ -119,8 +145,7 @@ const CreatePharmacy = () => {
             <div className="w-full flex flex-1 flex-col mt-5 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input autoFocus placeholder=" " name="pharmacyName" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
+                    <input autoFocus placeholder=" " name="pharmacyName" type="text"  className="inputCamp peer" onChange={(e) => {
                             setPharmacyName(e.currentTarget.value)
                         }} onKeyUp={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -129,14 +154,13 @@ const CreatePharmacy = () => {
                                 }
                             }
                         }} />
-                    <label className={"float-input-lbl"}>Nombre</label>
+                    <label className={"labelFloatInput"}>Nombre</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 mt-3">
                 <div className="flex flex-col p-1 relative  ">
 
-                    <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
+                    <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl"  className="inputCamp peer" onChange={(e) => {
                             setPharmacyWebUrl(e.currentTarget.value)
                         }} onKeyUp={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -145,7 +169,7 @@ const CreatePharmacy = () => {
                                 }
                             }
                         }} />
-                    <label className={"float-input-lbl"}>Pagina Web</label>
+                    <label className={"labelFloatInput"}>Pagina Web</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
@@ -172,8 +196,7 @@ const CreatePharmacy = () => {
                 <div className="flex flex-col p-1 relative">
 
                     <input ref={inputTel} placeholder=" " name="pharmacyTel" type="text" onInput={(e) =>
-                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-                        border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onKeyUp={(e) => {
+                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9}  className="inputCamp peer w-1/4" onKeyUp={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (inputScheSelect.current != null) {
                                     inputScheSelect.current.focus()
@@ -182,14 +205,13 @@ const CreatePharmacy = () => {
                         }} onChange={(e) => {
                             setPharmacyTel(e.currentTarget.value)
                         }} />
-                    <label className={"float-input-lbl"}>Teléfono</label>
+                    <label className={"labelFloatInput"}>Teléfono</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                 <div className="flex flex-col p-1 mt-1 relative">
                     <div className="flex flex-col border-2 rounded-md">
-                        <select ref={inputScheSelect} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md  peer focus:outline-none focus:border-indigo-800" defaultValue="Lunes-Viernes" onChange={(e) => {
+                        <select ref={inputScheSelect} className="inputCamp p-0" defaultValue="Lunes-Viernes" onChange={(e) => {
                                 setPharmacyShcedulSelector(e.target.value)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "NumpadEnter")) {
@@ -205,12 +227,11 @@ const CreatePharmacy = () => {
                             <option value="Lunes-Domingo">Todos los dias.</option>
                             <option value="Otro">Otro horrario.</option>
                         </select>
-                        <label className={"float-date-lbl"}>Horario</label>
+                        <label className={"labelFloatDate"}>Horario</label>
                         <div className="p-3 flex flex-row" >
                             <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
                                 <div className="relative p-2">
-                                    <input ref={inputScheMorn} placeholder=" " name="pharmacyShedulesMorning" type="text" className=" w-full border-2 rounded-md p-1 mr-2 autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-                                                                                peer focus:outline-none focus:border-indigo-800" onKeyDown={(e) => {
+                                    <input ref={inputScheMorn} placeholder=" " name="pharmacyShedulesMorning" type="text" className="w-full p-1 mr-2 inputCamp peer" onKeyDown={(e) => {
                                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                                 if (inputScheEven.current != null) {
                                                     inputScheEven.current.focus()
@@ -219,13 +240,12 @@ const CreatePharmacy = () => {
                                         }} onChange={(e) => {
                                             setPharmacyShcedulMorning(e.target.value)
                                         }} />
-                                    <label className={"float-input-lbl"}>Mañana</label>
+                                    <label className={"labelFloatInput"}>Mañana</label>
                                 </div>
                             </div>
                             <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
                                 <div className="relative p-2">
-                                    <input maxLength={100} ref={inputScheEven} placeholder=" " name="pharmacyShedulesEvening" type="text" className=" w-full border-2 rounded-md p-1 mr-2 autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-                                                                     peer focus:outline-none focus:border-indigo-800" onKeyDown={(e) => {
+                                    <input maxLength={100} ref={inputScheEven} placeholder=" " name="pharmacyShedulesEvening" type="text" className="w-full p-1 mr-2 inputCamp peer" onKeyDown={(e) => {
                                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                                 if (inputScheExtra.current != null) {
                                                     inputScheExtra.current.focus()
@@ -237,13 +257,12 @@ const CreatePharmacy = () => {
 
                                             setPharmacyShcedulEven(e.target.value)
                                         }} />
-                                    <label className={"float-input-lbl"}>Tarde</label>
+                                    <label className={"labelFloatInput"}>Tarde</label>
                                 </div>
                             </div>
                             <div hidden={pharmacyShcedulSelector !== "Otro"} className="  w-full">
                                 <div className="relative p-2 ">
-                                    <input ref={inputScheExtra} placeholder=" " name="pharmacyShedulesExtra" type="text" className="w-full border-2 rounded-md p-1 mr-2 autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           peer focus:outline-none focus:border-indigo-800" onKeyDown={(e) => {
+                                    <input ref={inputScheExtra} placeholder=" " name="pharmacyShedulesExtra" type="text" className="w-full p-1 mr-2 inputCamp peer" onKeyDown={(e) => {
                                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                                 if (txtAreaRef.current != null) {
                                                     txtAreaRef.current.focus()
@@ -252,7 +271,7 @@ const CreatePharmacy = () => {
                                         }} onBlur={(e) => {
                                             setPharmacyShcedulExtra(e.target.value)
                                         }} />
-                                    <label className={"float-input-lbl"}>Otro</label>
+                                    <label className={"labelFloatInput"}>Otro</label>
                                 </div>
                             </div>
                         </div>
@@ -263,8 +282,7 @@ const CreatePharmacy = () => {
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <textarea ref={txtAreaRef} placeholder=" " name="pharmacyDescription" maxLength={495} rows={3} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onKeyDown={(e) => {
+                    <textarea ref={txtAreaRef} placeholder=" " name="pharmacyDescription" maxLength={495} rows={3}  className="inputCamp peer" onKeyDown={(e) => {
                             if ((e.code === "NumpadEnter")) {
                                 if (inputLong.current != null) {
                                     inputLong.current.focus()
@@ -273,15 +291,14 @@ const CreatePharmacy = () => {
                         }} onChange={(e) => {
                             setPharmacyDescption(e.target.value)
                         }} />
-                    <label className={"float-txtArea-lbl"}>Descripción</label>
+                    <label className={"labelFloatTxtArea"}>Descripción</label>
                 </div>
             </div>
 
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onKeyDown={(e) => {
+                    <input ref={inputLong} placeholder=" " type="text" name="pharmacyLong"  className="inputCamp peer" onKeyDown={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (inputLat.current != null) {
                                     inputLat.current.focus()
@@ -290,14 +307,13 @@ const CreatePharmacy = () => {
                         }} onChange={(e) => {
                             setPharmacyLong(e.target.value)
                         }} />
-                    <label className={"float-input-lbl"}>Longitud</label>
+                    <label className={"labelFloatInput"}>Longitud</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onKeyDown={(e) => {
+                    <input ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="inputCamp peer" onKeyDown={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (btnRef.current != null) {
                                     btnRef.current.focus()
@@ -306,14 +322,14 @@ const CreatePharmacy = () => {
                         }} onChange={(e) => {
                             setPharmacyLat(e.target.value)
                         }} />
-                    <label className={"float-input-lbl"}>Latitude</label>
+                    <label className={"labelFloatInput"}>Latitude</label>
                 </div>
             </div>
             <div className="flex m-auto justify-center p-3">
                 <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPharmacy()} onFocus={() => handleScheduleInput()}>Publicar</button>
                 <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
-            <ToastContainer/>
+            <ToastContainer style={{ margin: "30px"}}/>
         </div>
     )
 }

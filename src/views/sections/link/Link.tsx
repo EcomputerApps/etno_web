@@ -26,7 +26,7 @@ const Link = () => {
     }, [pageNumber])
     function editLink(title: string, link: string, pos: number) {
         linkStore.setTitle(title)
-        linkStore.setLink(link)
+        linkStore.setLinkString(link)
         setPosition(pos)
         setModal(true)
     }
@@ -77,7 +77,7 @@ const Link = () => {
                                 <div className="flex flex-wrap md:h-40 h-1/2 max-h-40  border-t-2 border-b-2 p-2 w-full">
                                     <div className="flex flex-col w-full">
                                         <input autoFocus className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getTitle} onChange={(e) => setNewTitle(e.currentTarget.value)}></input>
-                                        <input className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getLink} onChange={(e) => setNewLink(e.currentTarget.value)}></input>
+                                        <input className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getLinkString} onChange={(e) => setNewLink(e.currentTarget.value)}></input>
                                     </div>
                                 </div>
                                 <div className=" absolute flex w-full justify-center bottom-1   ">
@@ -116,7 +116,7 @@ const Link = () => {
                     <img src={arrowRight} alt="forward" />
                 </button>
             </div>
-            <ToastContainer />
+            <ToastContainer style= {{margin:"50px"}}/>
         </div>
     )
 }

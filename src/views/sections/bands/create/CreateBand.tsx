@@ -5,27 +5,33 @@ import { useNavigate } from "react-router-dom"
 import "../../../../index.css"
 import BandStore from '../../../../viewmodels/band/BandsStore';
 import { Band } from "../../../../models/section/Section"
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import { observer } from 'mobx-react-lite';
 
 const bandStore = BandStore.getBandStore()
+interface BandInput {
+  asunto: string,
+  description: string,
+  date: string
+
+}
 
 const CreateBand = () => {
-  const regEx = new RegExp(
-    '^[a-zA-Z0-9_.-]*$'
- );
+
+
   const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
   const [bandType, setBandType] = useState<string>("")
-  const [emptyType, setEmptyType] = useState<boolean>(false)
+
   const [bandDescription, setBandDescription] = useState<string>("")
-  const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
+  
   const [bandPhoto, setBandPhoto] = useState<string>("")
-  const [emptyPhoto, setEmptyPhoto] = useState<boolean>(false)
+
   const [bandDate, setbandDate] = useState<string>("")
-  const [emptyDate, setEmptyDate] = useState<boolean>(false)
+
 
 
   function addBand() {
@@ -35,17 +41,34 @@ const CreateBand = () => {
       issuedDate: bandDate,
       // imageUrl:bandPhoto 
     }
-    bandStore.addRequestBand('Bolea', bando)
-
-  }
-
-  function validateInput(input: string):boolean{
-    if(input.length === 0){
-      return false
-    }if(!regEx.test(input)){
-      return false
+    if (bandStore.getBand.title === bando.title) {
+      toast.info('Ya existe este bando', {
+        position: 'bottom-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light"
+      })
+    } else {
+      bandType === "" || bandDescription === "" || bandDate === "" ?
+        toast.info('Rellene los campos', {
+          position: 'bottom-center',
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light"
+        }) : bandStore.addRequestBand('Bolea', bando)
     }
-    return true
+
+
+
+
   }
 
   function checkState() {
@@ -54,25 +77,7 @@ const CreateBand = () => {
     console.log(bandDescription)
     console.log(bandPhoto)
     console.log(bandDate)
-    if (bandType === "") {
-      setEmptyType(true)
-      validate = false
-    } else setEmptyType(false)
-    if (bandDescription === "") {
-      setEmptyDescription(true)
-      validate = false
-    } else setEmptyDescription(false)
-    if (bandDate === "") {
-      setEmptyDate(true)
-      validate = false
-    } else setEmptyDate(false)
-    if (bandPhoto === "") {
-      setEmptyPhoto(true)
-      validate = false
-    } else setEmptyPhoto(false)
-    if (validate) {
-      navigate("/home")
-    }
+    
 
 
   }
@@ -91,13 +96,13 @@ const CreateBand = () => {
             <p className='flex  text-white text-3xl p-3'>BANDOS</p>
           </div>
         </div>
+
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className=" flex flex-col p-1 mt-5  relative">
-            <input autoFocus placeholder=" " name="bandType" id="test" type="text" required={true}
-              className={`autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 
-          rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800 ${emptyType ? "border-red-600" : ""}`} onChange={(value) => {
+            <input autoFocus placeholder=" "
+              name="bandType" type="text" required={true}
+              className="inputCamp peer" onChange={(value) => {
                 setBandType(value.currentTarget.value)
-
               }} onKeyUp={(e) => {
                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                   if (txtAreaRef.current != null) {
@@ -105,13 +110,14 @@ const CreateBand = () => {
                   }
                 }
               }} />
-            <label className="float-input-lbl">Asunto</label>
+            <label className="labelFloatInput">Asunto</label>
+
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col pl-3 mt-3">
           <div className="flex flex-col p-1  relative">
             <textarea ref={txtAreaRef} placeholder="  " name="bandDescription" rows={3}
-              className={`autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800 ${emptyDescription ? "border-red-600" : ""}`}
+              className="inputCamp peer"
               onChange={(value) => {
                 setBandDescription(value.currentTarget.value)
 
@@ -122,13 +128,13 @@ const CreateBand = () => {
                   }
                 }
               }}></textarea>
-            <label className={"float-txtArea-lbl"}>Descripcíon</label>
+            <label className={"labelFloatTxtArea"}>Descripcíon</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col pl-3 mt-5">
-          <div className="flex flex-col p-1 relative  ">
+          <div className="flex flex-col p-1 relative ">
             <input ref={inputRef} placeholder=" dsdsdsd" type="date" name="bandDate"
-              className={`w-40 border-2 rounded-md peer focus:outline-none focus:border-indigo-800 ${emptyDate ? "border-red-600" : ""} `}
+               className="inputCamp peer w-40"
               onChange={(value) => {
                 setbandDate(value.currentTarget.value)
               }} onKeyDown={(e) => {
@@ -138,17 +144,17 @@ const CreateBand = () => {
                   }
                 }
               }} />
-            <label className={"float-date-lbl"}>Fecha</label>
+            <label className={"labelFloatDate"}>Fecha</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="text-left p-1 ">
-            <div className={`photoBoard ${emptyPhoto ? "border-red-600" : ""} `}>
+            <div className="photoBoard" >
               <div className='absolute left-2'>
                 Fotos
               </div>
               <form id="form-file-upload" className=" w-full flex justify-center ">
-                <input type="file" id="input-file-upload" className={`visibility: hidden ${emptyPhoto ? "border-red-600" : ""}`} size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
+                <input type="file" id="input-file-upload" className="visibility: hidden" max={1} size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
                   setBandPhoto(value.currentTarget.value)
                 }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
@@ -161,13 +167,13 @@ const CreateBand = () => {
             </div>
           </div>
         </div>
-        <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-          <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => { addBand() }}>Publicar</button>
+        <div className="md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
+          <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={addBand}>Publicar</button>
           <button name="bandBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
         </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer style={{ margin: "30px" }} />
     </div>
   )
 }
-export default CreateBand
+export default observer(CreateBand)

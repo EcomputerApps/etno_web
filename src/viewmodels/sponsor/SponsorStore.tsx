@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { PaginatedSponsor, Sponsor } from "../../models/section/Section";
 
 class SposnsorStore {
-    serverIp : string = "192.168.241.51"
+    serverIp: string = "192.168.241.51"
     static sponsorStore: SposnsorStore
 
     static getSponsorStore() {
@@ -15,11 +15,15 @@ class SposnsorStore {
 
     //Observables =>
     paginatedSponsor: PaginatedSponsor = {}
+    sponsor: Sponsor = {}
 
 
     constructor() {
         makeObservable(this, {
             paginatedSponsor: observable,
+            sponsor: observable,
+            updateSponsor: action,
+            getSponsor: computed,
             getRequestSponsor: action,
             addRequestSponsor: action,
             deleteSponsor: action,
@@ -39,6 +43,12 @@ class SposnsorStore {
     get getPaginatedSponsor() {
         return this.paginatedSponsor
     }
+    updateSponsor(sponsor: Sponsor) {
+        this.sponsor = sponsor
+    }
+    get getSponsor() {
+        return this.sponsor
+    }
 
 
     async getRequestSponsor(locality: string, pageNum: number, elementSize: number) {
@@ -48,7 +58,7 @@ class SposnsorStore {
         const sponsor = await response.json()
         this.updatePaginatedSponsor(sponsor)
     }
-    
+
     async deleteSponsor(username: string, title: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/sponsor?username=${username}&title=${title}`, {
             method: 'DELETE',
@@ -56,31 +66,32 @@ class SposnsorStore {
                 'Access-Control-Allow-Origin': '*'
             }
         })
-        if(response.ok){
-        const newSponsors = this.paginatedSponsor.content!.filter((item) => item.title !== title)
-        this.updateSponsorList(newSponsors)
-        toast.success('Se ha borrado exitosamente', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-      })
-    }else{
-        toast.error('No se ha podido borrar', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-      })
-    }
+        if (response.ok) {
+            const newSponsors = this.paginatedSponsor.content!.filter((item) => item.title !== title)
+            this.updateSponsorList(newSponsors)
+            this.updateSponsor({})
+            toast.success('Se ha borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
     }
 
     async addRequestSponsor(username: string, sponsor: Sponsor) {
@@ -93,6 +104,7 @@ class SposnsorStore {
         })
         if (response.ok) {
             this.paginatedSponsor.content?.push(sponsor)
+            this.sponsor = sponsor
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -102,8 +114,8 @@ class SposnsorStore {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
-        }else{
+            })
+        } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -113,9 +125,9 @@ class SposnsorStore {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
+            })
+        }
     }
-}
 
 
 }

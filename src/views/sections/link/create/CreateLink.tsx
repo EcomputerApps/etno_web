@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import logoEtno from '../../../../assets/logo_etno.png';
 import LinkStore from '../../../../viewmodels/link/LinkStore';
 import { Link } from '../../../../models/section/Section';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 const linkStore = LinkStore.getLinkStore()
 
 const CreateLink = () => {
@@ -19,7 +19,31 @@ const CreateLink = () => {
             title: linkTitle,
             url: linkUrl
         }
-        linkStore.addRequestLink('Bolea', link)
+        if (linkStore.getLink.title === link.title) {
+            toast.info('Ya existe este enlace', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            linkTitle === "" || linkUrl === "" ?
+                toast.info('Rellene todos los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                }) : linkStore.addRequestLink('Bolea', link)
+        }
+
     }
 
 
@@ -36,7 +60,7 @@ const CreateLink = () => {
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className=" flex flex-col p-1 mt-5  relative">
                         <input autoFocus placeholder=" " name="bandType" id="test" type="text"
-                            className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onChange={(e) => setLinkTitle(e.currentTarget.value)}
+                             className="inputCamp peer" onChange={(e) => setLinkTitle(e.currentTarget.value)}
                             onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (inputRef.current != null) {
@@ -45,12 +69,12 @@ const CreateLink = () => {
                                 }
                             }}
                         />
-                        <label className={"float-input-lbl"}>Titulo</label>
+                        <label className={"labelFloatInput"}>Titulo</label>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className=" flex flex-col p-1 mt-5  relative">
-                        <input ref={inputRef} placeholder=" " name="bandType" id="test" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onChange={(e) => setLinkUrl(e.currentTarget.value)}
+                        <input ref={inputRef} placeholder=" " name="bandType" id="test" type="text"  className="inputCamp peer" onChange={(e) => setLinkUrl(e.currentTarget.value)}
                             onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (btnRef.current != null) {
@@ -59,7 +83,7 @@ const CreateLink = () => {
                                 }
                             }}
                         />
-                        <label className={"float-input-lbl"}>Pagina Web</label>
+                        <label className={"labelFloatInput"}>Pagina Web</label>
                     </div>
                 </div>
             </div>
@@ -67,7 +91,7 @@ const CreateLink = () => {
                 <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => addLink()}>Publicar</button>
                 <button name="bandBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
-            <ToastContainer/>
+            <ToastContainer style= {{margin:"50px"}} />
         </div>
 
     )
