@@ -72,7 +72,7 @@ const CreateAdvert = () => {
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1 relative mt-5">
-                    <input autoFocus placeholder=" " name="bandType" id="test" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onChange={(value) => {
+                    <input autoFocus placeholder=" " name="bandType" id="test" type="text" className="inputCamp peer" onChange={(value) => {
                         setAdvertTitle(value.currentTarget.value)
                     }} onKeyUp={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -81,13 +81,13 @@ const CreateAdvert = () => {
                             }
                         }
                     }}></input>
-                    <label className={"float-input-lbl"}>Título</label>
+                    <label className={"labelFloatInput"}>Título</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
                     <textarea ref={txtAreaRef} placeholder="  " name="bandDescription" rows={3}
-                        className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(value) => {
+                        className="inputCamp peer" onChange={(value) => {
                             setAdvertDescription(value.currentTarget.value)
                         }} onKeyDown={(e) => {
                             if (e.code === "NumpadEnter") {
@@ -96,7 +96,7 @@ const CreateAdvert = () => {
                                 }
                             }
                         }}></textarea>
-                    <label className={"float-txtArea-lbl"}>Descripcíon</label>
+                    <label className={"labelFloatTxtArea"}>Descripcíon</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
@@ -121,7 +121,7 @@ const CreateAdvert = () => {
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 mt-3">
                 <div className="flex flex-col p-1 relative">
-                    <input ref={inputRef} placeholder=" " name="advertUrl" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(value) => {
+                    <input ref={inputRef} placeholder=" " name="advertUrl" type="text" className="inputCamp peer" onChange={(value) => {
                         setAdvertLink(value.currentTarget.value)
                     }}
                         onKeyDown={(e) => {
@@ -131,7 +131,7 @@ const CreateAdvert = () => {
                                 }
                             }
                         }} ></input>
-                    <label className={"float-input-lbl"}>Enlace</label>
+                    <label className={"labelFloatInput"}>Enlace</label>
                 </div>
             </div>
             <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">

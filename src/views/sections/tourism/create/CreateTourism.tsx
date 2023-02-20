@@ -71,7 +71,7 @@ const CreateTourism = () => {
       </div>
       <div className="w-full flex flex-1 flex-col mt-5 pl-3">
         <div className="flex flex-col p-1 relative">
-          <input autoFocus placeholder=" " name="tourismType" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
+          <input autoFocus placeholder=" " name="tourismType" type="text" className="inputCamp peer" onChange={(e) => {
             setTourismType(e.currentTarget.value)
           }} onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -80,12 +80,12 @@ const CreateTourism = () => {
               }
             }
           }} />
-          <label className={"float-input-lbl"}>Tipo</label>
+          <label className={"labelFloatInput"}>Tipo</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-3 pl-3">
         <div className="flex flex-col p-1 relative">
-          <input ref={inputTitle} placeholder=" " name="tourismTitle" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onKeyUp={(e) => {
+          <input ref={inputTitle} placeholder=" " name="tourismTitle" type="text" className="inputCamp peer" onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (txtAreaRef.current != null) {
                 txtAreaRef.current.focus()
@@ -94,12 +94,12 @@ const CreateTourism = () => {
           }} onChange={(e) => {
             setTourismTitle(e.currentTarget.value)
           }} />
-          <label className="float-input-lbl">Título</label>
+          <label className="labelFloatInput">Título</label>
         </div>
       </div >
       <div className="w-full flex flex-1 flex-col mt-3 pl-3">
         <div className="flex flex-col p-1 relative">
-          <textarea ref={txtAreaRef} placeholder=" " name="tourismDescription" rows={3} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onKeyUp={(e) => {
+          <textarea ref={txtAreaRef} placeholder=" " name="tourismDescription" rows={3} className="inputCamp peer" onKeyUp={(e) => {
             if ((e.code === "NumpadEnter")) {
               if (inputLong.current != null) {
                 inputLong.current.focus()
@@ -108,7 +108,7 @@ const CreateTourism = () => {
           }} onChange={(e) => {
             setTourismDescription(e.currentTarget.value)
           }} />
-          <label className={"float-txtArea-lbl"}>Descripcíon</label>
+          <label className={"labelFloatTxtArea"}>Descripcíon</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
@@ -135,7 +135,7 @@ const CreateTourism = () => {
       <div className="w-full flex flex-1 flex-col mt-3 pl-3">
         <div className="flex flex-col p-1 relative">
 
-          <input ref={inputLong} placeholder=" " type="text" name="tourismLong" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onKeyUp={(e) => {
+          <input ref={inputLong} placeholder=" " type="text" name="tourismLong" className="inputCamp peer" onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (inputLat.current != null) {
                 inputLat.current.focus()
@@ -144,12 +144,12 @@ const CreateTourism = () => {
           }} onChange={(e) => {
             setTourismLong(e.currentTarget.value)
           }} />
-          <label className={"float-input-lbl"}>Longitud</label>
+          <label className={"labelFloatInput"}>Longitud</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-3 pl-3">
         <div className="flex flex-col p-1 relative">
-          <input ref={inputLat} placeholder=" " type="text" name="tourismLat" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] block border-2 rounded-md p-2 w-full peer focus:outline-none focus:border-indigo-800" onKeyUp={(e) => {
+          <input ref={inputLat} placeholder=" " type="text" name="tourismLat" className="inputCamp peer" onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (btnRef.current != null) {
                 btnRef.current.focus()
@@ -158,7 +158,7 @@ const CreateTourism = () => {
           }} onChange={(e) => {
             setTourismLat(e.currentTarget.value)
           }} />
-          <label className={"float-input-lbl"}>Latitud</label>
+          <label className={"labelFloatInput"}>Latitud</label>
         </div>
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">

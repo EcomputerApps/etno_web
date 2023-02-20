@@ -80,8 +80,7 @@ const CreateNews = () => {
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1 mt-5 relative">
-          <input autoFocus placeholder=" " name="newsCategory" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] 
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800 " onChange={(value) => {
+          <input autoFocus placeholder=" " name="newsCategory" type="text" className="inputCamp peer" onChange={(value) => {
               setNewsCategory(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -90,14 +89,13 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"float-input-lbl"}>Categoria</label>
+          <label className={"labelFloatInput"}>Categoria</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1 mt-3 relative">
 
-          <input ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(value) => {
+          <input ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className="inputCamp peer" onChange={(value) => {
               setNewsTitle(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -106,13 +104,12 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"float-input-lbl"}>Titulo</label>
+          <label className={"labelFloatInput"}>Titulo</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-5 pl-3">
         <div className="flex flex-col p-1 mt-3 relative">
-          <input ref={inputRefDate} type="date" name="newsDate" className="w-40 border-2 rounded-md focus:outline-none peer
-           focus:border-indigo-800" onChange={(value) => {
+          <input ref={inputRefDate} type="date" name="newsDate" className="w-40 inputCamp peer" onChange={(value) => {
               setNewsDate(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "NumpadEnter")) {
@@ -121,13 +118,12 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"float-date-lbl"}>Fecha</label>
+          <label className={"labelFloatDate"}>Fecha</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1 relative mt-3">
-          <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3} className="border-2 rounded-md p-2 peer
-           focus:outline-none focus:border-indigo-800 autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]" onChange={(value) => {
+          <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3} className="inputCamp peer" onChange={(value) => {
               setNewsDescription(value.currentTarget.value)
             }} onKeyDown={(e) => {
               if (e.code === "NumpadEnter") {
@@ -136,12 +132,12 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"float-txtArea-lbl"}>Descricíon</label>
+          <label className={"labelFloatTxtArea"}>Descricíon</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1 relative mt-3">
-          <input ref={inputRefLink} placeholder=" " name="newsUrl" type="text" className=" autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(value) => {
+          <input ref={inputRefLink} placeholder=" " name="newsUrl" type="text" className="inputCamp peer" onChange={(value) => {
             setNewstLink(value.currentTarget.value)
           }} onKeyDown={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -150,7 +146,7 @@ const CreateNews = () => {
               }
             }
           }} />
-          <label className={"float-input-lbl"}>Pagina Web</label>
+          <label className={"labelFloatInput"}>Pagina Web</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
