@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { Advert, PaginatedAdvert } from "../../models/section/Section";
 
 class AdvertStore {
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static advertStore: AdvertStore
 
     static getAdvertStore() {
@@ -16,18 +16,22 @@ class AdvertStore {
     //Observables =>
     paginatedAdvert: PaginatedAdvert = {}
     isSuccess: boolean = false
+    advert: Advert = {}
 
     constructor() {
         makeObservable(this, {
             paginatedAdvert: observable,
+            advert: observable,
             isSuccess: observable,
             updateIsSuccess: action,
             updatePaginatedAdverts: action,
+            updateAdvert: action,
             updateAdvertList: action,
             deleteAdvert: action,
             getRequestAdvert: action,
             addRequestAdvert: action,
-            getPaginatedAdverts: computed
+            getPaginatedAdverts: computed,
+            getAdvert: computed
         })
     }
     updatePaginatedAdverts(paginatedAdverts: PaginatedAdvert) {
@@ -39,8 +43,15 @@ class AdvertStore {
     updateIsSuccess(isSuccess: boolean){
         this.isSuccess = isSuccess
     }
+    updateAdvert(advert: Advert){
+        this.advert = advert
+    }
+    
     get getPaginatedAdverts() {
         return this.paginatedAdvert
+    }
+    get getAdvert(){
+        return this.advert
     }
 
     async addRequestAdvert(locality: string, ad: Advert){
@@ -53,9 +64,10 @@ class AdvertStore {
         })
         if(response.ok){
             this.paginatedAdvert.content?.push(ad)
+            this.advert = ad
             toast.success('Se ha añadido exitosamente', {
                 position: 'top-center',
-                autoClose: 1000,
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -96,9 +108,10 @@ class AdvertStore {
         if(response.ok){
             const paginatedAdverts = this.paginatedAdvert.content!!.filter((item) => item.title !== title)
             this.updateAdvertList(paginatedAdverts)
+            this.updateAdvert({})
             toast.success('Se ha borrado exitosamente', {
                 position: 'top-center',
-                autoClose: 500,
+                autoClose: 100,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -119,6 +132,5 @@ class AdvertStore {
           })
         }
     }
-
 }
 export default AdvertStore

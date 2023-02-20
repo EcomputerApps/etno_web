@@ -4,7 +4,7 @@ import { Event, PaginatedEvent} from "../../models/section/Section";
 
 class EventStore {
     static eventStore: EventStore
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
 
     static getEventStore(){
         if(this.eventStore === undefined){
@@ -15,17 +15,19 @@ class EventStore {
     
     //Observables =>
     paginatedEvent: PaginatedEvent = { }
+    event: Event = {}
    
-    
     constructor(){
         makeObservable(this, {
             paginatedEvent: observable,
+            event: observable,
             getRequestEvents: action,
             updatePaginatedEvents: action,
             updateEventList: action,
+            updateEvent: action,
             deleteEvent: action,
-            getPaginatedEvents: computed
-           
+            getPaginatedEvents: computed,
+            getEvent: computed
         })
     }
     
@@ -39,9 +41,10 @@ class EventStore {
         })
         if(response.ok){
             this.paginatedEvent.content?.push(event)
+            this.event = event
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
-                autoClose: 500,
+                autoClose: 100,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -76,10 +79,16 @@ class EventStore {
    updateEventList(events: Event[]){
     this.paginatedEvent.content = events
    }
+   updateEvent(event: Event){
+    this.event = event
+   }
+
    get getPaginatedEvents(){
     return this.paginatedEvent
    }
-
+   get getEvent(){
+    return this.event
+   }
 
    async deleteEvent(username: string, title: string){
     const response = await fetch(`http://${this.serverIp}:8080/users/delete/event?username=${username}&title=${title}`, {
@@ -92,9 +101,10 @@ class EventStore {
     if(response.ok){
         const newPaginatedEvents = this.paginatedEvent.content!!.filter((item)=> item.title !== title)
         this.updateEventList(newPaginatedEvents)
+        this.updateEvent({})
         toast.success('Se ha eliminado exitosamente', {
             position: 'top-center',
-            autoClose: 1000,
+            autoClose: 100,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
@@ -105,7 +115,7 @@ class EventStore {
     }else{
         toast.error('No se ha eliminado exitosamente', {
             position: 'top-center',
-            autoClose: 1000,
+            autoClose: 500,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,

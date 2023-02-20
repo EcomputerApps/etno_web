@@ -236,5 +236,6 @@ export type {
     Necrologue, Sponsor, PaginatedEvent, PaginatedAdvert,
     PaginatedNews, PaginatedTourism, PaginatedBand,
     PaginatedPharmacy, PaginatedService, PaginatedSponsor,
-    PaginatedNecro, PaginatedIncident, PaginatedLink
+    PaginatedNecro, PaginatedIncident, PaginatedLink,
+    Image
 }

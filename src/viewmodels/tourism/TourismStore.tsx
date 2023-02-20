@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { Tourism , PaginatedTourism} from "../../models/section/Section";
 
 class TourismStore{
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static tourismStore: TourismStore
 
     static getTourismStore(){
@@ -15,16 +15,20 @@ class TourismStore{
 
     //Observables =>
     paginatedTourism : PaginatedTourism = {}
+    tourism: Tourism = {}
     
     constructor(){
         makeObservable(this, {
             paginatedTourism: observable,
+            tourism: observable,
             addRequestTourism: action,
             getRequestTourism: action,
             deleteTourism: action,
             updateTourismList: action,
             updatePaginatedTourism: action,
-            getPaginatedTourism : computed
+            updateTourism: action,
+            getPaginatedTourism : computed,
+            getTourism: computed
         })
     }
     updateTourismList(tourism: Tourism[]){
@@ -35,8 +39,15 @@ class TourismStore{
         this.paginatedTourism = paginatedTourism
     }
 
+    updateTourism(tourism: Tourism) {
+        this.tourism = tourism
+    }
+
     get getPaginatedTourism(){
         return this.paginatedTourism
+    }
+    get getTourism(){
+        return this.tourism
     }
 
     async addRequestTourism(locality: string, tourism: Tourism){
@@ -49,9 +60,10 @@ class TourismStore{
         })
         if(response.ok){
             this.paginatedTourism.content?.push(tourism)
+            this.tourism = tourism
             toast.success('Se ha añadido exitosamente', {
                 position: 'top-center',
-                autoClose: 500,
+                autoClose: 100,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -92,9 +104,10 @@ class TourismStore{
         if(response.ok){
             const newPaginatedTourism = this.paginatedTourism.content!!.filter((item) => item.title !== title)
             this.updateTourismList(newPaginatedTourism)
+            this.updateTourism({})
             toast.success('Se ha eliminado exitosamente', {
                 position: 'top-center',
-                autoClose: 500,
+                autoClose: 100,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,

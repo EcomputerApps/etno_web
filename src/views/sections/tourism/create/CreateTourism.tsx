@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { ToastContainer } from "react-toastify"
+import { toast, ToastContainer } from "react-toastify"
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
@@ -34,7 +34,30 @@ const CreateTourism = () => {
         longitude: tourismLong,
         latitude: tourismLat
       }
-      tourismStore.addRequestTourism('Bolea', tourism)
+      if(tourismStore.getTourism.title === tourism.title){
+        toast.info('Ya existe este turismo', {
+          position: 'top-center',
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light"
+        })
+      } else {
+        tourismType === '' || tourism.title === '' || tourism.description === '' || tourismLong === '' || tourismLat === '' ? 
+        toast.info('Rellene los campos vacíos', {
+          position: 'top-center',
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light'
+        }) : tourismStore.addRequestTourism('Bolea', tourism)
+      }
   }
 
   return (

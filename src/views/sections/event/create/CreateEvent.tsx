@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Event } from '../../../../models/section/Section';
 
 import EventStore from '../../../../viewmodels/Event/EventStore';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 const eventStore = EventStore.getEventStore()
 
 const CreateEvent = () => {
@@ -33,7 +33,6 @@ const CreateEvent = () => {
   const [eventDateStart, setEventDateStart] = useState<string>("")
   const [eventDateFin, setEventDateFin] = useState<string>("")
 
-  //funcion temporal para comprobar  datos  que guardamos con consol.log
   function addEvent() {
     const event: Event = {
       title: eventTitle,
@@ -46,7 +45,31 @@ const CreateEvent = () => {
       startDate: eventDateStart,
       endDate: eventDateFin
     }
-    eventStore.addRequestEvent('Bolea', event)
+    if(eventStore.getEvent.title === event.title){
+      toast.info('Ya existe este evento', {
+        position: 'top-center',
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'light'
+      })
+    } else {
+      eventTitle === '' || eventDirection === '' || eventDescription === '' || eventOrganization === '' || eventPrice === '' || eventSeats === '' || eventLink === '' || eventDateStart === '' || eventDateFin === '' ?
+
+      toast.info('Rellene los campos vacíos', {
+        position: 'top-center',
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'light'
+      }) : eventStore.addRequestEvent('Bolea', event)
+    }
   }
   const navigate = useNavigate()
 

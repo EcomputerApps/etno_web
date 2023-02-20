@@ -1,6 +1,8 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { News, PaginatedNews } from "../../models/section/Section";
+import ImageStore from "../image/ImageStore";
+const imageStore = ImageStore.getImageStore()
 
 class NewsStore{
     serverIp : string = "192.168.137.1"
@@ -17,7 +19,6 @@ class NewsStore{
        paginatedNews : PaginatedNews = {}
        news: News = {}
       
-
     constructor(){
         makeObservable(this, {
             paginatedNews : observable,
@@ -49,7 +50,11 @@ class NewsStore{
         return this.news
      }
 
-    async addRequestNews(locality: String, news: News){
+    async addRequestNews(locality: String, news: News, file: File){
+        await imageStore.addImageAPI('Bolea', 'noticia', 'noticia', file!!)
+        
+        news.imageUrl = imageStore.getImage.link
+
         const response = await fetch(`http://${this.serverIp}:8080/users/add/news?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(news),
@@ -108,7 +113,7 @@ class NewsStore{
             this.updateNews({})
             toast.success('Se ha borrado exitosamente', {
                 position: 'top-center',
-                autoClose: 500,
+                autoClose: 100,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,

@@ -26,6 +26,7 @@ const CreateNews = () => {
   const [newsDescription, setNewsDescription] = useState<string>("")
   const [newsLink, setNewstLink] = useState<string>("")
   const [newsPhoto, setNewsPhoto] = useState<string>("")
+  const [file, setFile] = useState<File>()
 
   useEffect(() => {
       newsStore.getRequestNews('Bolea', 0, 5)
@@ -38,7 +39,34 @@ const CreateNews = () => {
         description: newsDescription,
         publicationDate: newsDate
     } 
-    newsStore.addRequestNews('Bolea', news)
+    
+    if(newsStore.getNews.title === news.title){
+      toast.info('Ya existe esta noticia', {
+        position: 'top-center',
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light"
+    })
+    }else{
+        if(newsCategory === '' || newsTitle === '' || newsDate === '' || newsLink === ''){
+          toast.info('Rellene los campos', {
+            position: 'top-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+        })
+        } else {
+          newsStore.addRequestNews('Bolea', news, file!!)
+        }
+    }
   }
 
   return (
@@ -133,7 +161,7 @@ const CreateNews = () => {
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center ">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
-                setNewsPhoto(value.currentTarget.value)
+                setFile(value.currentTarget.files!![0])
               }} />
               <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                 <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

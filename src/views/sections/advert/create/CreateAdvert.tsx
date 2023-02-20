@@ -1,6 +1,6 @@
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../../../../index.css"
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,6 +8,7 @@ import { Advert } from '../../../../models/section/Section'
 
 import AdvertStore from '../../../../viewmodels/advert/AdvertStore'
 import { toast, ToastContainer } from 'react-toastify'
+import { observer } from 'mobx-react-lite'
 const advertStore = AdvertStore.getAdvertStore()
 
 const CreateAdvert = () => {
@@ -21,14 +22,43 @@ const CreateAdvert = () => {
     const [advertPhoto, setAdvertPhoto] = useState<string>("")
     const [advertLink, setAdvertLink] = useState<string>("")
 
-    //funcion temporal para comprobar  datos  que guardamos con consol.log
-   async function addAd() {
+    const [file, setFile] = useState<File>()
+
+
+    useEffect(() => {
+        console.log(file)
+    }, [file])
+
+    function addAd() {
        const ad: Advert = {
         title: advertTitle,
         description: advertDescription,
         webUrl: advertLink
        }
-      await advertStore.addRequestAdvert('Bolea', ad)
+       if(advertStore.getAdvert.title === ad.title){
+        toast.info('Ya existe este anuncio', {
+            position: 'top-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+        })
+       } else {
+        advertTitle === '' || advertDescription === '' || advertLink === '' ?
+        toast.info('Rellene los campos', {
+            position: 'top-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+        }) : advertStore.addRequestAdvert('Bolea', ad) 
+       }
     }
 
     return (
@@ -77,7 +107,7 @@ const CreateAdvert = () => {
                         </div>
                         <form id="form-file-upload" className=" w-full flex justify-center">
                             <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
-                                setAdvertPhoto(value.currentTarget.value)
+                                setFile(value.currentTarget.files!![0])
                             }} />
                             <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                 <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
@@ -115,4 +145,4 @@ const CreateAdvert = () => {
     )
 }
 
-export default CreateAdvert
+export default observer(CreateAdvert)
