@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { News, PaginatedNews } from "../../models/section/Section";
 
 class NewsStore{
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static newsStore : NewsStore
 
     static getNewsStore(){
@@ -15,16 +15,20 @@ class NewsStore{
 
        //Observables =>
        paginatedNews : PaginatedNews = {}
+       news: News = {}
       
 
     constructor(){
         makeObservable(this, {
             paginatedNews : observable,
+            news: observable,
             getRequestNews : action,
+            getNews: computed,
             addRequestNews: action,
             deleteNews : action,
             updateNewsList: action,
             updatePaginatedNews: action,
+            updateNews: action,
             getPaginatedNews: computed
         })
     }
@@ -35,9 +39,15 @@ class NewsStore{
     updatePaginatedNews( pagiantedNews: PaginatedNews){
         this.paginatedNews = pagiantedNews
     }
+    updateNews(news: News){
+        this.news = news
+    }
      get getPaginatedNews(){
         return this.paginatedNews
     }
+     get getNews(){
+        return this.news
+     }
 
     async addRequestNews(locality: String, news: News){
         const response = await fetch(`http://${this.serverIp}:8080/users/add/news?username=${locality}`, {
@@ -50,6 +60,7 @@ class NewsStore{
         )
         if(response.ok){
             this.paginatedNews.content?.push(news)
+            this.news = news
             toast.success('Se ha añadido exitosamente', {
                 position: 'top-center',
                 autoClose: 500,
@@ -94,6 +105,7 @@ class NewsStore{
         if(response.ok){
             const newPaginatedNews = this.paginatedNews.content!!.filter((item)=>item.title !== title)
             this.updateNewsList(newPaginatedNews)
+            this.updateNews({})
             toast.success('Se ha borrado exitosamente', {
                 position: 'top-center',
                 autoClose: 500,
@@ -118,5 +130,4 @@ class NewsStore{
         }
     }
 }
-
 export default NewsStore
