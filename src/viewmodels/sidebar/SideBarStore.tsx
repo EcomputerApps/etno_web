@@ -21,7 +21,7 @@ class SideBarStore{
         {title: 'Turismo', src: "tourism.svg"},
         {title: 'Eventos', src: "event.svg", gap: true },
         {title: 'Bandos', src: "bando.svg"},
-        {title: 'Framacias', src: "pharmacy.svg"},
+        {title: 'Farmacias', src: "pharmacy.svg"},
         {title: 'Servicios', src: "service.svg", gap: true},
         {title: 'Patrocinadores', src: "sponsor.svg" },
         {title: 'Fallecimientos', src: "death.svg"},

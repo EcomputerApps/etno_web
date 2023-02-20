@@ -1,6 +1,8 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { toast } from "react-toastify";
 import { PaginatedService, Service } from "../../models/section/Section";
+import ImageStore from "../image/ImageStore";
+const imageStore = ImageStore.getImageStore()
 
 class ServiceStore {
     serverIp : string = "192.168.137.1"
@@ -92,7 +94,9 @@ class ServiceStore {
         }
     }
 
-    async addRequestService(username: string, service: Service) {
+    async addRequestService(username: string, service: Service, file: File) {
+        await imageStore.addImageAPI('Bolea', 'servicio', 'servicio', file)
+        service.imageUrl = imageStore.getImage.link
         const response = await fetch(`http://${this.serverIp}:8080/users/add/service?username=${username}`, {
             method: 'POST',
             headers: {

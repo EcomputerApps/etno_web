@@ -39,7 +39,7 @@ const Home = () => {
       case 'Eventos': return <Event />
       case 'Turismo': return <Tourism />
       case 'Bandos': return <Band />
-      case 'Framacias': return <Pharmacy />
+      case 'Farmacias': return <Pharmacy />
       case 'Servicios': return <Service />
       case 'Patrocinadores': return <Sponsor />
       case 'Noticias': return <News />  

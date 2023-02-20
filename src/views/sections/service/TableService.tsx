@@ -43,7 +43,7 @@ const TableService = (prop: PropTable) => {
                         </td>
                         <td className="px-6 py-4 text-center">
                         <div className="tableCamp">
-                            {service.phoneNumber}
+                            {service.number}
                             </div>
                         </td>
                         <td className="px-6 py-4 text-center ">
@@ -58,7 +58,7 @@ const TableService = (prop: PropTable) => {
                         </td>
                         <td className="px-6 py-4 text-center">
                         <div className="tableCamp">
-                            {service.urlWeb}
+                            {service.webUrl}
                             </div>
                         </td>
                                       

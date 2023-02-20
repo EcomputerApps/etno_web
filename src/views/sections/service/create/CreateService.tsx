@@ -71,6 +71,8 @@ const CreateService = () => {
     const [serviceShcedulExtra, setServiceShcedulExtra] = useState<string>("")
     const [serviceSchedule, setServiceSchedule] = useState<string>("")
 
+    const [file, setFile] = useState<File>()
+
     function handleScheduleInput() {
         if (serviceShcedulSelector === "Otro") {
             setServiceSchedule(serviceShcedulExtra)
@@ -79,14 +81,13 @@ const CreateService = () => {
         }
     }
 
-
     function addService() {
         const service: Service = {
             category: serviceType,
             owner: serviceName,
             description: serviceDescription,
-            urlWeb: serviceWebUrl,
-            phoneNumber: serviceTel,
+            webUrl: serviceWebUrl,
+            number: serviceTel,
             schedule: serviceSchedule,
             // imageUrl: servicePhoto
         }
@@ -114,7 +115,7 @@ const CreateService = () => {
                     draggable: true,
                     progress: undefined,
                     theme: "light"
-                }) : serviceStore.addRequestService('Bolea', service)
+                }) : serviceStore.addRequestService('Bolea', service, file!!)
         }
 
     }
@@ -283,7 +284,7 @@ const CreateService = () => {
                             </div>
                             <form id="form-file-upload" className=" w-full flex justify-center">
                                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
-                                    setServicePhoto(e.currentTarget.value)
+                                    setFile(e.currentTarget.files!![0])
                                 }} />
                                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                     <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

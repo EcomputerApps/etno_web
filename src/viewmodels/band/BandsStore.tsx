@@ -30,8 +30,7 @@ class BandStore {
             deleteBand: action,
             updateBandList: action,
             updatePaginatedBand: action,
-            getPaginatedBands: computed,
-
+            getPaginatedBands: computed
         })
     }
 

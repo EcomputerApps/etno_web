@@ -37,6 +37,8 @@ const CreatePharmacy = () => {
     const [pharmacyLat, setPharmacyLat] = useState<string>("")
     const [pharmacySchedule, setPharmacySchedule] = useState<string>("")
 
+    const [file, setFile] = useState<File>()
+
     function handleScheduleInput() {
         if (pharmacyShcedulSelector === "Otro") {
             setPharmacySchedule(pharmacyShcedulExtra)
@@ -82,27 +84,10 @@ const CreatePharmacy = () => {
               draggable: true,
               progress: undefined,
               theme: "light"
-            }) :  pharmacyStore.addRequestPharmacy('Bolea', pharmacy)
+            }) :  pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
           }
-       
-
     }
-    //funcion temporal para comprobar entrada
-    function checkState() {
-        console.log(pharmacyName)
-        console.log(pharmacyWebUrl)
-        console.log(pharmacyPhoto)
-        console.log(pharmacyTel)
-        console.log(pharmType)
-        console.log(pharmacyShcedulSelector)
-        console.log(pharmacyShcedulMorning)
-        console.log(pharmacyShcedulEven)
-        console.log(pharmacyShcedulExtra)
-        console.log(pharmacyDescption)
-        console.log(pharmacyLong)
-        console.log(pharmacyLat)
-    }
-
+  
     return (
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
@@ -180,7 +165,7 @@ const CreatePharmacy = () => {
                         </div>
                         <form id="form-file-upload" className=" w-full flex justify-center">
                             <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
-                                setPharmacyPhoto(e.currentTarget.value)
+                                setFile(e.currentTarget.files!![0])
                             }} />
                             <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                 <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

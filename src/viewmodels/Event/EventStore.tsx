@@ -6,7 +6,7 @@ const imageStore = ImageStore.getImageStore()
 
 class EventStore {
     static eventStore: EventStore
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
 
     static getEventStore(){
         if(this.eventStore === undefined){
@@ -35,9 +35,7 @@ class EventStore {
     
     async addRequestEvent(locality: string, event: Event, file : File){
        await imageStore.addImageAPI('Bolea','evento', 'evento', file!!)
-
        event.imageUrl = imageStore.getImage.link
-       
         const response = await fetch(`http://${this.serverIp}:8080/users/add/event?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(event),
