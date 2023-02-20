@@ -24,6 +24,7 @@ const CreateTourism = () => {
   const [tourismPhoto, setTourismPhoto] = useState<string>("")
   const [tourismLong, setTourismLong] = useState<string>("")
   const [tourismLat, setTourismLat] = useState<string>("")
+  const [file, setFile] = useState<File>()
 
   //funcion temporal para comprobar entrada
   function addTourism() {
@@ -56,7 +57,7 @@ const CreateTourism = () => {
           draggable: true,
           progress: undefined,
           theme: 'light'
-        }) : tourismStore.addRequestTourism('Bolea', tourism)
+        }) : tourismStore.addRequestTourism('Bolea', tourism, file!!)
       }
   }
 
@@ -119,7 +120,7 @@ const CreateTourism = () => {
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
-                setTourismPhoto(e.currentTarget.value)
+                setFile(e.currentTarget.files!![0])
               }} />
               <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                 <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

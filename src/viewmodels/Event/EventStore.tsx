@@ -1,10 +1,12 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Event, PaginatedEvent} from "../../models/section/Section";
+import ImageStore from "../image/ImageStore";
+const imageStore = ImageStore.getImageStore()
 
 class EventStore {
     static eventStore: EventStore
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
 
     static getEventStore(){
         if(this.eventStore === undefined){
@@ -31,7 +33,11 @@ class EventStore {
         })
     }
     
-    async addRequestEvent(locality: string, event: Event){
+    async addRequestEvent(locality: string, event: Event, file : File){
+       await imageStore.addImageAPI('Bolea','evento', 'evento', file!!)
+
+       event.imageUrl = imageStore.getImage.link
+       
         const response = await fetch(`http://${this.serverIp}:8080/users/add/event?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(event),

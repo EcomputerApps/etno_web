@@ -32,6 +32,7 @@ const CreateEvent = () => {
   const [eventPhoto, setEventPhoto] = useState<string>("")
   const [eventDateStart, setEventDateStart] = useState<string>("")
   const [eventDateFin, setEventDateFin] = useState<string>("")
+  const [file, setFile] = useState<File>()
 
   function addEvent() {
     const event: Event = {
@@ -68,7 +69,7 @@ const CreateEvent = () => {
         draggable: true,
         progress: undefined,
         theme: 'light'
-      }) : eventStore.addRequestEvent('Bolea', event)
+      }) : eventStore.addRequestEvent('Bolea', event, file!!)
     }
   }
   const navigate = useNavigate()
@@ -188,7 +189,7 @@ const CreateEvent = () => {
                 </div>
                 <form id="form-file-upload" className=" w-full flex justify-center">
                   <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
-                    setEventPhoto(value.currentTarget.value)
+                    setFile(value.currentTarget.files!![0])
                   }} />
                   <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                     <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

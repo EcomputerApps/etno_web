@@ -1,9 +1,11 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Advert, PaginatedAdvert } from "../../models/section/Section";
+import ImageStore from "../image/ImageStore";
+const imageStore = ImageStore.getImageStore()
 
 class AdvertStore {
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
     static advertStore: AdvertStore
 
     static getAdvertStore() {
@@ -54,7 +56,11 @@ class AdvertStore {
         return this.advert
     }
 
-    async addRequestAdvert(locality: string, ad: Advert){
+    async addRequestAdvert(locality: string, ad: Advert, file: File){
+        await imageStore.addImageAPI('Bolea', 'anuncio', 'anuncio', file!!)
+
+        this.advert.imageUrl = imageStore.getImage.link
+
         const response = await fetch(`http://${this.serverIp}:8080/users/add/ad?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(ad),

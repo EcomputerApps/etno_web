@@ -42,7 +42,7 @@ const TableTourism = (prop: PropTable) => {
                                 </div>
                             </td>
                             <td className="px-6 py-4 text-center">
-                            <div className="tableCamp overflow-y-auto items-start min-w-full">
+                            <div className="tableCamp overflow-y-auto  min-w-full">
                                 {tourism.description}
                                 </div>
                             </td>

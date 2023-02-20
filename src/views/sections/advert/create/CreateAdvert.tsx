@@ -9,10 +9,12 @@ import { Advert } from '../../../../models/section/Section'
 import AdvertStore from '../../../../viewmodels/advert/AdvertStore'
 import { toast, ToastContainer } from 'react-toastify'
 import { observer } from 'mobx-react-lite'
+
 const advertStore = AdvertStore.getAdvertStore()
 
 const CreateAdvert = () => {
     const navigate = useNavigate()
+
     const inputRef = useRef<HTMLInputElement>(null)
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
@@ -21,13 +23,12 @@ const CreateAdvert = () => {
     const [advertDescription, setAdvertDescription] = useState<string>("")
     const [advertPhoto, setAdvertPhoto] = useState<string>("")
     const [advertLink, setAdvertLink] = useState<string>("")
-
     const [file, setFile] = useState<File>()
 
 
     useEffect(() => {
-        console.log(file)
-    }, [file])
+       advertStore.getRequestAdvert('Bolea', 0, 5)
+    }, [])
 
     function addAd() {
        const ad: Advert = {
@@ -57,7 +58,7 @@ const CreateAdvert = () => {
             draggable: true,
             progress: undefined,
             theme: "light"
-        }) : advertStore.addRequestAdvert('Bolea', ad) 
+        }) : advertStore.addRequestAdvert('Bolea', ad, file!!) 
        }
     }
 

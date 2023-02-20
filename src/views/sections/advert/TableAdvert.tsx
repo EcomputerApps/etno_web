@@ -40,7 +40,7 @@ const TableAdvert = (prop: PropTable) => {
                                 </div>
                             </th>
                             <td className="px-6 py-4 ">
-                            <div className="tableCamp overflow-y-auto items-start min-w-full">
+                            <div className="tableCamp overflow-y-auto  min-w-full">
                                 {advert.description}
                                 </div>
                             </td>

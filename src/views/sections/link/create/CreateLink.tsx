@@ -4,7 +4,15 @@ import logoEtno from '../../../../assets/logo_etno.png';
 import LinkStore from '../../../../viewmodels/link/LinkStore';
 import { Link } from '../../../../models/section/Section';
 import { toast, ToastContainer } from 'react-toastify';
+import { useForm, SubmitHandler } from "react-hook-form";
+
+
 const linkStore = LinkStore.getLinkStore()
+
+interface LinkInput {
+    title: string;
+    url: string;
+}
 
 const CreateLink = () => {
     const navigate = useNavigate()
@@ -48,7 +56,6 @@ const CreateLink = () => {
 
 
     return (
-
         <div className="flex flex-col h-screen md:m-auto w-full md:w-1/2 border-2 rounded-md relative   " >
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">

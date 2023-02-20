@@ -1,9 +1,11 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Tourism , PaginatedTourism} from "../../models/section/Section";
+import ImageStore from "../image/ImageStore";
+const imageStore = ImageStore.getImageStore()
 
 class TourismStore{
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
     static tourismStore: TourismStore
 
     static getTourismStore(){
@@ -50,7 +52,11 @@ class TourismStore{
         return this.tourism
     }
 
-    async addRequestTourism(locality: string, tourism: Tourism){
+    async addRequestTourism(locality: string, tourism: Tourism, file: File){
+        await imageStore.addImageAPI('Bolea', 'turismo', 'turismo', file!!)
+
+        tourism.imageUrl = imageStore.getImage.link
+        
         const response = await fetch(`http://${this.serverIp}:8080/users/add/tourism?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(tourism),

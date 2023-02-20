@@ -21,9 +21,9 @@ const TableNews = (prop: PropTable) => {
                     <tr>
                         {prop.headerList.map((item, index) => (
                             <th key={index} scope="col" className="px-6 py-3">
-                                  <div className="min-w-max">
-                            {item}
-                            </div> 
+                                <div className="min-w-max">
+                                    {item}
+                                </div>
                             </th>
                         ))}
                     </tr>
@@ -50,13 +50,13 @@ const TableNews = (prop: PropTable) => {
                                 </div>
                             </td>
                             <td className="px-6 py-4">
-                            <div className="tableCamp overflow-y-auto items-start min-w-full">
-                                        {news.description}
+                                <div className="tableCamp overflow-y-auto  min-w-full">
+                                    {news.description}
 
                                 </div>
                             </td>
-                            <td className="px-6 py-4">
-                                <div className="h-20 flex items-center justify-cente">
+                            <td className="px-6 py-4 flex items-center justify-center ">
+                                <div className="h-20 flex items-center justify-center">
                                     <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
                                     <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteNews(news.title!!)}>Eliminar</a>
                                 </div>
@@ -65,7 +65,7 @@ const TableNews = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
-            <ToastContainer/>
+            <ToastContainer />
         </div>
     )
 
