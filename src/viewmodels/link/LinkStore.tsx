@@ -1,7 +1,9 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Link, PaginatedLink } from "../../models/section/Section";
+import ImageStore from "../image/ImageStore";
 
+const imageStore = ImageStore.getImageStore()
 
 class LinkStore {
     serverIp: string = "192.168.137.1"

@@ -1,6 +1,9 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { PaginatedSponsor, Sponsor } from "../../models/section/Section";
+import ImageStore from "../image/ImageStore";
+
+const imageStore = ImageStore.getImageStore()
 
 class SposnsorStore {
     serverIp : string = "192.168.137.1"
@@ -94,7 +97,9 @@ class SposnsorStore {
         }
     }
 
-    async addRequestSponsor(username: string, sponsor: Sponsor) {
+    async addRequestSponsor(username: string, sponsor: Sponsor, file: File) {
+        await imageStore.addImageAPI('Bolea', 'patrocinador', 'patrocinador', file)
+        sponsor.imageUrl = imageStore.getImage.link
         const response = await fetch(`http://${this.serverIp}:8080/users/add/sponsor?username=${username}`, {
             method: 'POST',
             headers: {

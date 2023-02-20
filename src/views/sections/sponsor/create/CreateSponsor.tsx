@@ -19,6 +19,7 @@ const CreateSponsor = () => {
   const [sponsorDescription, setSponsorDescription] = useState<string>("")
   const [sponsorPhoto, setSponsorPhoto] = useState<string>("")
   const [sponsorTel, setSponsorTel] = useState<string>("")
+  const [file, setFile] = useState<File>()
 
 function addSposor(){
   const sponsor : Sponsor ={
@@ -50,7 +51,7 @@ function addSposor(){
             draggable: true,
             progress: undefined,
             theme: "light"
-        }) : sponsorStore.addRequestSponsor('Bolea', sponsor)
+        }) : sponsorStore.addRequestSponsor('Bolea', sponsor, file!!)
 }
   
 }
@@ -125,7 +126,7 @@ function addSposor(){
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
-                setSponsorPhoto(e.currentTarget.value)
+                setFile(e.currentTarget.files!![0])
               }} />
               <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                 <div className="flex m-auto flex-col items-center font-normal text-gray-400 text-xl">

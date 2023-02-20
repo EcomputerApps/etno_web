@@ -1,6 +1,9 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Necrologue, PaginatedNecro } from "../../models/section/Section";
+import ImageStore from "../image/ImageStore";
+
+const imageStore = ImageStore.getImageStore()
 
 class NecrologueStore{
     serverIp : string = "192.168.137.1"
@@ -91,7 +94,9 @@ class NecrologueStore{
         }
     }
 
-    async addRequestNecro(username: string, necrologue: Necrologue) {
+    async addRequestNecro(username: string, necrologue: Necrologue, file: File) {
+        await imageStore.addImageAPI('Bolea', 'muerte', 'muerte', file)
+        necrologue.imageUrl = imageStore.getImage.link
         const response = await fetch(`http://${this.serverIp}:8080/users/add/death?username=${username}`, {
             method: 'POST',
             headers: {

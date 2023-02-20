@@ -20,6 +20,7 @@ const CreateNecrologue = () => {
   const [necroDate, setNecroDate] = useState<string>("")
   const [necroDescription, setNecroDescription] = useState<string>("")
   const [necroPhoto, setNecroPhoto] = useState<string>("")
+  const [file, setFile] = useState<File>()
 
   function addNecrologue() {
     const necro: Necrologue = {
@@ -50,7 +51,7 @@ const CreateNecrologue = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) : necroStore.addRequestNecro('Bolea', necro)
+        }) : necroStore.addRequestNecro('Bolea', necro, file!!)
     }
 
   }
@@ -117,7 +118,7 @@ const CreateNecrologue = () => {
               </div>
               <form id="form-file-upload" className=" w-full flex justify-center">
                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
-                  setNecroPhoto(value.currentTarget.value)
+                  setFile(value.currentTarget.files!![0])
                 }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                   <div className="flex m-auto flex-col items-center font-normal text-gray-400 text-xl">
