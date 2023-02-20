@@ -1,3 +1,4 @@
+
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Band, PaginatedBand } from "../../models/section/Section";
@@ -14,10 +15,14 @@ class BandStore {
     }
     //Observables =>
     paginatedBand: PaginatedBand = {}
+    band : Band = {}
 
     constructor() {
         makeObservable(this, {
             paginatedBand: observable,
+            band : observable,
+            updateBand : action,
+            getBand : computed,
             addRequestBand: action,
             getRequestBand: action,
             deleteBand: action,
@@ -37,6 +42,12 @@ class BandStore {
     get getPaginatedBands() {
         return this.paginatedBand
     }
+    updateBand(band : Band){
+        this.band = band
+    }
+    get getBand(){
+        return this.band
+    }
 
     async getRequestBand(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/bandos?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
@@ -55,9 +66,10 @@ class BandStore {
         if(response.ok){
         const newPaginatedBands = this.paginatedBand.content!!.filter((item) => item.title !== title)
         this.updateBandList(newPaginatedBands)
+        this.updateBand({})
         toast.success('Se ha borrado exitosamente', {
             position: 'bottom-center',
-            autoClose: 500,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
@@ -68,7 +80,7 @@ class BandStore {
     }else{
         toast.error('No se ha podido borrar', {
             position: 'bottom-center',
-            autoClose: 500,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
@@ -88,9 +100,10 @@ class BandStore {
         })
         if (response.ok) {
             this.paginatedBand.content?.push(bando)
+            this.band = bando
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
-                autoClose: 500,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -101,7 +114,7 @@ class BandStore {
         }else{
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
-                autoClose: 500,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,

@@ -7,20 +7,23 @@
    hover:bg-indigo-600 hover:shadow-md focus:ring-2 focus:ring-indigo-500
    disabled:bg-gray-500
 }
-
-.float-input-lbl {
-  @apply duration-300 transform -translate-y-6 absolute text-gray-400
-   bg-white top-3.5 left-4 z-10 peer-focus:text-indigo-800 peer-focus:font-semibold
-    peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-110 peer-focus:duration-300
+.inputCamp{
+  @apply autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] border-2 rounded-md p-2  focus:outline-none focus:border-indigo-800   bg-transparent
 }
 
-.float-txtArea-lbl {
+.labelFloatInput {
+  @apply duration-300 transform -translate-y-6 absolute text-gray-400
+   bg-white top-3.5 left-4  peer-focus:text-indigo-800 peer-focus:font-semibold 
+    peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-110 peer-focus:duration-300 
+}
+
+.labelFloatTxtArea {
   @apply duration-300 transform -translate-y-6 absolute bg-white text-gray-400
-   top-3.5 left-4 z-10 peer-focus:text-indigo-800 peer-focus:font-semibold 
+   top-3.5 left-4  peer-focus:text-indigo-800 peer-focus:font-semibold 
    peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-6 peer-focus:scale-110 peer-focus:duration-300
 }
 
-.float-date-lbl {
+.labelFloatDate {
   @apply duration-300 transform -translate-y-6 absolute text-gray-400 top-1.5 left-4
    peer-focus:text-indigo-800 peer-focus:font-semibold peer-focus:-translate-x-1 peer-focus:scale-110 peer-focus:duration-300 peer-focus:bg-transparent
 }

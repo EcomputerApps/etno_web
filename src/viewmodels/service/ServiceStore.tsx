@@ -15,10 +15,15 @@ class ServiceStore {
 
     //Observables =>
     paginatedService: PaginatedService = {}
-    
+    service: Service = {}
+
+
     constructor() {
         makeObservable(this, {
             paginatedService: observable,
+            service: observable,
+            updateService: action,
+            getService: computed,
             getRequestService: action,
             addRequestService: action,
             deleteService: action,
@@ -37,6 +42,13 @@ class ServiceStore {
     get getPaginatedService() {
         return this.paginatedService
     }
+    updateService(service: Service) {
+        this.service = service
+    }
+    get getService() {
+        return this.service
+    }
+
     async getRequestService(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/services?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
@@ -52,31 +64,32 @@ class ServiceStore {
                 'Access-Control-Allow-Origin': '*'
             }
         })
-        if(response.ok){
-        const newPaginatedService = this.paginatedService.content!!.filter((item) => item.owner !== owner)
-        this.updateServiceList(newPaginatedService)
-        toast.success('Se ha borrado exitosamente', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-      })
-    }else{
-        toast.error('No se ha podido borrar', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-      })
-    }
+        if (response.ok) {
+            const newPaginatedService = this.paginatedService.content!!.filter((item) => item.owner !== owner)
+            this.updateServiceList(newPaginatedService)
+            this.updateService({})
+            toast.success('Se ha borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
     }
 
     async addRequestService(username: string, service: Service) {
@@ -89,6 +102,7 @@ class ServiceStore {
         })
         if (response.ok) {
             this.paginatedService.content?.push(service)
+            this.service = service
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -98,8 +112,8 @@ class ServiceStore {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
-        }else{
+            })
+        } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -109,9 +123,9 @@ class ServiceStore {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
+            })
+        }
     }
-}
 }
 
 export default ServiceStore

@@ -50,7 +50,7 @@ const Band = () => {
          <img src={arrowRight} alt="forward"/>
         </button>
       </div>
-      <ToastContainer/>
+      <ToastContainer style={{ margin: "50px"}} />
     </div>
   )
 }

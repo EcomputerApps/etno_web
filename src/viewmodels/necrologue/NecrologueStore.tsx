@@ -6,78 +6,89 @@ class NecrologueStore{
     serverIp : string = "192.168.137.1"
     static necrologueStore: NecrologueStore
 
-    static getNecrologueStore(){
-        if(this.necrologueStore===undefined){
-            this.necrologueStore=new NecrologueStore()
+    static getNecrologueStore() {
+        if (this.necrologueStore === undefined) {
+            this.necrologueStore = new NecrologueStore()
         }
         return this.necrologueStore
     }
 
-       //Observables =>
-    paginatedNecro : PaginatedNecro = {}
+    //Observables =>
+    paginatedNecro: PaginatedNecro = {}
+    necro: Necrologue = {}
 
-    constructor(){
-        makeObservable(this,{
+    constructor() {
+        makeObservable(this, {
             paginatedNecro: observable,
+            necro: observable,
+            updateNecro: action,
+            getNecro: computed,
             getRequestNecrologue: action,
             addRequestNecro: action,
-            updateNecrologueList : action,
+            updateNecrologueList: action,
             updatePaginatedNecro: action,
-            deleteNecrologue : action,
+            deleteNecrologue: action,
             getPaginatedNecro: computed
 
         })
     }
-    updateNecrologueList(necrologues: Necrologue[]){
+    updateNecrologueList(necrologues: Necrologue[]) {
         this.paginatedNecro.content = necrologues
     }
-    updatePaginatedNecro( paginatedNecro : PaginatedNecro){
+    updatePaginatedNecro(paginatedNecro: PaginatedNecro) {
         this.paginatedNecro = paginatedNecro
     }
-    get getPaginatedNecro(){
+    get getPaginatedNecro() {
         return this.paginatedNecro
     }
+    updateNecro(necro: Necrologue) {
+        this.necro = necro
+    }
+    get getNecro() {
+        return this.necro
+    }
 
-    async getRequestNecrologue( locality:string, pageNum : number, elementSize: number){
-        const response = await fetch(`http://${this.serverIp}:8080/deaths?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
-          method: 'GET',
-          
+    async getRequestNecrologue(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/deaths?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+            method: 'GET',
+
         })
         const necrologue = await response.json()
         this.updatePaginatedNecro(necrologue)
     }
-    async deleteNecrologue(username: string, name: string){
+    async deleteNecrologue(username: string, name: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/death?username=${username}&name=${name}`, {
             method: 'DELETE',
-            headers : {
+            headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
-        if(response.ok){
-         const newPaginatedNecro = this.paginatedNecro.content!!.filter((item)=> item.name !== name)
-        this.updateNecrologueList(newPaginatedNecro)
-        toast.success('Se ha borrado exitosamente', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-      })
-    }else{
-        toast.error('No se ha podido borrar', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-      })
-    }
+        if (response.ok) {
+            const newPaginatedNecro = this.paginatedNecro.content!!.filter((item) => item.name !== name)
+            this.updateNecrologueList(newPaginatedNecro)
+            this.updateNecro({})
+            toast.success('Se ha borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
     }
 
     async addRequestNecro(username: string, necrologue: Necrologue) {
@@ -90,6 +101,7 @@ class NecrologueStore{
         })
         if (response.ok) {
             this.paginatedNecro.content?.push(necrologue)
+            this.necro = necrologue
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -99,8 +111,8 @@ class NecrologueStore{
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
-        }else{
+            })
+        } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -110,9 +122,9 @@ class NecrologueStore{
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
+            })
+        }
     }
-}
 
 }
 

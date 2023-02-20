@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom"
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
@@ -27,7 +27,32 @@ function addSposor(){
     phoneNumber: sponsorTel,
     //imageUrl: sponsorPhoto
   }
-  sponsorStore.addRequestSponsor('Bolea', sponsor)
+  if (sponsorStore.getSponsor.title === sponsor.title) {
+    toast.info('Ya existe este patrocinador', {
+        position: 'bottom-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light"
+    })
+} else {
+  sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" 
+        ?
+        toast.info('Rellene los campos', {
+            position: 'bottom-center',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+        }) : sponsorStore.addRequestSponsor('Bolea', sponsor)
+}
+  
 }
 
   //funcion temporal para comprobar entrada
@@ -48,8 +73,7 @@ function addSposor(){
       </div>
       <div className="w-full flex flex-1 flex-col mt-5 pl-3">
         <div className="flex flex-col p-1 relative">
-             <input autoFocus placeholder=" " name="sponsorTitle" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-                        border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
+             <input autoFocus placeholder=" " name="sponsorTitle" type="text"  className="inputCamp peer" onChange={(e) => {
             setSponsorTitle(e.currentTarget.value)
           }} onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -58,14 +82,13 @@ function addSposor(){
               }
             }
           }} />
-          <label className={"float-input-lbl"}>Título</label>
+          <label className={"labelFloatInput"}>Título</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-3 pl-3">
         <div className="flex flex-col p-1 relative">
      
-          <textarea ref={txtAreaRef} placeholder=" " name="sponsorDescription" rows={3} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-                        border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
+          <textarea ref={txtAreaRef} placeholder=" " name="sponsorDescription" rows={3}  className="inputCamp peer" onChange={(e) => {
             setSponsorDescription(e.currentTarget.value)
           }} onKeyUp={(e) => {
             if ((e.code === "NumpadEnter")) {
@@ -74,15 +97,14 @@ function addSposor(){
               }
             }
           }} />
-               <label className={"float-txtArea-lbl"}>Descripción</label>
+               <label className={"labelFloatTxtArea" }>Descripción</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-3 pl-3 ">
         <div className="flex flex-col p-1 relative">
 
           <input ref={inputRef} placeholder=" " name="sponsorTel" type="text" onInput={(e) =>
-            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-            border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800 w-1/2" onChange={(e) => {
+            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")}  className="inputCamp peer w-1/4" maxLength={9} onChange={(e) => {
               setSponsorTel(e.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -91,7 +113,7 @@ function addSposor(){
                 }
               }
             }} />
-            <label className={"float-input-lbl"}>Teléfono</label>
+            <label className={"labelFloatInput"}>Teléfono</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-3 pl-3">
@@ -123,7 +145,7 @@ function addSposor(){
         <button name="sponsorBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
     </div>
-    <ToastContainer/>
+    <ToastContainer style={{ margin: "50px" }}/>
     </div>
   )
 }

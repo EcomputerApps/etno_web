@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png';
 import add_Photo from '../../../../assets/menu/add_photo.svg';
 import "../../../../index.css";
@@ -14,7 +14,7 @@ const CreateService = () => {
 
     let arraySchedules: { selector: string, morning: string, evening: string, complete: string }[] = []
     const navigate = useNavigate()
-    const arrayTypeChkBtn = [{
+    const arrayServiceTypes = [{
         "id": "checkOne",
         "value": "restaurante",
         "title": "restaurante",
@@ -42,9 +42,12 @@ const CreateService = () => {
         "id": "checkSeven",
         "value": "Bar",
         "title": "Bar",
+    },
+    {
+        "id": "checkEight",
+        "value": "",
+        "title": "Ninguno",
     }]
-
-
 
     const inputWebUrl = useRef<HTMLInputElement>(null)
     const inputTel = useRef<HTMLInputElement>(null)
@@ -62,7 +65,7 @@ const CreateService = () => {
     const [serviceWebUrl, setServiceWebUrl] = useState<string>("")
     const [serviceDescription, setServiceDescription] = useState<string>("")
     const [serviceTel, setServiceTel] = useState<string>("")
-    const [serviceShcedulSelector, setServiceShcedulSelector] = useState<string>("")
+    const [serviceShcedulSelector, setServiceShcedulSelector] = useState<string>("Lunes-Viernes")
     const [serviceShcedulMorning, setServiceShcedulMorning] = useState<string>("")
     const [serviceShcedulEven, setServiceShcedulEven] = useState<string>("")
     const [serviceShcedulExtra, setServiceShcedulExtra] = useState<string>("")
@@ -87,23 +90,33 @@ const CreateService = () => {
             schedule: serviceSchedule,
             // imageUrl: servicePhoto
         }
-        serviceStore.addRequestService('Bolea', service)
-    }
+        if (serviceStore.getService.owner === service.owner) {
+            toast.info('Ya existe este servicio', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            serviceType === "" || serviceName === "" || serviceDescription === "" ||
+                serviceWebUrl === "" || serviceTel === "" || serviceSchedule === ""
+                ?
+                toast.info('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                }) : serviceStore.addRequestService('Bolea', service)
+        }
 
-    function checkState() {
-        //hay que meter en otro metodo para vuelcar array en serviceType useState
-
-
-        console.log(serviceType)
-        console.log(serviceSchedule)
-        console.log(serviceName)
-        console.log(servicePhoto)
-        console.log(serviceTel)
-        console.log(serviceWebUrl)
-        console.log(serviceDescription)
-        console.log(serviceShcedulMorning)
-        console.log(serviceShcedulEven)
-        console.log(serviceShcedulExtra)
     }
 
     return (
@@ -118,7 +131,7 @@ const CreateService = () => {
                 <div className="w-full flex flex-1 flex-col mt-8 pl-3">
                     <div className="flex flex-col p-1 relative">
                         <div className="flex  flex-wrap pt-2">
-                            {arrayTypeChkBtn.map((chkBtn, index) => (
+                            {arrayServiceTypes.map((chkBtn, index) => (
                                 <div key={index} className='flex lg:w-1/6 w-1/3'>
                                     <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
                                         setServiceType(e.currentTarget.value)
@@ -131,13 +144,12 @@ const CreateService = () => {
                                 </div>
                             ))}
                         </div>
-                        <label className={"float-date-lbl"}>Categoría</label>
+                        <label className={"labelFloatDate"}>Categoría</label>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col  p-1 relative">
-                        <input autoFocus placeholder=" " name="serviceOwner" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
+                        <input autoFocus placeholder=" " name="serviceOwner" type="text"  className="inputCamp peer" onChange={(e) => {
                                 setServiceName(e.currentTarget.value)
                             }} onKeyUp={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -146,13 +158,12 @@ const CreateService = () => {
                                     }
                                 }
                             }} />
-                        <label className={"float-input-lbl"}>Nombre</label>
+                        <label className={"labelFloatInput"}>Nombre</label>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(value) => {
+                        <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3}  className="inputCamp peer" onChange={(value) => {
                                 setServiceDescription(value.currentTarget.value)
                             }} onKeyDown={(e) => {
                                 if (e.code === "NumpadEnter") {
@@ -161,13 +172,12 @@ const CreateService = () => {
                                     }
                                 }
                             }} />
-                        <label className={"float-txtArea-lbl"}>Descripción</label>
+                        <label className={"labelFloatTxtArea"}>Descripción</label>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
+                        <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" type="text"  className="inputCamp peer" onChange={(e) => {
                                 setServiceWebUrl(e.currentTarget.value)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -176,14 +186,13 @@ const CreateService = () => {
                                     }
                                 }
                             }} />
-                        <label className={"float-txtArea-lbl"}>Pagina Web</label>
+                        <label className={"labelFloatInput"}>Pagina Web</label>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
                         <input maxLength={9} ref={inputTel} placeholder=" " name="serviceTel" type="text" onInput={(e) =>
-                            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-                        border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
+                            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")}  className="inputCamp peer w-1/4" onChange={(e) => {
                                 setServiceTel(e.currentTarget.value)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -192,14 +201,13 @@ const CreateService = () => {
                                     }
                                 }
                             }} />
-                        <label className={"float-txtArea-lbl"}>Teléfono</label>
+                        <label className={"labelFloatInput"}>Teléfono</label>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                     <div className="flex flex-col p-1 mt-1 relative">
                         <div className="flex flex-col border-2 rounded-md">
-                            <select ref={inputScheSelect} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md  peer focus:outline-none focus:border-indigo-800" defaultValue="Lunes-Viernes" onChange={(e) => {
+                            <select ref={inputScheSelect} className="inputCamp p-0 peer" defaultValue="Lunes-Viernes" onChange={(e) => {
                                     setServiceShcedulSelector(e.target.value)
                                 }} onKeyDown={(e) => {
                                     if ((e.code === "NumpadEnter")) {
@@ -215,12 +223,11 @@ const CreateService = () => {
                                 <option value="Lunes-Domingo">Todos los dias.</option>
                                 <option value="Otro">Otro horrario.</option>
                             </select>
-                            <label className={"float-date-lbl"}>Horario</label>
+                            <label className={"labelFloatDate"}>Horario</label>
                             <div className="p-3 flex flex-row" >
                                 <div hidden={serviceShcedulSelector === "Otro"} className="w-full">
                                     <div className="relative p-2">
-                                        <input ref={inputScheMorn} placeholder=" " name="pharmacyShedulesMorning" type="text" className=" w-full border-2 rounded-md p-1 mr-2 autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-                                                                                peer focus:outline-none focus:border-indigo-800" onKeyDown={(e) => {
+                                        <input ref={inputScheMorn} placeholder=" " name="pharmacyShedulesMorning" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
                                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                                     if (inputScheEven.current != null) {
                                                         inputScheEven.current.focus()
@@ -229,13 +236,12 @@ const CreateService = () => {
                                             }} onChange={(e) => {
                                                 setServiceShcedulMorning(e.target.value)
                                             }} />
-                                        <label className={"float-input-lbl"}>Mañana</label>
+                                        <label className={"labelFloatInput"}>Mañana</label>
                                     </div>
                                 </div>
                                 <div hidden={serviceShcedulSelector === "Otro"} className="w-full">
                                     <div className="relative p-2">
-                                        <input maxLength={100} ref={inputScheEven} placeholder=" " name="pharmacyShedulesEvening" type="text" className=" w-full border-2 rounded-md p-1 mr-2 autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-                                                                     peer focus:outline-none focus:border-indigo-800" onKeyDown={(e) => {
+                                        <input maxLength={100} ref={inputScheEven} placeholder=" " name="pharmacyShedulesEvening" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
                                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                                     if (inputScheExtra.current != null) {
                                                         inputScheExtra.current.focus()
@@ -247,13 +253,12 @@ const CreateService = () => {
 
                                                 setServiceShcedulEven(e.target.value)
                                             }} />
-                                        <label className={"float-input-lbl"}>Tarde</label>
+                                        <label className={"labelFloatInput"}>Tarde</label>
                                     </div>
                                 </div>
                                 <div hidden={serviceShcedulSelector !== "Otro"} className="  w-full">
                                     <div className="relative p-2 ">
-                                        <input ref={inputScheExtra} placeholder=" " name="pharmacyShedulesExtra" type="text" className="w-full border-2 rounded-md p-1 mr-2 autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           peer focus:outline-none focus:border-indigo-800" onKeyDown={(e) => {
+                                        <input ref={inputScheExtra} placeholder=" " name="pharmacyShedulesExtra" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
                                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                                     if (txtAreaRef.current != null) {
                                                         txtAreaRef.current.focus()
@@ -262,7 +267,7 @@ const CreateService = () => {
                                             }} onBlur={(e) => {
                                                 setServiceShcedulExtra(e.target.value)
                                             }} />
-                                        <label className={"float-input-lbl"}>Otro</label>
+                                        <label className={"labelFloatInput"}>Otro</label>
                                     </div>
                                 </div>
                             </div>
@@ -298,7 +303,7 @@ const CreateService = () => {
                     <button name="serviceBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
                 </div>
             </div>
-            <ToastContainer/>
+            <ToastContainer style={{ margin: "50px" }} />
         </div>
     )
 }

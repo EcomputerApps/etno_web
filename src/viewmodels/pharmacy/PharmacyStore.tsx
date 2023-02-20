@@ -2,6 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Pharmacy, PaginatedPharmacy } from "../../models/section/Section";
 
+
 class PharmacyStore {
     serverIp : string = "192.168.137.1"
     static pharmacyStore: PharmacyStore
@@ -15,18 +16,22 @@ class PharmacyStore {
 
     //Observables =>
     paginatedPharmacy: PaginatedPharmacy = {}
-  
+    pharmacy: Pharmacy = {}
+
 
     constructor() {
         makeObservable(this, {
             paginatedPharmacy: observable,
+            pharmacy: observable,
+            updatePharmacy: action,
+            getPharmacy: computed,
             getRequestPharmacy: action,
             addRequestPharmacy: action,
             deletePharmacy: action,
             updatePaginatedPharmacy: action,
             updatePharmacyList: action,
             getPaginatedPharmacy: computed
-            
+
         })
     }
     updatePharmacyList(pharmacys: Pharmacy[]) {
@@ -37,6 +42,11 @@ class PharmacyStore {
     }
     get getPaginatedPharmacy() {
         return this.paginatedPharmacy
+    }
+    updatePharmacy(pharmacy: Pharmacy) {
+        this.pharmacy = pharmacy
+    } get getPharmacy() {
+        return this.pharmacy
     }
 
     async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
@@ -53,31 +63,32 @@ class PharmacyStore {
                 'Access-Control-Allow-Origin': '*'
             }
         })
-        if(response.ok){
-        const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.name !== name)
-        this.updatePharmacyList(newPaginedPharmacy)
-        toast.success('Se ha borrado exitosamente', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-      })
-    }else{
-        toast.error('No se ha podido borrar', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "light"
-      })
-    }
+        if (response.ok) {
+            const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.name !== name)
+            this.updatePharmacyList(newPaginedPharmacy)
+            this.updatePharmacy({})
+            toast.success('Se ha borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
 
     }
     async addRequestPharmacy(username: string, pharmacy: Pharmacy) {
@@ -90,6 +101,7 @@ class PharmacyStore {
         })
         if (response.ok) {
             this.paginatedPharmacy.content?.push(pharmacy)
+            this.pharmacy = pharmacy
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -99,8 +111,8 @@ class PharmacyStore {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
-        }else{
+            })
+        } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -110,9 +122,9 @@ class PharmacyStore {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
+            })
+        }
     }
-}
 }
 
 export default PharmacyStore
