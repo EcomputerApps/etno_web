@@ -11,6 +11,7 @@ const TablePharmacy = (prop: PropTable) => {
     const [si, setSi] = useState(false)
     const deletePharmacy = async (pharmacy: string) => {
         await pharmacyStore.deletePharmacy('Bolea', pharmacy)
+        
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

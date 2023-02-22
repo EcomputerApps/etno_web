@@ -1,11 +1,11 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
-import { Pharmacy, PaginatedPharmacy } from "../../models/section/Section";
+import { Pharmacy, PaginatedPharmacy, PharmacyOnDuty } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class PharmacyStore {
-    serverIp : string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {
@@ -18,11 +18,14 @@ class PharmacyStore {
     //Observables =>
     paginatedPharmacy: PaginatedPharmacy = {}
     pharmacy: Pharmacy = {}
+    pharmacyOnDutyList: PharmacyOnDuty = {}
 
 
     constructor() {
         makeObservable(this, {
             paginatedPharmacy: observable,
+            pharmacyOnDutyList: observable,
+            updatePOD: action,
             pharmacy: observable,
             updatePharmacy: action,
             getPharmacy: computed,
@@ -31,10 +34,18 @@ class PharmacyStore {
             deletePharmacy: action,
             updatePaginatedPharmacy: action,
             updatePharmacyList: action,
-            getPaginatedPharmacy: computed
+            getPaginatedPharmacy: computed,
+            getPOD: computed
 
         })
+    } 
+    updatePOD(pharmacys: Pharmacy[]) {
+        this.pharmacyOnDutyList.content = pharmacys
     }
+    get getPOD() {
+        return this.pharmacyOnDutyList
+    }
+
     updatePharmacyList(pharmacys: Pharmacy[]) {
         this.paginatedPharmacy.content = pharmacys
     }
@@ -57,6 +68,13 @@ class PharmacyStore {
         const pharmacy = await response.json()
         this.updatePaginatedPharmacy(pharmacy)
     }
+    async getRequestPharmacyOnDuty(locality: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}`, {
+            method: 'GET'
+        })
+        const pharmacy = await response.json()
+        this.updatePOD(pharmacy)
+    }
     async deletePharmacy(username: string, name: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/pharmacy?username=${username}&name=${name}`, {
             method: 'DELETE',
@@ -67,6 +85,7 @@ class PharmacyStore {
         if (response.ok) {
             const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.name !== name)
             this.updatePharmacyList(newPaginedPharmacy)
+            this.updatePOD(newPaginedPharmacy)
             this.updatePharmacy({})
             toast.success('Se ha borrado exitosamente', {
                 position: 'bottom-center',
@@ -104,6 +123,7 @@ class PharmacyStore {
         })
         if (response.ok) {
             this.paginatedPharmacy.content?.push(pharmacy)
+            this.pharmacyOnDutyList.content?.push(pharmacy)
             this.pharmacy = pharmacy
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',

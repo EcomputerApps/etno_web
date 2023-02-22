@@ -6,7 +6,7 @@ import { Link } from '../../../../models/section/Section';
 import { toast, ToastContainer } from 'react-toastify';
 import { useForm, SubmitHandler } from "react-hook-form";
 import ImageStore from '../../../../viewmodels/image/ImageStore';
-
+const regEx = new RegExp(/[^A-Za-z0-9\s]+/)
 
 const linkStore = LinkStore.getLinkStore()
 
@@ -24,12 +24,8 @@ const CreateLink = () => {
 
 
     function addLink() {
-        const link: Link = {
-            title: linkTitle,
-            url: linkUrl
-        }
-        if (linkStore.getLink.title === link.title) {
-            toast.info('Ya existe este enlace', {
+        if (linkTitle === "" || linkUrl === "") {
+            toast.info('Rellene todos los campos', {
                 position: 'bottom-center',
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -40,8 +36,8 @@ const CreateLink = () => {
                 theme: "light"
             })
         } else {
-            linkTitle === "" || linkUrl === "" ?
-                toast.info('Rellene todos los campos', {
+            if (regEx.test(linkTitle)) {
+                toast.error('REGEX', {
                     position: 'bottom-center',
                     autoClose: 1000,
                     hideProgressBar: false,
@@ -50,9 +46,28 @@ const CreateLink = () => {
                     draggable: true,
                     progress: undefined,
                     theme: "light"
-                }) : linkStore.addRequestLink('Bolea', link)
+                })
+            } else {
+                const link: Link = {
+                    title: linkTitle,
+                    url: linkUrl
+                }
+                if (linkStore.getLink.title === link.title) {
+                    toast.info('Ya existe este enlace', {
+                        position: 'bottom-center',
+                        autoClose: 1000,
+                        hideProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light"
+                    })
+                } else {
+                    linkStore.addRequestLink('Bolea', link)
+                }
+            }
         }
-
     }
 
 
@@ -68,7 +83,7 @@ const CreateLink = () => {
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className=" flex flex-col p-1 mt-5  relative">
                         <input autoFocus placeholder=" " name="bandType" id="test" type="text"
-                             className="inputCamp peer" onChange={(e) => setLinkTitle(e.currentTarget.value)}
+                            className="inputCamp peer" onChange={(e) => setLinkTitle(e.currentTarget.value)}
                             onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (inputRef.current != null) {
@@ -82,7 +97,7 @@ const CreateLink = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className=" flex flex-col p-1 mt-5  relative">
-                        <input ref={inputRef} placeholder=" " name="bandType" id="test" type="text"  className="inputCamp peer" onChange={(e) => setLinkUrl(e.currentTarget.value)}
+                        <input ref={inputRef} placeholder=" " name="bandType" id="test" type="text" className="inputCamp peer" onChange={(e) => setLinkUrl(e.currentTarget.value)}
                             onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (btnRef.current != null) {
@@ -99,7 +114,7 @@ const CreateLink = () => {
                 <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => addLink()}>Publicar</button>
                 <button name="bandBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
-            <ToastContainer style= {{margin:"50px"}} />
+            <ToastContainer style={{ margin: "50px" }} />
         </div>
 
     )
