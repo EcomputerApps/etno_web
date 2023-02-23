@@ -36,6 +36,7 @@ class AdvertStore {
             getAdvert: computed
         })
     }
+    
     updatePaginatedAdverts(paginatedAdverts: PaginatedAdvert) {
         this.paginatedAdvert = paginatedAdverts
     }

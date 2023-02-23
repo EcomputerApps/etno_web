@@ -52,7 +52,6 @@ const CreateLink = () => {
                     theme: "light"
                 }) : linkStore.addRequestLink('Bolea', link)
         }
-
     }
 
 

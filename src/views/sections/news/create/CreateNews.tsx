@@ -52,7 +52,7 @@ const CreateNews = () => {
         theme: "light"
     })
     }else{
-        if(newsCategory === '' || newsTitle === '' || newsDate === '' || newsLink === ''){
+        if(newsCategory === '' || newsTitle === '' || newsDate === '' || newsLink === '' || file === undefined){
           toast.info('Rellene los campos', {
             position: 'top-center',
             autoClose: 500,
@@ -153,7 +153,7 @@ const CreateNews = () => {
         <div className="text-left p-1 ">
           <div className={"photoBoard"}>
             <div className='absolute left-3'>
-              Foto
+              Foto {file?.name}
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center ">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {

@@ -42,7 +42,7 @@ const CreateBand = () => {
         theme: "light"
       })
     } else {
-      bandType === "" || bandDescription === "" || bandDate === "" ?
+      bandType === "" || bandDescription === "" || bandDate === "" || file === undefined ?
         toast.info('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 1000,
@@ -120,7 +120,7 @@ const CreateBand = () => {
           <div className="text-left p-1 ">
             <div className="photoBoard" >
               <div className='absolute left-2'>
-                Fotos
+                Foto {file?.name}
               </div>
               <form id="form-file-upload" className=" w-full flex justify-center ">
                 <input type="file" id="input-file-upload" className="visibility: hidden" max={1} size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {

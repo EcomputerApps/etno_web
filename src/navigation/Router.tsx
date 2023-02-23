@@ -32,8 +32,6 @@ const Router = () => {
                 <Route path="/addNews" element={<ViewRender element={<CreateNewsPage/>}/>}/>
                 <Route path="/addAdvert" element={<ViewRender element={<CreateAdvertPage/>}/>}/>
                 <Route path="/addLink" element={<ViewRender element={<CreateLinkPage/>}/>}/>
-               
-               
             </Routes>
         </BrowserRouter>
     )

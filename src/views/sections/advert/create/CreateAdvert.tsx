@@ -48,7 +48,7 @@ const CreateAdvert = () => {
             theme: "light"
         })
        } else {
-        advertTitle === '' || advertDescription === '' || advertLink === '' ?
+        advertTitle === '' || advertDescription === '' || advertLink === '' || file === undefined ?
         toast.info('Rellene los campos', {
             position: 'top-center',
             autoClose: 500,
@@ -104,7 +104,7 @@ const CreateAdvert = () => {
                 <div className="text-left p-1">
                     <div className={"photoBoard"}>
                         <div className='absolute left-2'>
-                            Fotos
+                            Foto {file?.name}
                         </div>
                         <form id="form-file-upload" className=" w-full flex justify-center">
                             <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {

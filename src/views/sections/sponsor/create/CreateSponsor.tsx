@@ -40,7 +40,7 @@ function addSposor(){
         theme: "light"
     })
 } else {
-  sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" 
+  sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" || file === undefined
         ?
         toast.info('Rellene los campos', {
             position: 'bottom-center',
@@ -122,7 +122,7 @@ function addSposor(){
        
           <div className={"photoBoard"}>
             <div className='pl-3'>
-              Foto
+              Foto {file?.name}
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {

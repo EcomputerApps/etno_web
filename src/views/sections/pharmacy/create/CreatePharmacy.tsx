@@ -74,7 +74,7 @@ const CreatePharmacy = () => {
           }else{
             pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
             pharmacyTel === "" || pharmacySchedule === ""||  pharmacyDescption === "" || 
-            pharmacyLong === "" || pharmacyLat === ""?
+            pharmacyLong === "" || pharmacyLat === "" || file === undefined?
             toast.info('Rellene los campos', {
               position: 'bottom-center',
               autoClose: 1000,
@@ -161,7 +161,7 @@ const CreatePharmacy = () => {
                 <div className="text-left p-1">
                     <div className={"photoBoard"}>
                         <div className='pl-3'>
-                            Foto
+                            Foto {file?.name}
                         </div>
                         <form id="form-file-upload" className=" w-full flex justify-center">
                             <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {

@@ -33,7 +33,7 @@ const Home = () => {
       navigate("/logout")
     }
   }
-
+  
   function renderView(): JSX.Element | undefined {
     switch (sideBarStore.getPanel.section) {
       case 'Eventos': return <Event />
@@ -48,9 +48,7 @@ const Home = () => {
       case 'Incidencias': return <Incident />
       case 'Fotos': return <Photo />
       case 'Enlaces': return <Link />
-
     }
-
   }
 
   return (

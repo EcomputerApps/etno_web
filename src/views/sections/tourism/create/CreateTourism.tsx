@@ -47,7 +47,7 @@ const CreateTourism = () => {
           theme: "light"
         })
       } else {
-        tourismType === '' || tourism.title === '' || tourism.description === '' || tourismLong === '' || tourismLat === '' ? 
+        tourismType === '' || tourism.title === '' || tourism.description === '' || tourismLong === '' || tourismLat === '' || file === undefined ? 
         toast.info('Rellene los campos vacíos', {
           position: 'top-center',
           autoClose: 500,
@@ -116,7 +116,7 @@ const CreateTourism = () => {
         <div className="text-left p-1">
           <div className={"photoBoard"}>
             <div className='absolute left-2'>
-              Fotos
+              Fotos {file?.name}
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
