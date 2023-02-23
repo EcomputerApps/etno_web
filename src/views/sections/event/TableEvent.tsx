@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+import { ToastContainer } from 'react-toastify'
 
 import EventStore from "../../../viewmodels/Event/EventStore"
 const eventStore = EventStore.getEventStore()
@@ -21,7 +22,9 @@ const TableEvent = (prop: PropTable) => {
                     <tr>
                     {prop.headerList.map((item, index) => (
                         <th key={index} scope="col" className="px-6 py-3">
+                            <div className="min-w-max">
                             {item}
+                            </div> 
                         </th>
                             ))}
                     </tr>
@@ -37,7 +40,7 @@ const TableEvent = (prop: PropTable) => {
                             </div>
                         </th>
                         <td className="px-6 py-4">
-                        <div className="tableCamp overflow-y-auto items-start min-w-full">
+                        <div className="tableCamp overflow-y-auto  min-w-full">
                             {event.description}
                             </div>
                         </td>
@@ -81,6 +84,7 @@ const TableEvent = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
+            <ToastContainer/>
         </div>
     )
 }

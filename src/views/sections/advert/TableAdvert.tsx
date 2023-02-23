@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite"
+import { ToastContainer } from "react-toastify"
 import "../../../index.css" 
 import AdvertStore from "../../../viewmodels/advert/AdvertStore"
 const advertStore = AdvertStore.getAdvertStore()
@@ -39,7 +40,7 @@ const TableAdvert = (prop: PropTable) => {
                                 </div>
                             </th>
                             <td className="px-6 py-4 ">
-                            <div className="tableCamp overflow-y-auto items-start min-w-full">
+                            <div className="tableCamp overflow-y-auto  min-w-full">
                                 {advert.description}
                                 </div>
                             </td>
@@ -58,6 +59,7 @@ const TableAdvert = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
+            <ToastContainer/>
         </div>
     )
 }

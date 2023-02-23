@@ -2,17 +2,16 @@ import { observer, Observer } from "mobx-react-lite";
 import { useState } from "react";
 import PharmacyStore from "../../../viewmodels/pharmacy/PharmacyStore";
 const pharmacyStore = PharmacyStore.getPharmacyStore()
-
 interface PropTable {
     headerList: string[],
     list?: any,
     currentPage?: number
 }
-
 const TablePharmacy = (prop: PropTable) => {
     const [si, setSi] = useState(false)
     const deletePharmacy = async (pharmacy: string) => {
         await pharmacyStore.deletePharmacy('Bolea', pharmacy)
+        
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -21,7 +20,9 @@ const TablePharmacy = (prop: PropTable) => {
                     <tr>
                         {prop.headerList.map((item, index) => (
                             <th key={index} scope="col" className="px-6 py-3">
-                                {item}
+                                <div className="min-w-max">
+                                    {item}
+                                </div>
                             </th>
                         ))}
                     </tr>
@@ -29,9 +30,7 @@ const TablePharmacy = (prop: PropTable) => {
                 <tbody>
                     {pharmacyStore.getPaginatedPharmacy.content?.map((pharmacy, index) => (
                         pharmacyStore.getPaginatedPharmacy.content!!.length > 0 &&
-
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" >
-
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                                 <div className="tableCamp">
                                     {pharmacy.type}
@@ -42,9 +41,14 @@ const TablePharmacy = (prop: PropTable) => {
                                     {pharmacy.name}
                                 </div>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-6 py-4 ">
                                 <div className="tableCamp">
-                                    <a className=" text-blue-500 hover:text-blue-600" href={pharmacy.link}>{pharmacy.link}</a>
+                                    {pharmacy.schedule}
+                                </div>
+                            </td>
+                            <td className=" px-6 py-4">
+                                <div className="tableCamp overflow-y-auto  min-w-full ">
+                                    {pharmacy.description}
                                 </div>
                             </td>
                             <td className="px-6 py-4">
@@ -52,21 +56,16 @@ const TablePharmacy = (prop: PropTable) => {
                                     {pharmacy.phone}
                                 </div>
                             </td>
-                            <td className="px-6 py-4 ">
+                            <td className="px-6 py-4">
                                 <div className="tableCamp">
-                                    {pharmacy.schedule}
-                                </div>
-                            </td>
-                            <td className=" px-6 py-4">
-                                <div className="tableCamp overflow-y-auto items-start min-w-full">
-                                    {pharmacy.description}
+                                    <a className=" text-blue-500 hover:text-blue-600" href={pharmacy.link}>{pharmacy.link}</a>
                                 </div>
                             </td>
                             <td className="px-6 py-4">
-                            <div className="h-20 flex items-center justify-center">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                                <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deletePharmacy(pharmacy.name!!)}>Eliminar</a>
-                            </div>
+                                <div className="h-20 flex items-center justify-center">
+                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deletePharmacy(pharmacy.name!!)}>Eliminar</a>
+                                </div>
                             </td>
                         </tr>
                     ))}
@@ -74,6 +73,5 @@ const TablePharmacy = (prop: PropTable) => {
             </table>
         </div>
     )
-
 }
 export default observer(TablePharmacy)

@@ -19,7 +19,9 @@ const TableService = (prop: PropTable) => {
                     <tr>
                     {prop.headerList.map((item, index) => (
                         <th key={index} scope="col" className="px-6 py-3">
+                         <div className="min-w-max">
                             {item}
+                            </div> 
                         </th>
                             ))}
                     </tr>
@@ -41,7 +43,7 @@ const TableService = (prop: PropTable) => {
                         </td>
                         <td className="px-6 py-4 text-center">
                         <div className="tableCamp">
-                            {service.phoneNumber}
+                            {service.number}
                             </div>
                         </td>
                         <td className="px-6 py-4 text-center ">
@@ -50,13 +52,13 @@ const TableService = (prop: PropTable) => {
                            </div>
                         </td>
                         <td className="px-6 py-4 text-center">
-                        <div className="tableCamp overflow-y-auto items-start min-w-full">
+                        <div className="tableCamp overflow-y-auto  min-w-full">
                             {service.description}
                             </div>
                         </td>
                         <td className="px-6 py-4 text-center">
                         <div className="tableCamp">
-                            {service.urlWeb}
+                            {service.webUrl}
                             </div>
                         </td>
                                       

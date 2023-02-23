@@ -1,8 +1,15 @@
 import logoEtno from '../../../../assets/logo_etno.png'
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
+
+import NewsStore from '../../../../viewmodels/news/NewsStore'
+import { News } from '../../../../models/section/Section'
+import { toast, ToastContainer } from 'react-toastify'
+import { observer } from 'mobx-react-lite'
+
+const newsStore = NewsStore.getNewsStore()
 
 const CreateNews = () => {
   const navigate = useNavigate()
@@ -19,15 +26,47 @@ const CreateNews = () => {
   const [newsDescription, setNewsDescription] = useState<string>("")
   const [newsLink, setNewstLink] = useState<string>("")
   const [newsPhoto, setNewsPhoto] = useState<string>("")
+  const [file, setFile] = useState<File>()
 
-  //funcion temporal para comprobar  datos  que guardamos con consol.log
-  function checkState() {
-    console.log(newsCategory)
-    console.log(newsTitle)
-    console.log(newsDate)
-    console.log(newsDescription)
-    console.log(newsLink)
-    console.log(newsPhoto)
+  useEffect(() => {
+      newsStore.getRequestNews('Bolea', 0, 5)
+  }, [])
+
+  function addNews() {
+    const news: News = {
+        category: newsCategory,
+        title: newsTitle,
+        description: newsDescription,
+        publicationDate: newsDate
+    } 
+    
+    if(newsStore.getNews.title === news.title){
+      toast.info('Ya existe esta noticia', {
+        position: 'top-center',
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light"
+    })
+    }else{
+        if(newsCategory === '' || newsTitle === '' || newsDate === '' || newsLink === ''){
+          toast.info('Rellene los campos', {
+            position: 'top-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+        })
+        } else {
+          newsStore.addRequestNews('Bolea', news, file!!)
+        }
+    }
   }
 
   return (
@@ -41,8 +80,7 @@ const CreateNews = () => {
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1 mt-5 relative">
-          <input autoFocus placeholder=" " name="newsCategory" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] 
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800 " onChange={(value) => {
+          <input autoFocus placeholder=" " name="newsCategory" type="text" className="inputCamp peer" onChange={(value) => {
               setNewsCategory(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -51,14 +89,13 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"float-input-lbl"}>Categoria</label>
+          <label className={"labelFloatInput"}>Categoria</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1 mt-3 relative">
 
-          <input ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-           border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(value) => {
+          <input ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className="inputCamp peer" onChange={(value) => {
               setNewsTitle(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -67,13 +104,12 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"float-input-lbl"}>Titulo</label>
+          <label className={"labelFloatInput"}>Titulo</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-5 pl-3">
         <div className="flex flex-col p-1 mt-3 relative">
-          <input ref={inputRefDate} type="date" name="newsDate" className="w-40 border-2 rounded-md focus:outline-none peer
-           focus:border-indigo-800" onChange={(value) => {
+          <input ref={inputRefDate} type="date" name="newsDate" className="w-40 inputCamp peer" onChange={(value) => {
               setNewsDate(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "NumpadEnter")) {
@@ -82,13 +118,12 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"float-date-lbl"}>Fecha</label>
+          <label className={"labelFloatDate"}>Fecha</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1 relative mt-3">
-          <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3} className="border-2 rounded-md p-2 peer
-           focus:outline-none focus:border-indigo-800 autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]" onChange={(value) => {
+          <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3} className="inputCamp peer" onChange={(value) => {
               setNewsDescription(value.currentTarget.value)
             }} onKeyDown={(e) => {
               if (e.code === "NumpadEnter") {
@@ -97,12 +132,12 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"float-txtArea-lbl"}>Descricíon</label>
+          <label className={"labelFloatTxtArea"}>Descricíon</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1 relative mt-3">
-          <input ref={inputRefLink} placeholder=" " name="newsUrl" type="text" className=" autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(value) => {
+          <input ref={inputRefLink} placeholder=" " name="newsUrl" type="text" className="inputCamp peer" onChange={(value) => {
             setNewstLink(value.currentTarget.value)
           }} onKeyDown={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -111,7 +146,7 @@ const CreateNews = () => {
               }
             }
           }} />
-          <label className={"float-input-lbl"}>Pagina Web</label>
+          <label className={"labelFloatInput"}>Pagina Web</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
@@ -122,7 +157,7 @@ const CreateNews = () => {
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center ">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
-                setNewsPhoto(value.currentTarget.value)
+                setFile(value.currentTarget.files!![0])
               }} />
               <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                 <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
@@ -135,13 +170,12 @@ const CreateNews = () => {
         </div>
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-        <button ref={btnRef} name="pharmacyBtnSave" className={"post-btn"} onClick={() => {
-          checkState()
-        }}>Publicar</button>
-        <button name="pharmacyBtnCancel" className={"regular-btn"} onClick={() => navigate("/home")}>Cancelar</button>
+        <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={addNews}>Publicar</button>
+        <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
       </div>
+      <ToastContainer/>
     </div>
   )
 }
-export default CreateNews
+export default observer(CreateNews)

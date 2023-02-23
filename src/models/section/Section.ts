@@ -69,8 +69,8 @@ interface PaginatedAdvert {
 
 interface Tourism {
     idTourism?: string,
-    username?: string,
     type?: string,
+    username?: string,
     title?: string,
     description?: string,
     imageUrl?: string,
@@ -113,6 +113,8 @@ interface Pharmacy {
     description?: string,
     longitude?: string,
     latitude?: string
+    startDate?: string,
+    endDate?: string
 
 }
 
@@ -123,14 +125,18 @@ interface PaginatedPharmacy {
     pageNum?: number
 }
 
+interface PharmacyOnDuty {
+    content?: Pharmacy[]
+}
+
 interface Service {
     idService?: string,
     username?: string,
     category?: string,
     owner?: string,
     description?: string,
-    urlWeb?: string,
-    phoneNumber?: string,
+    webUrl?: string,
+    number?: string,
     schedule?: string,
     imageUrl?: string
 }
@@ -205,13 +211,13 @@ interface PaginatedIncident {
     pageNum?: number
 }
 
-interface Link{
+interface Link {
     idLink?: string,
     username?: string,
     title?: string,
     url?: string
 }
-interface PaginatedLink{
+interface PaginatedLink {
     content?: Link[],
     totalPages?: number,
     totalElements?: number,
@@ -236,5 +242,6 @@ export type {
     Necrologue, Sponsor, PaginatedEvent, PaginatedAdvert,
     PaginatedNews, PaginatedTourism, PaginatedBand,
     PaginatedPharmacy, PaginatedService, PaginatedSponsor,
-    PaginatedNecro, PaginatedIncident, PaginatedLink
+    PaginatedNecro, PaginatedIncident, PaginatedLink,
+    Image, PharmacyOnDuty
 }

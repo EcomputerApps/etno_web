@@ -2,7 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Incident, PaginatedIncident } from "../../models/section/Section";
 
 class IncidentStore {
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static incidentStore: IncidentStore
 
     static getIncidentStore() {
@@ -50,8 +50,6 @@ class IncidentStore {
             method: 'GET',
         })
         const incident = await response.json()
-        //console.log
-        console.log(incident)
         this.updateIncidentList(incident)
     }
     async deleteIncident(username: string, title: string) {

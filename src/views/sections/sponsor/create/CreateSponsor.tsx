@@ -1,9 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom"
+import { toast, ToastContainer } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
+import { Sponsor } from '../../../../models/section/Section';
+import SposnsorStore from '../../../../viewmodels/sponsor/SponsorStore';
 
+const sponsorStore = SposnsorStore.getSponsorStore()
 const CreateSponsor = () => {
   const navigate = useNavigate()
 
@@ -15,6 +19,42 @@ const CreateSponsor = () => {
   const [sponsorDescription, setSponsorDescription] = useState<string>("")
   const [sponsorPhoto, setSponsorPhoto] = useState<string>("")
   const [sponsorTel, setSponsorTel] = useState<string>("")
+  const [file, setFile] = useState<File>()
+
+function addSposor(){
+  const sponsor : Sponsor ={
+    title: sponsorTitle,
+    description: sponsorDescription,
+    phoneNumber: sponsorTel,
+    //imageUrl: sponsorPhoto
+  }
+  if (sponsorStore.getSponsor.title === sponsor.title) {
+    toast.info('Ya existe este patrocinador', {
+        position: 'bottom-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light"
+    })
+} else {
+  sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" 
+        ?
+        toast.info('Rellene los campos', {
+            position: 'bottom-center',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+        }) : sponsorStore.addRequestSponsor('Bolea', sponsor, file!!)
+}
+  
+}
 
   //funcion temporal para comprobar entrada
   function checkState() {
@@ -34,8 +74,7 @@ const CreateSponsor = () => {
       </div>
       <div className="w-full flex flex-1 flex-col mt-5 pl-3">
         <div className="flex flex-col p-1 relative">
-             <input autoFocus placeholder=" " name="sponsorTitle" type="text" className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-                        border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
+             <input autoFocus placeholder=" " name="sponsorTitle" type="text"  className="inputCamp peer" onChange={(e) => {
             setSponsorTitle(e.currentTarget.value)
           }} onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -44,14 +83,13 @@ const CreateSponsor = () => {
               }
             }
           }} />
-          <label className={"float-input-lbl"}>Título</label>
+          <label className={"labelFloatInput"}>Título</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-3 pl-3">
         <div className="flex flex-col p-1 relative">
      
-          <textarea ref={txtAreaRef} placeholder=" " name="sponsorDescription" rows={3} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-                        border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800" onChange={(e) => {
+          <textarea ref={txtAreaRef} placeholder=" " name="sponsorDescription" rows={3}  className="inputCamp peer" onChange={(e) => {
             setSponsorDescription(e.currentTarget.value)
           }} onKeyUp={(e) => {
             if ((e.code === "NumpadEnter")) {
@@ -60,15 +98,14 @@ const CreateSponsor = () => {
               }
             }
           }} />
-               <label className={"float-txtArea-lbl"}>Descripción</label>
+               <label className={"labelFloatTxtArea" }>Descripción</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-3 pl-3 ">
         <div className="flex flex-col p-1 relative">
 
           <input ref={inputRef} placeholder=" " name="sponsorTel" type="text" onInput={(e) =>
-            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className="autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)]
-            border-2 rounded-md p-2 peer focus:outline-none focus:border-indigo-800 w-1/2" onChange={(e) => {
+            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")}  className="inputCamp peer w-1/4" maxLength={9} onChange={(e) => {
               setSponsorTel(e.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -77,7 +114,7 @@ const CreateSponsor = () => {
                 }
               }
             }} />
-            <label className={"float-input-lbl"}>Teléfono</label>
+            <label className={"labelFloatInput"}>Teléfono</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-3 pl-3">
@@ -89,7 +126,7 @@ const CreateSponsor = () => {
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
-                setSponsorPhoto(e.currentTarget.value)
+                setFile(e.currentTarget.files!![0])
               }} />
               <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                 <div className="flex m-auto flex-col items-center font-normal text-gray-400 text-xl">
@@ -103,12 +140,13 @@ const CreateSponsor = () => {
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
 
-        <button ref={btnRef} name="sponsorBtnSave" className="inline-flex items-center rounded-md border mr-10 border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => {
-          checkState()
+        <button ref={btnRef} name="sponsorBtnSave" className="btnStandard mr-10" onClick={() => {
+          addSposor()
         }}>Publicar</button>
-        <button name="sponsorBtnCancel" className="inline-flex items-center rounded-md border  border-gray-300 bg-indigo-800 px-4 py-3 text-sm font-medium text-gray-300 shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500" onClick={() => navigate("/home")}>Cancelar</button>
+        <button name="sponsorBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
     </div>
+    <ToastContainer style={{ margin: "50px" }}/>
     </div>
   )
 }

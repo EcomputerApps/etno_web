@@ -20,7 +20,9 @@ const TableBand = (prop: PropTable) => {
                     <tr>
                         {prop.headerList.map((item, index) => (
                             <th key={index} scope="col" className="px-6 py-3">
-                                {item}
+                                  <div className="min-w-max">
+                            {item}
+                            </div> 
                             </th>
                         ))}
                     </tr>
@@ -36,8 +38,9 @@ const TableBand = (prop: PropTable) => {
                                 </div>
                             </th>
                             <td className="px-6 py-4">
-                                <div className="tableCamp overflow-y-auto items-start min-w-full">
-                                    {band.description}
+                            <div className="tableCamp overflow-y-auto  min-w-full">
+                                        {band.description}
+                                 
                                 </div>
                             </td>
                             <td className="px-6 py-4">
@@ -46,10 +49,10 @@ const TableBand = (prop: PropTable) => {
                                 </div>
                             </td>
                             <td className="px-6 py-4">
-                            <div className="h-20 flex items-center justify-center">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                                <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteBand(band.title!!)}>Eliminar</a>
-                           </div>
+                                <div className="h-20 flex items-center justify-center">
+                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteBand(band.title!!)}>Eliminar</a>
+                                </div>
                             </td>
                         </tr>
                     ))}

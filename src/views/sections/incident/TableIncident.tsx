@@ -47,7 +47,6 @@ const TableIncident = (prop : PropTable) =>{
                 </tbody>
             </table>
         </div>
-
     )
 }
 

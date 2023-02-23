@@ -1,8 +1,11 @@
 import { makeObservable, action, computed, observable } from "mobx";
-import { Pharmacy, PaginatedPharmacy } from "../../models/section/Section";
+import { toast } from "react-toastify";
+import { Pharmacy, PaginatedPharmacy, PharmacyOnDuty } from "../../models/section/Section";
+import ImageStore from "../image/ImageStore";
+const imageStore = ImageStore.getImageStore()
 
 class PharmacyStore {
-    serverIp : string = "192.168.241.51"
+    serverIp: string = "192.168.241.51"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {
@@ -14,19 +17,35 @@ class PharmacyStore {
 
     //Observables =>
     paginatedPharmacy: PaginatedPharmacy = {}
-  
+    pharmacy: Pharmacy = {}
+    pharmacyOnDutyList: PharmacyOnDuty = {}
+
 
     constructor() {
         makeObservable(this, {
             paginatedPharmacy: observable,
+            pharmacyOnDutyList: observable,
+            updatePOD: action,
+            pharmacy: observable,
+            updatePharmacy: action,
+            getPharmacy: computed,
             getRequestPharmacy: action,
+            addRequestPharmacy: action,
             deletePharmacy: action,
             updatePaginatedPharmacy: action,
             updatePharmacyList: action,
-            getPaginatedPharmacy: computed
-            
+            getPaginatedPharmacy: computed,
+            getPOD: computed
+
         })
+    } 
+    updatePOD(pharmacys: Pharmacy[]) {
+        this.pharmacyOnDutyList.content = pharmacys
     }
+    get getPOD() {
+        return this.pharmacyOnDutyList
+    }
+
     updatePharmacyList(pharmacys: Pharmacy[]) {
         this.paginatedPharmacy.content = pharmacys
     }
@@ -36,15 +55,25 @@ class PharmacyStore {
     get getPaginatedPharmacy() {
         return this.paginatedPharmacy
     }
+    updatePharmacy(pharmacy: Pharmacy) {
+        this.pharmacy = pharmacy
+    } get getPharmacy() {
+        return this.pharmacy
+    }
 
     async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const pharmacy = await response.json()
-        //console.log
-        console.log(pharmacy)
         this.updatePaginatedPharmacy(pharmacy)
+    }
+    async getRequestPharmacyOnDuty(locality: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}`, {
+            method: 'GET'
+        })
+        const pharmacy = await response.json()
+        this.updatePOD(pharmacy)
     }
     async deletePharmacy(username: string, name: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/pharmacy?username=${username}&name=${name}`, {
@@ -53,9 +82,71 @@ class PharmacyStore {
                 'Access-Control-Allow-Origin': '*'
             }
         })
-        const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.name !== name)
-        this.updatePharmacyList(newPaginedPharmacy)
+        if (response.ok) {
+            const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.name !== name)
+            this.updatePharmacyList(newPaginedPharmacy)
+            this.updatePOD(newPaginedPharmacy)
+            this.updatePharmacy({})
+            toast.success('Se ha borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
 
+    }
+    async addRequestPharmacy(username: string, pharmacy: Pharmacy, file: File) {
+        await imageStore.addImageAPI('Bolea', 'farmacia', 'farmacia', file)
+        pharmacy.imageUrl = imageStore.getImage.link
+        const response = await fetch(`http://${this.serverIp}:8080/users/add/pharmacy?username=${username}`, {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(pharmacy)
+        })
+        if (response.ok) {
+            this.paginatedPharmacy.content?.push(pharmacy)
+            this.pharmacyOnDutyList.content?.push(pharmacy)
+            this.pharmacy = pharmacy
+            toast.success('Se ha añadido exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha añadido correctamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
     }
 }
 
