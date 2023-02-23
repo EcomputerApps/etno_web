@@ -6,10 +6,23 @@ import "../../../../index.css"
 import { Pharmacy } from '../../../../models/section/Section';
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
 import { toast, ToastContainer } from 'react-toastify';
+import Datepicker from "react-tailwindcss-datepicker";
+import moment from 'moment';
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
 const CreatePharmacy = () => {
+    const [file, setFile] = useState<File>()
+    const [datePanel, setDatePanel] = useState(true)
+    const [dateGuardia, setDateGuardia] = useState({
+        startDate: new Date(),
+        endDate: new Date()
+    });
+
+    const handleValueChange = (newValue: any) => {
+        setDateGuardia(newValue);
+    }
+
     const navigate = useNavigate()
 
     const inputWebUrl = useRef<HTMLInputElement>(null)
@@ -27,7 +40,6 @@ const CreatePharmacy = () => {
     const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
     const [pharmacyName, setPharmacyName] = useState<string>("")
     const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>("")
-    const [pharmacyPhoto, setPharmacyPhoto] = useState<string>("")
     const [pharmacyTel, setPharmacyTel] = useState<string>("")
     const [pharmacyShcedulMorning, setPharmacyShcedulMorning] = useState<string>("")
     const [pharmacyShcedulEven, setPharmacyShcedulEven] = useState<string>("")
@@ -36,8 +48,9 @@ const CreatePharmacy = () => {
     const [pharmacyLong, setPharmacyLong] = useState<string>("")
     const [pharmacyLat, setPharmacyLat] = useState<string>("")
     const [pharmacySchedule, setPharmacySchedule] = useState<string>("")
+    const [pharmaStartDate, setPharmaStartDate] = useState<string>(dateGuardia.startDate.toString())
+    const [pharmaEndDate, setPharmacyEndDate] = useState<string>(dateGuardia.endDate.toString())
 
-    const [file, setFile] = useState<File>()
 
     function handleScheduleInput() {
         if (pharmacyShcedulSelector === "Otro") {
@@ -46,31 +59,31 @@ const CreatePharmacy = () => {
             setPharmacySchedule(pharmacyShcedulSelector + " " + pharmacyShcedulMorning + " " + pharmacyShcedulEven)
         }
     }
-
-
     function addPharmacy() {
-        const pharmacy: Pharmacy = {
+            const pharmacy: Pharmacy = {
             type: pharmType,
             name: pharmacyName,
             link: pharmacyWebUrl,
-            //imageUrl: pharmacyPhoto,
             phone: pharmacyTel,
             schedule: pharmacySchedule,
             description: pharmacyDescption,
             longitude: pharmacyLong,
-            latitude: pharmacyLat
+            latitude: pharmacyLat,
+            startDate: dateGuardia.startDate.toString(),
+            endDate: dateGuardia.endDate.toString()
         }
         if (pharmacyStore.getPharmacy.name === pharmacy.name) {
             toast.info('Ya existe esta farmacia', {
-              position: 'bottom-center',
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "light"
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
             })
+<<<<<<< HEAD
           }else{
             pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
             pharmacyTel === "" || pharmacySchedule === ""||  pharmacyDescption === "" || 
@@ -86,8 +99,17 @@ const CreatePharmacy = () => {
               theme: "light"
             }) :  pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
           }
+=======
+        } else {
+            if (pharmacy.type === "Normal") {
+                pharmacy.startDate = ""
+                pharmacy.endDate = ""
+            }
+            pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
+
+        }
+>>>>>>> cbb6abdfadf53d6d6b6bd0832b11dcc2c6a5311b
     }
-  
     return (
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
@@ -98,11 +120,11 @@ const CreatePharmacy = () => {
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 mt-8">
                 <div className="flex flex-col p-1 relative">
-
-                    <div className="flex pt-2">
-                        <div className='flex w-1/6'>
+                    <div className="flex pt-2 ">
+                        <div className='flex w-1/3 xl:w-1/6'>
                             <input type="radio" id="radioOne" value="Normal" className="sr-only peer" name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
+                                setDatePanel(true)
                             }} />
                             <label htmlFor="radioOne" className="w-full text-center uppercase cursor-pointer p-2 mr-5 font-medium text-sm rounded-md peer-checked:bg-indigo-800 border 
                             border-gray-300 
@@ -110,54 +132,72 @@ const CreatePharmacy = () => {
                             peer-checked:text-white 
                             ring-indigo-500 peer-checked:ring-2 ">NORMAL</label>
                         </div>
-                        <div className='flex w-1/6' >
+                        <div className='flex w-1/3 xl:w-1/6' >
                             <input type="radio" id="radioTwo" className="sr-only peer" value="De guardia" name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
+                                setDatePanel(false)
                             }} />
-                            <label htmlFor="radioTwo" className="w-full text-center uppercase cursor-pointer text-sm font-medium rounded-md p-2 
+                            <label htmlFor="radioTwo" className="w-full text-center uppercase cursor-pointer text-sm font-medium rounded-md p-2 mr-5
                             peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
                             peer-checked:text-white 
                             ring-indigo-500 peer-checked:ring-2 ">DE GUARDIA</label>
+                        </div>
+                        <div className="w-1/3 relative focus:outline-none focus:border-indigo-800   bg-transparent " >
+                            <Datepicker
+                                placeholder='Dias de guardia'
+                                showFooter
+                                configs={{
+                                    footer: {
+                                        cancel: "Cancelar",
+                                        apply: "Aceptar"
+                                    }
+                                }}
+                                i18n={"es"}
+                                startWeekOn="lu"
+                                useRange={false}
+                                primaryColor='indigo'
+
+                                separator={"-"}
+                                disabled={datePanel}
+                                value={dateGuardia}
+                                onChange={handleValueChange} />
 
                         </div>
-                        <label className={"float-date-lbl"}>Tipo</label>
+                        <label className={"labelFloatDate"}>Tipo</label>
                     </div>
-
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-5 pl-3">
                 <div className="flex flex-col p-1 relative">
-
-                    <input autoFocus placeholder=" " name="pharmacyName" type="text"  className="inputCamp peer" onChange={(e) => {
-                            setPharmacyName(e.currentTarget.value)
-                        }} onKeyUp={(e) => {
-                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                if (inputWebUrl.current != null) {
-                                    inputWebUrl.current.focus()
-                                }
+                    <input autoFocus placeholder=" " name="pharmacyName" type="text" className="inputCamp peer" onChange={(e) => {
+                        setPharmacyName(e.currentTarget.value)
+                    }} onKeyUp={(e) => {
+                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                            if (inputWebUrl.current != null) {
+                                inputWebUrl.current.focus()
                             }
-                        }} />
+                        }
+                    }} />
                     <label className={"labelFloatInput"}>Nombre</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 mt-3">
                 <div className="flex flex-col p-1 relative  ">
-
-                    <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl"  className="inputCamp peer" onChange={(e) => {
-                            setPharmacyWebUrl(e.currentTarget.value)
-                        }} onKeyUp={(e) => {
-                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                if (inputTel.current != null) {
-                                    inputTel.current.focus()
-                                }
+                    <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" className="inputCamp peer" onChange={(e) => {
+                        setPharmacyWebUrl(e.currentTarget.value)
+                    }} onKeyUp={(e) => {
+                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                            if (inputTel.current != null) {
+                                inputTel.current.focus()
                             }
-                        }} />
+                        }
+                    }} />
                     <label className={"labelFloatInput"}>Pagina Web</label>
                 </div>
             </div>
-            <div className="w-full flex flex-1 flex-col pl-3">
+            <div className="w-full flex flex-1 flex-col pl-3 ">
                 <div className="text-left p-1">
                     <div className={"photoBoard"}>
                         <div className='pl-3'>
@@ -181,7 +221,7 @@ const CreatePharmacy = () => {
                 <div className="flex flex-col p-1 relative">
 
                     <input ref={inputTel} placeholder=" " name="pharmacyTel" type="text" onInput={(e) =>
-                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9}  className="inputCamp peer w-1/4" onKeyUp={(e) => {
+                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} className="inputCamp peer w-1/4" onKeyUp={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (inputScheSelect.current != null) {
                                     inputScheSelect.current.focus()
@@ -197,16 +237,16 @@ const CreatePharmacy = () => {
                 <div className="flex flex-col p-1 mt-1 relative">
                     <div className="flex flex-col border-2 rounded-md">
                         <select ref={inputScheSelect} className="inputCamp p-0" defaultValue="Lunes-Viernes" onChange={(e) => {
-                                setPharmacyShcedulSelector(e.target.value)
-                            }} onKeyDown={(e) => {
-                                if ((e.code === "NumpadEnter")) {
-                                    if (inputScheMorn.current != null) {
-                                        inputScheMorn.current.focus()
-                                    } if (inputScheExtra.current != null) {
-                                        inputScheExtra.current.focus()
-                                    }
+                            setPharmacyShcedulSelector(e.target.value)
+                        }} onKeyDown={(e) => {
+                            if ((e.code === "NumpadEnter")) {
+                                if (inputScheMorn.current != null) {
+                                    inputScheMorn.current.focus()
+                                } if (inputScheExtra.current != null) {
+                                    inputScheExtra.current.focus()
                                 }
-                            }}>
+                            }
+                        }}>
                             <option className="peer" value="Lunes-Viernes">De lunes a viernes.</option>
                             <option value="Lunes-Sabado">De lunes a sabado.</option>
                             <option value="Lunes-Domingo">Todos los dias.</option>
@@ -217,81 +257,78 @@ const CreatePharmacy = () => {
                             <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
                                 <div className="relative p-2">
                                     <input ref={inputScheMorn} placeholder=" " name="pharmacyShedulesMorning" type="text" className="w-full p-1 mr-2 inputCamp peer" onKeyDown={(e) => {
-                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                if (inputScheEven.current != null) {
-                                                    inputScheEven.current.focus()
-                                                }
+                                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                            if (inputScheEven.current != null) {
+                                                inputScheEven.current.focus()
                                             }
-                                        }} onChange={(e) => {
-                                            setPharmacyShcedulMorning(e.target.value)
-                                        }} />
+                                        }
+                                    }} onChange={(e) => {
+                                        setPharmacyShcedulMorning(e.target.value)
+                                    }} />
                                     <label className={"labelFloatInput"}>Mañana</label>
                                 </div>
                             </div>
                             <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
                                 <div className="relative p-2">
                                     <input maxLength={100} ref={inputScheEven} placeholder=" " name="pharmacyShedulesEvening" type="text" className="w-full p-1 mr-2 inputCamp peer" onKeyDown={(e) => {
-                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                if (inputScheExtra.current != null) {
-                                                    inputScheExtra.current.focus()
-                                                } if (txtAreaRef.current != null) {
-                                                    txtAreaRef.current.focus()
-                                                }
+                                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                            if (inputScheExtra.current != null) {
+                                                inputScheExtra.current.focus()
+                                            } if (txtAreaRef.current != null) {
+                                                txtAreaRef.current.focus()
                                             }
-                                        }} onChange={(e) => {
+                                        }
+                                    }} onChange={(e) => {
 
-                                            setPharmacyShcedulEven(e.target.value)
-                                        }} />
+                                        setPharmacyShcedulEven(e.target.value)
+                                    }} />
                                     <label className={"labelFloatInput"}>Tarde</label>
                                 </div>
                             </div>
                             <div hidden={pharmacyShcedulSelector !== "Otro"} className="  w-full">
                                 <div className="relative p-2 ">
                                     <input ref={inputScheExtra} placeholder=" " name="pharmacyShedulesExtra" type="text" className="w-full p-1 mr-2 inputCamp peer" onKeyDown={(e) => {
-                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                if (txtAreaRef.current != null) {
-                                                    txtAreaRef.current.focus()
-                                                }
+                                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                            if (txtAreaRef.current != null) {
+                                                txtAreaRef.current.focus()
                                             }
-                                        }} onBlur={(e) => {
-                                            setPharmacyShcedulExtra(e.target.value)
-                                        }} />
+                                        }
+                                    }} onBlur={(e) => {
+                                        setPharmacyShcedulExtra(e.target.value)
+                                    }} />
                                     <label className={"labelFloatInput"}>Otro</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-
-                    <textarea ref={txtAreaRef} placeholder=" " name="pharmacyDescription" maxLength={495} rows={3}  className="inputCamp peer" onKeyDown={(e) => {
-                            if ((e.code === "NumpadEnter")) {
-                                if (inputLong.current != null) {
-                                    inputLong.current.focus()
-                                }
+                    <textarea ref={txtAreaRef} placeholder=" " name="pharmacyDescription" maxLength={495} rows={3} className="inputCamp peer" onKeyDown={(e) => {
+                        if ((e.code === "NumpadEnter")) {
+                            if (inputLong.current != null) {
+                                inputLong.current.focus()
                             }
-                        }} onChange={(e) => {
-                            setPharmacyDescption(e.target.value)
-                        }} />
+                        }
+                    }} onChange={(e) => {
+                        setPharmacyDescption(e.target.value)
+                    }} />
                     <label className={"labelFloatTxtArea"}>Descripción</label>
                 </div>
             </div>
-
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input ref={inputLong} placeholder=" " type="text" name="pharmacyLong"  className="inputCamp peer" onKeyDown={(e) => {
-                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                if (inputLat.current != null) {
-                                    inputLat.current.focus()
-                                }
+                    <input ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="inputCamp peer" onKeyDown={(e) => {
+                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                            if (inputLat.current != null) {
+                                inputLat.current.focus()
                             }
-                        }} onChange={(e) => {
-                            setPharmacyLong(e.target.value)
-                        }} />
+                        }
+                    }} onChange={(e) => {
+                        setPharmacyLong(e.target.value)
+                    }} />
                     <label className={"labelFloatInput"}>Longitud</label>
                 </div>
             </div>
@@ -299,14 +336,14 @@ const CreatePharmacy = () => {
                 <div className="flex flex-col p-1 relative">
 
                     <input ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="inputCamp peer" onKeyDown={(e) => {
-                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                if (btnRef.current != null) {
-                                    btnRef.current.focus()
-                                }
+                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                            if (btnRef.current != null) {
+                                btnRef.current.focus()
                             }
-                        }} onChange={(e) => {
-                            setPharmacyLat(e.target.value)
-                        }} />
+                        }
+                    }} onChange={(e) => {
+                        setPharmacyLat(e.target.value)
+                    }} />
                     <label className={"labelFloatInput"}>Latitude</label>
                 </div>
             </div>
@@ -314,9 +351,8 @@ const CreatePharmacy = () => {
                 <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPharmacy()} onFocus={() => handleScheduleInput()}>Publicar</button>
                 <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
-            <ToastContainer style={{ margin: "30px"}}/>
+            <ToastContainer style={{ margin: "30px" }} />
         </div>
     )
 }
-
 export default CreatePharmacy

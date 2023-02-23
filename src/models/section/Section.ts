@@ -113,6 +113,8 @@ interface Pharmacy {
     description?: string,
     longitude?: string,
     latitude?: string
+    startDate?: string,
+    endDate?: string
 
 }
 
@@ -121,6 +123,10 @@ interface PaginatedPharmacy {
     totalPages?: number,
     totalElements?: number,
     pageNum?: number
+}
+
+interface PharmacyOnDuty {
+    content?: Pharmacy[]
 }
 
 interface Service {
@@ -205,13 +211,13 @@ interface PaginatedIncident {
     pageNum?: number
 }
 
-interface Link{
+interface Link {
     idLink?: string,
     username?: string,
     title?: string,
     url?: string
 }
-interface PaginatedLink{
+interface PaginatedLink {
     content?: Link[],
     totalPages?: number,
     totalElements?: number,
@@ -237,5 +243,5 @@ export type {
     PaginatedNews, PaginatedTourism, PaginatedBand,
     PaginatedPharmacy, PaginatedService, PaginatedSponsor,
     PaginatedNecro, PaginatedIncident, PaginatedLink,
-    Image
+    Image, PharmacyOnDuty
 }

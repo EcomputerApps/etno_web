@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 
+
 .btnStandard {
   @apply inline-flex items-center rounded-md border border-gray-300
    bg-indigo-800 px-4 py-2 text-sm font-medium text-white shadow-sm
@@ -30,7 +31,7 @@
 
 .photoBoard {
   @apply flex justify-center rounded-md border-2 border-dashed hover:font-bold
-   border-gray-300 duration-100 hover:border-indigo-800 text-gray-400 hover:text-indigo-800 mt-3 relative z-10
+   border-gray-300 duration-100 hover:border-indigo-800 text-gray-400 hover:text-indigo-800 mt-3 relative 
 }
 
 .tableCamp {

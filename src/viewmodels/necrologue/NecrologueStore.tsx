@@ -6,7 +6,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class NecrologueStore{
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
     static necrologueStore: NecrologueStore
 
     static getNecrologueStore() {
