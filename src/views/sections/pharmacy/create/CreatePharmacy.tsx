@@ -14,17 +14,12 @@ const pharmacyStore = PharmacyStore.getPharmacyStore()
 const CreatePharmacy = () => {
     const [file, setFile] = useState<File>()
     const [datePanel, setDatePanel] = useState(true)
-    const [dateGuardia, setDateGuardia] = useState({
-        startDate: new Date(),
-        endDate: new Date()
-    });
-
-    const handleValueChange = (newValue: any) => {
-        setDateGuardia(newValue);
-    }
+    const days = new Date(2023, 2, 0).getDate()
 
     const navigate = useNavigate()
 
+    const inputTitle = useRef<HTMLInputElement>(null)
+    const inputPeriod = useRef<HTMLInputElement>(null)
     const inputWebUrl = useRef<HTMLInputElement>(null)
     const inputTel = useRef<HTMLInputElement>(null)
     const inputScheSelect = useRef<HTMLSelectElement>(null)
@@ -48,8 +43,10 @@ const CreatePharmacy = () => {
     const [pharmacyLong, setPharmacyLong] = useState<string>("")
     const [pharmacyLat, setPharmacyLat] = useState<string>("")
     const [pharmacySchedule, setPharmacySchedule] = useState<string>("")
-    const [pharmaStartDate, setPharmaStartDate] = useState<string>(dateGuardia.startDate.toString())
-    const [pharmaEndDate, setPharmacyEndDate] = useState<string>(dateGuardia.endDate.toString())
+    const [pharmStartDate, setPharmStartDate] = useState<Date>()
+    const [pharmPeriod, setPharmPeriod] = useState<number>()
+    const [pharmFrequency, setPharmFrequency] = useState<number>()
+
 
 
     function handleScheduleInput() {
@@ -60,7 +57,7 @@ const CreatePharmacy = () => {
         }
     }
     function addPharmacy() {
-            const pharmacy: Pharmacy = {
+        const pharmacy: Pharmacy = {
             type: pharmType,
             name: pharmacyName,
             link: pharmacyWebUrl,
@@ -69,8 +66,10 @@ const CreatePharmacy = () => {
             description: pharmacyDescption,
             longitude: pharmacyLong,
             latitude: pharmacyLat,
-            startDate: dateGuardia.startDate.toString(),
-            endDate: dateGuardia.endDate.toString()
+            startDate : pharmStartDate,
+            durationDays: pharmPeriod,
+            frequencyInDays : pharmFrequency
+
         }
         if (pharmacyStore.getPharmacy.name === pharmacy.name) {
             toast.info('Ya existe esta farmacia', {
@@ -83,32 +82,21 @@ const CreatePharmacy = () => {
                 progress: undefined,
                 theme: "light"
             })
-<<<<<<< HEAD
-          }else{
-            pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-            pharmacyTel === "" || pharmacySchedule === ""||  pharmacyDescption === "" || 
-            pharmacyLong === "" || pharmacyLat === "" || file === undefined?
-            toast.info('Rellene los campos', {
-              position: 'bottom-center',
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "light"
-            }) :  pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
-          }
-=======
         } else {
-            if (pharmacy.type === "Normal") {
-                pharmacy.startDate = ""
-                pharmacy.endDate = ""
-            }
-            pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
-
+            pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
+                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescption === "" ||
+                pharmacyLong === "" || pharmacyLat === "" || file === undefined ?
+                toast.info('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                }) : pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
         }
->>>>>>> cbb6abdfadf53d6d6b6bd0832b11dcc2c6a5311b
     }
     return (
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
@@ -118,60 +106,85 @@ const CreatePharmacy = () => {
                     <p className='flex  text-white text-3xl p-3'>FARMACIA</p>
                 </div>
             </div>
-            <div className="w-full flex flex-1 flex-col pl-3 mt-8">
-                <div className="flex flex-col p-1 relative">
+            <div className="w-full flex flex-1 flex-row pl-3 mt-8 ">
+                <div className="flex flex-col p-1 relative  w-1/3">
                     <div className="flex pt-2 ">
-                        <div className='flex w-1/3 xl:w-1/6'>
-                            <input type="radio" id="radioOne" value="Normal" className="sr-only peer" name="pharmTypeRadio" onChange={(e) => {
+
+                        <div className='flex w-1/2 '>
+                            <input type="radio" id="radioOne" value="Normal" className="sr-only peer " name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
                                 setDatePanel(true)
                             }} />
-                            <label htmlFor="radioOne" className="w-full text-center uppercase cursor-pointer p-2 mr-5 font-medium text-sm rounded-md peer-checked:bg-indigo-800 border 
+                            <label htmlFor="radioOne" className="w-full text-center select-none uppercase cursor-pointer p-2 mr-5 font-medium text-sm rounded-full md:rounded-md peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
                             peer-checked:text-white 
                             ring-indigo-500 peer-checked:ring-2 ">NORMAL</label>
+                            <label className="labelFloatDate" hidden={!datePanel}>Tipo</label>
                         </div>
-                        <div className='flex w-1/3 xl:w-1/6' >
-                            <input type="radio" id="radioTwo" className="sr-only peer" value="De guardia" name="pharmTypeRadio" onChange={(e) => {
+                        <div className='flex  w-1/2' >
+                            <input type="radio" id="radioTwo" className="sr-only peer " value="Guardia" name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
                                 setDatePanel(false)
                             }} />
-                            <label htmlFor="radioTwo" className="w-full text-center uppercase cursor-pointer text-sm font-medium rounded-md p-2 mr-5
+                            <label htmlFor="radioTwo" className="w-full min-w-fit text-center select-none uppercase cursor-pointer text-sm font-medium rounded-full md:rounded-md p-2 mr-5
                             peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
                             peer-checked:text-white 
                             ring-indigo-500 peer-checked:ring-2 ">DE GUARDIA</label>
+                            <label className="labelFloatDate" hidden={datePanel}>Tipo</label>
                         </div>
-                        <div className="w-1/3 relative focus:outline-none focus:border-indigo-800   bg-transparent " >
-                            <Datepicker
-                                placeholder='Dias de guardia'
-                                showFooter
-                                configs={{
-                                    footer: {
-                                        cancel: "Cancelar",
-                                        apply: "Aceptar"
-                                    }
-                                }}
-                                i18n={"es"}
-                                startWeekOn="lu"
-                                useRange={false}
-                                primaryColor='indigo'
 
-                                separator={"-"}
-                                disabled={datePanel}
-                                value={dateGuardia}
-                                onChange={handleValueChange} />
-
-                        </div>
-                        <label className={"labelFloatDate"}>Tipo</label>
                     </div>
+
+                </div>
+                <div className="flex pt-2  p-1  relative  ">
+                    <input type="date" name="necroDate" className="inputCamp peer w-40 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                    onChange={(e)=>{
+setPharmStartDate(e.currentTarget.valueAsDate!)
+                    }}
+                        onKeyUp={(e) => {
+                            if ((e.code === "NumpadEnter")) {
+                                if (inputPeriod.current != null) {
+                                    inputPeriod.current.focus()
+                                }
+                            }
+                        }} />
+                    <label className={"labelFloatDate"}>Inicio de guardia</label>
+                </div>
+                <div className="flex pt-2  p-1  relative ">
+                    <input type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer w-20 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                        onChange={(e)=>{
+                            setPharmPeriod(e.currentTarget.valueAsNumber)
+                                                }}
+                       onKeyUp={(e) => {
+                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                if (inputTitle.current != null) {
+                                    inputTitle.current.focus()
+                                }
+                            }
+                        }} />
+                    <label className={"labelFloatDate"}>Periodo</label>
+                </div>
+                <div className="flex pt-2  p-1  relative ">
+                    <input type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer w-20 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                        onChange={(e)=>{
+                            setPharmFrequency(e.currentTarget.valueAsNumber)
+                                                }}
+                       onKeyUp={(e) => {
+                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                if (inputTitle.current != null) {
+                                    inputTitle.current.focus()
+                                }
+                            }
+                        }} />
+                    <label className={"labelFloatDate"}>Frequesncia</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-5 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <input autoFocus placeholder=" " name="pharmacyName" type="text" className="inputCamp peer" onChange={(e) => {
+                    <input autoFocus ref={inputTitle} placeholder=" " name="pharmacyName" type="text" className="inputCamp peer" onChange={(e) => {
                         setPharmacyName(e.currentTarget.value)
                     }} onKeyUp={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -319,7 +332,6 @@ const CreatePharmacy = () => {
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-
                     <input ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="inputCamp peer" onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (inputLat.current != null) {

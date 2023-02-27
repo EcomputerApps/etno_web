@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../../../../index.css"
 import 'react-toastify/dist/ReactToastify.css';
-import { Advert } from '../../../../models/section/Section'
+import { Ad } from '../../../../models/section/Section'
 
 import AdvertStore from '../../../../viewmodels/advert/AdvertStore'
 import { toast, ToastContainer } from 'react-toastify'
@@ -31,7 +31,7 @@ const CreateAdvert = () => {
     }, [])
 
     function addAd() {
-       const ad: Advert = {
+       const ad: Ad = {
         title: advertTitle,
         description: advertDescription,
         webUrl: advertLink

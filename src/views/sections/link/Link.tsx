@@ -49,7 +49,7 @@ const Link = () => {
         setPageNumber(pageNumber - 1)
     }
     return (
-        <div className="flex relative flex-col h-full gap-4 w-full">
+        <div className="w-full h-full min-w-5/6 relative flex flex-col">
             <div className="flex flex-row">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces</h2>
                 <div className="ml-auto">
@@ -59,7 +59,7 @@ const Link = () => {
                     </button>
                 </div>
             </div>
-            <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg">
+            <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-4">
                 <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                         <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
@@ -88,7 +88,7 @@ const Link = () => {
                     </div>
                 </div>
             ) : <></>}
-            <div className=" w-full h-3/4">
+            <div className="flex flex-1 overflow-y-auto w-full h-3/4 ">
                 <div className={"md:w-full w-1/2 md:h-full grid md:grid-cols-4 md:grid-rows-3"}>
                     {linkStore.paginatedLink.content?.map((link, index) => (
                         linkStore.paginatedLink.content!!.length > 0 &&
@@ -103,7 +103,7 @@ const Link = () => {
                     ))}
                 </div>
             </div>
-            <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
+            <div className="flex flex-2  items-center justify-center md:flex-row flex-col ">
                 <button
                     className="btnStandard mr-10" onClick={decrementPage} disabled={pageNumber === 0}>
                     <img src={arrowLeft} alt="backward" />

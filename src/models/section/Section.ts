@@ -112,9 +112,11 @@ interface Pharmacy {
     schedule?: string,
     description?: string,
     longitude?: string,
-    latitude?: string
-    startDate?: string,
-    endDate?: string
+    latitude?: string,
+    startDate?: Date,
+    durationDays?: number,
+    frequencyInDays?: number,
+    dates?: PharmacyDutyDate[]
 
 }
 
@@ -128,6 +130,14 @@ interface PaginatedPharmacy {
 interface PharmacyOnDuty {
     content?: Pharmacy[]
 }
+interface PharmacyDutyDate{
+    idPharmacyDate?: string,
+    username?: string,
+    namePharmacy?: string,
+    date?: Date
+}
+
+
 
 interface Service {
     idService?: string,
@@ -153,8 +163,8 @@ interface Sponsor {
     username?: string,
     title?: string,
     description?: string,
-    phoneNumber?: string,
-    imageUrl?: string
+    phone?: string,
+    urlImage?: string
 }
 
 interface PaginatedSponsor {
@@ -201,7 +211,10 @@ interface Incident {
     username?: string,
     fcmToken?: string,
     title?: string,
-    description?: string
+    description?: string,
+    issuedDate?: string,
+    resolution?: boolean
+
 }
 
 interface PaginatedIncident {
@@ -224,12 +237,15 @@ interface PaginatedLink {
     pageNum?: number
 }
 
-interface Photos {
-    idPhoto?: string,
-    username?: string,
-    title?: string,
-    imageUrl?: string
+
+
+interface PaginatedImages {
+    content?: Image[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
 }
+
 
 
 interface EventList {
@@ -237,11 +253,11 @@ interface EventList {
 }
 
 export type {
-    EventList, Event, Ad as Advert, Tourism, Band,
-    Pharmacy, Service, News, Incident, Photos, Link,
+    EventList, Event, Ad , Tourism, Band,
+    Pharmacy, Service, News, Incident,  Link,
     Necrologue, Sponsor, PaginatedEvent, PaginatedAdvert,
     PaginatedNews, PaginatedTourism, PaginatedBand,
     PaginatedPharmacy, PaginatedService, PaginatedSponsor,
     PaginatedNecro, PaginatedIncident, PaginatedLink,
-    Image, PharmacyOnDuty
+    Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate 
 }

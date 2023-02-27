@@ -1,6 +1,6 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
-import { Advert, PaginatedAdvert } from "../../models/section/Section";
+import { Ad, PaginatedAdvert } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -18,7 +18,7 @@ class AdvertStore {
     //Observables =>
     paginatedAdvert: PaginatedAdvert = {}
     isSuccess: boolean = false
-    advert: Advert = {}
+    advert: Ad = {}
 
     constructor() {
         makeObservable(this, {
@@ -40,13 +40,13 @@ class AdvertStore {
     updatePaginatedAdverts(paginatedAdverts: PaginatedAdvert) {
         this.paginatedAdvert = paginatedAdverts
     }
-    updateAdvertList(adverts: Advert[]) {
+    updateAdvertList(adverts: Ad[]) {
         this.paginatedAdvert.content = adverts
     }
     updateIsSuccess(isSuccess: boolean){
         this.isSuccess = isSuccess
     }
-    updateAdvert(advert: Advert){
+    updateAdvert(advert: Ad){
         this.advert = advert
     }
     
@@ -57,7 +57,7 @@ class AdvertStore {
         return this.advert
     }
 
-    async addRequestAdvert(locality: string, ad: Advert, file: File){
+    async addRequestAdvert(locality: string, ad: Ad, file: File){
         await imageStore.addImageAPI('Bolea', 'anuncio', 'anuncio', file!!)
         this.advert.imageUrl = imageStore.getImage.link
 

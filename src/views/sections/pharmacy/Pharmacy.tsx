@@ -30,12 +30,12 @@ const Pharmacy = () => {
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Farmacias</h2>
           <div className="ml-auto">
             <button onClick={() => navigate("/findGuardia")} type="button"
-              className="btnStandard mr-5">
+              className="btnStandard mr-5 h-12">
               <img src={POD} alt="de guardia" />
               Farmacias de guardia
             </button>
             <button onClick={() => navigate("/addPharmacy")} type="button"
-              className="btnStandard">
+              className="btnStandard ">
               <img src={Pencil} alt="create" />
               Crear
             </button>

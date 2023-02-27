@@ -44,7 +44,7 @@ const TableSponsor = (prop: PropTable) => {
                             </td>
                             <td className="px-6 py-4 text-center">
                             <div className="tableCamp">
-                                {sponsor.phoneNumber}
+                                {sponsor.phone}
                                 </div>
                             </td>
                             <td className="px-6 py-4">

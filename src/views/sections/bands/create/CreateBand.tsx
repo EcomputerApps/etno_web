@@ -27,8 +27,7 @@ const CreateBand = () => {
     const bando: Band = {
       title: bandType,
       description: bandDescription,
-      issuedDate: bandDate,
-      // imageUrl:bandPhoto 
+      
     }
     if (bandStore.getBand.title === bando.title) {
       toast.info('Ya existe este bando', {
@@ -42,7 +41,7 @@ const CreateBand = () => {
         theme: "light"
       })
     } else {
-      bandType === "" || bandDescription === "" || bandDate === "" || file === undefined ?
+      bandType === "" || bandDescription === "" || file === undefined ?
         toast.info('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 1000,
@@ -100,22 +99,7 @@ const CreateBand = () => {
             <label className={"labelFloatTxtArea"}>Descripcíon</label>
           </div>
         </div>
-        <div className="w-full flex flex-1 flex-col pl-3 mt-5">
-          <div className="flex flex-col p-1 relative ">
-            <input ref={inputRef} placeholder=" dsdsdsd" type="date" name="bandDate"
-               className="inputCamp peer w-40"
-              onChange={(value) => {
-                setbandDate(value.currentTarget.value)
-              }} onKeyDown={(e) => {
-                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                  if (btnRef.current != null) {
-                    btnRef.current.focus()
-                  }
-                }
-              }} />
-            <label className={"labelFloatDate"}>Fecha</label>
-          </div>
-        </div>
+     
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="text-left p-1 ">
             <div className="photoBoard" >

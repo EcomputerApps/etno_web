@@ -1,87 +1,81 @@
 import moment from 'moment';
-import React, { useEffect, useState, useMemo } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar'
-
+import React, { useEffect, useState, useMemo, Children, useCallback } from 'react';
+import { Calendar, DateLocalizer, momentLocalizer, Navigate } from 'react-big-calendar'
 import 'moment/locale/es';
 import "react-big-calendar/lib/css/react-big-calendar.css";
-
 import { useNavigate } from 'react-router-dom';
 import PharmacyStore from '../../../viewmodels/pharmacy/PharmacyStore';
-import { Pharmacy } from '../../../models/section/Section';
+import { Pharmacy, PharmacyDutyDate } from '../../../models/section/Section';
+import { observer } from 'mobx-react-lite';
+var array1 = new Array({
+    nombre: "faramcia",
+    date: ["2023-02-15", "2023-03-16", "2023-04-16"]
+})
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
+
 const PharmacyOnDutyCalendar = () => {
+    var events = new Array()
     useEffect(() => {
         pharmacyStore.getRequestPharmacyOnDuty("Bolea")
+
     }, [])
-
-    const [contador, setContador] = useState(0)
-    const [daysInMonth, setDaysInMonth] = useState(moment().daysInMonth())
-    const [firstDay, setFirsDay] = useState(moment().startOf("month").day())
-    const [monthNow, setMonthNow] = useState(moment().format("MMMM YYYY "))
-    const [monthDayOne, setMonthDayOne] = useState(moment().startOf("month").format("YYYY-MM-DD"))
+   
     const localizer = momentLocalizer(moment)
-
-    function nextMonth() {
-        setMonthDayOne(moment().add(contador + 1, "months").startOf("month").format("YYYY-MM-DD"))
-        setMonthNow(moment().add(contador + 1, "months").format("MMMM YYYY"))
-        setDaysInMonth(moment().add(contador + 1, "months").daysInMonth())
-        setFirsDay(moment().add(contador + 1, "months").startOf("month").day())
-        setContador(contador + 1)
-
-    } function prevMonth() {
-        setContador(contador - 1)
-        setMonthDayOne(moment().add(contador - 1, "months").startOf("month").format("YYYY-MM-DD"))
-        setMonthNow(moment().add(contador - 1, "months").format("MMMM YYYY"))
-        setDaysInMonth(moment().add(contador - 1, "months").daysInMonth())
-        setFirsDay(moment().add(contador - 1, "months").startOf("month").day())
-
-    }
-
     const navigate = useNavigate()
-    const { defaultDate, views } = useMemo(
+
+    const { defaultDate, views, } = useMemo(
         () => ({
             defaultDate: new Date(),
             views: {
                 month: true,
-                day: true
-
 
             },
         }),
         []
     )
-  
-    var events = new Array()
 
-    pharmacyStore.getPOD.content?.map((item, index) => {
-        events.push({
-            id: index,
-            title: item.name!!,
-            start: new Date(item.startDate!!),
-            end: new Date(moment(item.endDate!!).format("YYYY-MM-DD")),
-            resourceId: index + 1,
-            allday: true
-        })
+    pharmacyStore.getPOD.content?.map((item) => {
+        for (var i = 0; i < item.dates!?.length; i++) {
+            events.push({
+                title: item.dates![i].namePharmacy,
+                start: item.dates![i].date,
+                end: moment(item.dates![i].date),
+                allday: true
+            })
+        }
     })
 
 
     return (
-        <div >
-            <div className=" m-auto  w-5/6 ">
-                <div className='flex mt-5 justify-end bg-indigo-50 p-1'>
-                    <button className='btnStandard' onClick={() => { navigate("/home") }}>Volver</button>
-                    <button className='btnStandard' onClick={() => {  }}>GO</button>
+        <div className='min-w-max' >
+            <div>
+            </div>
+            <div className="relative m-auto  w-5/6  ">
+                <div className=' absolute right-1    -top-4 rbc-toolbar'>
+                    <div className='flex mt-5 justify-end bg-indigo-50  rbc-btn-group'>
+                        <button className='top-0 ' onClick={() => { navigate("/home") }}>Volver</button>
+                    </div>
                 </div>
-             
                 <div>
                     <Calendar
                         localizer={localizer}
-className=" bg-indigo-50 p-1"
+                        className=" bg-indigo-50 p-1"
                         events={events}
-                   
+                        messages={{
+                            week: 'Semana',
+                            work_week: 'Semana de trabajo',
+                            day: 'Día',
+                            month: 'Mes',
+                            previous: 'Anterior',
+                            next: 'Siguiente',
+                            today: 'Hoy',
+                            agenda: 'El Diario',
+                            showMore: total => `+${total} mas`,
+                        }}
                         defaultView="month"
+                        popup
                         style={{ height: "90vh" }}
                         views={views}
                     />
@@ -91,4 +85,4 @@ className=" bg-indigo-50 p-1"
 
     )
 }
-export default PharmacyOnDutyCalendar
+export default observer(PharmacyOnDutyCalendar)

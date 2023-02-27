@@ -69,8 +69,8 @@ class BandStore {
         this.updateBandList(newPaginatedBands)
         this.updateBand({})
         toast.success('Se ha borrado exitosamente', {
-            position: 'bottom-center',
-            autoClose: 1000,
+            position: 'top-center',
+            autoClose: 100,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
@@ -80,8 +80,8 @@ class BandStore {
       })
     }else{
         toast.error('No se ha podido borrar', {
-            position: 'bottom-center',
-            autoClose: 1000,
+            position: 'top-center',
+            autoClose: 500,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
@@ -106,7 +106,7 @@ class BandStore {
             this.band = bando
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
-                autoClose: 1000,
+                autoClose: 300,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -117,7 +117,7 @@ class BandStore {
         }else{
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
-                autoClose: 1000,
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,

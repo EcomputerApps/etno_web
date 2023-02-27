@@ -46,7 +46,7 @@ const CreateEvent = () => {
       startDate: eventDateStart,
       endDate: eventDateFin
     }
-    if(eventStore.getEvent.title === event.title){
+    if (eventStore.getEvent.title === event.title) {
       toast.info('Ya existe este evento', {
         position: 'top-center',
         autoClose: 500,
@@ -58,18 +58,21 @@ const CreateEvent = () => {
         theme: 'light'
       })
     } else {
-      eventTitle === '' || eventDirection === '' || eventDescription === '' || eventOrganization === '' || eventPrice === '' || eventSeats === '' || eventLink === '' || eventDateStart === '' || eventDateFin === '' || file === undefined ?
+      eventTitle === '' || eventDirection === '' || eventDescription === ''
+        || eventOrganization === '' || eventPrice === ''
+        || eventSeats === '' || eventLink === '' || eventDateStart === ''
+        || eventDateFin === '' || file === undefined ?
 
-      toast.info('Rellene los campos vacíos', {
-        position: 'top-center',
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light'
-      }) : eventStore.addRequestEvent('Bolea', event, file!!)
+        toast.info('Rellene los campos vacíos', {
+          position: 'top-center',
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light'
+        }) : eventStore.addRequestEvent('Bolea', event, file!!)
     }
   }
   const navigate = useNavigate()
@@ -86,50 +89,50 @@ const CreateEvent = () => {
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col  p-1 relative">
             <input autoFocus placeholder=" " type="text" name="eventTitle" className="inputCamp peer" onChange={(value) => {
-                setEventTitle(value.currentTarget.value)
-              }} onKeyUp={(e) => {
-                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                  if (inputRefDir.current != null) {
-                    inputRefDir.current.focus()
-                  }
+              setEventTitle(value.currentTarget.value)
+            }} onKeyUp={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (inputRefDir.current != null) {
+                  inputRefDir.current.focus()
                 }
-              }}></input>
+              }
+            }}></input>
             <label className={"labelFloatInput"}>Título</label>
           </div>
           <div className="flex flex-col mt-3 p-1 relative ">
             <input ref={inputRefDir} placeholder=" " type="text" name="eventDirection1" id="2" className="inputCamp peer" onChange={(value) => {
-                setEventDirection(value.currentTarget.value)
-              }} onKeyUp={(e) => {
-                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                  if (txtAreaRef.current != null) {
-                    txtAreaRef.current.focus()
-                  }
+              setEventDirection(value.currentTarget.value)
+            }} onKeyUp={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (txtAreaRef.current != null) {
+                  txtAreaRef.current.focus()
                 }
-              }}></input>
+              }
+            }}></input>
             <label className={"labelFloatInput"}>Dirección</label>
           </div>
           <div className="flex flex-col mt-3 p-1 relative">
             <textarea ref={txtAreaRef} placeholder=" " name="eventDescription" rows={3} className="inputCamp peer" onChange={(value) => {
-                setEventDescription(value.currentTarget.value)
-              }} onKeyDown={(e) => {
-                if (e.code === "NumpadEnter") {
-                  if (inputRefOrg.current != null) {
-                    inputRefOrg.current.focus()
-                  }
+              setEventDescription(value.currentTarget.value)
+            }} onKeyDown={(e) => {
+              if (e.code === "NumpadEnter") {
+                if (inputRefOrg.current != null) {
+                  inputRefOrg.current.focus()
                 }
-              }}></textarea>
+              }
+            }}></textarea>
             <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
           <div className="flex flex-col mt-3 p-1 relative">
-            <input ref={inputRefOrg} placeholder=" " type="text" name="eventOrganization" className="inputCamp peer"   onChange={(value) => {
-                setEventOrganization(value.currentTarget.value)
-              }} onKeyDown={(e) => {
-                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                  if (inputRefPric.current != null) {
-                    inputRefPric.current.focus()
-                  }
+            <input ref={inputRefOrg} placeholder=" " type="text" name="eventOrganization" className="inputCamp peer" onChange={(value) => {
+              setEventOrganization(value.currentTarget.value)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (inputRefPric.current != null) {
+                  inputRefPric.current.focus()
                 }
-              }}></input>
+              }
+            }}></input>
             <label className={"labelFloatTxtArea"}>Organización</label>
           </div>
           <div className="flex flex-col mt-5 p-1">
@@ -171,14 +174,14 @@ const CreateEvent = () => {
           </div>
           <div className="flex flex-col mt-3 relative p-1">
             <input ref={inputRefLink} placeholder=" " type="text" name="eventUrl" className="inputCamp peer" onChange={(value) => {
-                setEventLink(value.currentTarget.value)
-              }} onKeyDown={(e) => {
-                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                  if (inputRefDS.current != null) {
-                    inputRefDS.current.focus()
-                  }
+              setEventLink(value.currentTarget.value)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (inputRefDS.current != null) {
+                  inputRefDS.current.focus()
                 }
-              }}></input>
+              }
+            }}></input>
             <label className={"labelFloatInput"}>Pagina Web</label>
           </div>
           <div className="w-full flex flex-1 flex-col ">
@@ -203,26 +206,26 @@ const CreateEvent = () => {
           </div>
           <div className="flex flex-col p-1 relative mt-5">
             <input ref={inputRefDS} type="date" name="eventStart" className="w-40 inputCamp peer" onChange={(value) => {
-                setEventDateStart(value.currentTarget.value)
-              }} onKeyDown={(e) => {
-                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                  if (inputRefDF.current != null) {
-                    inputRefDF.current.focus()
-                  }
+              setEventDateStart(value.currentTarget.value)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (inputRefDF.current != null) {
+                  inputRefDF.current.focus()
                 }
-              }} />
+              }
+            }} />
             <label className={"labelFloatDate"}>Fecha de Inicio</label>
           </div>
           <div className="flex flex-col p-1 relative mt-5">
             <input ref={inputRefDF} type="date" name="eventFinish" className="w-40 inputCamp peer " onChange={(value) => {
-                setEventDateFin(value.currentTarget.value)
-              }} onKeyDown={(e) => {
-                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                  if (btnRef.current != null) {
-                    btnRef.current.focus()
-                  }
+              setEventDateFin(value.currentTarget.value)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (btnRef.current != null) {
+                  btnRef.current.focus()
                 }
-              }} />
+              }
+            }} />
             <label className={"labelFloatDate"}>Fecha de Final</label>
           </div>
         </div>
@@ -231,7 +234,7 @@ const CreateEvent = () => {
           <button name="eventBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
         </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   )
 }

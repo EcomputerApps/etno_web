@@ -19,13 +19,14 @@ class PharmacyStore {
     paginatedPharmacy: PaginatedPharmacy = {}
     pharmacy: Pharmacy = {}
     pharmacyOnDutyList: PharmacyOnDuty = {}
+  
 
 
     constructor() {
         makeObservable(this, {
             paginatedPharmacy: observable,
             pharmacyOnDutyList: observable,
-            updatePOD: action,
+             updatePOD: action,
             pharmacy: observable,
             updatePharmacy: action,
             getPharmacy: computed,
@@ -38,7 +39,7 @@ class PharmacyStore {
             getPOD: computed
 
         })
-    } 
+    }
     updatePOD(pharmacys: Pharmacy[]) {
         this.pharmacyOnDutyList.content = pharmacys
     }
@@ -57,6 +58,7 @@ class PharmacyStore {
     }
     updatePharmacy(pharmacy: Pharmacy) {
         this.pharmacy = pharmacy
+
     } get getPharmacy() {
         return this.pharmacy
     }
@@ -75,6 +77,7 @@ class PharmacyStore {
         const pharmacy = await response.json()
         this.updatePOD(pharmacy)
     }
+    
     async deletePharmacy(username: string, name: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/pharmacy?username=${username}&name=${name}`, {
             method: 'DELETE',
