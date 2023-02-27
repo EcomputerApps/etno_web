@@ -88,6 +88,43 @@ class NewsStore{
           })
     }
 }
+    async editNews(locality: string, newsId: string, news: News, file: File){
+        if (file !== undefined){
+            await imageStore.addImageAPI('Bolea', 'noticia', 'noticia', file!!)
+            news.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/news?username=${locality}&newsId=${newsId}`, {
+            method: 'PUT',
+            body: JSON.stringify(news),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+        if(response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          }) 
+        }
+    }
   
     async getRequestNews( locality : string, pageNum: number, elementSize: number){
         const response = await fetch(`http://${this.serverIp}:8080/news?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
@@ -97,7 +134,7 @@ class NewsStore{
         const news = await response.json()
         this.updatePaginatedNews(news)
     }
-
+    
     async deleteNews(username: string, title : string){
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/news?username=${username}&title=${title}`,{
             method : 'DELETE',

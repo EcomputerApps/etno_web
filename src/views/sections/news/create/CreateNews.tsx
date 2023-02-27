@@ -69,7 +69,7 @@ const CreateNews = () => {
         theme: "light"
     })
     }else{
-        if(newsCategory === '' || newsTitle === '' || newsDate === '' || newsLink === '' || file === undefined){
+        if(newsCategory === '' || newsTitle === '' || newsDate === '' || file === undefined){
           toast.info('Rellene los campos', {
             position: 'top-center',
             autoClose: 500,
@@ -154,21 +154,7 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"labelFloatTxtArea"}>Descricíon</label>
-        </div>
-      </div>
-      <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1 relative mt-3">
-          <input ref={inputRefLink} placeholder=" " name="newsUrl" type="text" className="inputCamp peer" onChange={(value) => {
-            setNewstLink(value.currentTarget.value)
-          }} onKeyDown={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (btnRef.current != null) {
-                btnRef.current.focus()
-              }
-            }
-          }} />
-          <label className={"labelFloatInput"}>Pagina Web</label>
+          <label className={"labelFloatTxtArea"}>Descripción</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">

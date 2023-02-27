@@ -191,7 +191,7 @@ interface PaginatedNecro {
 }
 
 interface News {
-    idNews?: string,
+    idNew?: string,
     username?: string,
     category?: string,
     title?: string,

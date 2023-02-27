@@ -99,7 +99,7 @@ class SposnsorStore {
 
     async addRequestSponsor(username: string, sponsor: Sponsor, file: File) {
         await imageStore.addImageAPI('Bolea', 'patrocinador', 'patrocinador', file)
-        sponsor.imageUrl = imageStore.getImage.link
+        sponsor.urlImage = imageStore.getImage.link
         const response = await fetch(`http://${this.serverIp}:8080/users/add/sponsor?username=${username}`, {
             method: 'POST',
             headers: {
