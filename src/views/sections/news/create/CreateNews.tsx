@@ -69,7 +69,7 @@ const CreateNews = () => {
         theme: "light"
     })
     }else{
-        if(newsCategory === '' || newsTitle === '' || newsDescription === '' || newsDate === '' || newsLink === '' || file === undefined){
+        if(newsCategory === '' || newsTitle === '' || newsDate === '' || file === undefined){
           toast.info('Rellene los campos', {
             position: 'bottom-center',
             autoClose: 1000,
@@ -154,10 +154,9 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"labelFloatTxtArea"}>Descricíon</label>
+          <label className={"labelFloatTxtArea"}>Descripción</label>
         </div>
       </div>
-  
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="text-left p-1 ">
           <div className={"photoBoard"}>

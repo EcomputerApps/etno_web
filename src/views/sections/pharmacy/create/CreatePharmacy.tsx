@@ -93,8 +93,8 @@ const CreatePharmacy = () => {
             phone: pharmacyTel,
             schedule: pharmacySchedule,
             description: pharmacyDescption,
-            longitude: pharmacyLong,
-            latitude: pharmacyLat,
+            longitude: String(long),
+            latitude: String(lat),
             startDate : pharmStartDate,
             durationDays: pharmPeriod,
             frequencyInDays : pharmFrequency
@@ -114,7 +114,7 @@ const CreatePharmacy = () => {
         } else {
             pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
                 pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescption === "" ||
-                 file === undefined ?
+                long === 0 || lat === 0 || file === undefined ?
                 toast.info('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
