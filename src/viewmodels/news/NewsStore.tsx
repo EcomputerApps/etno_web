@@ -5,7 +5,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class NewsStore{
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
     static newsStore : NewsStore
 
     static getNewsStore(){
@@ -66,7 +66,7 @@ class NewsStore{
             this.paginatedNews.content?.push(news)
             this.news = news
             toast.success('Se ha añadido exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -77,8 +77,8 @@ class NewsStore{
           })
         }else{
             toast.error('No se ha añadido', {
-                position: 'top-center',
-                autoClose: 500,
+                position: 'bottom-center',
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -111,8 +111,8 @@ class NewsStore{
             this.updateNewsList(newPaginatedNews)
             this.updateNews({})
             toast.success('Se ha borrado exitosamente', {
-                position: 'top-center',
-                autoClose: 100,
+                position: 'bottom-center',
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -121,9 +121,9 @@ class NewsStore{
                 theme: "light"
           })
         }else{
-            toast.error('No se ha borrado exitosamente', {
-                position: 'top-center',
-                autoClose: 500,
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,

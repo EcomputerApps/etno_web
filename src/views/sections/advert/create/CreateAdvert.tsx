@@ -38,7 +38,7 @@ const CreateAdvert = () => {
        }
        if(advertStore.getAdvert.title === ad.title){
         toast.info('Ya existe este anuncio', {
-            position: 'top-center',
+            position: 'bottom-center',
             autoClose: 500,
             hideProgressBar: false,
             closeOnClick: false,
@@ -50,7 +50,7 @@ const CreateAdvert = () => {
        } else {
         advertTitle === '' || advertDescription === '' || advertLink === '' || file === undefined ?
         toast.info('Rellene los campos', {
-            position: 'top-center',
+            position: 'bottom-center',
             autoClose: 500,
             hideProgressBar: false,
             closeOnClick: false,
@@ -141,7 +141,7 @@ const CreateAdvert = () => {
                 <button name="advertBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
             </div>
-            <ToastContainer/>
+            <ToastContainer style={{marginBottom : "50px"}}/>
         </div>
     )
 }

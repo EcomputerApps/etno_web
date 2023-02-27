@@ -6,7 +6,7 @@ const imageStore = ImageStore.getImageStore()
 
 class EventStore {
     static eventStore: EventStore
-    serverIp : string = "192.168.137.1"
+    serverIp : string = "192.168.241.51"
 
     static getEventStore(){
         if(this.eventStore === undefined){
@@ -108,7 +108,7 @@ class EventStore {
         this.updateEvent({})
         toast.success('Se ha eliminado exitosamente', {
             position: 'top-center',
-            autoClose: 100,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
@@ -119,7 +119,7 @@ class EventStore {
     }else{
         toast.error('No se ha eliminado exitosamente', {
             position: 'top-center',
-            autoClose: 500,
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,

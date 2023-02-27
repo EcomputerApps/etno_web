@@ -35,10 +35,8 @@ const decrementPage = () => {
             </button>
           </div>
         </div>
-       
-        <TableNews currentPage={pageNumber} headerList={['Categoría', 'Título', 'fecha', 'Descripción', 'Acciones']} />
-     
-      </div>
+          <TableNews currentPage={pageNumber} headerList={['Categoría', 'Título', 'fecha', 'Descripción', 'Acciones']} />
+       </div>
       <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
         <button onClick={decrementPage} disabled={pageNumber < 1} className="btnStandard mr-10">
         <img src={arrowLeft} alt="backward"/>
@@ -51,7 +49,7 @@ const decrementPage = () => {
           <img src={arrowRight} alt="forward"/>
         </button>
       </div>
-      <ToastContainer/>
+      <ToastContainer style={{marginBottom : "50px", marginLeft: "50px"}}/>
     </div>
   )
 }

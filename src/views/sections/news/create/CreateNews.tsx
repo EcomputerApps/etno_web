@@ -59,8 +59,8 @@ const CreateNews = () => {
     
     if(newsStore.getNews.title === news.title){
       toast.info('Ya existe esta noticia', {
-        position: 'top-center',
-        autoClose: 500,
+        position: 'bottom-center',
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: false,
         pauseOnHover: false,
@@ -69,10 +69,10 @@ const CreateNews = () => {
         theme: "light"
     })
     }else{
-        if(newsCategory === '' || newsTitle === '' || newsDate === '' || newsLink === '' || file === undefined){
+        if(newsCategory === '' || newsTitle === '' || newsDescription === '' || newsDate === '' || newsLink === '' || file === undefined){
           toast.info('Rellene los campos', {
-            position: 'top-center',
-            autoClose: 500,
+            position: 'bottom-center',
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
@@ -157,20 +157,7 @@ const CreateNews = () => {
           <label className={"labelFloatTxtArea"}>Descricíon</label>
         </div>
       </div>
-      <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1 relative mt-3">
-          <input ref={inputRefLink} placeholder=" " name="newsUrl" type="text" className="inputCamp peer" onChange={(value) => {
-            setNewstLink(value.currentTarget.value)
-          }} onKeyDown={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (btnRef.current != null) {
-                btnRef.current.focus()
-              }
-            }
-          }} />
-          <label className={"labelFloatInput"}>Pagina Web</label>
-        </div>
-      </div>
+  
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="text-left p-1 ">
           <div className={"photoBoard"}>
@@ -196,7 +183,7 @@ const CreateNews = () => {
         <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer style={{marginBottom : "50px"}}/>
     </div>
   )
 }

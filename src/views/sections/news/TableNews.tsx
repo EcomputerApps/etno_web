@@ -65,7 +65,7 @@ const TableNews = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
-            <ToastContainer />
+            
         </div>
     )
 

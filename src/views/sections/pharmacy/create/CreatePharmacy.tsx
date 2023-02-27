@@ -114,7 +114,7 @@ const CreatePharmacy = () => {
         } else {
             pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
                 pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescption === "" ||
-                pharmacyLong === "" || pharmacyLat === "" || file === undefined ?
+                 file === undefined ?
                 toast.info('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
