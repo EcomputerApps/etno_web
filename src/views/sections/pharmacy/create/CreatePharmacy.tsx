@@ -7,14 +7,39 @@ import { Pharmacy } from '../../../../models/section/Section';
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
 import { toast, ToastContainer } from 'react-toastify';
 import Datepicker from "react-tailwindcss-datepicker";
+import GoogleMapReact from 'google-map-react';
+import markerIcon from "../../../../assets/marker.svg"
 import moment from 'moment';
+
+interface Marker{
+    lat: number,
+    lng: number,
+    text: string
+  }
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
 const CreatePharmacy = () => {
     const [file, setFile] = useState<File>()
     const [datePanel, setDatePanel] = useState(true)
-    const days = new Date(2023, 2, 0).getDate()
+    const [dateGuardia, setDateGuardia] = useState({
+        startDate: new Date(),
+        endDate: new Date()
+    });
+
+    const defaultProps = {
+        center: {
+          lat: 42.13775899999999,
+          lng: -0.40838200000000713
+        },
+        zoom: 11
+      };
+
+      
+
+    const handleValueChange = (newValue: any) => {
+        setDateGuardia(newValue);
+    }
 
     const navigate = useNavigate()
 
@@ -30,6 +55,10 @@ const CreatePharmacy = () => {
     const inputLat = useRef<HTMLInputElement>(null)
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
+
+    const [lat, setLat] = useState(0)
+    const [long, setLong] = useState(0)
+    const AnyReactComponent = (props: Marker) => <img style={{width: '200', height: '200'}} src={props.text}></img>;
 
     const [pharmType, setPharmType] = useState("")
     const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
@@ -330,9 +359,28 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
                     <label className={"labelFloatTxtArea"}>Descripción</label>
                 </div>
             </div>
+            <div style={{ height: '50vh', width: '100%' }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
+        defaultCenter={defaultProps.center}
+        defaultZoom={defaultProps.zoom}
+        onClick={(e) => {
+          setLat(e.lat)
+          setLong(e.lng)
+        }}
+       
+      >
+        <AnyReactComponent
+        lat={lat}
+        lng={long}
+        text={markerIcon}
+        />
+      </GoogleMapReact>
+    </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <input ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="inputCamp peer" onKeyDown={(e) => {
+
+                    <input value={long} ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="inputCamp peer" onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (inputLat.current != null) {
                                 inputLat.current.focus()
@@ -347,7 +395,7 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="inputCamp peer" onKeyDown={(e) => {
+                    <input value={lat} ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="inputCamp peer" onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (btnRef.current != null) {
                                 btnRef.current.focus()

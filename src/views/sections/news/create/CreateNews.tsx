@@ -12,6 +12,23 @@ import { observer } from 'mobx-react-lite'
 const newsStore = NewsStore.getNewsStore()
 
 const CreateNews = () => {
+
+  const arrayServiceTypes = [{
+    "id": "checkOne",
+    "value": "General",
+    "title": "General",
+}, {
+    "id": "checkTwo",
+    "value": "Tecnología",
+    "title": "Tecnología",
+},
+{
+  "id": "checkThree",
+  "value": "Salud",
+  "title": "Salud",
+}
+ ]
+
   const navigate = useNavigate()
 
   const inputRefTit = useRef<HTMLInputElement>(null)
@@ -78,20 +95,25 @@ const CreateNews = () => {
           <p className='flex  text-white text-3xl p-3'>NOTICIAS</p>
         </div>
       </div>
-      <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1 mt-5 relative">
-          <input autoFocus placeholder=" " name="newsCategory" type="text" className="inputCamp peer" onChange={(value) => {
-              setNewsCategory(value.currentTarget.value)
-            }} onKeyUp={(e) => {
-              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                if (inputRefTit.current != null) {
-                  inputRefTit.current.focus()
-                }
-              }
-            }} />
-          <label className={"labelFloatInput"}>Categoria</label>
-        </div>
-      </div>
+      <div className="w-full flex flex-1 flex-col mt-8 pl-3">
+                    <div className="flex flex-col p-1 relative">
+                        <div className="flex  flex-wrap pt-2">
+                            {arrayServiceTypes.map((chkBtn, index) => (
+                                <div key={index} className='flex lg:w-1/6 w-1/3'>
+                                    <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
+                                        setNewsCategory(e.currentTarget.value)
+                                    }} />
+                                    <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
+                            border-gray-300 
+                            peer-checked:hover:bg-indigo-700 
+                            peer-checked:text-white 
+                            ring-indigo-500 peer-checked:ring-2 overflow-hidden ">{chkBtn.title}</label>
+                                </div>
+                            ))}
+                        </div>
+                        <label className={"labelFloatDate"}>Categoría</label>
+                    </div>
+                </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1 mt-3 relative">
 

@@ -5,7 +5,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class PharmacyStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {
