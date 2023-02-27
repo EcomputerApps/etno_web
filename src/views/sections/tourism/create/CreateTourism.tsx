@@ -5,11 +5,29 @@ import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import { Tourism } from "../../../../models/section/Section"
+import GoogleMapReact from 'google-map-react';
 
 import TourismStore from "../../../../viewmodels/tourism/TourismStore"
+import markerIcon from "../../../../assets/marker.svg"
 const tourismStore = TourismStore.getTourismStore()
 
+interface Marker{
+  lat: number,
+  lng: number,
+  text: string
+}
+
 const CreateTourism = () => {
+
+  const defaultProps = {
+    center: {
+      lat: 42.13775899999999,
+      lng: -0.40838200000000713
+    },
+    zoom: 11
+  };
+
+
   const navigate = useNavigate()
 
   const inputTitle = useRef<HTMLInputElement>(null)
@@ -18,6 +36,9 @@ const CreateTourism = () => {
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
+  const [lat, setLat] = useState(0)
+  const [long, setLong] = useState(0)
+
   const [tourismType, setTourismType] = useState<string>("")
   const [tourismTitle, setTourismTitle] = useState<string>("")
   const [tourismDescription, setTourismDescription] = useState<string>("")
@@ -25,6 +46,8 @@ const CreateTourism = () => {
   const [tourismLong, setTourismLong] = useState<string>("")
   const [tourismLat, setTourismLat] = useState<string>("")
   const [file, setFile] = useState<File>()
+  
+  const AnyReactComponent = (props: Marker) => <img style={{width: '200', height: '200'}} src={props.text}></img>;
 
   //funcion temporal para comprobar entrada
   function addTourism() {
@@ -32,8 +55,8 @@ const CreateTourism = () => {
         type: tourismType,
         title: tourismTitle,
         description: tourismDescription,
-        longitude: tourismLong,
-        latitude: tourismLat
+        longitude: String(long),
+        latitude: String(lat)
       }
       if(tourismStore.getTourism.title === tourism.title){
         toast.info('Ya existe este turismo', {
@@ -47,7 +70,7 @@ const CreateTourism = () => {
           theme: "light"
         })
       } else {
-        tourismType === '' || tourism.title === '' || tourism.description === '' || tourismLong === '' || tourismLat === '' || file === undefined ? 
+        tourismType === '' || tourism.title === '' || tourism.description === '' || long === 0 || lat === 0 || file === undefined ? 
         toast.info('Rellene los campos vacíos', {
           position: 'top-center',
           autoClose: 500,
@@ -132,11 +155,28 @@ const CreateTourism = () => {
           </div>
         </div>
       </div>
-     
+      <div style={{ height: '50vh', width: '100%' }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
+        defaultCenter={defaultProps.center}
+        defaultZoom={defaultProps.zoom}
+        onClick={(e) => {
+          setLat(e.lat)
+          setLong(e.lng)
+        }}
+       
+      >
+        <AnyReactComponent
+        lat={lat}
+        lng={long}
+        text={markerIcon}
+        />
+      </GoogleMapReact>
+    </div>
       <div className="w-full flex flex-1 flex-col mt-3 pl-3">
         <div className="flex flex-col p-1 relative">
 
-          <input ref={inputLong} placeholder=" " type="text" name="tourismLong" className="inputCamp peer" onKeyUp={(e) => {
+          <input value={long} ref={inputLong} placeholder=" " type="text" name="tourismLong" className="inputCamp peer" onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (inputLat.current != null) {
                 inputLat.current.focus()
@@ -150,7 +190,7 @@ const CreateTourism = () => {
       </div>
       <div className="w-full flex flex-1 flex-col mt-3 pl-3">
         <div className="flex flex-col p-1 relative">
-          <input ref={inputLat} placeholder=" " type="text" name="tourismLat" className="inputCamp peer" onKeyUp={(e) => {
+          <input value={lat} ref={inputLat} placeholder=" " type="text" name="tourismLat" className="inputCamp peer" onKeyUp={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (btnRef.current != null) {
                 btnRef.current.focus()
@@ -162,7 +202,7 @@ const CreateTourism = () => {
           <label className={"labelFloatInput"}>Latitud</label>
         </div>
       </div>
-      <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
+      <div className="  flex m-auto justify-center left-0 right-0 p-3 bottom-1">
 
         <button ref={btnRef} name="tourismBtnSave" className="btnStandard mr-10" onClick={addTourism}>Publicar</button>
         <button name="tourismBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>

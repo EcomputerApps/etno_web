@@ -7,7 +7,15 @@ import { Pharmacy } from '../../../../models/section/Section';
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
 import { toast, ToastContainer } from 'react-toastify';
 import Datepicker from "react-tailwindcss-datepicker";
+import GoogleMapReact from 'google-map-react';
+import markerIcon from "../../../../assets/marker.svg"
 import moment from 'moment';
+
+interface Marker{
+    lat: number,
+    lng: number,
+    text: string
+  }
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
@@ -18,6 +26,16 @@ const CreatePharmacy = () => {
         startDate: new Date(),
         endDate: new Date()
     });
+
+    const defaultProps = {
+        center: {
+          lat: 42.13775899999999,
+          lng: -0.40838200000000713
+        },
+        zoom: 11
+      };
+
+      
 
     const handleValueChange = (newValue: any) => {
         setDateGuardia(newValue);
@@ -35,6 +53,10 @@ const CreatePharmacy = () => {
     const inputLat = useRef<HTMLInputElement>(null)
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
+
+    const [lat, setLat] = useState(0)
+    const [long, setLong] = useState(0)
+    const AnyReactComponent = (props: Marker) => <img style={{width: '200', height: '200'}} src={props.text}></img>;
 
     const [pharmType, setPharmType] = useState("")
     const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
@@ -83,23 +105,6 @@ const CreatePharmacy = () => {
                 progress: undefined,
                 theme: "light"
             })
-<<<<<<< HEAD
-          }else{
-            pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-            pharmacyTel === "" || pharmacySchedule === ""||  pharmacyDescption === "" || 
-            pharmacyLong === "" || pharmacyLat === "" || file === undefined?
-            toast.info('Rellene los campos', {
-              position: 'bottom-center',
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: false,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "light"
-            }) :  pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
-          }
-=======
         } else {
             if (pharmacy.type === "Normal") {
                 pharmacy.startDate = ""
@@ -108,7 +113,6 @@ const CreatePharmacy = () => {
             pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
 
         }
->>>>>>> cbb6abdfadf53d6d6b6bd0832b11dcc2c6a5311b
     }
     return (
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
@@ -317,10 +321,28 @@ const CreatePharmacy = () => {
                     <label className={"labelFloatTxtArea"}>Descripción</label>
                 </div>
             </div>
+            <div style={{ height: '50vh', width: '100%' }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
+        defaultCenter={defaultProps.center}
+        defaultZoom={defaultProps.zoom}
+        onClick={(e) => {
+          setLat(e.lat)
+          setLong(e.lng)
+        }}
+       
+      >
+        <AnyReactComponent
+        lat={lat}
+        lng={long}
+        text={markerIcon}
+        />
+      </GoogleMapReact>
+    </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="inputCamp peer" onKeyDown={(e) => {
+                    <input value={long} ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="inputCamp peer" onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (inputLat.current != null) {
                                 inputLat.current.focus()
@@ -335,7 +357,7 @@ const CreatePharmacy = () => {
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="inputCamp peer" onKeyDown={(e) => {
+                    <input value={lat} ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="inputCamp peer" onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (btnRef.current != null) {
                                 btnRef.current.focus()
