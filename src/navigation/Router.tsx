@@ -16,6 +16,7 @@ import LogoutPage from "../pages/LogoutPage"
 import CreateLinkPage from "../pages/sections/CreateEnlacePage"
 import CreatePOD from "../pages/sections/CreatePOD"
 import EditNews from "../views/sections/news/create/EditNews"
+import EditAdvert from "../views/sections/advert/create/EditAdvert"
 
 const Router = () => {
     return(
@@ -36,6 +37,7 @@ const Router = () => {
                 <Route path="/addLink" element={<ViewRender element={<CreateLinkPage/>}/>}/>
                 <Route path="/findGuardia" element={<ViewRender element={<CreatePOD/>}/>}/>
                 <Route path="/editNews" element={<ViewRender element={<EditNews/>}/>}/>
+                <Route path="/editAdvert" element={<ViewRender element={<EditAdvert/>}/>}/>
             </Routes>
         </BrowserRouter>
     )
