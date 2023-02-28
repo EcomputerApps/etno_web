@@ -16,10 +16,11 @@ import LogoutPage from "../pages/LogoutPage"
 import CreateLinkPage from "../pages/sections/CreateEnlacePage"
 import CreatePOD from "../pages/sections/CreatePOD"
 import EditNews from "../views/sections/news/create/EditNews"
-import EditAdvert from "../views/sections/advert/create/EditAdvert"
-import EditTourism from "../views/sections/tourism/create/EditTourism"
-import EditEvent from "../views/sections/event/create/EditEvent"
+import EditBand from "../views/sections/bands/create/EditBand"
 import EditPharmacy from "../views/sections/pharmacy/create/EditPharmacy"
+import EditService from "../views/sections/service/create/EditService"
+import EditSponsor from "../views/sections/sponsor/create/EditSponsor"
+import EditNecrologue from "../views/sections/necrologue/create/EditNecro"
 
 const Router = () => {
     return(
@@ -40,10 +41,11 @@ const Router = () => {
                 <Route path="/addLink" element={<ViewRender element={<CreateLinkPage/>}/>}/>
                 <Route path="/findGuardia" element={<ViewRender element={<CreatePOD/>}/>}/>
                 <Route path="/editNews" element={<ViewRender element={<EditNews/>}/>}/>
-                <Route path="/editAdvert" element={<ViewRender element={<EditAdvert/>}/>}/>
-                <Route path="/editTourism" element={<ViewRender element={<EditTourism/>}/>}/>
-                <Route path="/editEvent" element={<ViewRender element={<EditEvent/>}/>}/>
+                <Route path="/editBand" element={<ViewRender element={<EditBand/>}/>}/>
                 <Route path="/editPharmacy" element={<ViewRender element={<EditPharmacy/>}/>}/>
+                <Route path="/editSponsor" element={<ViewRender element={<EditSponsor/>}/>}/>
+                <Route path="/editService" element={<ViewRender element={<EditService/>}/>}/>
+                <Route path="/editNecrologue" element={<ViewRender element={<EditNecrologue/>}/>}/>
             </Routes>
         </BrowserRouter>
     )

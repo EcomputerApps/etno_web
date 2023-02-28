@@ -1,4 +1,6 @@
 import { observer } from "mobx-react-lite"
+import { useNavigate } from "react-router-dom"
+import { Service } from "../../../models/section/Section"
 import ServiceStore from "../../../viewmodels/service/ServiceStore"
 const serviceStore = ServiceStore.getServiceStore()
 
@@ -11,6 +13,11 @@ interface PropTable {
 const TableService = (prop: PropTable) => {
     const deleteService = async (owner: string) => {
         await serviceStore.deleteService('Bolea',  owner)
+    }
+    const navigate = useNavigate()
+    function saveService(service: Service){
+        serviceStore.updateService(service)   
+        navigate('/editService')
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -58,13 +65,15 @@ const TableService = (prop: PropTable) => {
                         </td>
                         <td className="px-6 py-4 text-center">
                         <div className="tableCamp">
-                            {service.webUrl}
+                            {service.urlWeb}
                             </div>
                         </td>
                                       
                         <td className="flex items-center justify-center px-6 py-4">
                         <div className="h-20 flex items-center justify-center">
-                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={()=>{
+                                saveService(service)
+                            }}>Editar</a>
                             <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteService(service.owner!!)}>Eliminar</a>
                        </div>
                         </td>

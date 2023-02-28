@@ -52,8 +52,6 @@ class SposnsorStore {
     get getSponsor() {
         return this.sponsor
     }
-
-
     async getRequestSponsor(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/sponsors?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
@@ -61,7 +59,6 @@ class SposnsorStore {
         const sponsor = await response.json()
         this.updatePaginatedSponsor(sponsor)
     }
-
     async deleteSponsor(username: string, title: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/sponsor?username=${username}&title=${title}`, {
             method: 'DELETE',
@@ -96,7 +93,6 @@ class SposnsorStore {
             })
         }
     }
-
     async addRequestSponsor(username: string, sponsor: Sponsor, file: File) {
         await imageStore.addImageAPI('Bolea', 'patrocinador', 'patrocinador', file)
         sponsor.urlImage = imageStore.getImage.link
@@ -131,6 +127,43 @@ class SposnsorStore {
                 progress: undefined,
                 theme: "light"
             })
+        }
+    }
+    async editSponsor(locality: string, sponsorId: string, sponsor: Sponsor, file: File){
+        if (file !== undefined){
+            await imageStore.addImageAPI('Bolea', 'patrocinador', 'patrocinador', file!!)
+            sponsor.urlImage = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/sponsor?username=${locality}&sponsorId=${sponsorId}`, {
+            method: 'PUT',
+            body: JSON.stringify(sponsor),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+        if(response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          }) 
         }
     }
 

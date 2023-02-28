@@ -20,6 +20,7 @@ class LinkStore {
     paginatedLink: PaginatedLink = {}
     link: Link = {}
     title: string = ""
+    id: string = ""
     linkString: string = ""
 
     constructor() {
@@ -27,17 +28,20 @@ class LinkStore {
             paginatedLink: observable,
             title: observable,
             link: observable,
+            id: observable,
             updateLink: action,
             getLink: computed,
             linkString: observable,
             setTitle: action,
             setLinkString: action,
+            setId: action,
             getRequestLink: action,
             addRequestLink: action,
             updateLinkList: action,
             updatePaginatedLink: action,
             getPaginatedLink: computed,
             getTitle: computed,
+            getId: computed,
             getLinkString: computed
         })
     }
@@ -47,8 +51,14 @@ class LinkStore {
     setLinkString(link: string) {
         this.linkString = link
     }
+    setId(id: string) {
+        this.id = id
+    }
     get getTitle() {
         return this.title
+    }
+    get getId() {
+        return this.id
     }
     get getLinkString() {
         return this.linkString
@@ -144,21 +154,19 @@ class LinkStore {
             })
         }
     }
-    async updateRequestLink(username: string, id: string){
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/link?username=${username}&linkId=${id}`, {
+    async editLink(locality: string, linkId: string, link: Link){
+        
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/link?username=${locality}&linkId=${linkId}`, {
             method: 'PUT',
+            body: JSON.stringify(link),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
-            },
-          
+            }
         })
-        if (response.ok) {
-            const newLinks = this.paginatedLink.content!!.filter((item) => item.idLink !== id)
-            this.updateLinkList(newLinks)
-            this.updateLink({})
 
-            toast.success('Se ha añadido exitosamente', {
-                position: 'bottom-center',
+        if(response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -166,18 +174,18 @@ class LinkStore {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-            })
+          })
         } else {
-            toast.error('No se ha añadido correctamente', {
-                position: 'bottom-center',
-                autoClose: 500,
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-            })
+          }) 
         }
     }
 }

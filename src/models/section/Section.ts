@@ -101,6 +101,10 @@ interface PaginatedBand {
     pageNum?: number
 }
 
+interface BandList{
+    bandos?: Band[]
+}
+
 interface Pharmacy {
     idPharmacy?: string,
     username?: string,
@@ -145,7 +149,7 @@ interface Service {
     category?: string,
     owner?: string,
     description?: string,
-    webUrl?: string,
+    urlWeb?: string,
     number?: string,
     schedule?: string,
     imageUrl?: string
@@ -175,7 +179,7 @@ interface PaginatedSponsor {
 }
 
 interface Necrologue {
-    idNecro?: string,
+    idDeath?: string,
     username?: string,
     name?: string,
     deathDate?: string,
@@ -253,7 +257,7 @@ interface EventList {
 }
 
 export type {
-    EventList, Event, Ad , Tourism, Band,
+    EventList, Event, Ad , Tourism, Band,BandList,
     Pharmacy, Service, News, Incident,  Link,
     Necrologue, Sponsor, PaginatedEvent, PaginatedAdvert,
     PaginatedNews, PaginatedTourism, PaginatedBand,

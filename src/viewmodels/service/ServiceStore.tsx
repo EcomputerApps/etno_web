@@ -93,7 +93,6 @@ class ServiceStore {
             })
         }
     }
-
     async addRequestService(username: string, service: Service, file: File) {
         await imageStore.addImageAPI('Bolea', 'servicio', 'servicio', file)
         service.imageUrl = imageStore.getImage.link
@@ -128,6 +127,43 @@ class ServiceStore {
                 progress: undefined,
                 theme: "light"
             })
+        }
+    }
+    async editService(locality: string, serviceID: string, service: Service, file: File){
+        if (file !== undefined){
+            await imageStore.addImageAPI('Bolea', 'servicio', 'servicio', file!!)
+            service.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/service?username=${locality}&serviceId=${serviceID}`, {
+            method: 'PUT',
+            body: JSON.stringify(service),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+        if(response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          }) 
         }
     }
 }
