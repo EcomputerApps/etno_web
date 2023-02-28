@@ -5,7 +5,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class PharmacyStore {
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {
@@ -20,8 +20,6 @@ class PharmacyStore {
     pharmacy: Pharmacy = {}
     pharmacyOnDutyList: PharmacyOnDuty = {}
   
-
-
     constructor() {
         makeObservable(this, {
             paginatedPharmacy: observable,
@@ -114,6 +112,44 @@ class PharmacyStore {
         }
 
     }
+
+    async editPharmacy(locality: string, pharmacyId: string, pharmacy: Pharmacy, file: File){
+        if (file !== undefined){
+            await imageStore.addImageAPI('Bolea', 'farmacia', 'farmacia', file)
+            pharmacy.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/pharmacy?username=${locality}&pharmacyId=${pharmacyId}`, {
+            method: 'PUT',
+            body: JSON.stringify(pharmacy),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            }
+        })
+        if (response.ok){
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        }
+    }
+
     async addRequestPharmacy(username: string, pharmacy: Pharmacy, file: File) {
         await imageStore.addImageAPI('Bolea', 'farmacia', 'farmacia', file)
         pharmacy.imageUrl = imageStore.getImage.link

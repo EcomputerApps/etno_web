@@ -1,5 +1,6 @@
 import { observer, Observer } from "mobx-react-lite";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PharmacyStore from "../../../viewmodels/pharmacy/PharmacyStore";
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 interface PropTable {
@@ -8,6 +9,7 @@ interface PropTable {
     currentPage?: number
 }
 const TablePharmacy = (prop: PropTable) => {
+    const navigate = useNavigate()
     const deletePharmacy = async (pharmacy: string) => {
         await pharmacyStore.deletePharmacy('Bolea', pharmacy)
     }
@@ -61,7 +63,10 @@ const TablePharmacy = (prop: PropTable) => {
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => {
+                                        pharmacyStore.updatePharmacy(pharmacy)
+                                        navigate('/editPharmacy')
+                                    }}>Editar</a>
                                     <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deletePharmacy(pharmacy.name!!)}>Eliminar</a>
                                 </div>
                             </td>

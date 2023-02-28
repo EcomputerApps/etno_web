@@ -6,7 +6,7 @@ const imageStore = ImageStore.getImageStore()
 
 class EventStore {
     static eventStore: EventStore
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
 
     static getEventStore(){
         if(this.eventStore === undefined){
@@ -26,6 +26,7 @@ class EventStore {
             getRequestEvents: action,
             updatePaginatedEvents: action,
             updateEventList: action,
+            editEvent: action,
             updateEvent: action,
             deleteEvent: action,
             getPaginatedEvents: computed,
@@ -69,6 +70,45 @@ class EventStore {
           })
     }
 }
+
+    async editEvent(locality: string, eventId: string, event: Event, file: File){
+        if (file !== undefined){
+            await imageStore.addImageAPI('Bolea', 'anuncio', 'anuncio', file!!)
+            event.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/event?username=${locality}&eventId=${eventId}`, {
+            method: 'PUT',
+            body: JSON.stringify(event),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            }
+        })
+
+        if (response.ok){
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        }
+    }
+
    async getRequestEvents(locality: string, pageNum: number, elementSize: number){
     const response = await fetch(`http://${this.serverIp}:8080/events?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
         method: 'GET'

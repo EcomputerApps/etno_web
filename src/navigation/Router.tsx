@@ -17,6 +17,9 @@ import CreateLinkPage from "../pages/sections/CreateEnlacePage"
 import CreatePOD from "../pages/sections/CreatePOD"
 import EditNews from "../views/sections/news/create/EditNews"
 import EditAdvert from "../views/sections/advert/create/EditAdvert"
+import EditTourism from "../views/sections/tourism/create/EditTourism"
+import EditEvent from "../views/sections/event/create/EditEvent"
+import EditPharmacy from "../views/sections/pharmacy/create/EditPharmacy"
 
 const Router = () => {
     return(
@@ -38,6 +41,9 @@ const Router = () => {
                 <Route path="/findGuardia" element={<ViewRender element={<CreatePOD/>}/>}/>
                 <Route path="/editNews" element={<ViewRender element={<EditNews/>}/>}/>
                 <Route path="/editAdvert" element={<ViewRender element={<EditAdvert/>}/>}/>
+                <Route path="/editTourism" element={<ViewRender element={<EditTourism/>}/>}/>
+                <Route path="/editEvent" element={<ViewRender element={<EditEvent/>}/>}/>
+                <Route path="/editPharmacy" element={<ViewRender element={<EditPharmacy/>}/>}/>
             </Routes>
         </BrowserRouter>
     )

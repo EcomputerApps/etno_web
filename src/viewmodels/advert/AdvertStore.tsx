@@ -31,6 +31,7 @@ class AdvertStore {
             updateAdvertList: action,
             deleteAdvert: action,
             getRequestAdvert: action,
+            editAdvert: action,
             addRequestAdvert: action,
             getPaginatedAdverts: computed,
             getAdvert: computed
@@ -93,6 +94,44 @@ class AdvertStore {
                 progress: undefined,
                 theme: "light"
           })
+        }
+    }
+
+    async editAdvert(locality: string, advertId: string, advert: Ad, file: File){
+        if (file !== undefined){
+            await imageStore.addImageAPI('Bolea', 'anuncio', 'anuncio', file!!)
+            advert.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/ad?username=${locality}&adId=${advertId}`, {
+            method: 'PUT',
+            body: JSON.stringify(advert),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            }
+        })
+
+        if (response.ok){
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
         }
     }
 

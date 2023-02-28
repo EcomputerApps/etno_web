@@ -5,7 +5,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class NewsStore{
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static newsStore : NewsStore
 
     static getNewsStore(){
@@ -26,6 +26,7 @@ class NewsStore{
             getRequestNews : action,
             getNews: computed,
             addRequestNews: action,
+            editNews: action,
             deleteNews : action,
             updateNewsList: action,
             updatePaginatedNews: action,

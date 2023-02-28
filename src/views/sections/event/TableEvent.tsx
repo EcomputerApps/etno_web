@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+import { useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
 import EventStore from "../../../viewmodels/Event/EventStore"
@@ -11,10 +12,11 @@ interface PropTable {
 }
 
 const TableEvent = (prop: PropTable) => {
+    const navigate = useNavigate()
     const deleteEvent = async (event: string) => {
         await eventStore.deleteEvent('Bolea', event)
     }
-
+    
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -76,7 +78,10 @@ const TableEvent = (prop: PropTable) => {
                         </td>
                         <td className="px-6 py-4 ">
                             <div className='h-20 flex items-center justify-center'>
-                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => {
+                                eventStore.updateEvent(event)
+                                navigate('/editEvent')
+                            }}>Editar</a>
                             <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteEvent(event.title!!)}>Eliminar</a>
                             </div>
                         </td>
