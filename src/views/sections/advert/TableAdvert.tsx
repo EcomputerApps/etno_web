@@ -65,8 +65,7 @@ const TableAdvert = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
-            <ToastContainer/>
-        </div>
+         </div>
     )
 }
 export default observer(TableAdvert)

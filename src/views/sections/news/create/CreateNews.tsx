@@ -59,8 +59,8 @@ const CreateNews = () => {
     
     if(newsStore.getNews.title === news.title){
       toast.info('Ya existe esta noticia', {
-        position: 'top-center',
-        autoClose: 500,
+        position: 'bottom-center',
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: false,
         pauseOnHover: false,
@@ -71,8 +71,8 @@ const CreateNews = () => {
     }else{
         if(newsCategory === '' || newsTitle === '' || newsDate === '' || file === undefined){
           toast.info('Rellene los campos', {
-            position: 'top-center',
-            autoClose: 500,
+            position: 'bottom-center',
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
@@ -182,7 +182,7 @@ const CreateNews = () => {
         <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer style={{marginBottom : "50px"}}/>
     </div>
   )
 }

@@ -68,7 +68,6 @@ class LinkStore {
     get getLink() {
         return this.link
     }
-
     async getRequestLink(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/links?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
@@ -111,7 +110,6 @@ class LinkStore {
         }
 
     }
-
     async addRequestLink(username: string, link: Link) {
         const response = await fetch(`http://${this.serverIp}:8080/users/add/link?username=${username}`, {
             method: 'POST',
@@ -123,6 +121,42 @@ class LinkStore {
         if (response.ok) {
             this.paginatedLink.content?.push(link)
             this.link = link
+            toast.success('Se ha añadido exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha añadido correctamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
+    }
+    async updateRequestLink(username: string, id: string){
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/link?username=${username}&linkId=${id}`, {
+            method: 'PUT',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+          
+        })
+        if (response.ok) {
+            const newLinks = this.paginatedLink.content!!.filter((item) => item.idLink !== id)
+            this.updateLinkList(newLinks)
+            this.updateLink({})
+
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,

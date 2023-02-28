@@ -49,7 +49,7 @@ const Advert = () => {
                     <img src={arrowRight} alt="forward"/>
                 </button>
             </div>
-            <ToastContainer />
+            <ToastContainer style={{marginBottom:"50px", marginLeft:"50px"}}/>
         </div>
     )
 }
