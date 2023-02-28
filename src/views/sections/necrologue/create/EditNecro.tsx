@@ -77,7 +77,7 @@ const EditNecrologue = () => {
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 relative">
 
-            <input ref={inputRef} type="date" name="necroDate" defaultValue={moment(necro.deathDate).toISOString().substring(0, 10)} className="inputCamp peer w-40" onChange={(value) => {
+            <input ref={inputRef} type="date" name="necroDate" defaultValue={moment(necro.deathDate).add(1,"days").toISOString().substring(0, 10)} className="inputCamp peer w-40" onChange={(value) => {
               setNecroDate(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "NumpadEnter")) {

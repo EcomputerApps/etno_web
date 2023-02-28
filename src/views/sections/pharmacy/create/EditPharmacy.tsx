@@ -164,7 +164,7 @@ const EditPharmacy = () => {
 
                 </div>
                 <div className="flex pt-2  p-1  relative  ">
-                    <input type="date" defaultValue={moment(pharm.startDate).toISOString().substring(0, 10)} className="inputCamp peer w-40 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                    <input type="date" defaultValue={moment(pharm.startDate).add(1,"days").toISOString().substring(0, 10)} className="inputCamp peer w-40 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
                         onChange={(e) => {
                             setPharmStartDate(e.currentTarget.valueAsDate!)
                         }}
