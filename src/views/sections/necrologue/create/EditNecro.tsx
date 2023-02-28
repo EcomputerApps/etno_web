@@ -6,53 +6,47 @@ import "../../../../index.css"
 import NecrologueStore from '../../../../viewmodels/necrologue/NecrologueStore'
 import { Necrologue } from '../../../../models/section/Section'
 import { toast, ToastContainer } from 'react-toastify'
+import moment from 'moment'
 
 const necroStore = NecrologueStore.getNecrologueStore()
 
-const CreateNecrologue = () => {
+const EditNecrologue = () => {
   const navigate = useNavigate()
-
+  const [necro, setNecro] = useState(necroStore.getNecro)
   const inputRef = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
-  const [necroName, setNecroName] = useState<string>("")
-  const [necroDate, setNecroDate] = useState<string>("")
-  const [necroDescription, setNecroDescription] = useState<string>("")
+  const [necroName, setNecroName] = useState<string>(necro.name!!)
+  const [necroDate, setNecroDate] = useState<string>(necro.deathDate!!)
+  const [necroDescription, setNecroDescription] = useState<string>(necro.description!!)
   const [necroPhoto, setNecroPhoto] = useState<string>("")
   const [file, setFile] = useState<File>()
 
-  function addNecrologue() {
-    const necro: Necrologue = {
-      name: necroName,
-      deathDate: necroDate,
-      description: necroDescription,
-      // imageUrl: necroPhoto
-    }
-    if (necroStore.getNecro.name === necro.name) {
-      toast.info('Ya existe este servicio', {
-        position: 'bottom-center',
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
-      necroName === "" || necroDate === "" || necroDescription === "" || file === undefined ?
+  function updateNecrologue(necroId: string) {
+    if(necroName === "" || necroDate === "" || necroDescription === "" ){
         toast.info('Rellene todos los campos', {
-          position: 'bottom-center',
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light"
-        }) : necroStore.addRequestNecro('Bolea', necro, file!!)
+            position: 'bottom-center',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+          }) 
+    }else{
+        const newNecro: Necrologue = {
+            name: necroName,
+            deathDate: necroDate,
+            description: necroDescription,
+            imageUrl: necro.imageUrl
+          }
+          necroStore.editNecro('Bolea', necroId, newNecro, file!!)
     }
+    
+    
+    
 
   }
 
@@ -68,7 +62,7 @@ const CreateNecrologue = () => {
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 relative">
 
-            <input autoFocus placeholder=" " name="necroName" type="text" className="inputCamp peer" onChange={(value) => {
+            <input autoFocus placeholder=" " name="necroName" defaultValue={necro.name} type="text" className="inputCamp peer" onChange={(value) => {
               setNecroName(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -83,7 +77,7 @@ const CreateNecrologue = () => {
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 relative">
 
-            <input ref={inputRef} type="date" name="necroDate" className="inputCamp peer w-40" onChange={(value) => {
+            <input ref={inputRef} type="date" name="necroDate" defaultValue={moment(necro.deathDate).add(1,"days").toISOString().substring(0, 10)} className="inputCamp peer w-40" onChange={(value) => {
               setNecroDate(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "NumpadEnter")) {
@@ -98,7 +92,7 @@ const CreateNecrologue = () => {
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col  p-1 relative">
 
-            <textarea ref={txtAreaRef} placeholder=" " name="eventDescription" rows={3} className="inputCamp peer" onChange={(value) => {
+            <textarea ref={txtAreaRef} placeholder=" " defaultValue={necro.description} name="eventDescription" rows={3} className="inputCamp peer" onChange={(value) => {
               setNecroDescription(value.currentTarget.value)
             }} onKeyDown={(e) => {
               if (e.code === "NumpadEnter") {
@@ -133,7 +127,7 @@ const CreateNecrologue = () => {
       </div>
       <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
         <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => {
-          addNecrologue()
+          updateNecrologue(necro.idDeath!!)
         }}>Publicar</button>
         <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
@@ -141,4 +135,4 @@ const CreateNecrologue = () => {
     </div>
   )
 }
-export default CreateNecrologue
+export default EditNecrologue

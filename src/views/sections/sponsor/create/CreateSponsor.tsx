@@ -17,7 +17,6 @@ const CreateSponsor = () => {
 
   const [sponsorTitle, setSponsorTitle] = useState<string>("")
   const [sponsorDescription, setSponsorDescription] = useState<string>("")
-  const [sponsorPhoto, setSponsorPhoto] = useState<string>("")
   const [sponsorTel, setSponsorTel] = useState<string>("")
   const [file, setFile] = useState<File>()
 
@@ -25,8 +24,8 @@ function addSposor(){
   const sponsor : Sponsor ={
     title: sponsorTitle,
     description: sponsorDescription,
-    phoneNumber: sponsorTel,
-    //imageUrl: sponsorPhoto
+    phone: sponsorTel
+   
   }
   if (sponsorStore.getSponsor.title === sponsor.title) {
     toast.info('Ya existe este patrocinador', {
@@ -40,7 +39,7 @@ function addSposor(){
         theme: "light"
     })
 } else {
-  sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" 
+  sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" || file === undefined
         ?
         toast.info('Rellene los campos', {
             position: 'bottom-center',
@@ -60,7 +59,7 @@ function addSposor(){
   function checkState() {
     console.log(sponsorTitle)
     console.log(sponsorDescription)
-    console.log(sponsorPhoto)
+   
     console.log(sponsorTel)
   }
   return (
@@ -122,7 +121,7 @@ function addSposor(){
        
           <div className={"photoBoard"}>
             <div className='pl-3'>
-              Foto
+              Foto {file?.name}
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {

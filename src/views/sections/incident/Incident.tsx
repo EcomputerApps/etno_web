@@ -1,74 +1,20 @@
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
-import resolved from "../../../assets/menu/resolved.svg"
-import error from "../../../assets/menu/error.svg"
 import IncidentStore from "../../../viewmodels/incident/IncidentStore"
 import Search from "../../../assets/menu/search.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
+import TableIncident from "./TableIncident"
 const incidentStore = IncidentStore.getIncidentStore()
 
 const Incident = () => {
   const [pageNumber, setPageNumber] = useState(0)
-  const [showModal, setModal] = useState(false)
-
-  const arrayIncindent = [{
-    "status": false,
-    "date": "02/02/2023",
-    "title": "nieve",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis lectus vel sapien scelerisque tempus et sit amet sem. In mollis sodales enim vitae hendrerit. Ut malesuada interdum libero, et feugiat orci dictum egestas. Aenean tincidunt sem quis molestie feugiat. Proin suscipit erat non ante egestas, nec sollicitudin ipsum posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras id eros a augue feugiat eleifend. Fusce condimentum tempor justo, quis rutrum tortor malesuada quis." +
-
-      "In dictum vehicula est sed lobortis. Vestibulum auctor nulla tellus, nec vehicula magna dapibus sed. Pellentesque risus velit, viverra at luctus eu, varius vitae eros. Suspendisse ac ante viverra, dignissim ex in, posuere mauris. Aenean non fringilla eros, quis posuere tellus. Pellentesque vulputate risus vel feugiat gravida. Duis et tristique urna. Morbi sit amet maximus felis. Nullam at massa id massa hendrerit gravida non quis nibh. Curabitur facilisis ut diam porta."
-
-  }, {
-    "status": true,
-    "date": "02/02/2023",
-    "title": "sol",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis lectus vel sapien scelerisque tempus et sit amet sem. In mollis sodales enim vitae hendrerit. Ut malesuada interdum libero, et feugiat orci dictum egestas. Aenean tincidunt sem quis molestie feugiat. Proin suscipit erat non ante egestas, nec sollicitudin ipsum posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras id eros a augue feugiat eleifend. Fusce condimentum tempor justo, quis rutrum tortor malesuada quis." +
-
-      "In dictum vehicula est sed lobortis. Vestibulum auctor nulla tellus, nec vehicula magna dapibus sed. Pellentesque risus velit, viverra at luctus eu, varius vitae eros. Suspendisse ac ante viverra, dignissim ex in, posuere mauris. Aenean non fringilla eros, quis posuere tellus. Pellentesque vulputate risus vel feugiat gravida. Duis et tristique urna. Morbi sit amet maximus felis. Nullam at massa id massa hendrerit gravida non quis nibh. Curabitur facilisis ut diam porta."
-
-  }, {
-    "status": false,
-    "date": "02/02/2023",
-    "title": "lluvia",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis lectus vel sapien scelerisque tempus et sit amet sem. In mollis sodales enim vitae hendrerit. Ut malesuada interdum libero, et feugiat orci dictum egestas. Aenean tincidunt sem quis molestie feugiat. Proin suscipit erat non ante egestas, nec sollicitudin ipsum posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras id eros a augue feugiat eleifend. Fusce condimentum tempor justo, quis rutrum tortor malesuada quis." +
-
-      "In dictum vehicula est sed lobortis. Vestibulum auctor nulla tellus, nec vehicula magna dapibus sed. Pellentesque risus velit, viverra at luctus eu, varius vitae eros. Suspendisse ac ante viverra, dignissim ex in, posuere mauris. Aenean non fringilla eros, quis posuere tellus. Pellentesque vulputate risus vel feugiat gravida. Duis et tristique urna. Morbi sit amet maximus felis. Nullam at massa id massa hendrerit gravida non quis nibh. Curabitur facilisis ut diam porta."
-
-  }, {
-    "status": true,
-    "date": "02/02/2023",
-    "title": "niebla",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis lectus vel sapien scelerisque tempus et sit amet sem. In mollis sodales enim vitae hendrerit. Ut malesuada interdum libero, et feugiat orci dictum egestas. Aenean tincidunt sem quis molestie feugiat. Proin suscipit erat non ante egestas, nec sollicitudin ipsum posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras id eros a augue feugiat eleifend. Fusce condimentum tempor justo, quis rutrum tortor malesuada quis." +
-
-      "In dictum vehicula est sed lobortis. Vestibulum auctor nulla tellus, nec vehicula magna dapibus sed. Pellentesque risus velit, viverra at luctus eu, varius vitae eros. Suspendisse ac ante viverra, dignissim ex in, posuere mauris. Aenean non fringilla eros, quis posuere tellus. Pellentesque vulputate risus vel feugiat gravida. Duis et tristique urna. Morbi sit amet maximus felis. Nullam at massa id massa hendrerit gravida non quis nibh. Curabitur facilisis ut diam porta."
-
-  }, {
-    "status": false,
-    "date": "02/02/2023",
-    "title": "tubo roto",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis lectus vel sapien scelerisque tempus et sit amet sem. In mollis sodales enim vitae hendrerit. Ut malesuada interdum libero, et feugiat orci dictum egestas. Aenean tincidunt sem quis molestie feugiat. Proin suscipit erat non ante egestas, nec sollicitudin ipsum posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras id eros a augue feugiat eleifend. Fusce condimentum tempor justo, quis rutrum tortor malesuada quis." +
-
-      "In dictum vehicula est sed lobortis. Vestibulum auctor nulla tellus, nec vehicula magna dapibus sed. Pellentesque risus velit, viverra at luctus eu, varius vitae eros. Suspendisse ac ante viverra, dignissim ex in, posuere mauris. Aenean non fringilla eros, quis posuere tellus. Pellentesque vulputate risus vel feugiat gravida. Duis et tristique urna. Morbi sit amet maximus felis. Nullam at massa id massa hendrerit gravida non quis nibh. Curabitur facilisis ut diam porta."
-
-  },
-  {
-    "status": false,
-    "date": "02/02/2023",
-    "title": "tubo roto",
-    "description": "w"
-  },]
-
 
   useEffect(() => {
-    incidentStore.getRequestIncident('Bolea', pageNumber, 5)
+    incidentStore.getRequestIncident('Bolea', pageNumber, 6)
   }, [pageNumber])
 
-  function showDescription(description: string) {
-    setModal(true)
-    incidentStore.updateDescription(description)
-  }
+
   const incrementPage = () => {
     setPageNumber(pageNumber + 1)
   }
@@ -76,8 +22,8 @@ const Incident = () => {
     setPageNumber(pageNumber - 1)
   }
   return (
-    <div className="w-full h-full  relative flex flex-col">
-      <div className="flex flex-col gap-4">
+    <div className="w-full h-full min-w-5/6 relative flex flex-col">
+      <div className="flex flex-col gap-6">
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Incident</h2>
         </div>
@@ -92,71 +38,30 @@ const Incident = () => {
                 />
                 <button onClick={() => {
                 }}
-
-                  name="photosSearchBtn" className="px-5 text-white bg-indigo-800 rounded-md shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500 ">
-                  <img  className="w-6 h-6" src={Search} alt="search"/>
+                  name="photosSearchBtn" className="btnStandard h-9">
+                  <img className="w-6 h-6" src={Search} alt="search" />
                 </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {showModal ? (
-        <div>
-          <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center">
-            <div className="w-1/2 h-1/2 flex flex-col">
-              <button className="  text-blue-600  font-medium place-self-end bg-white rounded-full w-7 h-7 border-dark-purple border-2 mb-1 " onClick={() => setModal(false)}>X</button>
-              <div className="w-full  max-h-96 rounded-md flex flex-wrap bg-gray-100 ">
-                <p className="font-bold text-xl uppercase underline p-3 w-full text-center underline-offset-4 ">Descripción detallada</p>
-                <div className="flex flex-wrap md:h-40 h-1/2 max-h-40 overflow-y-scroll border-t-2 border-b-2 p-2 w-full">
-                  <p className="font-medium">{incidentStore.getDescription}</p>
-                </div>
-                <div className="flex w-full justify-center p-5">
-                  <button className="inline-flex items-center rounded-md border 
-         disabled:bg-gray-500 border-gray-300 bg-indigo-800
-          px-4 py-3 text-sm font-medium text-gray-300 
-          shadow-sm hover:bg-indigo-700 hover:shadow-md focus:ring-2 focus:ring-indigo-500">Resolver</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : <></>}
-      {/*para mantener responsivity hay que cambiar tamaño de ventanitas que muestra cuando esta en modo MD: pantalla de movil*/}
-      <div className="w-full md:h-5/6 h-4/6  lg:p-3  p-5" >
-        <div className="container h-full  mx-auto ">
-          <div className="grid md:grid-cols-2 md:grid-rows-3 grid-cols-1 h-full" >
-            {arrayIncindent.slice(0, 6).map((incident, index) => (
-              <div key={index} id="divIndex" className=" relative flex flex-col m-1 border-2 rounded-md bg-gray-100 shadow-md" onClick={() => { showDescription(incident.description) }} >
-                <div className=" flex flex-2">
-                  <p className="font-semibold p-1 underline underline-offset-4">{incident.date}</p>
-                </div>
-                <div className="relative min-w-fit flex flex-1 flex-row m-auto md:items-center md:justify-center w-full">
-                  <p className="font-bold text-xl uppercase underline ml-3 underline-offset-4">{incident.title}</p>
-                  <img className="absolute right-1" src={incident.status ? resolved : error} alt="error"></img>
-                </div>
-                <div className="flex flex-1">
-                  <p className="font-medium  leading-8 p-2 md:line-clamp-2 line-clamp-1">{incident.description}</p>
-                </div>
-                <div className="flex flex-1 w-full items-center justify-center ">
-                  <p className="line-clamp-1 text-gray-700 font-medium hover:text-gray-500 cursor-pointer">Pulse para ver detalles</p>
-                </div>
-
-              </div>
-            ))}
-          </div>
+      <div className="overflow-y-auto flex-1">
+        <div className="">
+          <TableIncident currentPage={pageNumber} />
         </div>
       </div>
-      <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
+
+      <div className="flex  flex-2  items-center justify-center md:flex-row flex-col ">
         <button onClick={() => decrementPage()} disabled={pageNumber < 1}
           className="btnStandard mr-10" >
-          <img src={arrowLeft} alt="backward"/>
+          <img src={arrowLeft} alt="backward" />
           Anterior
         </button>
         <button onClick={() => incrementPage()} disabled={pageNumber === incidentStore.getPaginatedIncident.totalPages!! - 1 || incidentStore.getPaginatedIncident.content?.length === 0}
           className="btnStandard">
           Siguiente
-         <img src={arrowRight} alt="forward"/>
+          <img src={arrowRight} alt="forward" />
         </button>
       </div>
     </div>

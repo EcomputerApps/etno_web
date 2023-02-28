@@ -1,11 +1,11 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
-import { Advert, PaginatedAdvert } from "../../models/section/Section";
+import { Ad, PaginatedAdvert } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class AdvertStore {
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static advertStore: AdvertStore
 
     static getAdvertStore() {
@@ -18,7 +18,7 @@ class AdvertStore {
     //Observables =>
     paginatedAdvert: PaginatedAdvert = {}
     isSuccess: boolean = false
-    advert: Advert = {}
+    advert: Ad = {}
 
     constructor() {
         makeObservable(this, {
@@ -31,21 +31,23 @@ class AdvertStore {
             updateAdvertList: action,
             deleteAdvert: action,
             getRequestAdvert: action,
+            editAdvert: action,
             addRequestAdvert: action,
             getPaginatedAdverts: computed,
             getAdvert: computed
         })
     }
+    
     updatePaginatedAdverts(paginatedAdverts: PaginatedAdvert) {
         this.paginatedAdvert = paginatedAdverts
     }
-    updateAdvertList(adverts: Advert[]) {
+    updateAdvertList(adverts: Ad[]) {
         this.paginatedAdvert.content = adverts
     }
     updateIsSuccess(isSuccess: boolean){
         this.isSuccess = isSuccess
     }
-    updateAdvert(advert: Advert){
+    updateAdvert(advert: Ad){
         this.advert = advert
     }
     
@@ -56,9 +58,9 @@ class AdvertStore {
         return this.advert
     }
 
-    async addRequestAdvert(locality: string, ad: Advert, file: File){
+    async addRequestAdvert(locality: string, ad: Ad, file: File){
         await imageStore.addImageAPI('Bolea', 'anuncio', 'anuncio', file!!)
-        this.advert.imageUrl = imageStore.getImage.link
+        ad.imageUrl = imageStore.getImage.link
 
         const response = await fetch(`http://${this.serverIp}:8080/users/add/ad?username=${locality}`, {
             method: 'POST',
@@ -67,11 +69,12 @@ class AdvertStore {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
+        
         if(response.ok){
             this.paginatedAdvert.content?.push(ad)
             this.advert = ad
             toast.success('Se ha añadido exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -82,7 +85,7 @@ class AdvertStore {
           })
         }else{
             toast.error('No se ha añadido correctamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -91,6 +94,44 @@ class AdvertStore {
                 progress: undefined,
                 theme: "light"
           })
+        }
+    }
+
+    async editAdvert(locality: string, advertId: string, advert: Ad, file: File){
+        if (file !== undefined){
+            await imageStore.addImageAPI('Bolea', 'anuncio', 'anuncio', file!!)
+            advert.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/ad?username=${locality}&adId=${advertId}`, {
+            method: 'PUT',
+            body: JSON.stringify(advert),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            }
+        })
+
+        if (response.ok){
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
         }
     }
 
@@ -115,8 +156,8 @@ class AdvertStore {
             this.updateAdvertList(paginatedAdverts)
             this.updateAdvert({})
             toast.success('Se ha borrado exitosamente', {
-                position: 'top-center',
-                autoClose: 100,
+                position: 'bottom-center',
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -126,8 +167,8 @@ class AdvertStore {
           })
         }else{
             toast.error('No se ha podido borrar', {
-                position: 'top-center',
-                autoClose: 500,
+                position: 'bottom-center',
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,

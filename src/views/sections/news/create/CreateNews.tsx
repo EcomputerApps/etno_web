@@ -12,6 +12,23 @@ import { observer } from 'mobx-react-lite'
 const newsStore = NewsStore.getNewsStore()
 
 const CreateNews = () => {
+
+  const arrayServiceTypes = [{
+    "id": "checkOne",
+    "value": "General",
+    "title": "General",
+}, {
+    "id": "checkTwo",
+    "value": "Tecnología",
+    "title": "Tecnología",
+},
+{
+  "id": "checkThree",
+  "value": "Salud",
+  "title": "Salud",
+}
+ ]
+
   const navigate = useNavigate()
 
   const inputRefTit = useRef<HTMLInputElement>(null)
@@ -42,8 +59,8 @@ const CreateNews = () => {
     
     if(newsStore.getNews.title === news.title){
       toast.info('Ya existe esta noticia', {
-        position: 'top-center',
-        autoClose: 500,
+        position: 'bottom-center',
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: false,
         pauseOnHover: false,
@@ -52,10 +69,10 @@ const CreateNews = () => {
         theme: "light"
     })
     }else{
-        if(newsCategory === '' || newsTitle === '' || newsDate === '' || newsLink === ''){
+        if(newsCategory === '' || newsTitle === '' || newsDate === '' || file === undefined){
           toast.info('Rellene los campos', {
-            position: 'top-center',
-            autoClose: 500,
+            position: 'bottom-center',
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,
             pauseOnHover: false,
@@ -78,20 +95,25 @@ const CreateNews = () => {
           <p className='flex  text-white text-3xl p-3'>NOTICIAS</p>
         </div>
       </div>
-      <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1 mt-5 relative">
-          <input autoFocus placeholder=" " name="newsCategory" type="text" className="inputCamp peer" onChange={(value) => {
-              setNewsCategory(value.currentTarget.value)
-            }} onKeyUp={(e) => {
-              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                if (inputRefTit.current != null) {
-                  inputRefTit.current.focus()
-                }
-              }
-            }} />
-          <label className={"labelFloatInput"}>Categoria</label>
-        </div>
-      </div>
+      <div className="w-full flex flex-1 flex-col mt-8 pl-3">
+                    <div className="flex flex-col p-1 relative">
+                        <div className="flex  flex-wrap pt-2">
+                            {arrayServiceTypes.map((chkBtn, index) => (
+                                <div key={index} className='flex lg:w-1/6 w-1/3'>
+                                    <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
+                                        setNewsCategory(e.currentTarget.value)
+                                    }} />
+                                    <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
+                            border-gray-300 
+                            peer-checked:hover:bg-indigo-700 
+                            peer-checked:text-white 
+                            ring-indigo-500 peer-checked:ring-2 overflow-hidden ">{chkBtn.title}</label>
+                                </div>
+                            ))}
+                        </div>
+                        <label className={"labelFloatDate"}>Categoría</label>
+                    </div>
+                </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="flex flex-col p-1 mt-3 relative">
 
@@ -132,28 +154,14 @@ const CreateNews = () => {
                 }
               }
             }} />
-          <label className={"labelFloatTxtArea"}>Descricíon</label>
-        </div>
-      </div>
-      <div className="w-full flex flex-1 flex-col pl-3">
-        <div className="flex flex-col p-1 relative mt-3">
-          <input ref={inputRefLink} placeholder=" " name="newsUrl" type="text" className="inputCamp peer" onChange={(value) => {
-            setNewstLink(value.currentTarget.value)
-          }} onKeyDown={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (btnRef.current != null) {
-                btnRef.current.focus()
-              }
-            }
-          }} />
-          <label className={"labelFloatInput"}>Pagina Web</label>
+          <label className={"labelFloatTxtArea"}>Descripción</label>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col pl-3">
         <div className="text-left p-1 ">
           <div className={"photoBoard"}>
             <div className='absolute left-3'>
-              Foto
+              Foto {file?.name}
             </div>
             <form id="form-file-upload" className=" w-full flex justify-center ">
               <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
@@ -174,7 +182,7 @@ const CreateNews = () => {
         <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
       </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer style={{marginBottom : "50px"}}/>
     </div>
   )
 }

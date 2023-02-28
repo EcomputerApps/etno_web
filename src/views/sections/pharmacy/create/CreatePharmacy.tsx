@@ -7,7 +7,15 @@ import { Pharmacy } from '../../../../models/section/Section';
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
 import { toast, ToastContainer } from 'react-toastify';
 import Datepicker from "react-tailwindcss-datepicker";
+import GoogleMapReact from 'google-map-react';
+import markerIcon from "../../../../assets/marker.svg"
 import moment from 'moment';
+
+interface Marker{
+    lat: number,
+    lng: number,
+    text: string
+  }
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
@@ -19,12 +27,24 @@ const CreatePharmacy = () => {
         endDate: new Date()
     });
 
+    const defaultProps = {
+        center: {
+          lat: 42.13775899999999,
+          lng: -0.40838200000000713
+        },
+        zoom: 11
+      };
+
+      
+
     const handleValueChange = (newValue: any) => {
         setDateGuardia(newValue);
     }
 
     const navigate = useNavigate()
 
+    const inputTitle = useRef<HTMLInputElement>(null)
+    const inputPeriod = useRef<HTMLInputElement>(null)
     const inputWebUrl = useRef<HTMLInputElement>(null)
     const inputTel = useRef<HTMLInputElement>(null)
     const inputScheSelect = useRef<HTMLSelectElement>(null)
@@ -35,6 +55,10 @@ const CreatePharmacy = () => {
     const inputLat = useRef<HTMLInputElement>(null)
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
+
+    const [lat, setLat] = useState(0)
+    const [long, setLong] = useState(0)
+    const AnyReactComponent = (props: Marker) => <img style={{width: '200', height: '200'}} src={props.text}></img>;
 
     const [pharmType, setPharmType] = useState("")
     const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
@@ -48,8 +72,10 @@ const CreatePharmacy = () => {
     const [pharmacyLong, setPharmacyLong] = useState<string>("")
     const [pharmacyLat, setPharmacyLat] = useState<string>("")
     const [pharmacySchedule, setPharmacySchedule] = useState<string>("")
-    const [pharmaStartDate, setPharmaStartDate] = useState<string>(dateGuardia.startDate.toString())
-    const [pharmaEndDate, setPharmacyEndDate] = useState<string>(dateGuardia.endDate.toString())
+    const [pharmStartDate, setPharmStartDate] = useState<Date>()
+    const [pharmPeriod, setPharmPeriod] = useState<number>()
+    const [pharmFrequency, setPharmFrequency] = useState<number>()
+
 
 
     function handleScheduleInput() {
@@ -60,17 +86,19 @@ const CreatePharmacy = () => {
         }
     }
     function addPharmacy() {
-            const pharmacy: Pharmacy = {
+        const pharmacy: Pharmacy = {
             type: pharmType,
             name: pharmacyName,
             link: pharmacyWebUrl,
             phone: pharmacyTel,
             schedule: pharmacySchedule,
             description: pharmacyDescption,
-            longitude: pharmacyLong,
-            latitude: pharmacyLat,
-            startDate: dateGuardia.startDate.toString(),
-            endDate: dateGuardia.endDate.toString()
+            longitude: String(long),
+            latitude: String(lat),
+            startDate : pharmStartDate,
+            durationDays: pharmPeriod,
+            frequencyInDays : pharmFrequency
+
         }
         if (pharmacyStore.getPharmacy.name === pharmacy.name) {
             toast.info('Ya existe esta farmacia', {
@@ -84,12 +112,19 @@ const CreatePharmacy = () => {
                 theme: "light"
             })
         } else {
-            if (pharmacy.type === "Normal") {
-                pharmacy.startDate = ""
-                pharmacy.endDate = ""
-            }
-            pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
-
+            pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
+                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescption === "" ||
+                long === 0 || lat === 0 || file === undefined ?
+                toast.info('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                }) : pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
         }
     }
     return (
@@ -100,60 +135,85 @@ const CreatePharmacy = () => {
                     <p className='flex  text-white text-3xl p-3'>FARMACIA</p>
                 </div>
             </div>
-            <div className="w-full flex flex-1 flex-col pl-3 mt-8">
-                <div className="flex flex-col p-1 relative">
+            <div className="w-full flex flex-1 flex-row pl-3 mt-8 ">
+                <div className="flex flex-col p-1 relative  w-1/3">
                     <div className="flex pt-2 ">
-                        <div className='flex w-1/3 xl:w-1/6'>
-                            <input type="radio" id="radioOne" value="Normal" className="sr-only peer" name="pharmTypeRadio" onChange={(e) => {
+
+                        <div className='flex w-1/2 '>
+                            <input type="radio" id="radioOne" value="Normal" className="sr-only peer " name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
                                 setDatePanel(true)
                             }} />
-                            <label htmlFor="radioOne" className="w-full text-center uppercase cursor-pointer p-2 mr-5 font-medium text-sm rounded-md peer-checked:bg-indigo-800 border 
+                            <label htmlFor="radioOne" className="w-full text-center select-none uppercase cursor-pointer p-2 mr-5 font-medium text-sm rounded-full md:rounded-md peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
                             peer-checked:text-white 
                             ring-indigo-500 peer-checked:ring-2 ">NORMAL</label>
+                            <label className="labelFloatDate" hidden={!datePanel}>Tipo</label>
                         </div>
-                        <div className='flex w-1/3 xl:w-1/6' >
-                            <input type="radio" id="radioTwo" className="sr-only peer" value="De guardia" name="pharmTypeRadio" onChange={(e) => {
+                        <div className='flex  w-1/2' >
+                            <input type="radio" id="radioTwo" className="sr-only peer " value="Guardia" name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
                                 setDatePanel(false)
                             }} />
-                            <label htmlFor="radioTwo" className="w-full text-center uppercase cursor-pointer text-sm font-medium rounded-md p-2 mr-5
+                            <label htmlFor="radioTwo" className="w-full min-w-fit text-center select-none uppercase cursor-pointer text-sm font-medium rounded-full md:rounded-md p-2 mr-5
                             peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
                             peer-checked:text-white 
                             ring-indigo-500 peer-checked:ring-2 ">DE GUARDIA</label>
+                            <label className="labelFloatDate" hidden={datePanel}>Tipo</label>
                         </div>
-                        <div className="w-1/3 relative focus:outline-none focus:border-indigo-800   bg-transparent " >
-                            <Datepicker
-                                placeholder='Dias de guardia'
-                                showFooter
-                                configs={{
-                                    footer: {
-                                        cancel: "Cancelar",
-                                        apply: "Aceptar"
-                                    }
-                                }}
-                                i18n={"es"}
-                                startWeekOn="lu"
-                                useRange={false}
-                                primaryColor='indigo'
 
-                                separator={"-"}
-                                disabled={datePanel}
-                                value={dateGuardia}
-                                onChange={handleValueChange} />
-
-                        </div>
-                        <label className={"labelFloatDate"}>Tipo</label>
                     </div>
+
+                </div>
+                <div className="flex pt-2  p-1  relative  ">
+                    <input type="date"  className="inputCamp peer w-40 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                    onChange={(e)=>{
+setPharmStartDate(e.currentTarget.valueAsDate!)
+                    }}
+                        onKeyUp={(e) => {
+                            if ((e.code === "NumpadEnter")) {
+                                if (inputPeriod.current != null) {
+                                    inputPeriod.current.focus()
+                                }
+                            }
+                        }} />
+                    <label className={"labelFloatDate"}>Inicio de guardia</label>
+                </div>
+                <div className="flex pt-2  p-1  relative ">
+                    <input type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer w-20 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                        onChange={(e)=>{
+                            setPharmPeriod(e.currentTarget.valueAsNumber)
+                                                }}
+                       onKeyUp={(e) => {
+                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                if (inputTitle.current != null) {
+                                    inputTitle.current.focus()
+                                }
+                            }
+                        }} />
+                    <label className={"labelFloatDate"}>Periodo</label>
+                </div>
+                <div className="flex pt-2  p-1  relative ">
+                    <input type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer w-20 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                        onChange={(e)=>{
+                            setPharmFrequency(e.currentTarget.valueAsNumber)
+                                                }}
+                       onKeyUp={(e) => {
+                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                if (inputTitle.current != null) {
+                                    inputTitle.current.focus()
+                                }
+                            }
+                        }} />
+                    <label className={"labelFloatDate"}>Frequesncia</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-5 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <input autoFocus placeholder=" " name="pharmacyName" type="text" className="inputCamp peer" onChange={(e) => {
+                    <input autoFocus ref={inputTitle} placeholder=" " name="pharmacyName" type="text" className="inputCamp peer" onChange={(e) => {
                         setPharmacyName(e.currentTarget.value)
                     }} onKeyUp={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -183,7 +243,7 @@ const CreatePharmacy = () => {
                 <div className="text-left p-1">
                     <div className={"photoBoard"}>
                         <div className='pl-3'>
-                            Foto
+                            Foto {file?.name}
                         </div>
                         <form id="form-file-upload" className=" w-full flex justify-center">
                             <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
@@ -299,10 +359,28 @@ const CreatePharmacy = () => {
                     <label className={"labelFloatTxtArea"}>Descripción</label>
                 </div>
             </div>
+            <div style={{ height: '50vh', width: '100%' }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
+        defaultCenter={defaultProps.center}
+        defaultZoom={defaultProps.zoom}
+        onClick={(e) => {
+          setLat(e.lat)
+          setLong(e.lng)
+        }}
+       
+      >
+        <AnyReactComponent
+        lat={lat}
+        lng={long}
+        text={markerIcon}
+        />
+      </GoogleMapReact>
+    </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="inputCamp peer" onKeyDown={(e) => {
+                    <input value={long} ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="inputCamp peer" onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (inputLat.current != null) {
                                 inputLat.current.focus()
@@ -317,7 +395,7 @@ const CreatePharmacy = () => {
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="inputCamp peer" onKeyDown={(e) => {
+                    <input value={lat} ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="inputCamp peer" onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (btnRef.current != null) {
                                 btnRef.current.focus()

@@ -2,6 +2,8 @@ import { observer } from "mobx-react-lite"
 import NewsStore from "../../../viewmodels/news/NewsStore"
 import "../../../index.css"
 import { ToastContainer } from "react-toastify"
+import { useNavigate } from "react-router-dom"
+import { News} from "../../../models/section/Section"
 const newsStore = NewsStore.getNewsStore()
 
 interface PropTable {
@@ -11,9 +13,16 @@ interface PropTable {
 }
 
 const TableNews = (prop: PropTable) => {
+    const navigate = useNavigate()
     const deleteNews = async (news: string) => {
         await newsStore.deleteNews("Bolea", news)
     }
+
+    function saveNews(news: News){
+        newsStore.updateNews(news)   
+        navigate('/editNews')
+    }
+
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -52,12 +61,11 @@ const TableNews = (prop: PropTable) => {
                             <td className="px-6 py-4">
                                 <div className="tableCamp overflow-y-auto  min-w-full">
                                     {news.description}
-
                                 </div>
                             </td>
                             <td className="px-6 py-4 flex items-center justify-center ">
                                 <div className="h-20 flex items-center justify-center">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveNews(news)}>Editar</a>
                                     <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteNews(news.title!!)}>Eliminar</a>
                                 </div>
                             </td>
@@ -65,7 +73,7 @@ const TableNews = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
-            <ToastContainer />
+            
         </div>
     )
 

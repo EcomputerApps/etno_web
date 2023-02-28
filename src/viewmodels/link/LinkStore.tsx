@@ -6,7 +6,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class LinkStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static linkStore: LinkStore
 
     static getLinkStore() {
@@ -20,6 +20,7 @@ class LinkStore {
     paginatedLink: PaginatedLink = {}
     link: Link = {}
     title: string = ""
+    id: string = ""
     linkString: string = ""
 
     constructor() {
@@ -27,17 +28,20 @@ class LinkStore {
             paginatedLink: observable,
             title: observable,
             link: observable,
+            id: observable,
             updateLink: action,
             getLink: computed,
             linkString: observable,
             setTitle: action,
             setLinkString: action,
+            setId: action,
             getRequestLink: action,
             addRequestLink: action,
             updateLinkList: action,
             updatePaginatedLink: action,
             getPaginatedLink: computed,
             getTitle: computed,
+            getId: computed,
             getLinkString: computed
         })
     }
@@ -47,8 +51,14 @@ class LinkStore {
     setLinkString(link: string) {
         this.linkString = link
     }
+    setId(id: string) {
+        this.id = id
+    }
     get getTitle() {
         return this.title
+    }
+    get getId() {
+        return this.id
     }
     get getLinkString() {
         return this.linkString
@@ -68,7 +78,6 @@ class LinkStore {
     get getLink() {
         return this.link
     }
-
     async getRequestLink(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/links?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
@@ -111,7 +120,6 @@ class LinkStore {
         }
 
     }
-
     async addRequestLink(username: string, link: Link) {
         const response = await fetch(`http://${this.serverIp}:8080/users/add/link?username=${username}`, {
             method: 'POST',
@@ -144,6 +152,40 @@ class LinkStore {
                 progress: undefined,
                 theme: "light"
             })
+        }
+    }
+    async editLink(locality: string, linkId: string, link: Link){
+        
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/link?username=${locality}&linkId=${linkId}`, {
+            method: 'PUT',
+            body: JSON.stringify(link),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+        if(response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          }) 
         }
     }
 }

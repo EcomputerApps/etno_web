@@ -1,6 +1,6 @@
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom"
 import "../../../../index.css"
 import BandStore from '../../../../viewmodels/band/BandsStore';
@@ -10,41 +10,22 @@ import { observer } from 'mobx-react-lite';
 
 const bandStore = BandStore.getBandStore()
 
-const CreateBand = () => {
-  useEffect(() => {
-    bandStore.getAllBandRequest("Bolea")
-  }, [])
-
+const EditBand = () => {
+  const [band, setBand] = useState(bandStore.getBand)
 
   const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
-  const [bandType, setBandType] = useState<string>("")
-  const [bandDescription, setBandDescription] = useState<string>("")
-  const [bandPhoto, setBandPhoto] = useState<string>("")
-  const [bandDate, setbandDate] = useState<string>("")
+  const [bandType, setBandType] = useState<string>(band.title!!)
+  const [bandDescription, setBandDescription] = useState<string>(band.description!!)
   const [file, setFile] = useState<File>()
-  const [flag, setFlag] = useState(false)
+  const[bandera, setBandera] = useState(true)
 
-  function addBand() {
-    const bando: Band = {
-      title: bandType,
-      description: bandDescription,
-
-    }
-    bandStore.getAllBands.bandos?.map((item) => {
-      if (item.title === bando.title)
-
-        setFlag(true)
-      console.log(item.title)
-      console.log(flag)
-      console.log(bando.title)
-
-    })
-    if (flag) {
-      toast.info('Ya existe este bando', {
+  function updateBand(bandId: string) {
+    if (bandType === "" || bandDescription === "") {
+      toast.info('Rellene los campos', {
         position: 'bottom-center',
         autoClose: 1000,
         hideProgressBar: false,
@@ -55,36 +36,40 @@ const CreateBand = () => {
         theme: "light"
       })
     } else {
-      bandType === "" || bandDescription === "" || file === undefined ?
-        toast.info('Rellene los campos', {
-          position: 'bottom-center',
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light"
-        }) : bandStore.addRequestBand('Bolea', bando, file!!)
-    }
-  }
+      const bando: Band = {
+        title: bandType,
+        description: bandDescription,
+        imageUrl: band.imageUrl
+
+      }
+      
+        bandStore.editBand('Bolea', bandId, bando, file!!)
+      }
+      }
+        
+    
+        
+      
+        
+      
+    
+
+  
 
   return (
     <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
       <div>
-       <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
+        <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
             <img src={logoEtno} alt="logo_Etno"></img>
             <p className='flex  text-white text-3xl p-3'>BANDOS</p>
           </div>
         </div>
-
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className=" flex flex-col p-1 mt-5  relative">
-            <input autoFocus placeholder=" "
+            <input autoFocus placeholder=" " defaultValue={band.title}
               name="bandType" type="text" required={true}
               className="inputCamp peer" onChange={(value) => {
-
                 setBandType(value.currentTarget.value)
               }} onKeyUp={(e) => {
                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -94,15 +79,13 @@ const CreateBand = () => {
                 }
               }} />
             <label className="labelFloatInput">Asunto</label>
-
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col pl-3 mt-3">
           <div className="flex flex-col p-1  relative">
-            <textarea ref={txtAreaRef} placeholder="  " name="bandDescription" rows={3}
+            <textarea ref={txtAreaRef} placeholder="  " defaultValue={band.description} name="bandDescription" rows={3}
               className="inputCamp peer"
               onChange={(value) => {
-
                 setBandDescription(value.currentTarget.value)
 
               }} onKeyDown={(e) => {
@@ -137,7 +120,7 @@ const CreateBand = () => {
           </div>
         </div>
         <div className="md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-          <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={addBand}>Publicar</button>
+          <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => updateBand(band.idBando!!)}>Actualizar</button>
           <button name="bandBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
         </div>
       </div>
@@ -145,4 +128,4 @@ const CreateBand = () => {
     </div>
   )
 }
-export default observer(CreateBand)
+export default observer(EditBand)

@@ -4,7 +4,7 @@
 
 .btnStandard {
   @apply inline-flex items-center rounded-md border border-gray-300
-   bg-indigo-800 px-4 py-2 text-sm font-medium text-white shadow-sm
+   bg-indigo-800 px-4 h-12 text-sm font-medium text-white shadow-sm
    hover:bg-indigo-600 hover:shadow-md focus:ring-2 focus:ring-indigo-500
    disabled:bg-gray-500
 }

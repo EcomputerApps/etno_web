@@ -1,4 +1,6 @@
 import { observer } from "mobx-react-lite"
+import { useNavigate } from "react-router-dom"
+import { Sponsor } from "../../../models/section/Section"
 import SposnsorStore from "../../../viewmodels/sponsor/SponsorStore"
 
 const sponsorStore = SposnsorStore.getSponsorStore()
@@ -12,6 +14,11 @@ interface PropTable {
 const TableSponsor = (prop: PropTable) => {
     const deleteSponsor = async (sponsor: string) => {
         await sponsorStore.deleteSponsor('Bolea', sponsor)
+    }
+    const navigate = useNavigate()
+    function saveSponsor(sponsor: Sponsor){
+        sponsorStore.updateSponsor(sponsor)   
+        navigate('/editSponsor')
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -44,12 +51,12 @@ const TableSponsor = (prop: PropTable) => {
                             </td>
                             <td className="px-6 py-4 text-center">
                             <div className="tableCamp">
-                                {sponsor.phoneNumber}
+                                {sponsor.phone}
                                 </div>
                             </td>
                             <td className="px-6 py-4">
                             <div className="h-20 flex items-center justify-center">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={()=>{saveSponsor(sponsor)}}>Editar</a>
                                 <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteSponsor(sponsor.title!!)}>Eliminar</a>
                            </div>
                             </td>

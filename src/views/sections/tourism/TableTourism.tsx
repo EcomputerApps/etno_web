@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite"
 import TourismStore from "../../../viewmodels/tourism/TourismStore"
 import "../../../index.css"
 import { ToastContainer } from "react-toastify"
+import { useNavigate } from "react-router-dom"
 const tourismStore = TourismStore.getTourismStore()
 
 interface PropTable {
@@ -11,6 +12,7 @@ interface PropTable {
 }
 
 const TableTourism = (prop: PropTable) => {
+    const navigate = useNavigate()
     const deleteTourism = async (event: string) => {
         await tourismStore.deleteTourism('Bolea', event)
     }
@@ -48,7 +50,10 @@ const TableTourism = (prop: PropTable) => {
                             </td>
                             <td className="px-6 py-4">
                             <div className="h-20 flex items-center justify-center">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => {
+                                    tourismStore.updateTourism(tourism)
+                                    navigate('/editTourism')
+                                }}>Editar</a>
                                 <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteTourism(tourism.title!!)}>Eliminar</a>
                            </div>
                             </td>

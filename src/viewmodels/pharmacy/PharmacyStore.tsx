@@ -5,7 +5,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class PharmacyStore {
-    serverIp: string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {
@@ -19,13 +19,12 @@ class PharmacyStore {
     paginatedPharmacy: PaginatedPharmacy = {}
     pharmacy: Pharmacy = {}
     pharmacyOnDutyList: PharmacyOnDuty = {}
-
-
+  
     constructor() {
         makeObservable(this, {
             paginatedPharmacy: observable,
             pharmacyOnDutyList: observable,
-            updatePOD: action,
+             updatePOD: action,
             pharmacy: observable,
             updatePharmacy: action,
             getPharmacy: computed,
@@ -38,7 +37,7 @@ class PharmacyStore {
             getPOD: computed
 
         })
-    } 
+    }
     updatePOD(pharmacys: Pharmacy[]) {
         this.pharmacyOnDutyList.content = pharmacys
     }
@@ -57,8 +56,46 @@ class PharmacyStore {
     }
     updatePharmacy(pharmacy: Pharmacy) {
         this.pharmacy = pharmacy
+
     } get getPharmacy() {
         return this.pharmacy
+    }
+
+    async editPharm(locality: string, pharmId: string, pharm: Pharmacy, file: File) {
+        if (file !== undefined) {
+            await imageStore.addImageAPI("Bolea", "farmacia", "farmacia", file!!)
+            pharm.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/pharmacy?username=${locality}&pharmacyId=${pharmId}`, {
+            method: 'PUT',
+            body: JSON.stringify(pharm),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        if (response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
     }
 
     async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
@@ -75,6 +112,7 @@ class PharmacyStore {
         const pharmacy = await response.json()
         this.updatePOD(pharmacy)
     }
+    
     async deletePharmacy(username: string, name: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/pharmacy?username=${username}&name=${name}`, {
             method: 'DELETE',
@@ -111,6 +149,44 @@ class PharmacyStore {
         }
 
     }
+
+    async editPharmacy(locality: string, pharmacyId: string, pharmacy: Pharmacy, file: File){
+        if (file !== undefined){
+            await imageStore.addImageAPI('Bolea', 'farmacia', 'farmacia', file)
+            pharmacy.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/pharmacy?username=${locality}&pharmacyId=${pharmacyId}`, {
+            method: 'PUT',
+            body: JSON.stringify(pharmacy),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            }
+        })
+        if (response.ok){
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        }
+    }
+
     async addRequestPharmacy(username: string, pharmacy: Pharmacy, file: File) {
         await imageStore.addImageAPI('Bolea', 'farmacia', 'farmacia', file)
         pharmacy.imageUrl = imageStore.getImage.link

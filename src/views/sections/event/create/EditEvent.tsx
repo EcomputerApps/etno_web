@@ -3,82 +3,71 @@ import { useRef, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
-
 import { useNavigate } from "react-router-dom";
-import { Event } from '../../../../models/section/Section';
-
 import EventStore from '../../../../viewmodels/Event/EventStore';
 import { toast, ToastContainer } from 'react-toastify';
+import { Event } from '../../../../models/section/Section';
+
 const eventStore = EventStore.getEventStore()
 
-const CreateEvent = () => {
-  const inputRefDir = useRef<HTMLInputElement>(null)
-  const inputRefOrg = useRef<HTMLInputElement>(null)
-  const inputRefPric = useRef<HTMLInputElement>(null)
-  const inputRefSeat = useRef<HTMLInputElement>(null)
-  const inputRefLink = useRef<HTMLInputElement>(null)
-  const inputRefDS = useRef<HTMLInputElement>(null)
-  const inputRefDF = useRef<HTMLInputElement>(null)
-  const txtAreaRef = useRef<HTMLTextAreaElement>(null)
-  const btnRef = useRef<HTMLButtonElement>(null)
+const EditEvent = () => {
+    const navigate = useNavigate()
 
-  const [eventTitle, setEventTitle] = useState<string>("")
-  const [eventDirection, setEventDirection] = useState<string>("")
-  const [eventDescription, setEventDescription] = useState<string>("")
-  const [eventOrganization, setEventOrganization] = useState<string>("")
-  const [eventPrice, setEventPrice] = useState<string>("")
-  const [eventSeats, setEventSeats] = useState<string>("")
-  const [eventLink, setEventLink] = useState<string>("")
-  const [eventPhoto, setEventPhoto] = useState<string>("")
-  const [eventDateStart, setEventDateStart] = useState<string>("")
-  const [eventDateFin, setEventDateFin] = useState<string>("")
-  const [file, setFile] = useState<File>()
+    const inputRefDir = useRef<HTMLInputElement>(null)
+    const inputRefOrg = useRef<HTMLInputElement>(null)
+    const inputRefPric = useRef<HTMLInputElement>(null)
+    const inputRefSeat = useRef<HTMLInputElement>(null)
+    const inputRefLink = useRef<HTMLInputElement>(null)
+    const inputRefDS = useRef<HTMLInputElement>(null)
+    const inputRefDF = useRef<HTMLInputElement>(null)
+    const txtAreaRef = useRef<HTMLTextAreaElement>(null)
+    const btnRef = useRef<HTMLButtonElement>(null)
 
-  function addEvent() {
-    const event: Event = {
-      title: eventTitle,
-      address: eventDirection,
-      description: eventDescription,
-      organization: eventOrganization,
-      reservePrice: Number(eventPrice),
-      capacity: Number(eventSeats),
-      link: eventLink,
-      startDate: eventDateStart,
-      endDate: eventDateFin
+    const [event, setEvent] = useState(eventStore.getEvent)
+  
+    const [eventTitle, setEventTitle] = useState<string>(event.title!!)
+    const [eventDirection, setEventDirection] = useState<string>(event.address!!)
+    const [eventDescription, setEventDescription] = useState<string>(event.description!!)
+    const [eventOrganization, setEventOrganization] = useState<string>(event.organization!!)
+    const [eventPrice, setEventPrice] = useState<string>(String(event.reservePrice!!))
+    const [eventSeats, setEventSeats] = useState<string>(String(event.seats!!))
+    const [eventLink, setEventLink] = useState<string>(event.link!!)
+    const [eventPhoto, setEventPhoto] = useState<string>("")
+    const [eventDateStart, setEventDateStart] = useState<string>(event.startDate!!)
+    const [eventDateFin, setEventDateFin] = useState<string>(event.endDate!!)
+    const [file, setFile] = useState<File>()
+
+    function updateEvent(){
+        if (eventTitle === '' || eventDirection === '' || eventDescription === '' || eventOrganization === '' || eventPrice === '' || eventSeats === '' || eventLink === '' || eventDateStart === '' || eventDateFin === ''){
+            toast.info('Rellene los campos', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        } else {
+            const event_: Event = {
+                title: eventTitle,
+                address: eventDirection,
+                description: eventDescription,
+                organization: eventOrganization,
+                reservePrice: Number(eventPrice),
+                capacity: Number(eventSeats),
+                seats: Number(eventSeats),
+                link: eventLink,
+                startDate: eventDateStart,
+                endDate: eventDateFin
+            }
+            eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+        }
     }
-    if (eventStore.getEvent.title === event.title) {
-      toast.info('Ya existe este evento', {
-        position: 'top-center',
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light'
-      })
-    } else {
-      eventTitle === '' || eventDirection === '' || eventDescription === ''
-        || eventOrganization === '' || eventPrice === ''
-        || eventSeats === '' || eventLink === '' || eventDateStart === ''
-        || eventDateFin === '' || file === undefined ?
 
-        toast.info('Rellene los campos vacíos', {
-          position: 'top-center',
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        }) : eventStore.addRequestEvent('Bolea', event, file!!)
-    }
-  }
-  const navigate = useNavigate()
-
-  return (
-    <div>
+    return(
+        <div>
       <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
         <div className="h-20 w-full flex bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row gap-8 p-2 justify-between">
@@ -88,7 +77,7 @@ const CreateEvent = () => {
         </div>
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col  p-1 relative">
-            <input autoFocus placeholder=" " type="text" name="eventTitle" className="inputCamp peer" onChange={(value) => {
+            <input defaultValue={eventTitle} autoFocus placeholder=" " type="text" name="eventTitle" className="inputCamp peer" onChange={(value) => {
               setEventTitle(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -100,7 +89,7 @@ const CreateEvent = () => {
             <label className={"labelFloatInput"}>Título</label>
           </div>
           <div className="flex flex-col mt-3 p-1 relative ">
-            <input ref={inputRefDir} placeholder=" " type="text" name="eventDirection1" id="2" className="inputCamp peer" onChange={(value) => {
+            <input defaultValue={eventDirection} ref={inputRefDir} placeholder=" " type="text" name="eventDirection1" id="2" className="inputCamp peer" onChange={(value) => {
               setEventDirection(value.currentTarget.value)
             }} onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -112,7 +101,7 @@ const CreateEvent = () => {
             <label className={"labelFloatInput"}>Dirección</label>
           </div>
           <div className="flex flex-col mt-3 p-1 relative">
-            <textarea ref={txtAreaRef} placeholder=" " name="eventDescription" rows={3} className="inputCamp peer" onChange={(value) => {
+            <textarea defaultValue={eventDescription} ref={txtAreaRef} placeholder=" " name="eventDescription" rows={3} className="inputCamp peer" onChange={(value) => {
               setEventDescription(value.currentTarget.value)
             }} onKeyDown={(e) => {
               if (e.code === "NumpadEnter") {
@@ -124,7 +113,7 @@ const CreateEvent = () => {
             <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
           <div className="flex flex-col mt-3 p-1 relative">
-            <input ref={inputRefOrg} placeholder=" " type="text" name="eventOrganization" className="inputCamp peer" onChange={(value) => {
+            <input defaultValue={eventOrganization} ref={inputRefOrg} placeholder=" " type="text" name="eventOrganization" className="inputCamp peer" onChange={(value) => {
               setEventOrganization(value.currentTarget.value)
             }} onKeyDown={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -140,7 +129,7 @@ const CreateEvent = () => {
               <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <span className="text-gray-500 sm:text-sm mt-1">€</span>
               </div>
-              <CurrencyInput ref={inputRefPric} name="eventPrice" className="pl-7 mt-1 p-2 md:w-1/4 w-1/2 inputCamp peer"
+              <CurrencyInput defaultValue={eventPrice} ref={inputRefPric} name="eventPrice" className="pl-7 mt-1 p-2 md:w-1/4 w-1/2 inputCamp peer"
                 placeholder="0,00" decimalsLimit={2} onValueChange={(value, name) => console.log(value, name)}
                 onInput={(e) => (e.currentTarget.value = e.currentTarget.value.replace(/^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/, ""),
                   e.currentTarget.value = e.currentTarget.value.replace(/[^-,0-9]/, ""))} onChange={(value) => {
@@ -158,7 +147,7 @@ const CreateEvent = () => {
           </div>
           <div className="flex flex-col p-1 mt-5 relative">
 
-            <input ref={inputRefSeat} type="text" name="eventSeats" placeholder="0" onInput={(e) => (
+            <input defaultValue={eventSeats} ref={inputRefSeat} type="text" name="eventSeats" placeholder="0" onInput={(e) => (
               e.currentTarget.value = e.currentTarget.value.replace(/^[^1-9]/, ""),
               e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")
             )} className="p-2 mt-1 md:w-1/4 w-1/2 border-2 inputCamp peer" onChange={(value) => {
@@ -173,7 +162,7 @@ const CreateEvent = () => {
             <label className={"labelFloatDate"}>Aforo</label>
           </div>
           <div className="flex flex-col mt-3 relative p-1">
-            <input ref={inputRefLink} placeholder=" " type="text" name="eventUrl" className="inputCamp peer" onChange={(value) => {
+            <input defaultValue={eventLink} ref={inputRefLink} placeholder=" " type="text" name="eventUrl" className="inputCamp peer" onChange={(value) => {
               setEventLink(value.currentTarget.value)
             }} onKeyDown={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -205,7 +194,7 @@ const CreateEvent = () => {
             </div>
           </div>
           <div className="flex flex-col p-1 relative mt-5">
-            <input ref={inputRefDS} type="date" name="eventStart" className="w-40 inputCamp peer" onChange={(value) => {
+            <input defaultValue={eventDateStart} ref={inputRefDS} type="date" name="eventStart" className="w-40 inputCamp peer" onChange={(value) => {
               setEventDateStart(value.currentTarget.value)
             }} onKeyDown={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -217,7 +206,7 @@ const CreateEvent = () => {
             <label className={"labelFloatDate"}>Fecha de Inicio</label>
           </div>
           <div className="flex flex-col p-1 relative mt-5">
-            <input ref={inputRefDF} type="date" name="eventFinish" className="w-40 inputCamp peer " onChange={(value) => {
+            <input defaultValue={eventDateFin} ref={inputRefDF} type="date" name="eventFinish" className="w-40 inputCamp peer " onChange={(value) => {
               setEventDateFin(value.currentTarget.value)
             }} onKeyDown={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -230,12 +219,12 @@ const CreateEvent = () => {
           </div>
         </div>
         <div className="flex m-auto justify-center p-3">
-          <button ref={btnRef} name="eventBtnSave" className="btnStandard mr-10" onClick={addEvent}>Publicar</button>
+          <button ref={btnRef} name="eventBtnSave" className="btnStandard mr-10" onClick={() => updateEvent()}>Publicar</button>
           <button name="eventBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
         </div>
       </div>
       <ToastContainer />
     </div>
-  )
+    )
 }
-export default CreateEvent
+export default EditEvent
