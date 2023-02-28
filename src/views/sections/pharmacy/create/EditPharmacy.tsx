@@ -6,20 +6,21 @@ import "../../../../index.css"
 import { Pharmacy } from '../../../../models/section/Section';
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
 import { toast, ToastContainer } from 'react-toastify';
-import Datepicker from "react-tailwindcss-datepicker";
 import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../assets/marker.svg"
 import moment from 'moment';
 
-interface Marker{
+
+interface Marker {
     lat: number,
     lng: number,
     text: string
-  }
+}
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
-const CreatePharmacy = () => {
+const EditPharmacy = () => {
+
     const [file, setFile] = useState<File>()
     const [datePanel, setDatePanel] = useState(true)
     const [dateGuardia, setDateGuardia] = useState({
@@ -29,19 +30,20 @@ const CreatePharmacy = () => {
 
     const defaultProps = {
         center: {
-          lat: 42.13775899999999,
-          lng: -0.40838200000000713
+            lat: 42.13775899999999,
+            lng: -0.40838200000000713
         },
         zoom: 11
-      };
+    };
 
-      
+
 
     const handleValueChange = (newValue: any) => {
         setDateGuardia(newValue);
     }
 
     const navigate = useNavigate()
+    const [pharm, setPharm] = useState(pharmacyStore.getPharmacy)
 
     const inputTitle = useRef<HTMLInputElement>(null)
     const inputPeriod = useRef<HTMLInputElement>(null)
@@ -58,23 +60,23 @@ const CreatePharmacy = () => {
 
     const [lat, setLat] = useState(0)
     const [long, setLong] = useState(0)
-    const AnyReactComponent = (props: Marker) => <img style={{width: '200', height: '200'}} src={props.text}></img>;
+    const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
 
-    const [pharmType, setPharmType] = useState("")
+    const [pharmType, setPharmType] = useState(pharm.type!!)
     const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
-    const [pharmacyName, setPharmacyName] = useState<string>("")
-    const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>("")
-    const [pharmacyTel, setPharmacyTel] = useState<string>("")
+    const [pharmacyName, setPharmacyName] = useState<string>(pharm.name!!)
+    const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>(pharm.link!!)
+    const [pharmacyTel, setPharmacyTel] = useState<string>(pharm.phone!!)
     const [pharmacyShcedulMorning, setPharmacyShcedulMorning] = useState<string>("")
     const [pharmacyShcedulEven, setPharmacyShcedulEven] = useState<string>("")
     const [pharmacyShcedulExtra, setPharmacyShcedulExtra] = useState<string>("")
-    const [pharmacyDescption, setPharmacyDescption] = useState<string>("")
+    const [pharmacyDescption, setPharmacyDescption] = useState<string>(pharm.description!!)
     const [pharmacyLong, setPharmacyLong] = useState<string>("")
     const [pharmacyLat, setPharmacyLat] = useState<string>("")
-    const [pharmacySchedule, setPharmacySchedule] = useState<string>("")
-    const [pharmStartDate, setPharmStartDate] = useState<Date>()
-    const [pharmPeriod, setPharmPeriod] = useState<number>()
-    const [pharmFrequency, setPharmFrequency] = useState<number>()
+    const [pharmacySchedule, setPharmacySchedule] = useState<string>(pharm.schedule!!)
+    const [pharmStartDate, setPharmStartDate] = useState<Date>(pharm.startDate!!)
+    const [pharmPeriod, setPharmPeriod] = useState<number>(pharm.durationDays!!)
+    const [pharmFrequency, setPharmFrequency] = useState<number>(pharm.frequencyInDays!!)
 
 
 
@@ -85,23 +87,11 @@ const CreatePharmacy = () => {
             setPharmacySchedule(pharmacyShcedulSelector + " " + pharmacyShcedulMorning + " " + pharmacyShcedulEven)
         }
     }
-    function addPharmacy() {
-        const pharmacy: Pharmacy = {
-            type: pharmType,
-            name: pharmacyName,
-            link: pharmacyWebUrl,
-            phone: pharmacyTel,
-            schedule: pharmacySchedule,
-            description: pharmacyDescption,
-            longitude: String(long),
-            latitude: String(lat),
-            startDate : pharmStartDate,
-            durationDays: pharmPeriod,
-            frequencyInDays : pharmFrequency
-
-        }
-        if (pharmacyStore.getPharmacy.name === pharmacy.name) {
-            toast.info('Ya existe esta farmacia', {
+    function updatePharmacy(pharmID: string) {
+        if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
+            pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescption === "" 
+            ) {
+            toast.info('Rellene los campos', {
                 position: 'bottom-center',
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -112,20 +102,25 @@ const CreatePharmacy = () => {
                 theme: "light"
             })
         } else {
-            pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescption === "" ||
-                long === 0 || lat === 0 || file === undefined ?
-                toast.info('Rellene los campos', {
-                    position: 'bottom-center',
-                    autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light"
-                }) : pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
+            const pharmacy: Pharmacy = {
+                type: pharmType,
+                name: pharmacyName,
+                link: pharmacyWebUrl,
+                phone: pharmacyTel,
+                schedule: pharmacySchedule,
+                description: pharmacyDescption,
+                longitude: String(long),
+                latitude: String(lat),
+                startDate: pharmStartDate,
+                durationDays: pharmPeriod,
+                frequencyInDays: pharmFrequency,
+                imageUrl: pharm.imageUrl
+
+            }
+            pharmacyStore.editPharm('Bolea', pharmID, pharmacy, file!!)
         }
+
+
     }
     return (
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
@@ -169,10 +164,10 @@ const CreatePharmacy = () => {
 
                 </div>
                 <div className="flex pt-2  p-1  relative  ">
-                    <input type="date"  className="inputCamp peer w-40 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
-                    onChange={(e)=>{
-setPharmStartDate(e.currentTarget.valueAsDate!)
-                    }}
+                    <input type="date" defaultValue={moment(pharm.startDate).toISOString().substring(0, 10)} className="inputCamp peer w-40 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                        onChange={(e) => {
+                            setPharmStartDate(e.currentTarget.valueAsDate!)
+                        }}
                         onKeyUp={(e) => {
                             if ((e.code === "NumpadEnter")) {
                                 if (inputPeriod.current != null) {
@@ -183,11 +178,11 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
                     <label className={"labelFloatDate"}>Inicio de guardia</label>
                 </div>
                 <div className="flex pt-2  p-1  relative ">
-                    <input type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer w-20 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
-                        onChange={(e)=>{
+                    <input type="number" ref={inputPeriod} min={0} defaultValue={pharm.durationDays} className="inputCamp peer w-20 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                        onChange={(e) => {
                             setPharmPeriod(e.currentTarget.valueAsNumber)
-                                                }}
-                       onKeyUp={(e) => {
+                        }}
+                        onKeyUp={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (inputTitle.current != null) {
                                     inputTitle.current.focus()
@@ -197,11 +192,11 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
                     <label className={"labelFloatDate"}>Periodo</label>
                 </div>
                 <div className="flex pt-2  p-1  relative ">
-                    <input type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer w-20 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
-                        onChange={(e)=>{
+                    <input type="number" ref={inputPeriod} min={0} defaultValue={pharm.frequencyInDays} className="inputCamp peer w-20 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                        onChange={(e) => {
                             setPharmFrequency(e.currentTarget.valueAsNumber)
-                                                }}
-                       onKeyUp={(e) => {
+                        }}
+                        onKeyUp={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (inputTitle.current != null) {
                                     inputTitle.current.focus()
@@ -213,7 +208,7 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
             </div>
             <div className="w-full flex flex-1 flex-col mt-5 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <input autoFocus ref={inputTitle} placeholder=" " name="pharmacyName" type="text" className="inputCamp peer" onChange={(e) => {
+                    <input autoFocus ref={inputTitle} placeholder=" " defaultValue={pharm.name} name="pharmacyName" type="text" className="inputCamp peer" onChange={(e) => {
                         setPharmacyName(e.currentTarget.value)
                     }} onKeyUp={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -227,7 +222,7 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 mt-3">
                 <div className="flex flex-col p-1 relative  ">
-                    <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" className="inputCamp peer" onChange={(e) => {
+                    <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" defaultValue={pharm.link} className="inputCamp peer" onChange={(e) => {
                         setPharmacyWebUrl(e.currentTarget.value)
                     }} onKeyUp={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -262,7 +257,7 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input ref={inputTel} placeholder=" " name="pharmacyTel" type="text" onInput={(e) =>
+                    <input ref={inputTel} placeholder=" " defaultValue={pharm.phone} name="pharmacyTel" type="text" onInput={(e) =>
                         e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} className="inputCamp peer w-1/4" onKeyUp={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (inputScheSelect.current != null) {
@@ -347,7 +342,7 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <textarea ref={txtAreaRef} placeholder=" " name="pharmacyDescription" maxLength={495} rows={3} className="inputCamp peer" onKeyDown={(e) => {
+                    <textarea ref={txtAreaRef} placeholder=" " defaultValue={pharm.description} name="pharmacyDescription" maxLength={495} rows={3} className="inputCamp peer" onKeyDown={(e) => {
                         if ((e.code === "NumpadEnter")) {
                             if (inputLong.current != null) {
                                 inputLong.current.focus()
@@ -360,23 +355,23 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
                 </div>
             </div>
             <div style={{ height: '50vh', width: '100%' }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
-        onClick={(e) => {
-          setLat(e.lat)
-          setLong(e.lng)
-        }}
-       
-      >
-        <AnyReactComponent
-        lat={lat}
-        lng={long}
-        text={markerIcon}
-        />
-      </GoogleMapReact>
-    </div>
+                <GoogleMapReact
+                    bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
+                    defaultCenter={defaultProps.center}
+                    defaultZoom={defaultProps.zoom}
+                    onClick={(e) => {
+                        setLat(e.lat)
+                        setLong(e.lng)
+                    }}
+
+                >
+                    <AnyReactComponent
+                        lat={lat}
+                        lng={long}
+                        text={markerIcon}
+                    />
+                </GoogleMapReact>
+            </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
@@ -408,11 +403,11 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
                 </div>
             </div>
             <div className="flex m-auto justify-center p-3">
-                <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPharmacy()} onFocus={() => handleScheduleInput()}>Publicar</button>
+                <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => updatePharmacy(pharm.idPharmacy!!)} onFocus={() => handleScheduleInput()}>Actualizar</button>
                 <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
             <ToastContainer style={{ margin: "30px" }} />
         </div>
     )
 }
-export default CreatePharmacy
+export default EditPharmacy

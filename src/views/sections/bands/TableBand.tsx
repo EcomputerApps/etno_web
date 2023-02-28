@@ -1,6 +1,10 @@
 import { observer } from "mobx-react-lite"
 import BandStore from "../../../viewmodels/band/BandsStore"
 import "../../../index.css"
+import { useNavigate } from "react-router-dom"
+import { Band } from "../../../models/section/Section"
+import { useState } from "react"
+
 const bandStore = BandStore.getBandStore()
 
 interface PropTable {
@@ -10,8 +14,15 @@ interface PropTable {
 }
 
 const TableBand = (prop: PropTable) => {
+    const navigate = useNavigate()
+    const [showModal, setModal] = useState(false)
     const deleteBand = async (band: string) => {
         await bandStore.deleteBand('Bolea', band)
+    }
+
+    function saveBand(band: Band) {
+        bandStore.updateBand(band)
+        navigate("/editBand")
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -20,38 +31,39 @@ const TableBand = (prop: PropTable) => {
                     <tr>
                         {prop.headerList.map((item, index) => (
                             <th key={index} scope="col" className="px-6 py-3">
-                                  <div className="min-w-max">
-                            {item}
-                            </div> 
+                                <div className="min-w-max">
+                                    {item}
+                                </div>
                             </th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {bandStore.getPaginatedBands.content?.map((band, index) => (
+                    {bandStore.getPaginatedBands.content?.map((bandMap, index) => (
                         bandStore.getPaginatedBands.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white    ">
                                 <div className="tableCamp">
-                                    {band.title}
+                                    {bandMap.title}
                                 </div>
                             </th>
                             <td className="px-6 py-4">
-                            <div className="tableCamp overflow-y-auto  min-w-full">
-                                        {band.description}
-                                 
+                                <div className="tableCamp overflow-y-auto  min-w-full">
+                                    {bandMap.description}
+
                                 </div>
                             </td>
                             <td className="px-6 py-4">
                                 <div className="tableCamp">
-                                    {band.issuedDate}
+                                    {bandMap.issuedDate}
                                 </div>
                             </td>
                             <td className="px-6 py-4">
-                                <div className="h-20 flex items-center justify-center">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteBand(band.title!!)}>Eliminar</a>
+                                <div className="h-20 flex items-center justify-center relative">
+                               
+                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveBand(bandMap)}>Editar</a>
+                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteBand(bandMap.title!!)}>Eliminar</a>
                                 </div>
                             </td>
                         </tr>

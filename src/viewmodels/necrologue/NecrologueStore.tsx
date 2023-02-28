@@ -93,7 +93,6 @@ class NecrologueStore{
             })
         }
     }
-
     async addRequestNecro(username: string, necrologue: Necrologue, file: File) {
         await imageStore.addImageAPI('Bolea', 'muerte', 'muerte', file)
         necrologue.imageUrl = imageStore.getImage.link
@@ -130,7 +129,43 @@ class NecrologueStore{
             })
         }
     }
+    async editNecro(locality: string, necroId: string, necro: Necrologue, file: File){
+        if (file !== undefined){
+            await imageStore.addImageAPI('Bolea', 'muerte', 'muerte', file!!)
+            necro.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/death?username=${locality}&deathId=${necroId}`, {
+            method: 'PUT',
+            body: JSON.stringify(necro),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
 
+        if(response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          }) 
+        }
+    }
 }
 
 export default NecrologueStore

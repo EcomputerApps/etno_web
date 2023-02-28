@@ -7,11 +7,11 @@ import arrowLogo from '../assets/control.png'
 import etnoLogo from '../assets/logo_etno.png'
 import HoverSectionStore from '../viewmodels/hoverSection/HoverSectionStore'
 import SideBarStore from '../viewmodels/sidebar/SideBarStore'
-import Link from './sections/link/Link'
 import Advert from './sections/advert/Advert'
 import Band from './sections/bands/Band'
 import Event from './sections/event/Event'
 import Incident from './sections/incident/Incident'
+import LinkPage from './sections/link/LinkPage'
 import Necrologue from './sections/necrologue/Necrologue'
 import News from './sections/news/News'
 import Pharmacy from './sections/pharmacy/Pharmacy'
@@ -47,7 +47,7 @@ const Home = () => {
       case 'Fallecimientos': return <Necrologue />
       case 'Incidencias': return <Incident />
       case 'Fotos': return <Photo />
-      case 'Enlaces': return <Link />
+      case 'Enlaces': return <LinkPage />
     }
   }
 

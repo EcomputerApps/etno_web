@@ -7,12 +7,13 @@ import Pencil from "../../../assets/menu/create.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import LinkStore from "../../../viewmodels/link/LinkStore"
-import { ToastContainer } from "react-toastify"
+import { toast, ToastContainer } from "react-toastify"
+import { Link } from "../../../models/section/Section"
 
 const linkStore = LinkStore.getLinkStore()
 
 
-const Link = () => {
+const LinkPage = () => {
     const [pageNumber, setPageNumber] = useState(0)
     const navigate = useNavigate()
     const [showModal, setModal] = useState(false)
@@ -24,9 +25,10 @@ const Link = () => {
     useEffect(() => {
         linkStore.getRequestLink('Bolea', pageNumber, 12)
     }, [pageNumber])
-    function editLink(title: string, link: string, pos: number) {
+    function editLink(title: string, link: string, id: string, pos: number) {
         linkStore.setTitle(title)
         linkStore.setLinkString(link)
+        linkStore.setId(id)
         setPosition(pos)
         setModal(true)
     }
@@ -40,6 +42,32 @@ const Link = () => {
     }
     const deleteLink = async (link: string) => {
         await linkStore.deleteLink('Bolea', link)
+    }
+    function updateLink(linkId: string) {
+        if (linkStore.getTitle === '' || linkStore.getLinkString === '') {
+            toast.info('Rellene los campos', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            const linkNew: Link = {
+                title: linkStore.getTitle,
+                url: linkStore.getLinkString
+            }
+            linkStore.editLink('Bolea', linkId, linkNew)
+         
+            saveEdition(linkStore.getTitle, linkStore.getLinkString)
+            setModal(false)
+        }
+       
+
+
     }
 
     const incrementPage = () => {
@@ -76,12 +104,13 @@ const Link = () => {
                                 <p className="font-bold text-xl uppercase underline p-3 w-full text-center underline-offset-4 " >Editar</p>
                                 <div className="flex flex-wrap md:h-40 h-1/2 max-h-40  border-t-2 border-b-2 p-2 w-full">
                                     <div className="flex flex-col w-full">
-                                        <input autoFocus className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getTitle} onChange={(e) => setNewTitle(e.currentTarget.value)}></input>
-                                        <input className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getLinkString} onChange={(e) => setNewLink(e.currentTarget.value)}></input>
+                                        <input autoFocus className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getTitle} onChange={(e) =>linkStore.setTitle(e.currentTarget.value)}></input>
+                                        <input className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getLinkString} onChange={(e) => linkStore.setLinkString(e.currentTarget.value)}></input>
                                     </div>
                                 </div>
                                 <div className=" absolute flex w-full justify-center bottom-1   ">
-                                    <button className="regular-btn disabled:bg-gray-600" disabled={true} onClick={() => saveEdition(newTitle, newLink)}>Guardar</button>
+                                    <button className="btnStandard disabled:bg-gray-600" onClick={() => updateLink(linkStore.getId)}>Guardar</button>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -96,7 +125,7 @@ const Link = () => {
                             <div className="h-1/3 p-2 md:text-center overflow-hidden  md:flex md:items-center md:justify-center">{link.title}</div>
                             <div className="h-1/3 md:flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={link.url}>{link.url}</a></div>
                             <div className="md:absolute flex m-auto md:justify-center md:bottom-1 md:left-0 md:right-0 h-1/5">
-                                <button className="btnStandard md:mr-5 mr-10" onClick={() => editLink(link.title!!, link.url!!, index)}>Editar</button>
+                                <button className="btnStandard md:mr-5 mr-10" onClick={() => editLink(link.title!!, link.url!!, link.idLink!!, index)}>Editar</button>
                                 <button className="btnStandard" onClick={() => deleteLink(link.title!!)}>Borrar</button>
                             </div>
                         </div>
@@ -116,8 +145,8 @@ const Link = () => {
                     <img src={arrowRight} alt="forward" />
                 </button>
             </div>
-            <ToastContainer style= {{margin:"50px"}}/>
+            <ToastContainer style={{ margin: "50px" }} />
         </div>
     )
 }
-export default observer(Link)
+export default observer(LinkPage)

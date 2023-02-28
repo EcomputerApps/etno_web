@@ -63,6 +63,43 @@ class PharmacyStore {
         return this.pharmacy
     }
 
+    async editPharm(locality: string, pharmId: string, pharm: Pharmacy, file: File) {
+        if (file !== undefined) {
+            await imageStore.addImageAPI("Bolea", "farmacia", "farmacia", file!!)
+            pharm.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/pharmacy?username=${locality}&pharmacyId=${pharmId}`, {
+            method: 'PUT',
+            body: JSON.stringify(pharm),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        if (response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
+    }
+
     async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
