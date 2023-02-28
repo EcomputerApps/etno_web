@@ -1,6 +1,8 @@
 import { observer } from "mobx-react-lite"
+import { useNavigate } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
 import "../../../index.css" 
+import { Ad } from "../../../models/section/Section"
 import AdvertStore from "../../../viewmodels/advert/AdvertStore"
 const advertStore = AdvertStore.getAdvertStore()
 
@@ -10,11 +12,15 @@ interface PropTable {
     currentPage?: number
 }
 
-
 const TableAdvert = (prop: PropTable) => {
+    const navigate = useNavigate()
 
     const deleteAdvert = async (advert : string) =>{
         await advertStore.deleteAdvert("Bolea", advert)
+    }
+    function saveNews(advert: Ad){
+        advertStore.updateAdvert(advert)  
+        navigate('/editAdvert')
     }
 
     return (
@@ -51,7 +57,7 @@ const TableAdvert = (prop: PropTable) => {
                             </td>
                             <td className="px-6 py-4 ">
                             <div className="h-20 flex items-center justify-center">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveNews(advert)}>Editar</a>
                                 <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteAdvert(advert.title!!)}>Eliminar</a>
                             </div>
                             </td>

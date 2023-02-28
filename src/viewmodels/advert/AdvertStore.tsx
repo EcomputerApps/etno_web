@@ -5,7 +5,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class AdvertStore {
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static advertStore: AdvertStore
 
     static getAdvertStore() {
@@ -59,7 +59,7 @@ class AdvertStore {
 
     async addRequestAdvert(locality: string, ad: Ad, file: File){
         await imageStore.addImageAPI('Bolea', 'anuncio', 'anuncio', file!!)
-        this.advert.imageUrl = imageStore.getImage.link
+        ad.imageUrl = imageStore.getImage.link
 
         const response = await fetch(`http://${this.serverIp}:8080/users/add/ad?username=${locality}`, {
             method: 'POST',
@@ -68,6 +68,7 @@ class AdvertStore {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
+        
         if(response.ok){
             this.paginatedAdvert.content?.push(ad)
             this.advert = ad
