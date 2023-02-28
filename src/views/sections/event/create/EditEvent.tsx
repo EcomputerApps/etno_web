@@ -1,12 +1,13 @@
-import logoEtno from '../../../../assets/logo_etno.png'
+import logoEtno from '../../../../assets/logo_etno.png';
 import { useRef, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
-import add_Photo from '../../../../assets/menu/add_photo.svg'
+import add_Photo from '../../../../assets/menu/add_photo.svg';
 import "../../../../index.css"
 import { useNavigate } from "react-router-dom";
 import EventStore from '../../../../viewmodels/Event/EventStore';
 import { toast, ToastContainer } from 'react-toastify';
 import { Event } from '../../../../models/section/Section';
+import React from 'react';
 
 const eventStore = EventStore.getEventStore()
 
