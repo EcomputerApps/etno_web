@@ -40,8 +40,8 @@ const LinkPage = () => {
             }
         })
     }
-    const deleteLink = async (link: string) => {
-        await linkStore.deleteLink('Bolea', link)
+    const deleteLink = async (idLink: string) => {
+        await linkStore.deleteLink('Bolea', idLink)
     }
     function updateLink(linkId: string) {
         if (linkStore.getTitle === '' || linkStore.getLinkString === '') {
@@ -126,7 +126,7 @@ const LinkPage = () => {
                             <div className="h-1/3 md:flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={link.url}>{link.url}</a></div>
                             <div className="md:absolute flex m-auto md:justify-center md:bottom-1 md:left-0 md:right-0 h-1/5">
                                 <button className="btnStandard md:mr-5 mr-10" onClick={() => editLink(link.title!!, link.url!!, link.idLink!!, index)}>Editar</button>
-                                <button className="btnStandard" onClick={() => deleteLink(link.title!!)}>Borrar</button>
+                                <button className="btnStandard" onClick={() => deleteLink(link.idLink!!)}>Borrar</button>
                             </div>
                         </div>
                     ))}

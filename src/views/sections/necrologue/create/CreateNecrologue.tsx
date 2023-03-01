@@ -19,7 +19,6 @@ const CreateNecrologue = () => {
   const [necroName, setNecroName] = useState<string>("")
   const [necroDate, setNecroDate] = useState<string>("")
   const [necroDescription, setNecroDescription] = useState<string>("")
-  const [necroPhoto, setNecroPhoto] = useState<string>("")
   const [file, setFile] = useState<File>()
 
   function addNecrologue() {
@@ -27,7 +26,7 @@ const CreateNecrologue = () => {
       name: necroName,
       deathDate: necroDate,
       description: necroDescription,
-      // imageUrl: necroPhoto
+
     }
     if (necroStore.getNecro.name === necro.name) {
       toast.info('Ya existe este servicio', {
@@ -41,6 +40,7 @@ const CreateNecrologue = () => {
         theme: "light"
       })
     } else {
+      chekIfEmpty()
       necroName === "" || necroDate === "" || necroDescription === "" || file === undefined ?
         toast.info('Rellene todos los campos', {
           position: 'bottom-center',
@@ -53,8 +53,19 @@ const CreateNecrologue = () => {
           theme: "light"
         }) : necroStore.addRequestNecro('Bolea', necro, file!!)
     }
-
   }
+
+  function chekIfEmpty() {
+    necroName === "" ? setEmptyName(true) : setEmptyName(false)
+    necroDate === "" ? setEmptyDate(true) : setEmptyDate(false)
+    necroDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+    file === undefined ? setEmptyFile(true) : setEmptyFile(false)
+  }
+
+  const [emptyName, setEmptyName] = useState(false)
+  const [emptyDate, setEmptyDate] = useState(false)
+  const [emptyDescption, setEmptyDescription] = useState(false)
+  const [emptyFile, setEmptyFile] = useState(false)
 
   return (
     <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
@@ -68,57 +79,69 @@ const CreateNecrologue = () => {
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 relative">
 
-            <input autoFocus placeholder=" " name="necroName" type="text" className="inputCamp peer" onChange={(value) => {
-              setNecroName(value.currentTarget.value)
-            }} onKeyUp={(e) => {
-              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                if (inputRef.current != null) {
-                  inputRef.current.focus()
+            <input autoFocus placeholder=" " name="necroName" type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
+              : ''
+              }`} onChange={(value) => {
+                setNecroName(value.currentTarget.value)
+                setEmptyName(false)
+              }} onKeyUp={(e) => {
+                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                  if (inputRef.current != null) {
+                    inputRef.current.focus()
+                  }
                 }
-              }
-            }}></input>
+              }}></input>
             <label className={"labelFloatInput"}>Nombre</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 relative">
 
-            <input ref={inputRef} type="date" name="necroDate" className="inputCamp peer w-40" onChange={(value) => {
-              setNecroDate(value.currentTarget.value)
-            }} onKeyUp={(e) => {
-              if ((e.code === "NumpadEnter")) {
-                if (txtAreaRef.current != null) {
-                  txtAreaRef.current.focus()
+            <input ref={inputRef} type="date" name="necroDate" className={`inputCamp peer w-40 ${emptyDate ? 'border-red-600'
+              : ''
+              }`} onChange={(value) => {
+                setNecroDate(value.currentTarget.value)
+                setEmptyDate(false)
+              }} onKeyUp={(e) => {
+                if ((e.code === "NumpadEnter")) {
+                  if (txtAreaRef.current != null) {
+                    txtAreaRef.current.focus()
+                  }
                 }
-              }
-            }} />
+              }} />
             <label className={"labelFloatDate"}>Fecha de fallecimiento</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col  p-1 relative">
 
-            <textarea ref={txtAreaRef} placeholder=" " name="eventDescription" rows={3} className="inputCamp peer" onChange={(value) => {
-              setNecroDescription(value.currentTarget.value)
-            }} onKeyDown={(e) => {
-              if (e.code === "NumpadEnter") {
-                if (btnRef.current != null) {
-                  btnRef.current.focus()
+            <textarea ref={txtAreaRef} placeholder=" " name="eventDescription" rows={3} className={`inputCamp peer ${emptyDescption ? 'border-red-600'
+              : ''
+              }`} onChange={(value) => {
+                setNecroDescription(value.currentTarget.value)
+                setEmptyDescription(false)
+              }} onKeyDown={(e) => {
+                if (e.code === "NumpadEnter") {
+                  if (btnRef.current != null) {
+                    btnRef.current.focus()
+                  }
                 }
-              }
-            }} /><label className={"labelFloatTxtArea"}>Descripción</label>
+              }} /><label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="text-left p-1 relative">
 
-            <div className={"photoBoard"}>
+            <div className={`photoBoard  ${emptyFile ? 'border-red-600'
+              : ''
+              }`}>
               <div className='pl-3'>
                 Foto {file?.name}
               </div>
               <form id="form-file-upload" className=" w-full flex justify-center">
                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
                   setFile(value.currentTarget.files!![0])
+                  setEmptyFile(false)
                 }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                   <div className="flex m-auto flex-col items-center font-normal text-gray-400 text-xl">

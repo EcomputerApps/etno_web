@@ -2,7 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Image, PaginatedImages } from '../../models/section/Section'
 
 class ImageStore {
-    serverIp : string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static imageStore: ImageStore
 
     static getImageStore(){

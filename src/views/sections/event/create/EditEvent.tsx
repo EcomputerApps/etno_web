@@ -30,6 +30,7 @@ const EditEvent = () => {
     const [eventDirection, setEventDirection] = useState<string>(event.address!!)
     const [eventDescription, setEventDescription] = useState<string>(event.description!!)
     const [eventOrganization, setEventOrganization] = useState<string>(event.organization!!)
+    const [subscription ,setSubscription] = useState(event.hasSubscription!!)
     const [eventPrice, setEventPrice] = useState<string>(String(event.reservePrice!!))
     const [eventSeats, setEventSeats] = useState<string>(String(event.seats!!))
     const [eventLink, setEventLink] = useState<string>(event.link!!)
@@ -39,7 +40,11 @@ const EditEvent = () => {
     const [file, setFile] = useState<File>()
 
     function updateEvent(){
-        if (eventTitle === '' || eventDirection === '' || eventDescription === '' || eventOrganization === '' || eventPrice === '' || eventSeats === '' || eventLink === '' || eventDateStart === '' || eventDateFin === ''){
+      if(subscription){
+        if (eventTitle === '' || eventDirection === '' || eventDescription === '' 
+        || eventOrganization === '' || eventPrice === '' 
+        || eventSeats === '' || eventLink === '' || eventDateStart === '' 
+        || eventDateFin === ''){
             toast.info('Rellene los campos', {
                 position: 'top-center',
                 autoClose: 500,
@@ -56,6 +61,7 @@ const EditEvent = () => {
                 address: eventDirection,
                 description: eventDescription,
                 organization: eventOrganization,
+                hasSubscription: subscription,
                 reservePrice: Number(eventPrice),
                 capacity: Number(eventSeats),
                 seats: Number(eventSeats),
@@ -65,6 +71,56 @@ const EditEvent = () => {
             }
             eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
         }
+        
+      }else{
+        if (eventTitle === '' || eventDirection === '' || eventDescription === '' 
+        || eventOrganization === ''
+        || eventSeats === '' || eventLink === '' || eventDateStart === '' 
+        || eventDateFin === ''){
+            toast.info('Rellene los campos', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        } else {
+            const event_: Event = {
+                title: eventTitle,
+                address: eventDirection,
+                description: eventDescription,
+                organization: eventOrganization,
+                hasSubscription: subscription,
+                reservePrice: Number(eventPrice),
+                capacity: Number(eventSeats),
+                seats: Number(eventSeats),
+                link: eventLink,
+                startDate: eventDateStart,
+                endDate: eventDateFin
+            }
+            eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+        }
+      }
+
+       
+    }
+    const freeOrNot = (payType: boolean) => {
+      if (payType) {
+          return "Evento de pago."
+      } else {
+          return "Evento gratuito."
+      }
+    }
+    function changePrice(){
+      if(subscription){
+     
+       setEventPrice((document.getElementById("money") as HTMLInputElement).value)
+            }else{
+              setEventPrice((document.getElementById("money") as HTMLInputElement).value)
+      } 
     }
 
     return(
@@ -125,12 +181,23 @@ const EditEvent = () => {
             }}></input>
             <label className={"labelFloatTxtArea"}>Organización</label>
           </div>
+
+          <div className="flex flex-row p-1 mt-5 relative ">
+            <label className="relative inline-flex items-center mr-5 cursor-pointer w-14">
+              <input type="checkbox" value=""  checked={subscription} className="sr-only peer" onChange={(e) => {
+                setSubscription(e.currentTarget.checked)
+                          }}></input>
+              <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600
+             peer-checked:bg-indigo-600"></div>
+              </label>
+            <span className="ml-3 text-xl font-medium text-gray-900 dark:text-gray-300">{freeOrNot(subscription)}</span>
+          </div>
           <div className="flex flex-col mt-5 p-1">
             <div className="relative flex flex-row rounded-md">
               <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <span className="text-gray-500 sm:text-sm mt-1">€</span>
               </div>
-              <CurrencyInput defaultValue={eventPrice} ref={inputRefPric} name="eventPrice" className="pl-7 mt-1 p-2 md:w-1/4 w-1/2 inputCamp peer"
+              <CurrencyInput defaultValue={eventPrice} id="money" value={subscription ? eventPrice : 0} ref={inputRefPric} name="eventPrice" className="pl-7 mt-1 p-2 md:w-1/4 w-1/2 inputCamp peer"
                 placeholder="0,00" decimalsLimit={2} onValueChange={(value, name) => console.log(value, name)}
                 onInput={(e) => (e.currentTarget.value = e.currentTarget.value.replace(/^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/, ""),
                   e.currentTarget.value = e.currentTarget.value.replace(/[^-,0-9]/, ""))} onChange={(value) => {
@@ -220,7 +287,7 @@ const EditEvent = () => {
           </div>
         </div>
         <div className="flex m-auto justify-center p-3">
-          <button ref={btnRef} name="eventBtnSave" className="btnStandard mr-10" onClick={() => updateEvent()}>Publicar</button>
+          <button ref={btnRef} name="eventBtnSave" className="btnStandard mr-10" onFocus={changePrice} onClick={() => updateEvent()}>Actualizar</button>
           <button name="eventBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
         </div>
       </div>

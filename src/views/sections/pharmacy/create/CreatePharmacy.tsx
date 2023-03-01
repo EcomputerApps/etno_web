@@ -11,15 +11,34 @@ import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../assets/marker.svg"
 import moment from 'moment';
 
-interface Marker{
+interface Marker {
     lat: number,
     lng: number,
     text: string
-  }
+}
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
 const CreatePharmacy = () => {
+    function chekIfEmpty() {
+        pharmType === "" ? setEmptyType(true) : setEmptyType(false)
+        pharmacyName === "" ? setEmptyName(true) : setEmptyName(false)
+        file === undefined ? setEmptyFile(true) : setEmptyFile(false)
+        pharmacyWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
+        pharmacyTel === "" ? setEmptyTel(true) : setEmptyTel(false)
+        pharmacyDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+        long === 0 || lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
+    }
+
+
+    const [emptyType, setEmptyType] = useState(false)
+    const [emptyName, setEmptyName] = useState(false)
+    const [emptyFile, setEmptyFile] = useState(false)
+    const [emptyWebUrl, setEmptyWebUrl] = useState(false)
+    const [emptyTel, setEmptyTel] = useState(false)
+    const [emptyDescption, setEmptyDescription] = useState(false)
+    const [emptyLongLat, setEmptyLongLat] = useState(false)
+
     const [file, setFile] = useState<File>()
     const [datePanel, setDatePanel] = useState(true)
     const [dateGuardia, setDateGuardia] = useState({
@@ -29,13 +48,11 @@ const CreatePharmacy = () => {
 
     const defaultProps = {
         center: {
-          lat: 42.13775899999999,
-          lng: -0.40838200000000713
+            lat: 42.13775899999999,
+            lng: -0.40838200000000713
         },
         zoom: 11
-      };
-
-      
+    };
 
     const handleValueChange = (newValue: any) => {
         setDateGuardia(newValue);
@@ -58,7 +75,7 @@ const CreatePharmacy = () => {
 
     const [lat, setLat] = useState(0)
     const [long, setLong] = useState(0)
-    const AnyReactComponent = (props: Marker) => <img style={{width: '200', height: '200'}} src={props.text}></img>;
+    const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
 
     const [pharmType, setPharmType] = useState("")
     const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
@@ -68,9 +85,7 @@ const CreatePharmacy = () => {
     const [pharmacyShcedulMorning, setPharmacyShcedulMorning] = useState<string>("")
     const [pharmacyShcedulEven, setPharmacyShcedulEven] = useState<string>("")
     const [pharmacyShcedulExtra, setPharmacyShcedulExtra] = useState<string>("")
-    const [pharmacyDescption, setPharmacyDescption] = useState<string>("")
-    const [pharmacyLong, setPharmacyLong] = useState<string>("")
-    const [pharmacyLat, setPharmacyLat] = useState<string>("")
+    const [pharmacyDescription, setPharmacyDescption] = useState<string>("")
     const [pharmacySchedule, setPharmacySchedule] = useState<string>("")
     const [pharmStartDate, setPharmStartDate] = useState<Date>()
     const [pharmPeriod, setPharmPeriod] = useState<number>()
@@ -92,12 +107,12 @@ const CreatePharmacy = () => {
             link: pharmacyWebUrl,
             phone: pharmacyTel,
             schedule: pharmacySchedule,
-            description: pharmacyDescption,
+            description: pharmacyDescription,
             longitude: String(long),
             latitude: String(lat),
-            startDate : pharmStartDate,
+            startDate: pharmStartDate,
             durationDays: pharmPeriod,
-            frequencyInDays : pharmFrequency
+            frequencyInDays: pharmFrequency
 
         }
         if (pharmacyStore.getPharmacy.name === pharmacy.name) {
@@ -112,8 +127,9 @@ const CreatePharmacy = () => {
                 theme: "light"
             })
         } else {
+            chekIfEmpty()
             pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescption === "" ||
+                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
                 long === 0 || lat === 0 || file === undefined ?
                 toast.info('Rellene los campos', {
                     position: 'bottom-center',
@@ -135,28 +151,35 @@ const CreatePharmacy = () => {
                     <p className='flex  text-white text-3xl p-3'>FARMACIA</p>
                 </div>
             </div>
-            <div className="w-full flex flex-1 flex-row pl-3 mt-8 ">
-                <div className="flex flex-col p-1 relative  w-1/3">
-                    <div className="flex pt-2 ">
+            <div className="w-full flex flex-1 md:flex-row flex-col pl-3 mt-8 ">
+                <div className="flex flex-col p-1 relative  md:w-1/3 w-full md:pb-0 pb-5">
+                    <div className={`flex p-1 border-2 border-transparent rounded-md  ${emptyType ? 'border-red-600'
+                        : 'border-transparent'
+                        }`}>
 
-                        <div className='flex w-1/2 '>
+                        <div className='flex w-1/2 p-1'>
                             <input type="radio" id="radioOne" value="Normal" className="sr-only peer " name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
                                 setDatePanel(true)
+                                setEmptyType(false)
                             }} />
-                            <label htmlFor="radioOne" className="w-full text-center select-none uppercase cursor-pointer p-2 mr-5 font-medium text-sm rounded-full md:rounded-md peer-checked:bg-indigo-800 border 
+                            <label htmlFor="radioOne" className="w-full min-w-fit text-center select-none uppercase cursor-pointer
+                             text-sm font-medium rounded-md p-2 mx-1
+                            peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
                             peer-checked:text-white 
                             ring-indigo-500 peer-checked:ring-2 ">NORMAL</label>
                             <label className="labelFloatDate" hidden={!datePanel}>Tipo</label>
                         </div>
-                        <div className='flex  w-1/2' >
+                        <div className='flex  w-1/2 p-1' >
                             <input type="radio" id="radioTwo" className="sr-only peer " value="Guardia" name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
                                 setDatePanel(false)
+                                setEmptyType(false)
                             }} />
-                            <label htmlFor="radioTwo" className="w-full min-w-fit text-center select-none uppercase cursor-pointer text-sm font-medium rounded-full md:rounded-md p-2 mr-5
+                            <label htmlFor="radioTwo" className="w-full min-w-fit text-center select-none uppercase cursor-pointer
+                             text-sm font-medium rounded-md p-2 mx-1 
                             peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
@@ -168,86 +191,98 @@ const CreatePharmacy = () => {
                     </div>
 
                 </div>
-                <div className="flex pt-2  p-1  relative  ">
-                    <input type="date"  className="inputCamp peer w-40 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
-                    onChange={(e)=>{
-setPharmStartDate(e.currentTarget.valueAsDate!)
-                    }}
-                        onKeyUp={(e) => {
-                            if ((e.code === "NumpadEnter")) {
-                                if (inputPeriod.current != null) {
-                                    inputPeriod.current.focus()
+                <div className='flex flex-row'>
+                    <div className="flex pt-2  p-1  relative  ">
+                        <input type="date" className="inputCamp peer w-40 px-2 mt-0.5 h-11 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                            onChange={(e) => {
+                                setPharmStartDate(e.currentTarget.valueAsDate!)
+                            }}
+                            onKeyUp={(e) => {
+                                if ((e.code === "NumpadEnter")) {
+                                    if (inputPeriod.current != null) {
+                                        inputPeriod.current.focus()
+                                    }
                                 }
-                            }
-                        }} />
-                    <label className={"labelFloatDate"}>Inicio de guardia</label>
-                </div>
-                <div className="flex pt-2  p-1  relative ">
-                    <input type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer w-20 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
-                        onChange={(e)=>{
-                            setPharmPeriod(e.currentTarget.valueAsNumber)
-                                                }}
-                       onKeyUp={(e) => {
-                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                if (inputTitle.current != null) {
-                                    inputTitle.current.focus()
+                            }} />
+                        <label className={"labelFloatDate"}>Inicio de guardia</label>
+                    </div>
+                    <div className="flex pt-2  p-1  relative ">
+                        <input type="number" ref={inputPeriod} min={0} className="inputCamp peer w-20 px-2  mt-0.5 h-11 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                            onChange={(e) => {
+                                setPharmPeriod(e.currentTarget.valueAsNumber)
+                            }}
+                            onKeyUp={(e) => {
+                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                    if (inputTitle.current != null) {
+                                        inputTitle.current.focus()
+                                    }
                                 }
-                            }
-                        }} />
-                    <label className={"labelFloatDate"}>Periodo</label>
-                </div>
-                <div className="flex pt-2  p-1  relative ">
-                    <input type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer w-20 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
-                        onChange={(e)=>{
-                            setPharmFrequency(e.currentTarget.valueAsNumber)
-                                                }}
-                       onKeyUp={(e) => {
-                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                if (inputTitle.current != null) {
-                                    inputTitle.current.focus()
+                            }} />
+                        <label className={"labelFloatDate"}>Periodo</label>
+                    </div>
+
+                    <div className="flex pt-2  p-1  relative ">
+                        <input type="number" ref={inputPeriod} min={0}  className="inputCamp peer w-20 px-2 mt-0.5 h-11 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                            onChange={(e) => {
+                                setPharmFrequency(e.currentTarget.valueAsNumber)
+                            }}
+                            onKeyUp={(e) => {
+                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                    if (inputTitle.current != null) {
+                                        inputTitle.current.focus()
+                                    }
                                 }
-                            }
-                        }} />
-                    <label className={"labelFloatDate"}>Frequesncia</label>
+                            }} />
+                        <label className={"labelFloatDate"}>Frequesncia</label>
+                    </div>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-5 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <input autoFocus ref={inputTitle} placeholder=" " name="pharmacyName" type="text" className="inputCamp peer" onChange={(e) => {
-                        setPharmacyName(e.currentTarget.value)
-                    }} onKeyUp={(e) => {
-                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                            if (inputWebUrl.current != null) {
-                                inputWebUrl.current.focus()
+                    <input autoFocus ref={inputTitle} placeholder=" " name="pharmacyName" type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
+                        : ''
+                        }`} onChange={(e) => {
+                            setPharmacyName(e.currentTarget.value)
+                            setEmptyName(false)
+                        }} onKeyUp={(e) => {
+                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                if (inputWebUrl.current != null) {
+                                    inputWebUrl.current.focus()
+                                }
                             }
-                        }
-                    }} />
+                        }} />
                     <label className={"labelFloatInput"}>Nombre</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 mt-3">
                 <div className="flex flex-col p-1 relative  ">
-                    <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" className="inputCamp peer" onChange={(e) => {
-                        setPharmacyWebUrl(e.currentTarget.value)
-                    }} onKeyUp={(e) => {
-                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                            if (inputTel.current != null) {
-                                inputTel.current.focus()
+                    <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" className={`inputCamp peer ${emptyWebUrl ? 'border-red-600'
+                        : ''
+                        }`} onChange={(e) => {
+                            setPharmacyWebUrl(e.currentTarget.value)
+                            setEmptyWebUrl(false)
+                        }} onKeyUp={(e) => {
+                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                if (inputTel.current != null) {
+                                    inputTel.current.focus()
+                                }
                             }
-                        }
-                    }} />
+                        }} />
                     <label className={"labelFloatInput"}>Pagina Web</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 ">
                 <div className="text-left p-1">
-                    <div className={"photoBoard"}>
+                    <div className={`photoBoard  ${emptyFile ? 'border-red-600'
+                        : ''
+                        }`} >
                         <div className='pl-3'>
                             Foto {file?.name}
                         </div>
                         <form id="form-file-upload" className=" w-full flex justify-center">
                             <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
                                 setFile(e.currentTarget.files!![0])
+                                setEmptyFile(false)
                             }} />
                             <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                 <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
@@ -263,15 +298,18 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
                 <div className="flex flex-col p-1 relative">
 
                     <input ref={inputTel} placeholder=" " name="pharmacyTel" type="text" onInput={(e) =>
-                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} className="inputCamp peer w-1/4" onKeyUp={(e) => {
-                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                if (inputScheSelect.current != null) {
-                                    inputScheSelect.current.focus()
+                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} className={`inputCamp peer w-1/4 ${emptyTel ? 'border-red-600'
+                            : ''
+                            }`} onKeyUp={(e) => {
+                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                    if (inputScheSelect.current != null) {
+                                        inputScheSelect.current.focus()
+                                    }
                                 }
-                            }
-                        }} onChange={(e) => {
-                            setPharmacyTel(e.currentTarget.value)
-                        }} />
+                            }} onChange={(e) => {
+                                setPharmacyTel(e.currentTarget.value)
+                                setEmptyTel(false)
+                            }} />
                     <label className={"labelFloatInput"}>Teléfono</label>
                 </div>
             </div>
@@ -347,47 +385,55 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <textarea ref={txtAreaRef} placeholder=" " name="pharmacyDescription" maxLength={495} rows={3} className="inputCamp peer" onKeyDown={(e) => {
-                        if ((e.code === "NumpadEnter")) {
-                            if (inputLong.current != null) {
-                                inputLong.current.focus()
+                    <textarea ref={txtAreaRef} placeholder=" " name="pharmacyDescription" maxLength={495} rows={3} className={`inputCamp peer  ${emptyDescption ? 'border-red-600'
+                        : ''
+                        }`} onKeyDown={(e) => {
+                            if ((e.code === "NumpadEnter")) {
+                                if (inputLong.current != null) {
+                                    inputLong.current.focus()
+                                }
                             }
-                        }
-                    }} onChange={(e) => {
-                        setPharmacyDescption(e.target.value)
-                    }} />
+                        }} onChange={(e) => {
+                            setPharmacyDescption(e.target.value)
+                            setEmptyDescription(false)
+                        }} />
                     <label className={"labelFloatTxtArea"}>Descripción</label>
                 </div>
             </div>
-            <div style={{ height: '50vh', width: '100%' }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
-        onClick={(e) => {
-          setLat(e.lat)
-          setLong(e.lng)
-        }}
-       
-      >
-        <AnyReactComponent
-        lat={lat}
-        lng={long}
-        text={markerIcon}
-        />
-      </GoogleMapReact>
-    </div>
+            <div className="w-full flex flex-1 flex-col mt-3 pl-3">
+                <div className={`border-2 rounded-md m-1 ${emptyLongLat ? 'border-red-600'
+                    : ''
+                    }`}>
+                    <div style={{ height: '50vh', width: '100%', padding: "2px" }}>
+                        <GoogleMapReact
+                            bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
+                            defaultCenter={defaultProps.center}
+                            defaultZoom={defaultProps.zoom}
+                            onClick={(e) => {
+                                setLat(e.lat)
+                                setLong(e.lng)
+                                setEmptyLongLat(false)
+                            }}
+
+                        >
+                            <AnyReactComponent
+                                lat={lat}
+                                lng={long}
+                                text={markerIcon}
+                            />
+                        </GoogleMapReact>
+                    </div>
+                </div>
+            </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input value={long} ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="inputCamp peer" onKeyDown={(e) => {
+                    <input value={long} ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className={"inputCamp peer"} disabled onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (inputLat.current != null) {
                                 inputLat.current.focus()
                             }
                         }
-                    }} onChange={(e) => {
-                        setPharmacyLong(e.target.value)
                     }} />
                     <label className={"labelFloatInput"}>Longitud</label>
                 </div>
@@ -395,14 +441,12 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input value={lat} ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="inputCamp peer" onKeyDown={(e) => {
+                    <input value={lat} ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className={"inputCamp peer "} disabled onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (btnRef.current != null) {
                                 btnRef.current.focus()
                             }
                         }
-                    }} onChange={(e) => {
-                        setPharmacyLat(e.target.value)
                     }} />
                     <label className={"labelFloatInput"}>Latitude</label>
                 </div>
@@ -411,7 +455,7 @@ setPharmStartDate(e.currentTarget.valueAsDate!)
                 <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPharmacy()} onFocus={() => handleScheduleInput()}>Publicar</button>
                 <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
             </div>
-            <ToastContainer style={{ margin: "30px" }} />
+            <ToastContainer style={{ marginBottom: "50px" }} />
         </div>
     )
 }

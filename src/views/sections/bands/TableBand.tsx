@@ -4,6 +4,8 @@ import "../../../index.css"
 import { useNavigate } from "react-router-dom"
 import { Band } from "../../../models/section/Section"
 import { useState } from "react"
+import EditPharmacy from "../pharmacy/create/EditPharmacy"
+import EditBand from "./create/EditBand"
 
 const bandStore = BandStore.getBandStore()
 
@@ -14,18 +16,29 @@ interface PropTable {
 }
 
 const TableBand = (prop: PropTable) => {
+    
     const navigate = useNavigate()
-    const [showModal, setModal] = useState(false)
+  
     const deleteBand = async (band: string) => {
         await bandStore.deleteBand('Bolea', band)
     }
-
+    const [showModal, setModal] = useState(false)
     function saveBand(band: Band) {
         bandStore.updateBand(band)
-        navigate("/editBand")
+        bandStore.setModal(true)
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                           {bandStore.getModal ? (
+                    <div>
+                      <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                            <div className="md:w-1/3 w-full flex flex-col px-2 overflow-auto ">
+                               
+                               <EditBand/>
+                            </div>
+                        </div>
+                    </div>
+                ) : <></>}
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                     <tr>

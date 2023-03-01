@@ -26,6 +26,7 @@ const CreateEvent = () => {
   const [eventDirection, setEventDirection] = useState<string>("")
   const [eventDescription, setEventDescription] = useState<string>("")
   const [eventOrganization, setEventOrganization] = useState<string>("")
+  const [subscription ,setSubscription] = useState(false)
   const [eventPrice, setEventPrice] = useState<string>("")
   const [eventSeats, setEventSeats] = useState<string>("")
   const [eventLink, setEventLink] = useState<string>("")
@@ -40,6 +41,7 @@ const CreateEvent = () => {
       address: eventDirection,
       description: eventDescription,
       organization: eventOrganization,
+      hasSubscription: subscription,
       reservePrice: Number(eventPrice),
       capacity: Number(eventSeats),
       link: eventLink,
@@ -58,7 +60,8 @@ const CreateEvent = () => {
         theme: 'light'
       })
     } else {
-      eventTitle === '' || eventDirection === '' || eventDescription === ''
+      if(subscription){
+        eventTitle === '' || eventDirection === '' || eventDescription === ''
         || eventOrganization === '' || eventPrice === ''
         || eventSeats === '' || eventLink === '' || eventDateStart === ''
         || eventDateFin === '' || file === undefined ?
@@ -73,10 +76,36 @@ const CreateEvent = () => {
           progress: undefined,
           theme: 'light'
         }) : eventStore.addRequestEvent('Bolea', event, file!!)
+      }else{
+        eventTitle === '' || eventDirection === '' || eventDescription === ''
+        || eventOrganization === ''
+        || eventSeats === '' || eventLink === '' || eventDateStart === ''
+        || eventDateFin === '' || file === undefined ?
+
+        toast.info('Rellene los campos vacíos', {
+          position: 'top-center',
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light'
+        }) : eventStore.addRequestEvent('Bolea', event, file!!)
+
+      }
+       
     }
   }
   const navigate = useNavigate()
 
+  const freeOrNot = (payType: boolean) => {
+    if (payType) {
+        return "Evento de pago."
+    } else {
+        return "Evento gratuito."
+    }
+  }
   return (
     <div>
       <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
@@ -135,27 +164,6 @@ const CreateEvent = () => {
             }}></input>
             <label className={"labelFloatTxtArea"}>Organización</label>
           </div>
-          <div className="flex flex-col mt-5 p-1">
-            <div className="relative flex flex-row rounded-md">
-              <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <span className="text-gray-500 sm:text-sm mt-1">€</span>
-              </div>
-              <CurrencyInput ref={inputRefPric} name="eventPrice" className="pl-7 mt-1 p-2 md:w-1/4 w-1/2 inputCamp peer"
-                placeholder="0,00" decimalsLimit={2} onValueChange={(value, name) => console.log(value, name)}
-                onInput={(e) => (e.currentTarget.value = e.currentTarget.value.replace(/^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/, ""),
-                  e.currentTarget.value = e.currentTarget.value.replace(/[^-,0-9]/, ""))} onChange={(value) => {
-                    setEventPrice(value.currentTarget.value)
-                    console.log(eventPrice)
-                  }} onKeyDown={(e) => {
-                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                      if (inputRefSeat.current != null) {
-                        inputRefSeat.current.focus()
-                      }
-                    }
-                  }} />
-              <label className={"labelFloatDate"}>Precio de reserva </label>
-            </div>
-          </div>
           <div className="flex flex-col p-1 mt-5 relative">
 
             <input ref={inputRefSeat} type="text" name="eventSeats" placeholder="0" onInput={(e) => (
@@ -172,6 +180,40 @@ const CreateEvent = () => {
             }} />
             <label className={"labelFloatDate"}>Aforo</label>
           </div>
+
+          <div className="flex flex-row p-1 mt-5 relative ">
+            <label className="relative inline-flex items-center mr-5 cursor-pointer w-14">
+              <input type="checkbox" value="" className="sr-only peer" onChange={(e) => {
+                setSubscription(e.currentTarget.checked)
+                          }}></input>
+              <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600
+             peer-checked:bg-indigo-600"></div>
+              </label>
+            <span className="ml-3 text-xl font-medium text-gray-900 dark:text-gray-300">{freeOrNot(subscription)}</span>
+          </div>
+
+          <div className="flex flex-col mt-5 p-1">
+            <div className="relative flex flex-row rounded-md">
+              <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                <span className="text-gray-500 sm:text-sm mt-1">€</span>
+              </div>
+              <CurrencyInput ref={inputRefPric} disabled={!subscription} name="eventPrice" className="pl-7 mt-1 p-2 md:w-1/4 w-1/2 inputCamp peer disabled:bg-gray-200  "
+                placeholder="0,00" decimalsLimit={2} onValueChange={(value, name) => console.log(value, name)}
+                onInput={(e) => (e.currentTarget.value = e.currentTarget.value.replace(/^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/, ""),
+                  e.currentTarget.value = e.currentTarget.value.replace(/[^-,0-9]/, ""))} onChange={(value) => {
+                    setEventPrice(value.currentTarget.value)
+                    console.log(eventPrice)
+                  }} onKeyDown={(e) => {
+                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                      if (inputRefSeat.current != null) {
+                        inputRefSeat.current.focus()
+                      }
+                    }
+                  }} />
+              <label className={"labelFloatDate"}>Precio de reserva </label>
+            </div>
+          </div>
+
           <div className="flex flex-col mt-3 relative p-1">
             <input ref={inputRefLink} placeholder=" " type="text" name="eventUrl" className="inputCamp peer" onChange={(value) => {
               setEventLink(value.currentTarget.value)

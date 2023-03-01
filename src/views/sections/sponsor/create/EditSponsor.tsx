@@ -19,10 +19,10 @@ const EditSponsor = () => {
     const [sponsorDescription, setSponsorDescription] = useState<string>(sponsor.description!!)
     const [sponsorTel, setSponsorTel] = useState<string>(sponsor.phone!!)
     const [file, setFile] = useState<File>()
-   
+
 
     function updateSponsor(sponsorId: string) {
-
+        chekIfEmpty()
         if (sponsorTitle === "" || sponsorDescription === "" || sponsorTel === ""
         ) {
             toast.info('Rellene los campos', {
@@ -46,19 +46,22 @@ const EditSponsor = () => {
             }
             sponsorStore.editSponsor('Bolea', sponsorId, newSponsor, file!!)
         }
-        
-        
-        
+
+
+
 
     }
 
-    //funcion temporal para comprobar entrada
-    function checkState() {
-        console.log(sponsorTitle)
-        console.log(sponsorDescription)
-
-        console.log(sponsorTel)
+    function chekIfEmpty() {
+        sponsorTitle === "" ? setEmptyName(true) : setEmptyName(false)
+        sponsorTel === "" ? setEmptyTel(true) : setEmptyTel(false)
+        sponsorDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
     }
+
+    const [emptyName, setEmptyName] = useState(false)
+    const [emptyTel, setEmptyTel] = useState(false)
+    const [emptyDescption, setEmptyDescription] = useState(false)
+
     return (
         <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
             <div>
@@ -70,8 +73,11 @@ const EditSponsor = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-5 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <input autoFocus placeholder=" " defaultValue={sponsor.title} name="sponsorTitle" type="text" className="inputCamp peer" onChange={(e) => {
+                        <input autoFocus placeholder=" " defaultValue={sponsor.title} name="sponsorTitle" type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
+                            : ''
+                            }`} onChange={(e) => {
                             setSponsorTitle(e.currentTarget.value)
+                            setEmptyName(false)
                         }} onKeyUp={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (txtAreaRef.current != null) {
@@ -85,8 +91,12 @@ const EditSponsor = () => {
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
 
-                        <textarea ref={txtAreaRef} placeholder=" " defaultValue={sponsor.description} name="sponsorDescription" rows={3} className="inputCamp peer" onChange={(e) => {
+                        <textarea ref={txtAreaRef} placeholder=" " defaultValue={sponsor.description} name="sponsorDescription" rows={3} 
+                        className={`inputCamp peer ${emptyDescption ? 'border-red-600'
+                            : ''
+                            }`} onChange={(e) => {
                             setSponsorDescription(e.currentTarget.value)
+                            setEmptyDescription(false)
                         }} onKeyUp={(e) => {
                             if ((e.code === "NumpadEnter")) {
                                 if (inputRef.current != null) {
@@ -100,9 +110,12 @@ const EditSponsor = () => {
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3 ">
                     <div className="flex flex-col p-1 relative">
 
-                        <input ref={inputRef} placeholder=" "  defaultValue={sponsor.phone} name="sponsorTel" type="text" onInput={(e) =>
-                            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className="inputCamp peer w-1/4" maxLength={9} onChange={(e) => {
+                        <input ref={inputRef} placeholder=" " defaultValue={sponsor.phone} name="sponsorTel" type="text" onInput={(e) =>
+                            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className={`inputCamp peer w-1/4 ${emptyTel? 'border-red-600'
+                            : ''
+                            }`} maxLength={9} onChange={(e) => {
                                 setSponsorTel(e.currentTarget.value)
+                                setEmptyTel(false)
                             }} onKeyUp={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (btnRef.current != null) {

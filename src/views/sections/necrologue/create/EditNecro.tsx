@@ -24,6 +24,7 @@ const EditNecrologue = () => {
   const [file, setFile] = useState<File>()
 
   function updateNecrologue(necroId: string) {
+    chekIfEmpty()
     if(necroName === "" || necroDate === "" || necroDescription === "" ){
         toast.info('Rellene todos los campos', {
             position: 'bottom-center',
@@ -44,11 +45,19 @@ const EditNecrologue = () => {
           }
           necroStore.editNecro('Bolea', necroId, newNecro, file!!)
     }
-    
-    
-    
+  }
+  function chekIfEmpty() {
+    necroName === "" ? setEmptyName(true) : setEmptyName(false)
+    necroDate === "" ? setEmptyDate(true) : setEmptyDate(false)
+    necroDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
 
   }
+
+  const [emptyName, setEmptyName] = useState(false)
+  const [emptyDate, setEmptyDate] = useState(false)
+  const [emptyDescption, setEmptyDescription] = useState(false)
+ 
+
 
   return (
     <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
@@ -62,8 +71,11 @@ const EditNecrologue = () => {
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 relative">
 
-            <input autoFocus placeholder=" " name="necroName" defaultValue={necro.name} type="text" className="inputCamp peer" onChange={(value) => {
+            <input autoFocus placeholder=" " name="necroName" defaultValue={necro.name} type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
+              : ''
+              }`} onChange={(value) => {
               setNecroName(value.currentTarget.value)
+              setEmptyName(false)
             }} onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                 if (inputRef.current != null) {
@@ -77,8 +89,12 @@ const EditNecrologue = () => {
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 relative">
 
-            <input ref={inputRef} type="date" name="necroDate" defaultValue={moment(necro.deathDate).add(1,"days").toISOString().substring(0, 10)} className="inputCamp peer w-40" onChange={(value) => {
+            <input ref={inputRef} type="date" name="necroDate" defaultValue={moment(necro.deathDate).add(1,"days").toISOString().substring(0, 10)} 
+            className={`inputCamp peer w-40 ${emptyDate ? 'border-red-600'
+              : ''
+              }`} onChange={(value) => {
               setNecroDate(value.currentTarget.value)
+              setEmptyDate(false)
             }} onKeyUp={(e) => {
               if ((e.code === "NumpadEnter")) {
                 if (txtAreaRef.current != null) {
@@ -92,8 +108,11 @@ const EditNecrologue = () => {
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col  p-1 relative">
 
-            <textarea ref={txtAreaRef} placeholder=" " defaultValue={necro.description} name="eventDescription" rows={3} className="inputCamp peer" onChange={(value) => {
+            <textarea ref={txtAreaRef} placeholder=" " defaultValue={necro.description} name="eventDescription" rows={3} className={`inputCamp peer ${emptyDescption ? 'border-red-600'
+              : ''
+              }`} onChange={(value) => {
               setNecroDescription(value.currentTarget.value)
+              setEmptyDescription(false)
             }} onKeyDown={(e) => {
               if (e.code === "NumpadEnter") {
                 if (btnRef.current != null) {

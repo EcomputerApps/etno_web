@@ -3,10 +3,11 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Band, BandList, PaginatedBand } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
+
 const imageStore = ImageStore.getImageStore()
 
 class BandStore {
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static bandStore: BandStore
 
     static getBandStore() {
@@ -17,27 +18,38 @@ class BandStore {
     }
     //Observables =>
     paginatedBand: PaginatedBand = {}
-    allBandList : BandList = {}
+    allBandList: BandList = {}
     band: Band = {}
-
+    modal: boolean = false
+    
     constructor() {
         makeObservable(this, {
             paginatedBand: observable,
             band: observable,
+            modal: observable,
             updateBand: action,
             getBand: computed,
             addRequestBand: action,
             getRequestBand: action,
-            deleteBand: action,
+            setModal: action,
+             deleteBand: action,
             updateBandList: action,
             updatePaginatedBand: action,
             updateAllBandList: action,
             getPaginatedBands: computed,
-            getAllBands : computed
+            getAllBands: computed,
+            getModal : computed,
+      
+         
         })
     }
-
-    updateBandList(bands: Band[]) {
+    setModal(mode: boolean) {
+        this.modal = mode
+    }
+    get getModal() {
+        return this.modal
+    }
+       updateBandList(bands: Band[]) {
         this.paginatedBand.content = bands
     }
     updateAllBandList(bands: Band[]) {
@@ -106,9 +118,9 @@ class BandStore {
         console.log("here")
         const response = await fetch(`http://${this.serverIp}:8080/bandos?username=${locality}`, {
             method: 'GET',
-            
+
         })
-     
+
         const band = await response.json()
         this.updateAllBandList(band)
     }

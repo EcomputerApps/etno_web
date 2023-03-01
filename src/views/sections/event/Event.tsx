@@ -36,7 +36,7 @@ const Event = () => {
             </button>
           </div>
         </div>
-        <TableEvent currentPage={pageNumber} headerList={['Título', 'Descripción', 'Precio', 'Plazas', 'Capacidad', 'Localidad', 'Dirección', 'Organización', 'Acciones']} />
+        <TableEvent currentPage={pageNumber} headerList={['Título', 'Descripción','Tipo', 'Precio', 'Plazas', 'Capacidad', 'Localidad', 'Dirección', 'Organización', 'Acciones']} />
       </div>
       <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
         <button onClick={decrementPage} disabled={pageNumber === 0} 

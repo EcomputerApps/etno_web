@@ -11,6 +11,7 @@ const imageSize = ImageSize.getImageSize()
 const Photo = () => {
 
     const [pageNumber, setPageNumber] = useState(0)
+
     useEffect(() => {
         imageStore.getRequestImages('Bolea', pageNumber, 6)
     }, [pageNumber])
@@ -42,20 +43,10 @@ const Photo = () => {
                     </div>
                 ) : <></>}
             </div>
-            <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-6">
-                <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
+            <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-7">
+                <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
-                        <div className="flex md:w-1/3 w-full m-auto  p-1">
-                            <input
-                                type="text"
-                                name="photosSearch"
-                                className=" mr-3 block md:w-3/4 px-4 py-2 text-purple-700 w-full bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                            />
-                            <button onClick={() => {
-                            }}
-                                name="photosSearchBtn" className="btnStandard h-9">
-                                <img className="w-6 h-6" src={Search} alt="search" />
-                            </button>
+                        <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
                         </div>
                     </div>
                 </div>

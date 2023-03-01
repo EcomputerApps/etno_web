@@ -6,7 +6,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class LinkStore {
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static linkStore: LinkStore
 
     static getLinkStore() {
@@ -85,15 +85,15 @@ class LinkStore {
         const link = await response.json()
         this.updatePaginatedLink(link)
     }
-    async deleteLink(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/link?username=${username}&title=${title}`, {
+    async deleteLink(username: string, idLink: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/link?username=${username}&idLink=${idLink}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
         if (response.ok) {
-            const newLinks = this.paginatedLink.content!!.filter((item) => item.title !== title)
+            const newLinks = this.paginatedLink.content!!.filter((item) => item.idLink !== idLink)
             this.updateLinkList(newLinks)
             this.updateLink({})
             toast.success('Se ha borrado exitosamente', {

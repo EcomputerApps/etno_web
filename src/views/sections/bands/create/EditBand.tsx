@@ -21,11 +21,12 @@ const EditBand = () => {
   const [bandType, setBandType] = useState<string>(band.title!!)
   const [bandDescription, setBandDescription] = useState<string>(band.description!!)
   const [file, setFile] = useState<File>()
-  const[bandera, setBandera] = useState(true)
+  const [bandera, setBandera] = useState(true)
 
   function updateBand(bandId: string) {
+    chekIfEmpty()
     if (bandType === "" || bandDescription === "") {
-      toast.info('Rellene los campos', {
+      toast.error('Rellene los campos', {
         position: 'bottom-center',
         autoClose: 1000,
         hideProgressBar: false,
@@ -42,22 +43,21 @@ const EditBand = () => {
         imageUrl: band.imageUrl
 
       }
-      
-        bandStore.editBand('Bolea', bandId, bando, file!!)
-      }
-      }
-        
-    
-        
-      
-        
-      
-    
 
-  
+      bandStore.editBand('Bolea', bandId, bando, file!!)
+     
+    }
+  }
+  function chekIfEmpty() {
+    bandType === "" ? setEmptyType(true) : setEmptyType(false)
+    bandDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+
+  }
+  const [emptyType, setEmptyType] = useState(false)
+  const [emptyDescription, setEmptyDescription] = useState(false)
 
   return (
-    <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
+    <div className="flex flex-col md:m-auto w-full md:h-screen border-2 rounded-md bg-white">
       <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
@@ -69,25 +69,31 @@ const EditBand = () => {
           <div className=" flex flex-col p-1 mt-5  relative">
             <input autoFocus placeholder=" " defaultValue={band.title}
               name="bandType" type="text" required={true}
-              className="inputCamp peer" onChange={(value) => {
-                setBandType(value.currentTarget.value)
-              }} onKeyUp={(e) => {
-                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                  if (txtAreaRef.current != null) {
-                    txtAreaRef.current.focus()
+              className={`inputCamp peer ${emptyType ? 'border-red-600'
+                : ''
+                }`} onChange={(value) => {
+                 
+                  setBandType(value.currentTarget.value)
+                  setEmptyType(false)
+                }} onKeyUp={(e) => {
+                  if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                    if (txtAreaRef.current != null) {
+                      txtAreaRef.current.focus()
+                    }
                   }
-                }
-              }} />
+                }} />
             <label className="labelFloatInput">Asunto</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col pl-3 mt-3">
           <div className="flex flex-col p-1  relative">
             <textarea ref={txtAreaRef} placeholder="  " defaultValue={band.description} name="bandDescription" rows={3}
-              className="inputCamp peer"
+              className={`inputCamp peer ${emptyDescription ? 'border-red-600'
+                : ''
+                }`}
               onChange={(value) => {
                 setBandDescription(value.currentTarget.value)
-
+                setEmptyDescription(false)
               }} onKeyDown={(e) => {
                 if (e.code === "NumpadEnter") {
                   if (inputRef.current != null) {
@@ -121,10 +127,10 @@ const EditBand = () => {
         </div>
         <div className="md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
           <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => updateBand(band.idBando!!)}>Actualizar</button>
-          <button name="bandBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+          <button name="bandBtnCancel" className="btnStandard" onClick={() => bandStore.setModal(false)}>Cancelar</button>
         </div>
       </div>
-      <ToastContainer style={{ margin: "30px" }} />
+      <ToastContainer style={{ marginBottom: "50px" }} />
     </div>
   )
 }

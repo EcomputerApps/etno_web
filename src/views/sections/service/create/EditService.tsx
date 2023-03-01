@@ -16,28 +16,28 @@ const EditService = () => {
     const navigate = useNavigate()
     const arrayServiceTypes = [{
         "id": "checkOne",
-        "value": "restaurante",
-        "title": "restaurante",
+        "value": "Restaurante",
+        "title": "Restaurante",
     }, {
         "id": "checkTwo",
-        "value": "alojamiento",
-        "title": "alojamiento",
+        "value": "Alojamiento",
+        "title": "Alojamiento",
     }, {
         "id": "checkThree",
-        "value": "boongalow",
+        "value": "Casa Rural",
         "title": "Casa Rural",
     }, {
         "id": "checkFour",
-        "value": "piscina",
-        "title": "piscina",
+        "value": "Piscina",
+        "title": "Piscina",
     }, {
         "id": "checkFive",
         "value": "Iglesia",
         "title": "Iglesia",
     }, {
         "id": "checkSix",
-        "value": "productos",
-        "title": "productos",
+        "value": "Productos",
+        "title": "Productos",
     }, {
         "id": "checkSeven",
         "value": "Bar",
@@ -61,7 +61,6 @@ const EditService = () => {
     const [serviceType, setServiceType] = useState(service.category!!)
 
     const [serviceName, setServiceName] = useState<string>(service.owner!!)
-    const [servicePhoto, setServicePhoto] = useState<string>("")
     const [serviceWebUrl, setServiceWebUrl] = useState<string>(service.urlWeb!!)
     const [serviceDescription, setServiceDescription] = useState<string>(service.description!!)
     const [serviceTel, setServiceTel] = useState<string>(service.number!!)
@@ -85,6 +84,7 @@ const EditService = () => {
         if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
             serviceWebUrl === "" || serviceTel === "" || serviceSchedule === ""
         ) {
+            chekIfEmpty()
             toast.info('Rellene los campos', {
                 position: 'bottom-center',
                 autoClose: 1000,
@@ -109,6 +109,19 @@ const EditService = () => {
             serviceStore.editService('Bolea', serviceId, newService, file!!)
         }
     }
+    function chekIfEmpty() {
+         serviceName === "" ? setEmptyName(true) : setEmptyName(false)
+         serviceWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
+        serviceTel === "" ? setEmptyTel(true) : setEmptyTel(false)
+        serviceDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+
+    }
+
+    
+    const [emptyName, setEmptyName] = useState(false)
+     const [emptyWebUrl, setEmptyWebUrl] = useState(false)
+    const [emptyTel, setEmptyTel] = useState(false)
+    const [emptyDescption, setEmptyDescription] = useState(false)
 
     return (
         <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
@@ -140,8 +153,11 @@ const EditService = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col  p-1 relative">
-                        <input autoFocus placeholder=" " name="serviceOwner" defaultValue={service.owner} type="text" className="inputCamp peer" onChange={(e) => {
+                        <input autoFocus placeholder=" " name="serviceOwner" defaultValue={service.owner} type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
+                            : ''
+                            }`} onChange={(e) => {
                             setServiceName(e.currentTarget.value)
+                            setEmptyName(false)
                         }} onKeyUp={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (txtAreaRef.current != null) {
@@ -154,8 +170,12 @@ const EditService = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" defaultValue={service.description} rows={3} className="inputCamp peer" onChange={(value) => {
+                        <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" defaultValue={service.description} rows={3} 
+                        className={`inputCamp peer ${emptyDescption ? 'border-red-600'
+                            : ''
+                            }`} onChange={(value) => {
                             setServiceDescription(value.currentTarget.value)
+                            setEmptyDescription(false)
                         }} onKeyDown={(e) => {
                             if (e.code === "NumpadEnter") {
                                 if (inputWebUrl.current != null) {
@@ -168,8 +188,12 @@ const EditService = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" defaultValue={service.urlWeb} type="text" className="inputCamp peer" onChange={(e) => {
+                        <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" defaultValue={service.urlWeb} type="text" 
+                        className={`inputCamp peer ${emptyWebUrl ? 'border-red-600'
+                        : ''
+                        }`} onChange={(e) => {
                             setServiceWebUrl(e.currentTarget.value)
+                            setEmptyWebUrl(false)
                         }} onKeyDown={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                 if (inputTel.current != null) {
@@ -183,8 +207,11 @@ const EditService = () => {
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
                         <input maxLength={9} ref={inputTel} placeholder=" " name="serviceTel" defaultValue={service.number} type="text" onInput={(e) =>
-                            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className="inputCamp peer w-1/4" onChange={(e) => {
+                            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className={`inputCamp peer w-1/4 ${emptyTel? 'border-red-600'
+                            : ''
+                            }`} onChange={(e) => {
                                 setServiceTel(e.currentTarget.value)
+                                setEmptyTel(false)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (inputScheSelect.current != null) {

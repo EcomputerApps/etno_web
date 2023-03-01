@@ -48,7 +48,12 @@ const TableEvent = (prop: PropTable) => {
                         </td>
                         <td className="px-6 py-4 ">
                         <div className="tableCamp">
-                            {event.reservePrice}€
+                            {event.hasSubscription ? "Evento de pago" : "Evento gratuito"}
+                            </div>
+                        </td>
+                        <td className="px-6 py-4 ">
+                        <div className="tableCamp">
+                            {event.reservePrice+" €"}
                             </div>
                         </td>
                         <td className="px-6 py-4 ">

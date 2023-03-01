@@ -12,32 +12,31 @@ const serviceStore = ServiceStore.getServiceStore()
 
 const CreateService = () => {
 
-    let arraySchedules: { selector: string, morning: string, evening: string, complete: string }[] = []
     const navigate = useNavigate()
     const arrayServiceTypes = [{
         "id": "checkOne",
-        "value": "restaurante",
-        "title": "restaurante",
+        "value": "Restaurante",
+        "title": "Restaurante",
     }, {
         "id": "checkTwo",
-        "value": "alojamiento",
-        "title": "alojamiento",
+        "value": "Alojamiento",
+        "title": "Alojamiento",
     }, {
         "id": "checkThree",
-        "value": "boongalow",
+        "value": "Casa Rural",
         "title": "Casa Rural",
     }, {
         "id": "checkFour",
-        "value": "piscina",
-        "title": "piscina",
+        "value": "Piscina",
+        "title": "Piscina",
     }, {
         "id": "checkFive",
         "value": "Iglesia",
         "title": "Iglesia",
     }, {
         "id": "checkSix",
-        "value": "productos",
-        "title": "productos",
+        "value": "Productos",
+        "title": "Productos",
     }, {
         "id": "checkSeven",
         "value": "Bar",
@@ -61,7 +60,6 @@ const CreateService = () => {
     const [serviceType, setServiceType] = useState("")
 
     const [serviceName, setServiceName] = useState<string>("")
-    const [servicePhoto, setServicePhoto] = useState<string>("")
     const [serviceWebUrl, setServiceWebUrl] = useState<string>("")
     const [serviceDescription, setServiceDescription] = useState<string>("")
     const [serviceTel, setServiceTel] = useState<string>("")
@@ -80,6 +78,24 @@ const CreateService = () => {
             setServiceSchedule(serviceShcedulSelector + " " + serviceShcedulMorning + " " + serviceShcedulEven)
         }
     }
+    function chekIfEmpty() {
+        serviceType === "" ? setEmptyType(true) : setEmptyType(false)
+        serviceName === "" ? setEmptyName(true) : setEmptyName(false)
+        file === undefined ? setEmptyFile(true) : setEmptyFile(false)
+        serviceWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
+        serviceTel === "" ? setEmptyTel(true) : setEmptyTel(false)
+        serviceDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+
+    }
+
+    const [emptyType, setEmptyType] = useState(false)
+    const [emptyName, setEmptyName] = useState(false)
+    const [emptyFile, setEmptyFile] = useState(false)
+    const [emptyWebUrl, setEmptyWebUrl] = useState(false)
+    const [emptyTel, setEmptyTel] = useState(false)
+    const [emptyDescption, setEmptyDescription] = useState(false)
+    
+
 
     function addService() {
         const service: Service = {
@@ -103,6 +119,7 @@ const CreateService = () => {
                 theme: "light"
             })
         } else {
+            chekIfEmpty()
             serviceType === "" || serviceName === "" || serviceDescription === "" ||
                 serviceWebUrl === "" || serviceTel === "" || serviceSchedule === "" || file === undefined
                 ?
@@ -130,28 +147,36 @@ const CreateService = () => {
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-8 pl-3">
-                    <div className="flex flex-col p-1 relative">
-                        <div className="flex  flex-wrap pt-2">
-                            {arrayServiceTypes.map((chkBtn, index) => (
-                                <div key={index} className='flex lg:w-1/6 w-1/3'>
-                                    <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
-                                        setServiceType(e.currentTarget.value)
-                                    }} />
-                                    <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
+                    <div className={`rounded-md border-2 ${emptyType ? 'border-red-600'
+                        : ''
+                        }`}>
+                        <div className="flex flex-col pb-3 p-1 relative ">
+                            <div className="flex flex-wrap">
+                                {arrayServiceTypes.map((chkBtn, index) => (
+                                    <div key={index} className='flex lg:w-1/6 w-1/3'>
+                                        <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
+                                            setServiceType(e.currentTarget.value)
+                                            setEmptyType(false)
+                                        }} />
+                                        <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
                             peer-checked:text-white 
                             ring-indigo-500 peer-checked:ring-2 overflow-hidden ">{chkBtn.title}</label>
-                                </div>
-                            ))}
+                                    </div>
+                                ))}
+                            </div>
+                            <label className={"labelFloatDate"}>Categoría</label>
                         </div>
-                        <label className={"labelFloatDate"}>Categoría</label>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col  p-1 relative">
-                        <input autoFocus placeholder=" " name="serviceOwner" type="text"  className="inputCamp peer" onChange={(e) => {
+                        <input autoFocus placeholder=" " name="serviceOwner" type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
+                            : ''
+                            }`} onChange={(e) => {
                                 setServiceName(e.currentTarget.value)
+                                setEmptyName(false)
                             }} onKeyUp={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (txtAreaRef.current != null) {
@@ -164,8 +189,11 @@ const CreateService = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3}  className="inputCamp peer" onChange={(value) => {
+                        <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3} className={`inputCamp peer ${emptyDescption ? 'border-red-600'
+                            : ''
+                            }`} onChange={(value) => {
                                 setServiceDescription(value.currentTarget.value)
+                                setEmptyDescription(false)
                             }} onKeyDown={(e) => {
                                 if (e.code === "NumpadEnter") {
                                     if (inputWebUrl.current != null) {
@@ -178,8 +206,11 @@ const CreateService = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" type="text"  className="inputCamp peer" onChange={(e) => {
+                        <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" type="text" className={`inputCamp peer ${emptyWebUrl ? 'border-red-600'
+                            : ''
+                            }`} onChange={(e) => {
                                 setServiceWebUrl(e.currentTarget.value)
+                                setEmptyWebUrl(false)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (inputTel.current != null) {
@@ -193,15 +224,18 @@ const CreateService = () => {
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
                         <input maxLength={9} ref={inputTel} placeholder=" " name="serviceTel" type="text" onInput={(e) =>
-                            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")}  className="inputCamp peer w-1/4" onChange={(e) => {
-                                setServiceTel(e.currentTarget.value)
-                            }} onKeyDown={(e) => {
-                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                    if (inputScheSelect.current != null) {
-                                        inputScheSelect.current.focus()
+                            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className={`inputCamp peer  w-1/4 ${emptyTel ? 'border-red-600'
+                                : ''
+                                }`} onChange={(e) => {
+                                    setServiceTel(e.currentTarget.value)
+                                    setEmptyTel(false)
+                                }} onKeyDown={(e) => {
+                                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                        if (inputScheSelect.current != null) {
+                                            inputScheSelect.current.focus()
+                                        }
                                     }
-                                }
-                            }} />
+                                }} />
                         <label className={"labelFloatInput"}>Teléfono</label>
                     </div>
                 </div>
@@ -209,16 +243,16 @@ const CreateService = () => {
                     <div className="flex flex-col p-1 mt-1 relative">
                         <div className="flex flex-col border-2 rounded-md">
                             <select ref={inputScheSelect} className="inputCamp p-0 peer" defaultValue="Lunes-Viernes" onChange={(e) => {
-                                    setServiceShcedulSelector(e.target.value)
-                                }} onKeyDown={(e) => {
-                                    if ((e.code === "NumpadEnter")) {
-                                        if (inputScheMorn.current != null) {
-                                            inputScheMorn.current.focus()
-                                        } if (inputScheExtra.current != null) {
-                                            inputScheExtra.current.focus()
-                                        }
+                                setServiceShcedulSelector(e.target.value)
+                            }} onKeyDown={(e) => {
+                                if ((e.code === "NumpadEnter")) {
+                                    if (inputScheMorn.current != null) {
+                                        inputScheMorn.current.focus()
+                                    } if (inputScheExtra.current != null) {
+                                        inputScheExtra.current.focus()
                                     }
-                                }}>
+                                }
+                            }}>
                                 <option className="peer" value="Lunes-Viernes">De lunes a viernes.</option>
                                 <option value="Lunes-Sabado">De lunes a sabado.</option>
                                 <option value="Lunes-Domingo">Todos los dias.</option>
@@ -229,45 +263,45 @@ const CreateService = () => {
                                 <div hidden={serviceShcedulSelector === "Otro"} className="w-full">
                                     <div className="relative p-2">
                                         <input ref={inputScheMorn} placeholder=" " name="pharmacyShedulesMorning" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
-                                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                    if (inputScheEven.current != null) {
-                                                        inputScheEven.current.focus()
-                                                    }
+                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                if (inputScheEven.current != null) {
+                                                    inputScheEven.current.focus()
                                                 }
-                                            }} onChange={(e) => {
-                                                setServiceShcedulMorning(e.target.value)
-                                            }} />
+                                            }
+                                        }} onChange={(e) => {
+                                            setServiceShcedulMorning(e.target.value)
+                                        }} />
                                         <label className={"labelFloatInput"}>Mañana</label>
                                     </div>
                                 </div>
                                 <div hidden={serviceShcedulSelector === "Otro"} className="w-full">
                                     <div className="relative p-2">
                                         <input maxLength={100} ref={inputScheEven} placeholder=" " name="pharmacyShedulesEvening" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
-                                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                    if (inputScheExtra.current != null) {
-                                                        inputScheExtra.current.focus()
-                                                    } if (txtAreaRef.current != null) {
-                                                        txtAreaRef.current.focus()
-                                                    }
+                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                if (inputScheExtra.current != null) {
+                                                    inputScheExtra.current.focus()
+                                                } if (txtAreaRef.current != null) {
+                                                    txtAreaRef.current.focus()
                                                 }
-                                            }} onChange={(e) => {
+                                            }
+                                        }} onChange={(e) => {
 
-                                                setServiceShcedulEven(e.target.value)
-                                            }} />
+                                            setServiceShcedulEven(e.target.value)
+                                        }} />
                                         <label className={"labelFloatInput"}>Tarde</label>
                                     </div>
                                 </div>
                                 <div hidden={serviceShcedulSelector !== "Otro"} className="  w-full">
                                     <div className="relative p-2 ">
                                         <input ref={inputScheExtra} placeholder=" " name="pharmacyShedulesExtra" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
-                                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                    if (txtAreaRef.current != null) {
-                                                        txtAreaRef.current.focus()
-                                                    }
+                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                if (txtAreaRef.current != null) {
+                                                    txtAreaRef.current.focus()
                                                 }
-                                            }} onBlur={(e) => {
-                                                setServiceShcedulExtra(e.target.value)
-                                            }} />
+                                            }
+                                        }} onBlur={(e) => {
+                                            setServiceShcedulExtra(e.target.value)
+                                        }} />
                                         <label className={"labelFloatInput"}>Otro</label>
                                     </div>
                                 </div>
@@ -278,13 +312,16 @@ const CreateService = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className="text-left p-1">
-                        <div className={"photoBoard"}>
+                        <div className={`photoBoard peer ${emptyFile ? 'border-red-600'
+                            : ''
+                            }`}>
                             <div className='pl-3'>
                                 Foto {file?.name}
                             </div>
                             <form id="form-file-upload" className=" w-full flex justify-center">
                                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
                                     setFile(e.currentTarget.files!![0])
+                                    setEmptyFile(false)
                                 }} />
                                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                     <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
@@ -304,7 +341,7 @@ const CreateService = () => {
                     <button name="serviceBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
                 </div>
             </div>
-            <ToastContainer style={{ margin: "50px" }} />
+            <ToastContainer style={{ marginBottom: "50px" }} />
         </div>
     )
 }

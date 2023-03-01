@@ -2,7 +2,7 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { Incident, PaginatedIncident } from "../../models/section/Section";
 
 class IncidentStore {
-    serverIp : string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static incidentStore: IncidentStore
 
     static getIncidentStore() {

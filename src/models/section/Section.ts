@@ -31,6 +31,7 @@ interface Event {
     address?: string,
     description?: string,
     organization?: string,
+    hasSubscription? : boolean,
     reservePrice?: number,
     seats?: number,
     capacity?: number,
@@ -44,11 +45,25 @@ interface Event {
     long?: string
 }
 
+
 interface PaginatedEvent {
     content?: Event[],
     totalPages?: number,
     totalElements?: number,
     pageNum?: number
+}
+
+interface Reserv{
+    idReserv?: string,
+    username?: string,
+    name?: string,
+    email?: string,
+    phone?: string,
+    reservType?: string,
+    palce?: string,
+    hall?: string,
+    date?: Date,
+    time?: string
 }
 
 interface Ad {

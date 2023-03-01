@@ -35,19 +35,8 @@ const CreateLink = () => {
                 progress: undefined,
                 theme: "light"
             })
-        } else {
-            if (regEx.test(linkTitle)) {
-                toast.error('REGEX', {
-                    position: 'bottom-center',
-                    autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light"
-                })
-            } else {
+        } 
+             else {
                 const link: Link = {
                     title: linkTitle,
                     url: linkUrl
@@ -67,7 +56,7 @@ const CreateLink = () => {
                     linkStore.addRequestLink('Bolea', link)
                 }
             }
-        }
+        
     }
 
 
