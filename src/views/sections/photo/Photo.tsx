@@ -88,8 +88,6 @@ const Photo = () => {
                 </button>
             </div>
         </div>
-
     )
-
 }
 export default observer(Photo)

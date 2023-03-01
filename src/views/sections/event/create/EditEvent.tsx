@@ -33,7 +33,7 @@ const EditEvent = () => {
     const [eventPrice, setEventPrice] = useState<string>(String(event.reservePrice!!))
     const [eventSeats, setEventSeats] = useState<string>(String(event.seats!!))
     const [eventLink, setEventLink] = useState<string>(event.link!!)
-    const [eventPhoto, setEventPhoto] = useState<string>("")
+    const [eventPhoto, setEventPhoto] = useState<string>(event.imageUrl!!)
     const [eventDateStart, setEventDateStart] = useState<string>(event.startDate!!)
     const [eventDateFin, setEventDateFin] = useState<string>(event.endDate!!)
     const [file, setFile] = useState<File>()
@@ -60,6 +60,7 @@ const EditEvent = () => {
                 capacity: Number(eventSeats),
                 seats: Number(eventSeats),
                 link: eventLink,
+                imageUrl: eventPhoto,
                 startDate: eventDateStart,
                 endDate: eventDateFin
             }

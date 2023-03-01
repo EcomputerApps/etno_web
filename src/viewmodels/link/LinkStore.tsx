@@ -85,15 +85,15 @@ class LinkStore {
         const link = await response.json()
         this.updatePaginatedLink(link)
     }
-    async deleteLink(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/link?username=${username}&title=${title}`, {
+    async deleteLink(username: string, idLink: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/link?username=${username}&idLink=${idLink}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
         if (response.ok) {
-            const newLinks = this.paginatedLink.content!!.filter((item) => item.title !== title)
+            const newLinks = this.paginatedLink.content!!.filter((item) => item.idLink !== idLink)
             this.updateLinkList(newLinks)
             this.updateLink({})
             toast.success('Se ha borrado exitosamente', {
