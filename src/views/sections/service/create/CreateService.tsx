@@ -149,7 +149,7 @@ const CreateService = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-8 pl-3">
                     <div className={`rounded-md border-2 ${emptyType ? 'border-red-600'
-                        : ''
+                        : 'border-transparent'
                         }`}>
                         <div className="flex flex-col pb-3 p-1 relative ">
                             <div className="flex flex-wrap">

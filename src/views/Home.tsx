@@ -16,6 +16,7 @@ import Necrologue from './sections/necrologue/Necrologue'
 import News from './sections/news/News'
 import Pharmacy from './sections/pharmacy/Pharmacy'
 import Photo from './sections/photo/Photo'
+import Reserv from './sections/reserv/Reserv'
 import Service from './sections/service/Service'
 import Sponsor from './sections/sponsor/Sponsor'
 import Tourism from './sections/tourism/Tourism'
@@ -37,6 +38,7 @@ const Home = () => {
   function renderView(): JSX.Element | undefined {
     switch (sideBarStore.getPanel.section) {
       case 'Eventos': return <Event />
+      case 'Reservas': return<Reserv/>
       case 'Turismo': return <Tourism />
       case 'Bandos': return <Band />
       case 'Farmacias': return <Pharmacy />

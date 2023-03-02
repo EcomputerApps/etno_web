@@ -137,7 +137,7 @@ const CreateEvent = () => {
       <div className="h-20 w-full flex bg-indigo-800 rounded-t-md ">
         <div className="w-full flex flex-row gap-8 p-2 justify-between">
           <img src={logoEtno} alt="logo_Etno"></img>
-          <p className='flex  text-white text-3xl p-3'>EVENTO</p>
+          <p className='flex  text-white text-3xl p-3'>CREAR EVENTO</p>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-5 pl-3">

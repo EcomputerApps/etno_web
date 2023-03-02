@@ -117,7 +117,6 @@ const EditService = () => {
 
     }
 
-
     const [emptyName, setEmptyName] = useState(false)
     const [emptyWebUrl, setEmptyWebUrl] = useState(false)
     const [emptyTel, setEmptyTel] = useState(false)

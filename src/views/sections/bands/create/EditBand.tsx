@@ -21,7 +21,7 @@ const EditBand = () => {
   const [bandType, setBandType] = useState<string>(band.title!!)
   const [bandDescription, setBandDescription] = useState<string>(band.description!!)
   const [file, setFile] = useState<File>()
- 
+
 
   function updateBand(bandId: string) {
     chekIfEmpty()
@@ -46,7 +46,7 @@ const EditBand = () => {
 
       bandStore.editBand('Bolea', bandId, bando, file!!)
       bandStore.getRequestBand('Bolea', 0, 5)
-     
+
     }
   }
   function chekIfEmpty() {
@@ -66,7 +66,7 @@ const EditBand = () => {
             <p className='flex  text-white text-3xl p-3'>EDITAR BANDO</p>
           </div>
         </div>
-      id check
+        id check
         <p>{band.idBando}</p>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className=" flex flex-col p-1 mt-5  relative">
@@ -75,7 +75,7 @@ const EditBand = () => {
               className={`inputCamp peer ${emptyType ? 'border-red-600'
                 : ''
                 }`} onChange={(value) => {
-                 
+
                   setBandType(value.currentTarget.value)
                   setEmptyType(false)
                 }} onKeyUp={(e) => {
@@ -133,7 +133,7 @@ const EditBand = () => {
           <button name="bandBtnCancel" className="btnStandard" onClick={() => bandStore.setModalEdit(false)}>Cancelar</button>
         </div>
       </div>
-      
+
     </div>
   )
 }
