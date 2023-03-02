@@ -22,7 +22,7 @@ import EditService from "../views/sections/service/create/EditService"
 import EditSponsor from "../views/sections/sponsor/create/EditSponsor"
 import EditNecrologue from "../views/sections/necrologue/create/EditNecro"
 import EditAdvert from "../views/sections/advert/create/EditAdvert"
-import EditTourism from "../views/sections/tourism/create/EditTourism"
+import EditTourism from "../views/sections/tourism/EditTourism"
 import EditEvent from "../views/sections/event/create/EditEvent"
 
 const Router = () => {

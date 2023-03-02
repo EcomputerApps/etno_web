@@ -44,6 +44,7 @@ const EditNews = () => {
  function updateNews(newsId: string){
 
   if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === ''){
+    chekIfEmpty()
     toast.info('Rellene los campos', {
       position: 'top-center',
       autoClose: 500,
@@ -64,9 +65,22 @@ const EditNews = () => {
     }
       newsStore.editNews('Bolea', newsId, news_, file!!)
   }
-
-
  }
+
+ function chekIfEmpty() {
+
+  newsTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
+
+  newsDate === "" ? setEmptyDate(true) : setEmptyDate(false)
+  newsDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+ 
+}
+
+const [emptyTitle, setEmptyTitle] = useState(false)
+const [emptyFile, setEmptyFile] = useState(false)
+const [emptyDate, setEmptyDate] = useState(false)
+const [emptyDescption, setEmptyDescription] = useState(false)
+
  
   return(
         <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md bg-white">
@@ -99,9 +113,12 @@ const EditNews = () => {
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
   
-            <input defaultValue={news.title} ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className="inputCamp peer" onChange={(value) => {
+            <input defaultValue={news.title} ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
+                            : ''
+                            }`} onChange={(value) => {
               console.log(value.currentTarget.value)
                 setNewsTitle(value.currentTarget.value)
+                setEmptyTitle(false)
               }} onKeyUp={(e) => {
                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                   if (inputRefDate.current != null) {
@@ -114,8 +131,11 @@ const EditNews = () => {
         </div>
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
-            <input defaultValue={news.publicationDate} ref={inputRefDate} type="date" name="newsDate" className="w-40 inputCamp peer" onChange={(value) => {
+            <input defaultValue={news.publicationDate} ref={inputRefDate} type="date" name="newsDate" className={`inputCamp peer w-40 ${emptyDate ? 'border-red-600'
+                            : ''
+                            }`}onChange={(value) => {
                 setNewsDate(value.currentTarget.value)
+                setEmptyDate(false)
               }} onKeyUp={(e) => {
                 if ((e.code === "NumpadEnter")) {
                   if (txtAreaRef.current != null) {
@@ -128,8 +148,11 @@ const EditNews = () => {
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="flex flex-col p-1 relative mt-3">
-            <textarea defaultValue={news.description} ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3} className="inputCamp peer" onChange={(value) => {
+            <textarea defaultValue={news.description} ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3} className={`inputCamp peer ${emptyDescption ? 'border-red-600'
+                            : ''
+                            }`} onChange={(value) => {
                 setNewsDescription(value.currentTarget.value)
+                setEmptyDescription(false)
               }} onKeyDown={(e) => {
                 if (e.code === "NumpadEnter") {
                   if (inputRefLink.current != null) {
@@ -143,13 +166,16 @@ const EditNews = () => {
         
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="text-left p-1 ">
-            <div className={"photoBoard"}>
+            <div className={`photoBoard ${emptyFile ? 'border-red-600'
+                            : ''
+                            }`}>
               <div className='absolute left-3'>
                 Foto {file?.name}
               </div>
               <form id="form-file-upload" className=" w-full flex justify-center ">
                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
                   setFile(value.currentTarget.files!![0])
+                  setEmptyFile(false)
                 }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                   <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

@@ -112,59 +112,59 @@ const CreateTourism = () => {
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 relative">
             <input autoFocus placeholder=" " name="tourismType" type="text" className={`inputCamp peer ${emptyType ? 'border-red-600'
-            : ''
-            }`} onChange={(e) => {
-              setTourismType(e.currentTarget.value)
-              setEmptyType(false)
-            }} onKeyUp={(e) => {
-              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                if (inputTitle.current != null) {
-                  inputTitle.current.focus()
+              : ''
+              }`} onChange={(e) => {
+                setTourismType(e.currentTarget.value)
+                setEmptyType(false)
+              }} onKeyUp={(e) => {
+                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                  if (inputTitle.current != null) {
+                    inputTitle.current.focus()
+                  }
                 }
-              }
-            }} />
+              }} />
             <label className={"labelFloatInput"}>Tipo</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col p-1 relative">
             <input ref={inputTitle} placeholder=" " name="tourismTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
-            : ''
-            }`} onKeyUp={(e) => {
-              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                if (txtAreaRef.current != null) {
-                  txtAreaRef.current.focus()
+              : ''
+              }`} onKeyUp={(e) => {
+                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                  if (txtAreaRef.current != null) {
+                    txtAreaRef.current.focus()
+                  }
                 }
-              }
-            }} onChange={(e) => {
-              setTourismTitle(e.currentTarget.value)
-              setEmptyTitle(false)
-            }} />
+              }} onChange={(e) => {
+                setTourismTitle(e.currentTarget.value)
+                setEmptyTitle(false)
+              }} />
             <label className="labelFloatInput">Título</label>
           </div>
         </div >
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col p-1 relative">
             <textarea ref={txtAreaRef} placeholder=" " name="tourismDescription" rows={3} className={`inputCamp peer ${emptyDescription ? 'border-red-600'
-            : ''
-            }`} onKeyUp={(e) => {
-              if ((e.code === "NumpadEnter")) {
-                if (inputLong.current != null) {
-                  inputLong.current.focus()
+              : ''
+              }`} onKeyUp={(e) => {
+                if ((e.code === "NumpadEnter")) {
+                  if (inputLong.current != null) {
+                    inputLong.current.focus()
+                  }
                 }
-              }
-            }} onChange={(e) => {
-              setTourismDescription(e.currentTarget.value)
-              setEmptyDescription(false)
-            }} />
+              }} onChange={(e) => {
+                setTourismDescription(e.currentTarget.value)
+                setEmptyDescription(false)
+              }} />
             <label className={"labelFloatTxtArea"}>Descripcíon</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="text-left p-1">
             <div className={`photoBoard  ${emptyFile ? 'border-red-600'
-            : ''
-            }`}>
+              : ''
+              }`}>
               <div className='absolute left-2'>
                 Fotos {file?.name}
               </div>
@@ -183,28 +183,35 @@ const CreateTourism = () => {
             </div>
           </div>
         </div>
-        <div style={{ height: '50vh', width: '100%' }}>
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
-            defaultCenter={defaultProps.center}
-            defaultZoom={defaultProps.zoom}
-            onClick={(e) => {
-              setLat(e.lat)
-              setLong(e.lng)
-            }}
+        <div className="w-full flex flex-1 flex-col mt-3 pl-3">
+          <div className={`border-2 rounded-md m-1 ${emptyLongLat ? 'border-red-600'
+            : ''
+            }`}>
+            <div style={{ height: '50vh', width: '100%' }}>
+              <GoogleMapReact
+                bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
+                defaultCenter={defaultProps.center}
+                defaultZoom={defaultProps.zoom}
+                onClick={(e) => {
+                  setLat(e.lat)
+                  setLong(e.lng)
+                  setEmptyLongLat(false)
+                }}
 
-          >
-            <AnyReactComponent
-              lat={lat}
-              lng={long}
-              text={markerIcon}
-            />
-          </GoogleMapReact>
+              >
+                <AnyReactComponent
+                  lat={lat}
+                  lng={long}
+                  text={markerIcon}
+                />
+              </GoogleMapReact>
+            </div>
+          </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col p-1 relative">
 
-            <input value={long} ref={inputLong} placeholder=" " type="text" name="tourismLong" className="inputCamp peer" onKeyUp={(e) => {
+            <input value={long} ref={inputLong} placeholder=" " type="text" disabled name="tourismLong" className="inputCamp peer" onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                 if (inputLat.current != null) {
                   inputLat.current.focus()
@@ -218,7 +225,7 @@ const CreateTourism = () => {
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col p-1 relative">
-            <input value={lat} ref={inputLat} placeholder=" " type="text" name="tourismLat" className="inputCamp peer" onKeyUp={(e) => {
+            <input value={lat} ref={inputLat} placeholder=" " type="text" disabled name="tourismLat" className="inputCamp peer" onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                 if (btnRef.current != null) {
                   btnRef.current.focus()
@@ -236,7 +243,6 @@ const CreateTourism = () => {
           <button name="tourismBtnCancel" className="btnStandard" onClick={() => tourismStore.setModalCreate(false)}>Cancelar</button>
         </div>
       </div>
-      <ToastContainer />
     </div>
   )
 }

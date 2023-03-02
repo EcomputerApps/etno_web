@@ -303,8 +303,11 @@ const EditEvent = () => {
           </div>
         </div>
         <div className="flex flex-col p-1 relative mt-5">
-          <input defaultValue={eventDateStart} ref={inputRefDS} type="date" name="eventStart" className="w-40 inputCamp peer" onChange={(value) => {
+          <input defaultValue={eventDateStart} ref={inputRefDS} type="date" name="eventStart" className={`inputCamp peer w-40 ${emptyStartdate? 'border-red-600'
+                        : ''
+                        }`} onChange={(value) => {
             setEventDateStart(value.currentTarget.value)
+            setEmptyStartdate(false)
           }} onKeyDown={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (inputRefDF.current != null) {
@@ -315,8 +318,11 @@ const EditEvent = () => {
           <label className={"labelFloatDate"}>Fecha de Inicio</label>
         </div>
         <div className="flex flex-col p-1 relative mt-5">
-          <input defaultValue={eventDateFin} ref={inputRefDF} type="date" name="eventFinish" className="w-40 inputCamp peer " onChange={(value) => {
+          <input defaultValue={eventDateFin} ref={inputRefDF} type="date" name="eventFinish" className={`inputCamp peer w-40 ${emptyFinDate? 'border-red-600'
+                        : ''
+                        }`} onChange={(value) => {
             setEventDateFin(value.currentTarget.value)
+            setEmptyFinDate(false)
           }} onKeyDown={(e) => {
             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
               if (btnRef.current != null) {

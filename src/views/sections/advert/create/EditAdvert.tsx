@@ -23,7 +23,8 @@ const EditAdvert = () => {
     const [file, setFile] = useState<File>()
 
     function updateAdvert(){
-        if (advertTitle === '' || advertDescription === '' || advertLink === ''){
+        checkIfEmpty()
+        if (advertTitle === '' || advertDescription === '' || advertLink === '' || emptyFile){
             toast.info('Rellene los campos', {
                 position: 'top-center',
                 autoClose: 500,
@@ -43,6 +44,21 @@ const EditAdvert = () => {
             advertStore.editAdvert('Bolea', advert.idAd!!, advert_, file!!)
         }
     }
+
+    function checkIfEmpty() {
+        advertLink === "" ? setEmptyLink(true) : setEmptyLink(false)
+        advertTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
+        advertDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+   
+    }
+    function checkEmptyFile(){
+
+    }
+    
+    const [emptyTitle, setEmptyTitle] = useState(false)
+    const [emptyLink, setEmptyLink] = useState(false)
+    const [emptyDescription, setEmptyDescription] = useState(false)
+    const [emptyFile, setEmptyFile] = useState(false)
     
     return(
         <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md bg-white">
@@ -55,8 +71,11 @@ const EditAdvert = () => {
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="flex flex-col p-1 relative mt-5">
-                    <input defaultValue={advert.title} autoFocus placeholder=" " name="bandType" id="test" type="text" className="inputCamp peer" onChange={(value) => {
+                    <input defaultValue={advert.title} autoFocus placeholder=" " name="bandType" id="test" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
+              : ''
+              }`} onChange={(value) => {
                         setAdvertTitle(value.currentTarget.value)
+                        setEmptyTitle(false)
                     }} onKeyUp={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (txtAreaRef.current != null) {
@@ -70,8 +89,11 @@ const EditAdvert = () => {
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
                     <textarea defaultValue={advert.description} ref={txtAreaRef} placeholder="  " name="bandDescription" rows={3}
-                        className="inputCamp peer" onChange={(value) => {
+                        className={`inputCamp peer ${emptyDescription ? 'border-red-600'
+                        : ''
+                        }`} onChange={(value) => {
                             setAdvertDescription(value.currentTarget.value)
+                            setEmptyDescription(false)
                         }} onKeyDown={(e) => {
                             if (e.code === "NumpadEnter") {
                                 if (inputRef.current != null) {
@@ -84,13 +106,17 @@ const EditAdvert = () => {
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
                 <div className="text-left p-1">
-                    <div className={"photoBoard"}>
+                    <div className={`photoBoard ${emptyFile ? 'border-red-600'
+              : ''
+              }`}>
                         <div className='absolute left-2'>
                             Foto {file?.name}
                         </div>
                         <form id="form-file-upload" className=" w-full flex justify-center">
-                            <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
+                            <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" 
+                            onClick={()=>setEmptyFile(true)} onChange={(value) => {
                                 setFile(value.currentTarget.files!![0])
+                                setEmptyFile(false)
                             }} />
                             <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                 <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
@@ -104,8 +130,11 @@ const EditAdvert = () => {
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 mt-3">
                 <div className="flex flex-col p-1 relative">
-                    <input defaultValue={advert.webUrl} ref={inputRef} placeholder=" " name="advertUrl" type="text" className="inputCamp peer" onChange={(value) => {
+                    <input defaultValue={advert.webUrl} ref={inputRef} placeholder=" " name="advertUrl" type="text" className={`inputCamp peer ${emptyLink ? 'border-red-600'
+              : ''
+              }`} onChange={(value) => {
                         setAdvertLink(value.currentTarget.value)
+                        setEmptyLink(false)
                     }}
                         onKeyDown={(e) => {
                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
