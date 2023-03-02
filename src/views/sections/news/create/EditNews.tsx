@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast, ToastContainer } from "react-toastify"
 import logoEtno from '../../../../assets/logo_etno.png'
@@ -25,6 +25,7 @@ const EditNews = () => {
   const [newsDescription, setNewsDescription] = useState<string>(news.description!!)
   const [file, setFile] = useState<File>()
 
+
   const arrayServiceTypes = [{
     "id": "checkOne",
     "value": "General",
@@ -41,7 +42,7 @@ const EditNews = () => {
   }
  ]
 
- function updateNews(newsId: string){
+ function updateNews(){
 
   if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === ''){
     toast.info('Rellene los campos', {
@@ -62,10 +63,12 @@ const EditNews = () => {
       publicationDate: newsDate,
       imageUrl: news.imageUrl
     }
-      newsStore.editNews('Bolea', newsId, news_, file!!)
+      newsStore.editNews('Bolea', news.idNew!!, news_, file!!)
+      
+      setTimeout(function(){
+        window.location.reload();
+     }, 1500);
   }
-
-
  }
  
   return(
@@ -162,7 +165,7 @@ const EditNews = () => {
           </div>
         </div>
         <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-          <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => updateNews(news.idNew!!)}>Actualizar</button>
+          <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => updateNews()}>Actualizar</button>
           <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => newsStore.setModalEdit(false)}>Cancelar</button>
         </div>
         </div>

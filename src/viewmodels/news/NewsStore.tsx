@@ -1,11 +1,12 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { makePersistable } from "mobx-persist-store";
 import { toast } from "react-toastify";
 import { News, PaginatedNews } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class NewsStore{
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static newsStore : NewsStore
 
     static getNewsStore(){
@@ -28,6 +29,7 @@ class NewsStore{
             setModalCreate: action,
             getModalEdit: computed,
             getModalCreate: computed,
+            setModalEdit: action,
             paginatedNews : observable,
             news: observable,
             getRequestNews : action,
@@ -40,6 +42,7 @@ class NewsStore{
             updateNews: action,
             getPaginatedNews: computed
         })
+    
     }
     setModalEdit(mode: boolean) {
         this.modalEdit = mode
@@ -61,6 +64,7 @@ class NewsStore{
     updatePaginatedNews( pagiantedNews: PaginatedNews){
         this.paginatedNews = pagiantedNews
     }
+    
     updateNews(news: News){
         this.news = news
     }
@@ -86,9 +90,10 @@ class NewsStore{
         if(response.ok){
             this.paginatedNews.content?.push(news)
             this.news = news
-            toast.success('Se ha añadido exitosamente', {
+            
+           toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
-                autoClose: 500,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -96,6 +101,7 @@ class NewsStore{
                 progress: undefined,
                 theme: "light"
           })
+          
         }else{
             toast.error('No se ha añadido', {
                 position: 'bottom-center',

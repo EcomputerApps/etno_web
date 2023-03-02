@@ -45,11 +45,7 @@ const CreateNews = () => {
   const [newsPhoto, setNewsPhoto] = useState<string>("")
   const [file, setFile] = useState<File>()
 
-  useEffect(() => {
-      newsStore.getRequestNews('Bolea', 0, 5)
-  }, [])
-
-  function addNews() {
+ function addNews(e: any) {
     const news: News = {
         category: newsCategory,
         title: newsTitle,
@@ -81,7 +77,11 @@ const CreateNews = () => {
             theme: "light"
         })
         } else {
-          newsStore.addRequestNews('Bolea', news, file!!)
+        newsStore.addRequestNews('Bolea', news, file!!)
+        
+        setTimeout(function(){
+          window.location.reload();
+       }, 1500);
         }
     }
   }

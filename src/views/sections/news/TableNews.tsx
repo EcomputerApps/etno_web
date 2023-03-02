@@ -20,7 +20,7 @@ const TableNews = (prop: PropTable) => {
     }
 
     function saveNews(news: News){
-        newsStore.updateNews(news)   
+     newsStore.updateNews(news)
      newsStore.setModalEdit(true)
     }
 
