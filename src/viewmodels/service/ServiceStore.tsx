@@ -18,10 +18,16 @@ class ServiceStore {
     //Observables =>
     paginatedService: PaginatedService = {}
     service: Service = {}
-
+    modalCreate: boolean = false
+    modalEdit: boolean = false
 
     constructor() {
         makeObservable(this, {
+            modalEdit: observable,
+            modalCreate: observable,
+            setModalCreate: action,
+            getModalEdit: computed,
+            getModalCreate: computed,
             paginatedService: observable,
             service: observable,
             updateService: action,
@@ -34,7 +40,20 @@ class ServiceStore {
             getPaginatedService: computed
 
         })
-    }
+ }
+ setModalEdit(mode: boolean) {
+    this.modalEdit = mode
+}
+get getModalEdit() {
+    return this.modalEdit
+}
+setModalCreate(mode: boolean) {
+    this.modalCreate = mode
+}
+get getModalCreate() {
+    return this.modalCreate
+}
+
     updateServiceList(services: Service[]) {
         this.paginatedService.content = services
     }

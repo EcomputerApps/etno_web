@@ -110,26 +110,26 @@ const EditService = () => {
         }
     }
     function chekIfEmpty() {
-         serviceName === "" ? setEmptyName(true) : setEmptyName(false)
-         serviceWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
+        serviceName === "" ? setEmptyName(true) : setEmptyName(false)
+        serviceWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
         serviceTel === "" ? setEmptyTel(true) : setEmptyTel(false)
         serviceDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
 
     }
 
-    
+
     const [emptyName, setEmptyName] = useState(false)
-     const [emptyWebUrl, setEmptyWebUrl] = useState(false)
+    const [emptyWebUrl, setEmptyWebUrl] = useState(false)
     const [emptyTel, setEmptyTel] = useState(false)
     const [emptyDescption, setEmptyDescription] = useState(false)
 
     return (
-        <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
+        <div className="flex flex-col h-screen w-1/2 border-2 rounded-md overflow-y-auto bg-white" >
             <div>
                 <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                     <div className="w-full flex flex-row p-2 justify-between">
                         <img src={logoEtno} alt="logo_Etno"></img>
-                        <p className='flex  text-white text-3xl p-3'>SERVICIOS</p>
+                        <p className='flex  text-white text-3xl p-3'>EDITAR SERVICIO</p>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-8 pl-3">
@@ -156,69 +156,69 @@ const EditService = () => {
                         <input autoFocus placeholder=" " name="serviceOwner" defaultValue={service.owner} type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
                             : ''
                             }`} onChange={(e) => {
-                            setServiceName(e.currentTarget.value)
-                            setEmptyName(false)
-                        }} onKeyUp={(e) => {
-                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                if (txtAreaRef.current != null) {
-                                    txtAreaRef.current.focus()
+                                setServiceName(e.currentTarget.value)
+                                setEmptyName(false)
+                            }} onKeyUp={(e) => {
+                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                    if (txtAreaRef.current != null) {
+                                        txtAreaRef.current.focus()
+                                    }
                                 }
-                            }
-                        }} />
+                            }} />
                         <label className={"labelFloatInput"}>Nombre</label>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" defaultValue={service.description} rows={3} 
-                        className={`inputCamp peer ${emptyDescption ? 'border-red-600'
-                            : ''
-                            }`} onChange={(value) => {
-                            setServiceDescription(value.currentTarget.value)
-                            setEmptyDescription(false)
-                        }} onKeyDown={(e) => {
-                            if (e.code === "NumpadEnter") {
-                                if (inputWebUrl.current != null) {
-                                    inputWebUrl.current.focus()
-                                }
-                            }
-                        }} />
+                        <textarea ref={txtAreaRef} placeholder=" " name="newsDescription" defaultValue={service.description} rows={3}
+                            className={`inputCamp peer ${emptyDescption ? 'border-red-600'
+                                : ''
+                                }`} onChange={(value) => {
+                                    setServiceDescription(value.currentTarget.value)
+                                    setEmptyDescription(false)
+                                }} onKeyDown={(e) => {
+                                    if (e.code === "NumpadEnter") {
+                                        if (inputWebUrl.current != null) {
+                                            inputWebUrl.current.focus()
+                                        }
+                                    }
+                                }} />
                         <label className={"labelFloatTxtArea"}>Descripción</label>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" defaultValue={service.urlWeb} type="text" 
-                        className={`inputCamp peer ${emptyWebUrl ? 'border-red-600'
-                        : ''
-                        }`} onChange={(e) => {
-                            setServiceWebUrl(e.currentTarget.value)
-                            setEmptyWebUrl(false)
-                        }} onKeyDown={(e) => {
-                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                if (inputTel.current != null) {
-                                    inputTel.current.focus()
-                                }
-                            }
-                        }} />
+                        <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" defaultValue={service.urlWeb} type="text"
+                            className={`inputCamp peer ${emptyWebUrl ? 'border-red-600'
+                                : ''
+                                }`} onChange={(e) => {
+                                    setServiceWebUrl(e.currentTarget.value)
+                                    setEmptyWebUrl(false)
+                                }} onKeyDown={(e) => {
+                                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                        if (inputTel.current != null) {
+                                            inputTel.current.focus()
+                                        }
+                                    }
+                                }} />
                         <label className={"labelFloatInput"}>Pagina Web</label>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
                         <input maxLength={9} ref={inputTel} placeholder=" " name="serviceTel" defaultValue={service.number} type="text" onInput={(e) =>
-                            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className={`inputCamp peer w-1/4 ${emptyTel? 'border-red-600'
-                            : ''
-                            }`} onChange={(e) => {
-                                setServiceTel(e.currentTarget.value)
-                                setEmptyTel(false)
-                            }} onKeyDown={(e) => {
-                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                    if (inputScheSelect.current != null) {
-                                        inputScheSelect.current.focus()
+                            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className={`inputCamp peer w-1/4 ${emptyTel ? 'border-red-600'
+                                : ''
+                                }`} onChange={(e) => {
+                                    setServiceTel(e.currentTarget.value)
+                                    setEmptyTel(false)
+                                }} onKeyDown={(e) => {
+                                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                        if (inputScheSelect.current != null) {
+                                            inputScheSelect.current.focus()
+                                        }
                                     }
-                                }
-                            }} />
+                                }} />
                         <label className={"labelFloatInput"}>Teléfono</label>
                     </div>
                 </div>
@@ -318,10 +318,9 @@ const EditService = () => {
                     <button ref={btnRef} name="serviceBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => {
                         editService(service.idService!!)
                     }}>Actualizar</button>
-                    <button name="serviceBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+                    <button name="serviceBtnCancel" className="btnStandard" onClick={() => serviceStore.setModalEdit(false)}>Cancelar</button>
                 </div>
             </div>
-            <ToastContainer style={{ margin: "50px" }} />
         </div>
     )
 }

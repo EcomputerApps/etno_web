@@ -60,7 +60,7 @@ const EditNecrologue = () => {
 
 
   return (
-    <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
+    <div className="flex flex-col h-screen w-1/2 border-2 rounded-md overflow-y-auto bg-white" >
       <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
@@ -148,9 +148,9 @@ const EditNecrologue = () => {
         <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => {
           updateNecrologue(necro.idDeath!!)
         }}>Publicar</button>
-        <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+        <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => necroStore.setModalEdit(false)}>Cancelar</button>
       </div>
-      <ToastContainer style={{ margin: "50px" }} />
+
     </div>
   )
 }

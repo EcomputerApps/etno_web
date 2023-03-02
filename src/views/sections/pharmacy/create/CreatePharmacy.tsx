@@ -144,7 +144,7 @@ const CreatePharmacy = () => {
         }
     }
     return (
-        <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
+        <div className="flex flex-col h-screen w-1/2 border-2 rounded-md overflow-y-auto bg-white" >
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -222,7 +222,7 @@ const CreatePharmacy = () => {
                     </div>
 
                     <div className="flex pt-2  p-1  relative ">
-                        <input type="number" ref={inputPeriod} min={0}  className="inputCamp peer w-20 px-2 mt-0.5 h-11 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                        <input type="number" ref={inputPeriod} min={0} className="inputCamp peer w-20 px-2 mt-0.5 h-11 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
                             onChange={(e) => {
                                 setPharmFrequency(e.currentTarget.valueAsNumber)
                             }}
@@ -453,9 +453,8 @@ const CreatePharmacy = () => {
             </div>
             <div className="flex m-auto justify-center p-3">
                 <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPharmacy()} onFocus={() => handleScheduleInput()}>Publicar</button>
-                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => pharmacyStore.setModalCreate(false)}>Cancelar</button>
             </div>
-            <ToastContainer style={{ marginBottom: "50px" }} />
         </div>
     )
 }

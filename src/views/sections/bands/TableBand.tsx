@@ -25,11 +25,11 @@ const TableBand = (prop: PropTable) => {
     const [showModal, setModal] = useState(false)
     function saveBand(band: Band) {
         bandStore.updateBand(band)
-        bandStore.setModal(true)
+        bandStore.setModalEdit(true)
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                           {bandStore.getModal ? (
+                           {bandStore.getModalEdit? (
                     <div>
                       <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                             <div className="md:w-1/3 w-full flex flex-col px-2 overflow-auto ">

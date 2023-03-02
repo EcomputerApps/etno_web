@@ -69,7 +69,7 @@ const EditNews = () => {
  }
  
   return(
-        <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
+        <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md bg-white">
         <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
@@ -163,10 +163,10 @@ const EditNews = () => {
         </div>
         <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
           <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => updateNews(news.idNew!!)}>Actualizar</button>
-          <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+          <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => newsStore.setModalEdit(false)}>Cancelar</button>
         </div>
         </div>
-        <ToastContainer/>
+   
       </div>
     )
 }

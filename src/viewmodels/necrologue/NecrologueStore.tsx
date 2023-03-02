@@ -19,9 +19,16 @@ class NecrologueStore{
     //Observables =>
     paginatedNecro: PaginatedNecro = {}
     necro: Necrologue = {}
+    modalCreate: boolean = false
+    modalEdit: boolean = false
 
     constructor() {
         makeObservable(this, {
+            modalEdit: observable,
+            modalCreate: observable,
+            setModalCreate: action,
+            getModalEdit: computed,
+            getModalCreate: computed,
             paginatedNecro: observable,
             necro: observable,
             updateNecro: action,
@@ -34,7 +41,21 @@ class NecrologueStore{
             getPaginatedNecro: computed
 
         })
+    
     }
+    setModalEdit(mode: boolean) {
+        this.modalEdit = mode
+    }
+    get getModalEdit() {
+        return this.modalEdit
+    }
+    setModalCreate(mode: boolean) {
+        this.modalCreate = mode
+    }
+    get getModalCreate() {
+        return this.modalCreate
+    }
+
     updateNecrologueList(necrologues: Necrologue[]) {
         this.paginatedNecro.content = necrologues
     }

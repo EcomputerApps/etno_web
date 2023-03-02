@@ -8,6 +8,7 @@ import POD from "../../../assets/menu/pharmacyOnDuty.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import { ToastContainer } from "react-toastify"
+import CreatePharmacy from "./create/CreatePharmacy"
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 const Pharmacy = () => {
   const [pageNumber, setPageNumber] = useState(0)
@@ -34,13 +35,19 @@ const Pharmacy = () => {
               <img src={POD} alt="de guardia" />
               Farmacias de guardia
             </button>
-            <button onClick={() => navigate("/addPharmacy")} type="button"
+            <button onClick={() => pharmacyStore.setModalCreate(true)} type="button"
               className="btnStandard ">
               <img src={Pencil} alt="create" />
               Crear
             </button>
           </div>
-
+          {pharmacyStore.getModalCreate ? (
+            <div>
+              <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                <CreatePharmacy />
+              </div>
+            </div>
+          ) : <></>}
         </div>
         <TablePharmacy currentPage={pageNumber} headerList={['tipo', 'nombre', 'horario', 'Dirección', 'Teléfono', 'enlace', 'acciones']} />
       </div>

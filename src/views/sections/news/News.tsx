@@ -7,6 +7,7 @@ import TableNews from "./TableNews"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import { ToastContainer } from "react-toastify"
+import CreateNews from "./create/CreateNews"
 const newsStore = NewsStore.getNewsStore()
 
 const News = () => {
@@ -29,11 +30,18 @@ const decrementPage = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Noticias</h2>
           <div className="ml-auto">
-            <button onClick={() => navigate("/addNews")} type="button" className="btnStandard">
+            <button onClick={() => newsStore.setModalCreate(true)} type="button" className="btnStandard">
               <img src={Pencil} alt="Create"/>
               Crear
             </button>
           </div>
+          {newsStore.getModalCreate ? (
+        <div>
+          <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <CreateNews />
+          </div>
+        </div>
+      ) : <></>}
         </div>
           <TableNews currentPage={pageNumber} headerList={['Categoría', 'Título', 'fecha', 'Descripción', 'Acciones']} />
        </div>

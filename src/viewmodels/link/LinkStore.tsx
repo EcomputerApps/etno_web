@@ -22,9 +22,16 @@ class LinkStore {
     title: string = ""
     id: string = ""
     linkString: string = ""
+     modalCreate: boolean = false
+    modalEdit: boolean = false
 
     constructor() {
         makeObservable(this, {
+            modalEdit: observable,
+            modalCreate: observable,
+            setModalCreate: action,
+            getModalEdit: computed,
+            getModalCreate: computed,
             paginatedLink: observable,
             title: observable,
             link: observable,
@@ -45,6 +52,19 @@ class LinkStore {
             getLinkString: computed
         })
     }
+setModalEdit(mode: boolean) {
+        this.modalEdit = mode
+    }
+    get getModalEdit() {
+        return this.modalEdit
+    }
+    setModalCreate(mode: boolean) {
+        this.modalCreate = mode
+    }
+    get getModalCreate() {
+        return this.modalCreate
+    }
+
     setTitle(title: string) {
         this.title = title
     }

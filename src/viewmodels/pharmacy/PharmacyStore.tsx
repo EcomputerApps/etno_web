@@ -19,9 +19,17 @@ class PharmacyStore {
     paginatedPharmacy: PaginatedPharmacy = {}
     pharmacy: Pharmacy = {}
     pharmacyOnDutyList: PharmacyOnDuty = {}
+    modalCreate: boolean = false
+    modalEdit: boolean = false
+
   
     constructor() {
         makeObservable(this, {
+            modalEdit: observable,
+            modalCreate: observable,
+            setModalCreate: action,
+            getModalEdit: computed,
+            getModalCreate: computed,
             paginatedPharmacy: observable,
             pharmacyOnDutyList: observable,
              updatePOD: action,
@@ -38,6 +46,19 @@ class PharmacyStore {
 
         })
     }
+    setModalEdit(mode: boolean) {
+        this.modalEdit = mode
+    }
+    get getModalEdit() {
+        return this.modalEdit
+    }
+    setModalCreate(mode: boolean) {
+        this.modalCreate = mode
+    }
+    get getModalCreate() {
+        return this.modalCreate
+    }
+
     updatePOD(pharmacys: Pharmacy[]) {
         this.pharmacyOnDutyList.content = pharmacys
     }

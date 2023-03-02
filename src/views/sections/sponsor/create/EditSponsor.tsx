@@ -63,7 +63,7 @@ const EditSponsor = () => {
     const [emptyDescption, setEmptyDescription] = useState(false)
 
     return (
-        <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
+<div className="flex flex-col h-screen w-1/2 border-2 rounded-md overflow-y-auto bg-white" >
             <div>
                 <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                     <div className="w-full flex flex-row p-2 justify-between">
@@ -152,10 +152,10 @@ const EditSponsor = () => {
                     <button ref={btnRef} name="sponsorBtnSave" className="btnStandard mr-10" onClick={() => {
                         updateSponsor(sponsor.idSponsor!!)
                     }}>Publicar</button>
-                    <button name="sponsorBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+                    <button name="sponsorBtnCancel" className="btnStandard" onClick={() => sponsorStore.setModalEdit(false)}>Cancelar</button>
                 </div>
             </div>
-            <ToastContainer style={{ margin: "50px" }} />
+         
         </div>
     )
 }

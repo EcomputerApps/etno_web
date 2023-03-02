@@ -4,6 +4,7 @@ import "../../../index.css"
 import { ToastContainer } from "react-toastify"
 import { useNavigate } from "react-router-dom"
 import { News} from "../../../models/section/Section"
+import EditNews from "./create/EditNews"
 const newsStore = NewsStore.getNewsStore()
 
 interface PropTable {
@@ -20,11 +21,18 @@ const TableNews = (prop: PropTable) => {
 
     function saveNews(news: News){
         newsStore.updateNews(news)   
-        navigate('/editNews')
+     newsStore.setModalEdit(true)
     }
 
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+             {newsStore.getModalEdit ? (
+        <div>
+          <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <EditNews />
+          </div>
+        </div>
+      ) : <></>}
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                     <tr>

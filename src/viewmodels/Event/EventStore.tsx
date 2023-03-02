@@ -18,9 +18,16 @@ class EventStore {
     //Observables =>
     paginatedEvent: PaginatedEvent = { }
     event: Event = {}
+    modalCreate: boolean = false
+    modalEdit: boolean = false
    
     constructor(){
         makeObservable(this, {
+            modalEdit: observable,
+            modalCreate: observable,
+            setModalCreate: action,
+            getModalEdit: computed,
+            getModalCreate: computed,
             paginatedEvent: observable,
             event: observable,
             getRequestEvents: action,
@@ -32,6 +39,18 @@ class EventStore {
             getPaginatedEvents: computed,
             getEvent: computed
         })
+    }
+    setModalEdit(mode: boolean) {
+        this.modalEdit = mode
+    }
+    get getModalEdit() {
+        return this.modalEdit
+    }
+    setModalCreate(mode: boolean) {
+        this.modalCreate = mode
+    }
+    get getModalCreate() {
+        return this.modalCreate
     }
     
     async addRequestEvent(locality: string, event: Event, file : File){

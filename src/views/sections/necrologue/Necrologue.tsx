@@ -7,6 +7,7 @@ import TableNecrologue from "./TableNecrologue"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import { ToastContainer } from "react-toastify"
+import CreateNecrologue from "./create/CreateNecrologue"
 const necrologueStore = NecrologueStore.getNecrologueStore()
 
 const Necrologue = () => {
@@ -29,11 +30,18 @@ const Necrologue = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Fallecimientos</h2>
           <div className="ml-auto">
-            <button onClick={() => navigate("/addNecrologue")} type="button" className="btnStandard">
+            <button onClick={() => necrologueStore.setModalCreate(true)} type="button" className="btnStandard">
               <img src={Pencil} alt="Create"/>
               Crear
             </button>
           </div>
+          {necrologueStore.getModalCreate ? (
+        <div>
+          <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <CreateNecrologue />
+          </div>
+        </div>
+      ) : <></>}
         </div>
         <TableNecrologue currentPage={pageNumber} headerList={['nombre', 'fecha de fallecimiento', 'Descripción', 'Acciones']} />
       </div>

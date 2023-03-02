@@ -65,12 +65,12 @@ const CreateAdvert = () => {
     }
 
     return (
-        <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
+        <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md bg-white">
             <div>
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
-                    <p className='flex  text-white text-3xl p-3'>ANUNCIOS</p>
+                    <p className='flex  text-white text-3xl p-3'>CREAR ANUNCIO</p>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3">
@@ -140,10 +140,10 @@ const CreateAdvert = () => {
             <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
                 <button ref={btnRef} name="advertBtnSave" className="btnStandard mr-10" onClick={addAd}>Publicar</button>
              
-                <button name="advertBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+                <button name="advertBtnCancel" className="btnStandard" onClick={() => advertStore.setModalCreate(false)}>Cancelar</button>
             </div>
             </div>
-            <ToastContainer style={{marginBottom : "50px"}}/>
+ 
         </div>
     )
 }

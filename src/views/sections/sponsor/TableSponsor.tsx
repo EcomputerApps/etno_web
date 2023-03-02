@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite"
 import { useNavigate } from "react-router-dom"
 import { Sponsor } from "../../../models/section/Section"
 import SposnsorStore from "../../../viewmodels/sponsor/SponsorStore"
+import EditSponsor from "./create/EditSponsor"
 
 const sponsorStore = SposnsorStore.getSponsorStore()
 
@@ -18,10 +19,17 @@ const TableSponsor = (prop: PropTable) => {
     const navigate = useNavigate()
     function saveSponsor(sponsor: Sponsor){
         sponsorStore.updateSponsor(sponsor)   
-        navigate('/editSponsor')
+        sponsorStore.setModalEdit(true)
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            {sponsorStore.getModalEdit ? (
+            <div>
+              <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                <EditSponsor />
+              </div>
+            </div>
+          ) : <></>}
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase  bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                     <tr>

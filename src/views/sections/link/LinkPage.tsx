@@ -9,6 +9,7 @@ import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import LinkStore from "../../../viewmodels/link/LinkStore"
 import { toast, ToastContainer } from "react-toastify"
 import { Link } from "../../../models/section/Section"
+import CreateLink from "./create/CreateLink"
 
 const linkStore = LinkStore.getLinkStore()
 
@@ -81,11 +82,18 @@ const LinkPage = () => {
             <div className="flex flex-row">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces</h2>
                 <div className="ml-auto">
-                    <button onClick={() => navigate("/addLink")} type="button" className="btnStandard">
+                    <button onClick={() => linkStore.setModalCreate(true)} type="button" className="btnStandard">
                         <img src={Pencil} alt="Create" />
                         Crear
                     </button>
                 </div>
+                {linkStore.getModalCreate ? (
+        <div>
+          <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <CreateLink />
+          </div>
+        </div>
+      ) : <></>}
             </div>
             <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-4">
                 <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -99,16 +107,17 @@ const LinkPage = () => {
                 <div>
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center ">
                         <div className="w-1/3 h-1/2 flex flex-col rounded-md">
+                            <p>{linkStore.getId}</p>
                             <button className="  text-blue-600  font-medium place-self-end bg-white rounded-full w-7 h-7 border-dark-purple border-2 mb-1 " onClick={() => setModal(false)}>X</button>
                             <div className="w-full  max-h-60 rounded-md flex flex-wrap bg-gray-100 relative">
-                                <p className="font-bold text-xl uppercase underline p-3 w-full text-center underline-offset-4 " >Editar</p>
+                                <p className="font-bold text-xl uppercase underline p-3 w-full text-center underline-offset-4 ">Editar</p>
                                 <div className="flex flex-wrap md:h-40 h-1/2 max-h-40  border-t-2 border-b-2 p-2 w-full">
                                     <div className="flex flex-col w-full">
                                         <input autoFocus className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getTitle} onChange={(e) =>linkStore.setTitle(e.currentTarget.value)}></input>
                                         <input className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getLinkString} onChange={(e) => linkStore.setLinkString(e.currentTarget.value)}></input>
                                     </div>
                                 </div>
-                                <div className=" absolute flex w-full justify-center bottom-1   ">
+                                <div className=" absolute flex w-full justify-center bottom-1">
                                     <button className="btnStandard disabled:bg-gray-600" onClick={() => updateLink(linkStore.getId)}>Guardar</button>
                                   
                                 </div>
@@ -145,7 +154,7 @@ const LinkPage = () => {
                     <img src={arrowRight} alt="forward" />
                 </button>
             </div>
-            <ToastContainer style={{ margin: "50px" }} />
+            <ToastContainer style={{ marginBottom: "50px" }} />
         </div>
     )
 }

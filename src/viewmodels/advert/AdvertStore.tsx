@@ -19,9 +19,18 @@ class AdvertStore {
     paginatedAdvert: PaginatedAdvert = {}
     isSuccess: boolean = false
     advert: Ad = {}
+    modalCreate: boolean = false
+    modalEdit: boolean = false
+
 
     constructor() {
         makeObservable(this, {
+            modalEdit: observable,
+            modalCreate: observable,
+            setModalCreate: action,
+            getModalEdit: computed,
+            getModalCreate: computed,
+            setModalEdit: action,
             paginatedAdvert: observable,
             advert: observable,
             isSuccess: observable,
@@ -36,6 +45,18 @@ class AdvertStore {
             getPaginatedAdverts: computed,
             getAdvert: computed
         })
+    }
+    setModalEdit(mode: boolean) {
+        this.modalEdit = mode
+    }
+    get getModalEdit() {
+        return this.modalEdit
+    }
+    setModalCreate(mode: boolean) {
+        this.modalCreate = mode
+    }
+    get getModalCreate() {
+        return this.modalCreate
     }
     
     updatePaginatedAdverts(paginatedAdverts: PaginatedAdvert) {

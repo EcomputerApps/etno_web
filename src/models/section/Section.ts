@@ -60,7 +60,7 @@ interface Reserv{
     email?: string,
     phone?: string,
     reservType?: string,
-    palce?: string,
+    place?: string,
     hall?: string,
     date?: Date,
     time?: string
@@ -278,5 +278,5 @@ export type {
     PaginatedNews, PaginatedTourism, PaginatedBand,
     PaginatedPharmacy, PaginatedService, PaginatedSponsor,
     PaginatedNecro, PaginatedIncident, PaginatedLink,
-    Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate 
+    Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserv 
 }

@@ -20,36 +20,47 @@ class BandStore {
     paginatedBand: PaginatedBand = {}
     allBandList: BandList = {}
     band: Band = {}
-    modal: boolean = false
-    
+    modalCreate: boolean = false
+    modalEdit: boolean = false
+
     constructor() {
         makeObservable(this, {
             paginatedBand: observable,
             band: observable,
-            modal: observable,
+            modalEdit: observable,
+            modalCreate: observable,
             updateBand: action,
             getBand: computed,
             addRequestBand: action,
             getRequestBand: action,
-            setModal: action,
-             deleteBand: action,
+            setModalCreate: action,
+            setModalEdit: action,
+            deleteBand: action,
             updateBandList: action,
             updatePaginatedBand: action,
             updateAllBandList: action,
             getPaginatedBands: computed,
             getAllBands: computed,
-            getModal : computed,
-      
-         
+            getModalEdit: computed,
+            getModalCreate: computed
+
+
         })
     }
-    setModal(mode: boolean) {
-        this.modal = mode
+    setModalEdit(mode: boolean) {
+        this.modalEdit = mode
     }
-    get getModal() {
-        return this.modal
+    get getModalEdit() {
+        return this.modalEdit
     }
-       updateBandList(bands: Band[]) {
+    setModalCreate(mode: boolean) {
+        this.modalCreate = mode
+    }
+    get getModalCreate() {
+        return this.modalCreate
+    }
+
+    updateBandList(bands: Band[]) {
         this.paginatedBand.content = bands
     }
     updateAllBandList(bands: Band[]) {

@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite"
 import { useNavigate } from "react-router-dom"
 import { Service } from "../../../models/section/Section"
 import ServiceStore from "../../../viewmodels/service/ServiceStore"
+import EditService from "./create/EditService"
 const serviceStore = ServiceStore.getServiceStore()
 
 interface PropTable {
@@ -17,10 +18,17 @@ const TableService = (prop: PropTable) => {
     const navigate = useNavigate()
     function saveService(service: Service){
         serviceStore.updateService(service)   
-        navigate('/editService')
+        serviceStore.setModalEdit(true)
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            {serviceStore.getModalEdit ? (
+            <div>
+              <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                <EditService />
+              </div>
+            </div>
+          ) : <></>}
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase  bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                     <tr>

@@ -21,7 +21,7 @@ const EditBand = () => {
   const [bandType, setBandType] = useState<string>(band.title!!)
   const [bandDescription, setBandDescription] = useState<string>(band.description!!)
   const [file, setFile] = useState<File>()
-  const [bandera, setBandera] = useState(true)
+ 
 
   function updateBand(bandId: string) {
     chekIfEmpty()
@@ -45,6 +45,7 @@ const EditBand = () => {
       }
 
       bandStore.editBand('Bolea', bandId, bando, file!!)
+      bandStore.getRequestBand('Bolea', 0, 5)
      
     }
   }
@@ -62,9 +63,11 @@ const EditBand = () => {
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
             <img src={logoEtno} alt="logo_Etno"></img>
-            <p className='flex  text-white text-3xl p-3'>BANDOS</p>
+            <p className='flex  text-white text-3xl p-3'>EDITAR BANDO</p>
           </div>
         </div>
+      id check
+        <p>{band.idBando}</p>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className=" flex flex-col p-1 mt-5  relative">
             <input autoFocus placeholder=" " defaultValue={band.title}
@@ -127,10 +130,10 @@ const EditBand = () => {
         </div>
         <div className="md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
           <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => updateBand(band.idBando!!)}>Actualizar</button>
-          <button name="bandBtnCancel" className="btnStandard" onClick={() => bandStore.setModal(false)}>Cancelar</button>
+          <button name="bandBtnCancel" className="btnStandard" onClick={() => bandStore.setModalEdit(false)}>Cancelar</button>
         </div>
       </div>
-      <ToastContainer style={{ marginBottom: "50px" }} />
+      
     </div>
   )
 }

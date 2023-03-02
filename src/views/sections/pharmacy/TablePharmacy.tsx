@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pharmacy } from "../../../models/section/Section";
 import PharmacyStore from "../../../viewmodels/pharmacy/PharmacyStore";
+import EditPharmacy from "./create/EditPharmacy";
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 interface PropTable {
     headerList: string[],
@@ -16,10 +17,20 @@ const TablePharmacy = (prop: PropTable) => {
     }
     function savePharm( pharm: Pharmacy){
         pharmacyStore.updatePharmacy(pharm)
-        navigate("/editPharmacy")
+        pharmacyStore.setModalEdit(true)
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+             {pharmacyStore.getModalEdit? (
+                    <div>
+                      <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                            
+                               
+                               <EditPharmacy/>
+                          
+                        </div>
+                    </div>
+                ) : <></>}
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase  bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                     <tr>

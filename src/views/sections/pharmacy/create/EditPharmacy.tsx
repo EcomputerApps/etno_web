@@ -89,7 +89,8 @@ const EditPharmacy = () => {
         }
     }
 
-    function updatePharmacy() {
+    function updatePharmacy( pharmaciId: string) {
+        chekIfEmpty()
         if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
             pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
             pharmacyLong === '' || pharmacyLat === '') {
@@ -134,7 +135,7 @@ const EditPharmacy = () => {
     const [emptyDescption, setEmptyDescription] = useState(false)
 
     return (
-        <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2 rounded-md" >
+        <div className="flex flex-col h-screen w-1/2 border-2 rounded-md overflow-y-auto bg-white" >
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -427,10 +428,10 @@ const EditPharmacy = () => {
                 </div>
             </div>
             <div className="flex m-auto justify-center p-3">
-                <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => updatePharmacy()}>Publicar</button>
-                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+                <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => updatePharmacy(pharmacy.idPharmacy!!)}>Publicar</button>
+                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => pharmacyStore.setModalEdit(false)}>Cancelar</button>
             </div>
-            <ToastContainer style={{ margin: "30px" }} />
+           
         </div>
     )
 }

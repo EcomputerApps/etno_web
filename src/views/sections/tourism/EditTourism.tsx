@@ -1,9 +1,9 @@
 import { toast, ToastContainer } from "react-toastify"
-import logoEtno from '../../../../assets/logo_etno.png'
-import add_Photo from '../../../../assets/menu/add_photo.svg'
-import "../../../../index.css"
+import logoEtno from '../../../assets/logo_etno.png'
+import add_Photo from '../../../assets/menu/add_photo.svg'
+import "../../../index.css"
 import GoogleMapReact from 'google-map-react';
-import markerIcon from "../../../../assets/marker.svg"
+import markerIcon from "../../../assets/marker.svg"
 import TourismStore from "../../../viewmodels/tourism/TourismStore"
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
@@ -78,12 +78,12 @@ const EditTourism = () => {
       }
       
     return(
-        <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
+        <div className="flex flex-col md:m-auto w-full md:w-1/2 h-screen border-2 rounded-md overflow-y-auto bg-white">
       <div>
       <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
         <div className="w-full flex flex-row p-2 justify-between">
           <img src={logoEtno} alt="logo_Etno"></img>
-          <p className='flex  text-white text-3xl p-3'>TURISMO</p>
+          <p className='flex  text-white text-3xl p-3'>EDITAR TURISMO</p>
         </div>
       </div>
       <div className="w-full flex flex-1 flex-col mt-5 pl-3">
@@ -198,7 +198,7 @@ const EditTourism = () => {
       <div className="  flex m-auto justify-center left-0 right-0 p-3 bottom-1">
 
         <button ref={btnRef} name="tourismBtnSave" className="btnStandard mr-10" onClick={() => updateTourism()}>Publicar</button>
-        <button name="tourismBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+        <button name="tourismBtnCancel" className="btnStandard" onClick={() => tourismStore.setModalEdit(false)}>Cancelar</button>
       </div>
       </div>
       <ToastContainer/>

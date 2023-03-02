@@ -61,7 +61,7 @@ const CreateLink = () => {
 
 
     return (
-        <div className="flex flex-col h-screen md:m-auto w-full md:w-1/2 border-2 rounded-md relative   " >
+        <div className="flex flex-col h-screen md:m-auto w-full md:w-1/2 border-2 rounded-md relative  bg-white " >
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -101,9 +101,9 @@ const CreateLink = () => {
             </div>
             <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
                 <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => addLink()}>Publicar</button>
-                <button name="bandBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+                <button name="bandBtnCancel" className="btnStandard" onClick={() => linkStore.setModalCreate(false)}>Cancelar</button>
             </div>
-            <ToastContainer style={{ margin: "50px" }} />
+   
         </div>
 
     )

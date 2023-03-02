@@ -94,7 +94,7 @@ const CreateService = () => {
     const [emptyWebUrl, setEmptyWebUrl] = useState(false)
     const [emptyTel, setEmptyTel] = useState(false)
     const [emptyDescption, setEmptyDescription] = useState(false)
-    
+
 
 
     function addService() {
@@ -138,12 +138,13 @@ const CreateService = () => {
     }
 
     return (
-        <div className="flex flex-col md:m-auto w-full md:w-1/2 md:h-screen border-2 rounded-md">
+        <div className="flex flex-col h-screen w-1/2 border-2 rounded-md overflow-y-auto bg-white" >
+
             <div>
                 <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                     <div className="w-full flex flex-row p-2 justify-between">
                         <img src={logoEtno} alt="logo_Etno"></img>
-                        <p className='flex  text-white text-3xl p-3'>SERVICIOS</p>
+                        <p className='flex  text-white text-3xl p-3'>CREAR SERVICIO</p>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-8 pl-3">
@@ -338,10 +339,9 @@ const CreateService = () => {
                     <button ref={btnRef} name="serviceBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => {
                         addService()
                     }}>Publicar</button>
-                    <button name="serviceBtnCancel" className="btnStandard" onClick={() => navigate("/home")}>Cancelar</button>
+                    <button name="serviceBtnCancel" className="btnStandard" onClick={() => serviceStore.setModalCreate(false)}>Cancelar</button>
                 </div>
             </div>
-            <ToastContainer style={{ marginBottom: "50px" }} />
         </div>
     )
 }
