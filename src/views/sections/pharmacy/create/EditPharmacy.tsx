@@ -9,6 +9,11 @@ import markerIcon from "../../../../assets/marker.svg"
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
 import moment from 'moment';
 import { Pharmacy } from '../../../../models/section/Section';
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
@@ -119,6 +124,8 @@ const EditPharmacy = () => {
                 frequencyInDays: pharmFrequency
             }
             pharmacyStore.editPharmacy('Bolea', pharmacy.idPharmacy!!, pharmacy_, file!!)
+            sideBarStore.updateSection('Farmacias') 
+            hoverSectionStore.setName('Farmacias')
         }
     }
     function chekIfEmpty() {

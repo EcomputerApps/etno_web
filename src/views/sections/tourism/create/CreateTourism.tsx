@@ -9,7 +9,11 @@ import GoogleMapReact from 'google-map-react';
 
 import TourismStore from "../../../../viewmodels/tourism/TourismStore"
 import markerIcon from "../../../../assets/marker.svg"
+import HoverSectionStore from "../../../../viewmodels/hoverSection/HoverSectionStore"
+import SideBarStore from "../../../../viewmodels/sidebar/SideBarStore"
 const tourismStore = TourismStore.getTourismStore()
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 interface Marker {
   lat: number,
@@ -81,7 +85,7 @@ const CreateTourism = () => {
           draggable: true,
           progress: undefined,
           theme: 'light'
-        }) : tourismStore.addRequestTourism('Bolea', tourism, file!!)
+        }) : tourismStore.addRequestTourism('Bolea', tourism, file!!); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
     }
   }
   function checkIfEmpty() {

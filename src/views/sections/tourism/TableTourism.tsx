@@ -14,7 +14,6 @@ interface PropTable {
 }
 
 const TableTourism = (prop: PropTable) => {
-    const navigate = useNavigate()
     const deleteTourism = async (event: string) => {
         await tourismStore.deleteTourism('Bolea', event)
     }

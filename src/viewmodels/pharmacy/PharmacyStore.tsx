@@ -5,7 +5,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class PharmacyStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {
@@ -82,8 +82,7 @@ class PharmacyStore {
         return this.pharmacy
     }
 
-   
-
+    
     async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
@@ -159,6 +158,9 @@ class PharmacyStore {
                 progress: undefined,
                 theme: 'light'
             })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'top-center',
@@ -197,6 +199,9 @@ class PharmacyStore {
                 progress: undefined,
                 theme: "light"
             })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',

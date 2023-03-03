@@ -7,7 +7,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class BandStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static bandStore: BandStore
 
     static getBandStore() {
@@ -105,6 +105,9 @@ class BandStore {
                 progress: undefined,
                 theme: "light"
             })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'bottom-center',
@@ -192,6 +195,9 @@ class BandStore {
                 progress: undefined,
                 theme: "light"
             })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',

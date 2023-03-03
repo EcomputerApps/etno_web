@@ -8,8 +8,12 @@ import EventStore from '../../../../viewmodels/Event/EventStore';
 import { toast, ToastContainer } from 'react-toastify';
 import { Event } from '../../../../models/section/Section';
 import React from 'react';
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 
 const eventStore = EventStore.getEventStore()
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const EditEvent = () => {
   const navigate = useNavigate()
@@ -71,6 +75,8 @@ const EditEvent = () => {
           endDate: eventDateFin
         }
         eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+        sideBarStore.updateSection('Eventos') 
+        hoverSectionStore.setName('Eventos')
       }
 
     } else {
@@ -104,6 +110,8 @@ const EditEvent = () => {
           endDate: eventDateFin
         }
         eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+        sideBarStore.updateSection('Eventos')
+        hoverSectionStore.setName('Eventos')
       }
     }
 

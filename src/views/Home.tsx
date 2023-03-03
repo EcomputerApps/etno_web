@@ -23,7 +23,6 @@ import Tourism from './sections/tourism/Tourism'
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
-
 const Home = () => {
 
   const navigate = useNavigate()

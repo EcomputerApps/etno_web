@@ -79,10 +79,6 @@ const CreateNews = () => {
         })
         } else {
         newsStore.addRequestNews('Bolea', news, file!!)
-        
-        setTimeout(function(){
-          window.location.reload();
-       }, 1500);
         }
     }
   }

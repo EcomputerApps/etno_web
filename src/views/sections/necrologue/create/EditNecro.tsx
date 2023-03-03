@@ -7,6 +7,10 @@ import NecrologueStore from '../../../../viewmodels/necrologue/NecrologueStore'
 import { Necrologue } from '../../../../models/section/Section'
 import { toast, ToastContainer } from 'react-toastify'
 import moment from 'moment'
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore'
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore'
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const necroStore = NecrologueStore.getNecrologueStore()
 
@@ -43,7 +47,7 @@ const EditNecrologue = () => {
             description: necroDescription,
             imageUrl: necro.imageUrl
           }
-          necroStore.editNecro('Bolea', necroId, newNecro, file!!)
+          necroStore.editNecro('Bolea', necroId, newNecro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
     }
   }
   function chekIfEmpty() {

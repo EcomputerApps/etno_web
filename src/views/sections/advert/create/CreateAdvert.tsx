@@ -9,8 +9,12 @@ import { Ad } from '../../../../models/section/Section'
 import AdvertStore from '../../../../viewmodels/advert/AdvertStore'
 import { toast, ToastContainer } from 'react-toastify'
 import { observer } from 'mobx-react-lite'
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore'
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore'
 
 const advertStore = AdvertStore.getAdvertStore()
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const CreateAdvert = () => {
     const navigate = useNavigate()
@@ -61,7 +65,8 @@ const CreateAdvert = () => {
                     draggable: true,
                     progress: undefined,
                     theme: "light"
-                }) : advertStore.addRequestAdvert('Bolea', ad, file!!)
+                }) : advertStore.addRequestAdvert('Bolea', ad, file!!); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
+                
         }
     }
 

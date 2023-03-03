@@ -6,6 +6,10 @@ import "../../../../index.css"
 import NecrologueStore from '../../../../viewmodels/necrologue/NecrologueStore'
 import { Necrologue } from '../../../../models/section/Section'
 import { toast, ToastContainer } from 'react-toastify'
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore'
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore'
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const necroStore = NecrologueStore.getNecrologueStore()
 
@@ -51,7 +55,7 @@ const CreateNecrologue = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) : necroStore.addRequestNecro('Bolea', necro, file!!)
+        }) : necroStore.addRequestNecro('Bolea', necro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
     }
   }
 

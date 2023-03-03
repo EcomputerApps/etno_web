@@ -6,8 +6,12 @@ import { Link } from '../../../../models/section/Section';
 import { toast, ToastContainer } from 'react-toastify';
 import { useForm, SubmitHandler } from "react-hook-form";
 import ImageStore from '../../../../viewmodels/image/ImageStore';
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 const regEx = new RegExp(/[^A-Za-z0-9\s]+/)
 
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const linkStore = LinkStore.getLinkStore()
 
 interface LinkInput {
@@ -53,10 +57,9 @@ const CreateLink = () => {
                         theme: "light"
                     })
                 } else {
-                    linkStore.addRequestLink('Bolea', link)
+                    linkStore.addRequestLink('Bolea', link); sideBarStore.updateSection('Enlaces'); hoverSectionStore.setName('Enlaces')
                 }
             }
-        
     }
 
 

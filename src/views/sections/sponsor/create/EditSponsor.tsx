@@ -5,7 +5,11 @@ import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import { Sponsor } from '../../../../models/section/Section';
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import SposnsorStore from '../../../../viewmodels/sponsor/SponsorStore';
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const sponsorStore = SposnsorStore.getSponsorStore()
 const EditSponsor = () => {
@@ -45,10 +49,9 @@ const EditSponsor = () => {
 
             }
             sponsorStore.editSponsor('Bolea', sponsorId, newSponsor, file!!)
+            sideBarStore.updateSection('Patrocinadores') 
+            hoverSectionStore.setName('Patrocinadores')
         }
-
-
-
 
     }
 

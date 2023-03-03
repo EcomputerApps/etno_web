@@ -10,6 +10,10 @@ import Datepicker from "react-tailwindcss-datepicker";
 import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../assets/marker.svg"
 import moment from 'moment';
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 interface Marker {
     lat: number,
@@ -140,7 +144,7 @@ const CreatePharmacy = () => {
                     draggable: true,
                     progress: undefined,
                     theme: "light"
-                }) : pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!)
+                }) : pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
         }
     }
     return (

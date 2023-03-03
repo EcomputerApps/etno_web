@@ -5,7 +5,11 @@ import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import { Ad } from "../../../../models/section/Section"
 import AdvertStore from "../../../../viewmodels/advert/AdvertStore"
+import HoverSectionStore from "../../../../viewmodels/hoverSection/HoverSectionStore"
+import SideBarStore from "../../../../viewmodels/sidebar/SideBarStore"
 const advertStore = AdvertStore.getAdvertStore()
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const EditAdvert = () => {
     const navigate = useNavigate()
@@ -42,6 +46,8 @@ const EditAdvert = () => {
                 webUrl: advertLink
             }
             advertStore.editAdvert('Bolea', advert.idAd!!, advert_, file!!)
+            sideBarStore.updateSection('Anuncios') 
+            hoverSectionStore.setName('Anuncios')
         }
     }
 

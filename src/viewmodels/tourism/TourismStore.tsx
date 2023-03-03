@@ -5,7 +5,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class TourismStore{
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static tourismStore: TourismStore
 
     static getTourismStore(){
@@ -97,6 +97,9 @@ class TourismStore{
                 progress: undefined,
                 theme: "light"
           })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
         }else{
             toast.error('No se ha podido añadir exitosamente', {
                 position: 'top-center',
@@ -135,6 +138,9 @@ class TourismStore{
                 progress: undefined,
                 theme: 'light'
             })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'top-center',

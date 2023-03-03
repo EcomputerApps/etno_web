@@ -5,7 +5,11 @@ import logoEtno from '../../../../assets/logo_etno.png';
 import add_Photo from '../../../../assets/menu/add_photo.svg';
 import "../../../../index.css";
 import { Service } from '../../../../models/section/Section';
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import ServiceStore from '../../../../viewmodels/service/ServiceStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const serviceStore = ServiceStore.getServiceStore()
 

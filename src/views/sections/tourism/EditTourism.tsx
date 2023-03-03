@@ -9,9 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import { Tourism } from "../../../models/section/Section";
 import { observer } from "mobx-react-lite";
+import SideBarStore from "../../../viewmodels/sidebar/SideBarStore";
+import HoverSectionStore from "../../../viewmodels/hoverSection/HoverSectionStore";
 
-
+const sideBarStore = SideBarStore.getSideBarStore()
 const tourismStore = TourismStore.getTourismStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 interface Marker {
   lat: number,
@@ -80,7 +83,7 @@ const EditTourism = () => {
         latitude: tourismLat
       }
       tourismStore.editTourism('Bolea', tourism.idTourism!!, tourism_, file!!)
-
+      sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
     }
   }
   function checkIfEmpty() {

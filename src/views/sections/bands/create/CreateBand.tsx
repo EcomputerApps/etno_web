@@ -7,6 +7,11 @@ import BandStore from '../../../../viewmodels/band/BandsStore';
 import { Band } from "../../../../models/section/Section"
 import { toast, ToastContainer } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const bandStore = BandStore.getBandStore()
 
@@ -45,12 +50,7 @@ const CreateBand = () => {
     }
     bandStore.getAllBands.bandos?.map((item) => {
       if (item.title === bando.title)
-
         setFlag(true)
-      console.log(item.title)
-      console.log(flag)
-      console.log(bando.title)
-
     })
     if (flag) {
       toast.info('Ya existe este bando', {
@@ -76,7 +76,7 @@ const CreateBand = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) : bandStore.addRequestBand('Bolea', bando, file!!)
+        }) : bandStore.addRequestBand('Bolea', bando, file!!); sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
        
     }
   }

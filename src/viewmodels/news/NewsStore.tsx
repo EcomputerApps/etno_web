@@ -101,6 +101,9 @@ class NewsStore{
                 progress: undefined,
                 theme: "light"
           })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
           
         }else{
             toast.error('No se ha añadido', {
@@ -139,6 +142,9 @@ class NewsStore{
                 progress: undefined,
                 theme: "light"
           })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'top-center',

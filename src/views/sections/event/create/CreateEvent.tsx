@@ -9,7 +9,11 @@ import { Event } from '../../../../models/section/Section';
 
 import EventStore from '../../../../viewmodels/Event/EventStore';
 import { toast, ToastContainer } from 'react-toastify';
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 const eventStore = EventStore.getEventStore()
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const CreateEvent = () => {
   const inputRefDir = useRef<HTMLInputElement>(null)
@@ -93,13 +97,12 @@ const CreateEvent = () => {
             draggable: true,
             progress: undefined,
             theme: 'light'
-          }) : eventStore.addRequestEvent('Bolea', event, file!!)
+          }) : eventStore.addRequestEvent('Bolea', event, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
 
       }
 
     }
   }
-  const navigate = useNavigate()
 
   const freeOrNot = (payType: boolean) => {
     if (payType) {

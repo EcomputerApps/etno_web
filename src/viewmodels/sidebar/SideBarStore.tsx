@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { makePersistable } from "mobx-persist-store";
 import { PanelHandler } from "../../models/panel/Panel";
 
 class SideBarStore{
@@ -40,6 +41,7 @@ class SideBarStore{
             updateSection: action,
             getPanel: computed
         })
+        makePersistable(this,{ name: 'SideBarStore', properties: ['panel'], storage: window.localStorage })
     }
 
     panelHandler(){
