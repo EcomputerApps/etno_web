@@ -6,7 +6,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class NecrologueStore{
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static necrologueStore: NecrologueStore
 
     static getNecrologueStore() {
@@ -137,6 +137,9 @@ class NecrologueStore{
                 progress: undefined,
                 theme: "light"
             })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
@@ -174,6 +177,9 @@ class NecrologueStore{
                 progress: undefined,
                 theme: "light"
           })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'top-center',

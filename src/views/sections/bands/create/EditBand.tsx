@@ -7,6 +7,10 @@ import BandStore from '../../../../viewmodels/band/BandsStore';
 import { Band } from "../../../../models/section/Section"
 import { toast, ToastContainer } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const bandStore = BandStore.getBandStore()
 
@@ -45,8 +49,8 @@ const EditBand = () => {
       }
 
       bandStore.editBand('Bolea', bandId, bando, file!!)
-      bandStore.getRequestBand('Bolea', 0, 5)
-
+     // bandStore.getRequestBand('Bolea', 0, 5)
+     sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
     }
   }
   function chekIfEmpty() {
@@ -66,8 +70,6 @@ const EditBand = () => {
             <p className='flex  text-white text-3xl p-3'>EDITAR BANDO</p>
           </div>
         </div>
-        id check
-        <p>{band.idBando}</p>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className=" flex flex-col p-1 mt-5  relative">
             <input autoFocus placeholder=" " defaultValue={band.title}
@@ -133,7 +135,6 @@ const EditBand = () => {
           <button name="bandBtnCancel" className="btnStandard" onClick={() => bandStore.setModalEdit(false)}>Cancelar</button>
         </div>
       </div>
-
     </div>
   )
 }

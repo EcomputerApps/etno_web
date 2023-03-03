@@ -6,7 +6,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class LinkStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static linkStore: LinkStore
 
     static getLinkStore() {
@@ -161,6 +161,9 @@ setModalEdit(mode: boolean) {
                 progress: undefined,
                 theme: "light"
             })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
@@ -195,6 +198,9 @@ setModalEdit(mode: boolean) {
                 progress: undefined,
                 theme: "light"
           })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'top-center',

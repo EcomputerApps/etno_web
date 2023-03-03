@@ -65,10 +65,6 @@ const EditNews = () => {
       imageUrl: news.imageUrl
     }
       newsStore.editNews('Bolea', news.idNew!!, news_, file!!)
-      
-      setTimeout(function(){
-        window.location.reload();
-     }, 1500);
   }
  }
 
