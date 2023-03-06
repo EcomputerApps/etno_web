@@ -19,37 +19,16 @@ const CreateService = () => {
     const navigate = useNavigate()
     const arrayServiceTypes = [{
         "id": "checkOne",
-        "value": "Restaurante",
-        "title": "Restaurante",
+        "value": "Servicio",
+        "title": "Servicio",
     }, {
         "id": "checkTwo",
-        "value": "Alojamiento",
-        "title": "Alojamiento",
+        "value": "Salud",
+        "title": "Salud",
     }, {
         "id": "checkThree",
-        "value": "Casa Rural",
-        "title": "Casa Rural",
-    }, {
-        "id": "checkFour",
-        "value": "Piscina",
-        "title": "Piscina",
-    }, {
-        "id": "checkFive",
-        "value": "Iglesia",
-        "title": "Iglesia",
-    }, {
-        "id": "checkSix",
-        "value": "Productos",
-        "title": "Productos",
-    }, {
-        "id": "checkSeven",
-        "value": "Bar",
-        "title": "Bar",
-    },
-    {
-        "id": "checkEight",
-        "value": "Ninguno",
-        "title": "Ninguno",
+        "value": "Ocio",
+        "title": "Ocio",
     }]
 
     const inputWebUrl = useRef<HTMLInputElement>(null)
@@ -98,8 +77,6 @@ const CreateService = () => {
     const [emptyWebUrl, setEmptyWebUrl] = useState(false)
     const [emptyTel, setEmptyTel] = useState(false)
     const [emptyDescption, setEmptyDescription] = useState(false)
-
-
 
     function addService() {
         const service: Service = {
