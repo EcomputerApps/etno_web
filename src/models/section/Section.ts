@@ -59,11 +59,48 @@ interface Reserv{
     name?: string,
     email?: string,
     phone?: string,
-    reservType?: string,
+    isPrivate?: boolean,
     place?: string,
     hall?: string,
-    date?: Date,
-    time?: string
+    date?: string[],
+    time?: string[]
+}
+interface ReservList{
+    reservs? : Reserv[]
+}
+interface PaginatedReserv {
+    content?: Reserv[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
+}
+interface Hall{
+    idHall?: string,
+    username?: string,
+    hallName?: string,
+    timeStripe?: number,
+    price?: number,
+    workDays?: string,
+    morningTime?: string,
+    eveningTime?:string,
+    isActive?: boolean
+}
+
+interface Place{
+    idPlace?: string,
+    username?: string,
+    placeName?: string,
+    lat?: string,
+    long?: string,
+    hall?: Hall[],
+  
+}
+
+interface PaginatedPlace{
+    content?: Place[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
 }
 
 interface Ad {
@@ -278,5 +315,6 @@ export type {
     PaginatedNews, PaginatedTourism, PaginatedBand,
     PaginatedPharmacy, PaginatedService, PaginatedSponsor,
     PaginatedNecro, PaginatedIncident, PaginatedLink,
-    Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserv 
+    Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserv, 
+    ReservList, PaginatedReserv, Place, Hall,PaginatedPlace
 }
