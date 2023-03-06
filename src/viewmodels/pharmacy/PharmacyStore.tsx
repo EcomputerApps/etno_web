@@ -5,7 +5,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class PharmacyStore {
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {
@@ -22,7 +22,7 @@ class PharmacyStore {
     modalCreate: boolean = false
     modalEdit: boolean = false
 
-  
+
     constructor() {
         makeObservable(this, {
             modalEdit: observable,
@@ -32,7 +32,7 @@ class PharmacyStore {
             getModalCreate: computed,
             paginatedPharmacy: observable,
             pharmacyOnDutyList: observable,
-             updatePOD: action,
+            updatePOD: action,
             pharmacy: observable,
             updatePharmacy: action,
             getPharmacy: computed,
@@ -82,7 +82,7 @@ class PharmacyStore {
         return this.pharmacy
     }
 
-    
+
     async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
@@ -97,7 +97,7 @@ class PharmacyStore {
         const pharmacy = await response.json()
         this.updatePOD(pharmacy)
     }
-    
+
     async deletePharmacy(username: string, name: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/pharmacy?username=${username}&name=${name}`, {
             method: 'DELETE',
@@ -135,8 +135,8 @@ class PharmacyStore {
 
     }
 
-    async editPharmacy(locality: string, pharmacyId: string, pharmacy: Pharmacy, file: File){
-        if (file !== undefined){
+    async editPharmacy(locality: string, pharmacyId: string, pharmacy: Pharmacy, file: File) {
+        if (file !== undefined) {
             await imageStore.addImageAPI('Bolea', 'farmacia', 'farmacia', file)
             pharmacy.imageUrl = imageStore.getImage.link
         }
@@ -147,7 +147,7 @@ class PharmacyStore {
                 'Content-type': 'application/json; charset=UTF-8'
             }
         })
-        if (response.ok){
+        if (response.ok) {
             toast.success('Se ha actualizado exitosamente', {
                 position: 'top-center',
                 autoClose: 500,
@@ -158,9 +158,9 @@ class PharmacyStore {
                 progress: undefined,
                 theme: 'light'
             })
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.reload();
-             }, 1500);
+            }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'top-center',
@@ -199,9 +199,9 @@ class PharmacyStore {
                 progress: undefined,
                 theme: "light"
             })
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.reload();
-             }, 1500);
+            }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',

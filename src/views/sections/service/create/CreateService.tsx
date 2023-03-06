@@ -68,8 +68,10 @@ const CreateService = () => {
     const [serviceDescription, setServiceDescription] = useState<string>("")
     const [serviceTel, setServiceTel] = useState<string>("")
     const [serviceShcedulSelector, setServiceShcedulSelector] = useState<string>("Lunes-Viernes")
-    const [serviceShcedulMorning, setServiceShcedulMorning] = useState<string>("")
-    const [serviceShcedulEven, setServiceShcedulEven] = useState<string>("")
+    const [serviceShcedulMorningOne, setServiceShcedulMorningOne] = useState<string>("")
+    const [serviceShcedulEvenOne, setServiceShcedulEvenOne] = useState<string>("")
+    const [serviceShcedulMorningTwo, setServiceShcedulMorningTwo] = useState<string>("")
+    const [serviceShcedulEvenTwo, setServiceShcedulEvenTwo] = useState<string>("")
     const [serviceShcedulExtra, setServiceShcedulExtra] = useState<string>("")
     const [serviceSchedule, setServiceSchedule] = useState<string>("")
 
@@ -79,7 +81,8 @@ const CreateService = () => {
         if (serviceShcedulSelector === "Otro") {
             setServiceSchedule(serviceShcedulExtra)
         } else {
-            setServiceSchedule(serviceShcedulSelector + " " + serviceShcedulMorning + " " + serviceShcedulEven)
+            setServiceSchedule(serviceShcedulSelector + " " + serviceShcedulMorningOne + "-" + serviceShcedulMorningTwo +
+            " " + serviceShcedulEvenOne + "-" + serviceShcedulEvenTwo)
         }
     }
     function chekIfEmpty() {
@@ -88,6 +91,10 @@ const CreateService = () => {
         file === undefined ? setEmptyFile(true) : setEmptyFile(false)
         serviceWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
         serviceTel === "" ? setEmptyTel(true) : setEmptyTel(false)
+        serviceShcedulMorningOne === "" ? setEmptyScheMorningOne(true) : setEmptyScheMorningOne(false)
+        serviceShcedulEvenOne === "" ? setEmptyScheEveningOne(true) : setEmptyScheEveningOne(false)
+        serviceShcedulMorningTwo === "" ? setEmptyScheMorningTwo(true) : setEmptyScheMorningTwo(false)
+        serviceShcedulEvenTwo === "" ? setEmptyScheEveningTwo(true) : setEmptyScheEveningTwo(false)
         serviceDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
 
     }
@@ -97,6 +104,10 @@ const CreateService = () => {
     const [emptyFile, setEmptyFile] = useState(false)
     const [emptyWebUrl, setEmptyWebUrl] = useState(false)
     const [emptyTel, setEmptyTel] = useState(false)
+    const [emptyScheMorningOne, setEmptyScheMorningOne] = useState(false)
+    const [emptyScheEveningOne, setEmptyScheEveningOne] = useState(false)
+    const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState(false)
+    const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState(false)
     const [emptyDescption, setEmptyDescription] = useState(false)
 
 
@@ -125,9 +136,11 @@ const CreateService = () => {
         } else {
             chekIfEmpty()
             serviceType === "" || serviceName === "" || serviceDescription === "" ||
-                serviceWebUrl === "" || serviceTel === "" || serviceSchedule === "" || file === undefined
+                serviceWebUrl === "" || serviceTel === "" ||  serviceShcedulMorningOne === "" 
+                || serviceShcedulEvenOne === "" || serviceShcedulMorningTwo === "" || serviceShcedulEvenTwo === "" 
+                 || file === undefined
                 ?
-                toast.info('Rellene los campos', {
+                toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
                     hideProgressBar: false,
@@ -228,7 +241,7 @@ const CreateService = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <input maxLength={9} ref={inputTel} placeholder=" " name="serviceTel" type="text" onInput={(e) =>
+                        <input maxLength={9} minLength={9} ref={inputTel} placeholder=" " name="serviceTel" type="text" onInput={(e) =>
                             e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className={`inputCamp peer  w-1/4 ${emptyTel ? 'border-red-600'
                                 : ''
                                 }`} onChange={(e) => {
@@ -266,39 +279,76 @@ const CreateService = () => {
                             <label className={"labelFloatDate"}>Horario</label>
                             <div className="p-3 flex flex-row" >
                                 <div hidden={serviceShcedulSelector === "Otro"} className="w-full">
-                                    <div className="relative p-2">
-                                        <input ref={inputScheMorn} placeholder=" " name="pharmacyShedulesMorning" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
-                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                if (inputScheEven.current != null) {
-                                                    inputScheEven.current.focus()
+                                    <div className="relative p-2 flex lg:flex-row flex-col">
+                                        <input ref={inputScheMorn} placeholder=" " name="serviceShedulesMorningOne" type="time"
+                                            className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheMorningOne ? 'border-red-600'
+                                                : ''
+                                                }`}
+                                            onKeyDown={(e) => {
+                                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                    if (inputScheEven.current != null) {
+                                                        inputScheEven.current.focus()
+                                                    }
                                                 }
-                                            }
-                                        }} onChange={(e) => {
-                                            setServiceShcedulMorning(e.target.value)
-                                        }} />
+                                            }} onChange={(e) => {
+                                                setServiceShcedulMorningOne(e.target.value)
+                                                setEmptyScheMorningOne(false)
+                                            }} />
+                                        <input ref={inputScheMorn} placeholder=" " name="serviceShedulesMorningTwo" type="time"
+                                            className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheMorningTwo ? 'border-red-600'
+                                                : ''
+                                                }`}
+                                            onKeyDown={(e) => {
+                                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                    if (inputScheEven.current != null) {
+                                                        inputScheEven.current.focus()
+                                                    }
+                                                }
+                                            }} onChange={(e) => {
+                                                setServiceShcedulMorningTwo(e.target.value)
+                                                setEmptyScheMorningTwo(false)
+                                            }} />
                                         <label className={"labelFloatInput"}>Mañana</label>
                                     </div>
                                 </div>
                                 <div hidden={serviceShcedulSelector === "Otro"} className="w-full">
-                                    <div className="relative p-2">
-                                        <input maxLength={100} ref={inputScheEven} placeholder=" " name="pharmacyShedulesEvening" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
-                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                if (inputScheExtra.current != null) {
-                                                    inputScheExtra.current.focus()
-                                                } if (txtAreaRef.current != null) {
-                                                    txtAreaRef.current.focus()
-                                                }
-                                            }
-                                        }} onChange={(e) => {
-
-                                            setServiceShcedulEven(e.target.value)
-                                        }} />
+                                    <div className="relative p-2 flex lg:flex-row flex-col">
+                                        <input maxLength={100} ref={inputScheEven} placeholder=" " name="serviceShedulesEveningOne" type="time"
+                                            className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheEveningOne ? 'border-red-600'
+                                                : ''
+                                                }`} onKeyDown={(e) => {
+                                                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                        if (inputScheExtra.current != null) {
+                                                            inputScheExtra.current.focus()
+                                                        } if (txtAreaRef.current != null) {
+                                                            txtAreaRef.current.focus()
+                                                        }
+                                                    }
+                                                }} onChange={(e) => {
+                                                    setServiceShcedulEvenOne(e.target.value)
+                                                    setEmptyScheEveningOne(false)
+                                                }} />
+                                        <input maxLength={100} ref={inputScheEven} placeholder=" " name="serviceShedulesEveningTwo" type="time"
+                                            className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheEveningTwo ? 'border-red-600'
+                                                : ''
+                                                }`} onKeyDown={(e) => {
+                                                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                        if (inputScheExtra.current != null) {
+                                                            inputScheExtra.current.focus()
+                                                        } if (txtAreaRef.current != null) {
+                                                            txtAreaRef.current.focus()
+                                                        }
+                                                    }
+                                                }} onChange={(e) => {
+                                                    setServiceShcedulEvenTwo(e.target.value)
+                                                    setEmptyScheEveningTwo(false)
+                                                }} />
                                         <label className={"labelFloatInput"}>Tarde</label>
                                     </div>
                                 </div>
                                 <div hidden={serviceShcedulSelector !== "Otro"} className="  w-full">
                                     <div className="relative p-2 ">
-                                        <input ref={inputScheExtra} placeholder=" " name="pharmacyShedulesExtra" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
+                                        <input ref={inputScheExtra} placeholder=" " name="serviceShedulesExtra" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
                                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                                 if (txtAreaRef.current != null) {
                                                     txtAreaRef.current.focus()

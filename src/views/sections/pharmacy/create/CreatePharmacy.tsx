@@ -1,15 +1,12 @@
 import logoEtno from '../../../../assets/logo_etno.png'
-import { useNavigate } from "react-router-dom"
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import { Pharmacy } from '../../../../models/section/Section';
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
-import { toast, ToastContainer } from 'react-toastify';
-import Datepicker from "react-tailwindcss-datepicker";
+import { toast } from 'react-toastify';
 import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../assets/marker.svg"
-import moment from 'moment';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 const sideBarStore = SideBarStore.getSideBarStore()
@@ -31,9 +28,12 @@ const CreatePharmacy = () => {
         pharmacyWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
         pharmacyTel === "" ? setEmptyTel(true) : setEmptyTel(false)
         pharmacyDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+        pharmacyShcedulMorningOne === "" ? setEmptyScheMorningOne(true) : setEmptyScheMorningOne(false)
+        pharmacyShcedulEvenOne === "" ? setEmptyScheEveningOne(true) : setEmptyScheEveningOne(false)
+        pharmacyShcedulMorningTwo === "" ? setEmptyScheMorningTwo(true) : setEmptyScheMorningTwo(false)
+        pharmacyShcedulEvenTwo === "" ? setEmptyScheEveningTwo(true) : setEmptyScheEveningTwo(false)
         long === 0 || lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
     }
-
 
     const [emptyType, setEmptyType] = useState(false)
     const [emptyName, setEmptyName] = useState(false)
@@ -41,6 +41,10 @@ const CreatePharmacy = () => {
     const [emptyWebUrl, setEmptyWebUrl] = useState(false)
     const [emptyTel, setEmptyTel] = useState(false)
     const [emptyDescption, setEmptyDescription] = useState(false)
+    const [emptyScheMorningOne, setEmptyScheMorningOne] = useState(false)
+    const [emptyScheEveningOne, setEmptyScheEveningOne] = useState(false)
+    const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState(false)
+    const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState(false)
     const [emptyLongLat, setEmptyLongLat] = useState(false)
 
     const [file, setFile] = useState<File>()
@@ -57,12 +61,6 @@ const CreatePharmacy = () => {
         },
         zoom: 11
     };
-
-    const handleValueChange = (newValue: any) => {
-        setDateGuardia(newValue);
-    }
-
-    const navigate = useNavigate()
 
     const inputTitle = useRef<HTMLInputElement>(null)
     const inputPeriod = useRef<HTMLInputElement>(null)
@@ -86,8 +84,10 @@ const CreatePharmacy = () => {
     const [pharmacyName, setPharmacyName] = useState<string>("")
     const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>("")
     const [pharmacyTel, setPharmacyTel] = useState<string>("")
-    const [pharmacyShcedulMorning, setPharmacyShcedulMorning] = useState<string>("")
-    const [pharmacyShcedulEven, setPharmacyShcedulEven] = useState<string>("")
+    const [pharmacyShcedulMorningOne, setPharmacyShcedulMorningOne] = useState<string>("")
+    const [pharmacyShcedulEvenOne, setPharmacyShcedulEvenOne] = useState<string>("")
+    const [pharmacyShcedulMorningTwo, setPharmacyShcedulMorningTwo] = useState<string>("")
+    const [pharmacyShcedulEvenTwo, setPharmacyShcedulEvenTwo] = useState<string>("")
     const [pharmacyShcedulExtra, setPharmacyShcedulExtra] = useState<string>("")
     const [pharmacyDescription, setPharmacyDescption] = useState<string>("")
     const [pharmacySchedule, setPharmacySchedule] = useState<string>("")
@@ -95,13 +95,12 @@ const CreatePharmacy = () => {
     const [pharmPeriod, setPharmPeriod] = useState<number>()
     const [pharmFrequency, setPharmFrequency] = useState<number>()
 
-
-
     function handleScheduleInput() {
         if (pharmacyShcedulSelector === "Otro") {
             setPharmacySchedule(pharmacyShcedulExtra)
         } else {
-            setPharmacySchedule(pharmacyShcedulSelector + " " + pharmacyShcedulMorning + " " + pharmacyShcedulEven)
+            setPharmacySchedule(pharmacyShcedulSelector + " " + pharmacyShcedulMorningOne + "-" + pharmacyShcedulMorningTwo +
+                " " + pharmacyShcedulEvenOne + "-" + pharmacyShcedulEvenTwo)
         }
     }
     function addPharmacy() {
@@ -117,7 +116,6 @@ const CreatePharmacy = () => {
             startDate: pharmStartDate,
             durationDays: pharmPeriod,
             frequencyInDays: pharmFrequency
-
         }
         if (pharmacyStore.getPharmacy.name === pharmacy.name) {
             toast.info('Ya existe esta farmacia', {
@@ -134,6 +132,7 @@ const CreatePharmacy = () => {
             chekIfEmpty()
             pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
                 pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
+                pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "" ||
                 long === 0 || lat === 0 || file === undefined ?
                 toast.info('Rellene los campos', {
                     position: 'bottom-center',
@@ -160,7 +159,6 @@ const CreatePharmacy = () => {
                     <div className={`flex p-1 border-2 border-transparent rounded-md  ${emptyType ? 'border-red-600'
                         : 'border-transparent'
                         }`}>
-
                         <div className='flex w-1/2 p-1'>
                             <input type="radio" id="radioOne" value="Normal" className="sr-only peer " name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
@@ -191,9 +189,7 @@ const CreatePharmacy = () => {
                             ring-indigo-500 peer-checked:ring-2 ">DE GUARDIA</label>
                             <label className="labelFloatDate" hidden={datePanel}>Tipo</label>
                         </div>
-
                     </div>
-
                 </div>
                 <div className='flex flex-row'>
                     <div className="flex pt-2  p-1  relative  ">
@@ -300,9 +296,8 @@ const CreatePharmacy = () => {
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-
                     <input ref={inputTel} placeholder=" " name="pharmacyTel" type="text" onInput={(e) =>
-                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} className={`inputCamp peer w-1/4 ${emptyTel ? 'border-red-600'
+                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} minLength={9} className={`inputCamp peer w-1/4 ${emptyTel ? 'border-red-600'
                             : ''
                             }`} onKeyUp={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -316,6 +311,7 @@ const CreatePharmacy = () => {
                             }} />
                     <label className={"labelFloatInput"}>Teléfono</label>
                 </div>
+
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                 <div className="flex flex-col p-1 mt-1 relative">
@@ -337,35 +333,74 @@ const CreatePharmacy = () => {
                             <option value="Otro">Otro horrario.</option>
                         </select>
                         <label className={"labelFloatDate"}>Horario</label>
+
                         <div className="p-3 flex flex-row" >
                             <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
-                                <div className="relative p-2">
-                                    <input ref={inputScheMorn} placeholder=" " name="pharmacyShedulesMorning" type="text" className="w-full p-1 mr-2 inputCamp peer" onKeyDown={(e) => {
-                                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                            if (inputScheEven.current != null) {
-                                                inputScheEven.current.focus()
+                                <div className="relative p-2 flex lg:flex-row flex-col">
+                                    <input ref={inputScheMorn} placeholder=" " name="pharmacyShedulesMorning" type="time"
+                                        className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheMorningOne ? 'border-red-600'
+                                            : ''
+                                            }`}
+                                        onKeyDown={(e) => {
+                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                if (inputScheEven.current != null) {
+                                                    inputScheEven.current.focus()
+                                                }
                                             }
-                                        }
-                                    }} onChange={(e) => {
-                                        setPharmacyShcedulMorning(e.target.value)
-                                    }} />
+                                        }} onChange={(e) => {
+                                            setPharmacyShcedulMorningOne(e.target.value)
+                                            setEmptyScheMorningOne(false)
+                                        }} />
+                                    <input ref={inputScheMorn} placeholder=" " name="pharmacyShedulesMorning" type="time"
+                                        className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheMorningTwo ? 'border-red-600'
+                                            : ''
+                                            }`}
+                                        onKeyDown={(e) => {
+                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                if (inputScheEven.current != null) {
+                                                    inputScheEven.current.focus()
+                                                }
+                                            }
+                                        }} onChange={(e) => {
+                                            setPharmacyShcedulMorningTwo(e.target.value)
+                                            setEmptyScheMorningTwo(false)
+                                        }} />
                                     <label className={"labelFloatInput"}>Mañana</label>
                                 </div>
                             </div>
-                            <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
-                                <div className="relative p-2">
-                                    <input maxLength={100} ref={inputScheEven} placeholder=" " name="pharmacyShedulesEvening" type="text" className="w-full p-1 mr-2 inputCamp peer" onKeyDown={(e) => {
-                                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                            if (inputScheExtra.current != null) {
-                                                inputScheExtra.current.focus()
-                                            } if (txtAreaRef.current != null) {
-                                                txtAreaRef.current.focus()
-                                            }
-                                        }
-                                    }} onChange={(e) => {
 
-                                        setPharmacyShcedulEven(e.target.value)
-                                    }} />
+                            <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
+                                <div className="relative p-2 flex lg:flex-row flex-col">
+                                    <input maxLength={100} ref={inputScheEven} placeholder=" " name="pharmacyShedulesEvening" type="time"
+                                        className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheEveningOne ? 'border-red-600'
+                                            : ''
+                                            }`} onKeyDown={(e) => {
+                                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                    if (inputScheExtra.current != null) {
+                                                        inputScheExtra.current.focus()
+                                                    } if (txtAreaRef.current != null) {
+                                                        txtAreaRef.current.focus()
+                                                    }
+                                                }
+                                            }} onChange={(e) => {
+                                                setPharmacyShcedulEvenOne(e.target.value)
+                                                setEmptyScheEveningOne(false)
+                                            }} />
+                                    <input maxLength={100} ref={inputScheEven} placeholder=" " name="pharmacyShedulesEvening" type="time"
+                                        className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheEveningTwo ? 'border-red-600'
+                                            : ''
+                                            }`} onKeyDown={(e) => {
+                                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                    if (inputScheExtra.current != null) {
+                                                        inputScheExtra.current.focus()
+                                                    } if (txtAreaRef.current != null) {
+                                                        txtAreaRef.current.focus()
+                                                    }
+                                                }
+                                            }} onChange={(e) => {
+                                                setPharmacyShcedulEvenTwo(e.target.value)
+                                                setEmptyScheEveningTwo(false)
+                                            }} />
                                     <label className={"labelFloatInput"}>Tarde</label>
                                 </div>
                             </div>
@@ -418,7 +453,6 @@ const CreatePharmacy = () => {
                                 setLong(e.lng)
                                 setEmptyLongLat(false)
                             }}
-
                         >
                             <AnyReactComponent
                                 lat={lat}
@@ -431,7 +465,6 @@ const CreatePharmacy = () => {
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-
                     <input value={long} ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className={"inputCamp peer"} disabled onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (inputLat.current != null) {
@@ -444,7 +477,6 @@ const CreatePharmacy = () => {
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-
                     <input value={lat} ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className={"inputCamp peer "} disabled onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (btnRef.current != null) {
@@ -456,7 +488,7 @@ const CreatePharmacy = () => {
                 </div>
             </div>
             <div className="flex m-auto justify-center p-3">
-                <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPharmacy()} onFocus={() => handleScheduleInput()}>Publicar</button>
+                <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={addPharmacy} onFocus={() => handleScheduleInput()}>Publicar</button>
                 <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => pharmacyStore.setModalCreate(false)}>Cancelar</button>
             </div>
         </div>

@@ -21,7 +21,7 @@ const PharmacyOnDutyCalendar = () => {
         pharmacyStore.getRequestPharmacyOnDuty("Bolea")
 
     }, [])
-   
+
     const localizer = momentLocalizer(moment)
     const navigate = useNavigate()
 
@@ -35,7 +35,6 @@ const PharmacyOnDutyCalendar = () => {
         }),
         []
     )
-
     pharmacyStore.getPOD.content?.map((item) => {
         for (var i = 0; i < item.dates!?.length; i++) {
             events.push({
@@ -47,10 +46,8 @@ const PharmacyOnDutyCalendar = () => {
         }
     })
 
-
     return (
         <div className='min-w-max' >
-      
             <div className="relative m-auto  w-5/6  ">
                 <div className=' absolute right-1    -top-4 rbc-toolbar'>
                     <div className='flex mt-5 justify-end bg-indigo-50  rbc-btn-group'>
