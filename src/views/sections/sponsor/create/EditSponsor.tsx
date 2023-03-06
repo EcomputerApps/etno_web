@@ -27,7 +27,7 @@ const EditSponsor = () => {
 
     function updateSponsor(sponsorId: string) {
         chekIfEmpty()
-        if (sponsorTitle === "" || sponsorDescription === "" || sponsorTel === ""
+        if (sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" || sponsorTel.length < 9
         ) {
             toast.info('Rellene los campos', {
                 position: 'bottom-center',
@@ -58,6 +58,7 @@ const EditSponsor = () => {
     function chekIfEmpty() {
         sponsorTitle === "" ? setEmptyName(true) : setEmptyName(false)
         sponsorTel === "" ? setEmptyTel(true) : setEmptyTel(false)
+        sponsorTel.length < 9? setEmptyTel(true) : setEmptyTel(false)
         sponsorDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
     }
 
@@ -66,12 +67,12 @@ const EditSponsor = () => {
     const [emptyDescption, setEmptyDescription] = useState(false)
 
     return (
-<div className="flex flex-col h-screen w-1/2 border-2 rounded-md overflow-y-auto bg-white" >
+        <div className="flex flex-col lg:m-auto lg:w-1/2 mt-5 w-3/4 lg:h-screen border-2 rounded-md bg-white">
             <div>
                 <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                     <div className="w-full flex flex-row p-2 justify-between">
                         <img src={logoEtno} alt="logo_Etno"></img>
-                        <p className='flex  text-white text-3xl p-3'>PATROCINADOR</p>
+                        <p className='flex  text-white lg:text-3xl text-xl  p-3 uppercase'>Editar PATROCINADOR</p>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-5 pl-3">
@@ -116,7 +117,7 @@ const EditSponsor = () => {
                         <input ref={inputRef} placeholder=" " defaultValue={sponsor.phone} name="sponsorTel" type="text" onInput={(e) =>
                             e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className={`inputCamp peer w-1/4 ${emptyTel? 'border-red-600'
                             : ''
-                            }`} maxLength={9} onChange={(e) => {
+                            }`} maxLength={9} minLength={9} onChange={(e) => {
                                 setSponsorTel(e.currentTarget.value)
                                 setEmptyTel(false)
                             }} onKeyUp={(e) => {

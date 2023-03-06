@@ -19,10 +19,10 @@ const Service = () => {
   }, [pageNumber])
 
   const incrementPage = () => {
-      setPageNumber(pageNumber + 1) 
+    setPageNumber(pageNumber + 1)
   }
   const decrementPage = () => {
-      setPageNumber(pageNumber - 1)
+    setPageNumber(pageNumber - 1)
   }
   return (
     <div className="w-full h-full  relative">
@@ -31,33 +31,37 @@ const Service = () => {
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Servicios</h2>
           <div className="ml-auto">
             <button onClick={() => serviceStore.setModalCreate(true)} type="button" className="btnStandard">
-              <img src={Pencil} alt="Create"/>
+              <img src={Pencil} alt="Create" />
               Crear
             </button>
           </div>
           {serviceStore.getModalCreate ? (
             <div>
               <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-                <CreateService />
+                <div className="fixed inset-0 w-screen h-screen">
+                  <div className="w-screen  flex justify-center">
+                    <CreateService />
+                  </div>
+                </div>
               </div>
             </div>
           ) : <></>}
         </div>
-        <TableService currentPage={pageNumber} headerList={['Categoría', 'nombre', 'Teléfono', 'horario','Descripción', 'Pagina Web', 'acciones']} />
+        <TableService currentPage={pageNumber} headerList={['Categoría', 'nombre', 'Teléfono', 'horario', 'Descripción', 'Pagina Web', 'acciones']} />
       </div>
       <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
-        <button onClick={decrementPage} disabled={pageNumber<1} 
-        className="btnStandard mr-10">
-        <img src={arrowLeft} alt="backward"/>
+        <button onClick={decrementPage} disabled={pageNumber < 1}
+          className="btnStandard mr-10">
+          <img src={arrowLeft} alt="backward" />
           Anterior
         </button>
-        <button onClick={incrementPage} disabled={ pageNumber === serviceStore.getPaginatedService.totalPages!! -1 || serviceStore.getPaginatedService.content?.length === 0}
-         className="btnStandard">
+        <button onClick={incrementPage} disabled={pageNumber === serviceStore.getPaginatedService.totalPages!! - 1 || serviceStore.getPaginatedService.content?.length === 0}
+          className="btnStandard">
           Siguiente
-          <img src={arrowRight} alt="forward"/> 
+          <img src={arrowRight} alt="forward" />
         </button>
       </div>
-      <ToastContainer style={{ margin: "50px" }}/>
+      <ToastContainer style={{ margin: "50px" }} />
     </div>
   )
 }

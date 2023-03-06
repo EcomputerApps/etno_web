@@ -52,10 +52,11 @@ const Photo = () => {
                 </div>
             </div>
             <div className=" flex flex-1 w-full h-4/5 overflow-y-auto" >
-                <div className="flex    ">
+                <div className="flex ">
                     <div className="grid grid-cols-1 md:grid-rows-2 md:grid-cols-3 pt-2">
                         {imageStore.getPaginatedImages.content?.map((item, index) => (
-                            <div key={index} className="w-full  cursor-pointer rounded-md bg-indigo-100 border-2 border-indigo-300 hover:border-indigo-600  items-center justify-center flex-wrap  flex" >
+                            <div key={index} className="w-full  cursor-pointer rounded-md bg-indigo-100 border-2
+                             border-indigo-300 hover:border-indigo-600  items-center justify-center flex-wrap  flex" >
                                 <img src={item.link}  onClick={(e) => {
                                     setModal(true)
                                     imageSize.setLink(e.currentTarget.src)

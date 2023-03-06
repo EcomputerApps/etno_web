@@ -39,7 +39,11 @@ const Event = () => {
           {eventStore.getModalCreate ? (
             <div>
               <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-                <CreateEvent />
+                <div className="fixed inset-0 w-screen h-screen">
+                  <div className="w-screen  flex justify-center">
+                    <CreateEvent />
+                  </div>
+                </div>
               </div>
             </div>
           ) : <></>}

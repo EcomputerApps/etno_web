@@ -15,21 +15,23 @@ const TablePharmacy = (prop: PropTable) => {
     const deletePharmacy = async (pharmacy: string) => {
         await pharmacyStore.deletePharmacy('Bolea', pharmacy)
     }
-    function savePharm( pharm: Pharmacy){
+    function savePharm(pharm: Pharmacy) {
         pharmacyStore.updatePharmacy(pharm)
         pharmacyStore.setModalEdit(true)
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-             {pharmacyStore.getModalEdit? (
-                    <div>
-                      <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-                       
-                               <EditPharmacy/>
-                          
+            {pharmacyStore.getModalEdit ? (
+                <div>
+                    <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className="w-screen  flex justify-center mt-10">
+                                <EditPharmacy />
+                            </div>
                         </div>
                     </div>
-                ) : <></>}
+                </div>
+            ) : <></>}
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase  bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                     <tr>
@@ -78,7 +80,7 @@ const TablePharmacy = (prop: PropTable) => {
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={()=>{savePharm(pharmMap)}}>Editar</a>
+                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => { savePharm(pharmMap) }}>Editar</a>
                                     <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deletePharmacy(pharmMap.name!!)}>Eliminar</a>
                                 </div>
                             </td>

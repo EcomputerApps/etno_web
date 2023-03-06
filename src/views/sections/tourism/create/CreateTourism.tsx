@@ -105,12 +105,12 @@ const CreateTourism = () => {
   const [emptyLongLat, setEmptyLongLat] = useState(false)
 
   return (
-    <div className="flex flex-col md:m-auto w-full md:w-1/2 h-screen overflow-y-auto border-2 rounded-md bg-white">
+    <div className="flex flex-col lg:m-auto  lg:w-1/2  w-3/4 mt-5   h-screen overflow-y-auto border-2 rounded-md bg-white">
       <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
             <img src={logoEtno} alt="logo_Etno"></img>
-            <p className='flex  text-white text-3xl p-3'>CREAR TURISMO</p>
+            <p className='flex  text-white lg:text-3xl text-2xl  p-3'>CREAR TURISMO</p>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
@@ -172,9 +172,9 @@ const CreateTourism = () => {
               <div className='absolute left-2'>
                 Fotos {file?.name}
               </div>
-              <form id="form-file-upload" className=" w-full flex justify-center">
-                <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
-                  setFile(e.currentTarget.files!![0])
+              <form id="form-file-upload" className=" w-full flex justify-center ">
+                <input type="file" id="input-file-upload" className="visibility: hidden" max={1} size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
+                  setFile(value.currentTarget.files!![0])
                   setEmptyFile(false)
                 }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">

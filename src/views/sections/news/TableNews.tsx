@@ -3,7 +3,7 @@ import NewsStore from "../../../viewmodels/news/NewsStore"
 import "../../../index.css"
 import { ToastContainer } from "react-toastify"
 import { useNavigate } from "react-router-dom"
-import { News} from "../../../models/section/Section"
+import { News } from "../../../models/section/Section"
 import EditNews from "./create/EditNews"
 const newsStore = NewsStore.getNewsStore()
 
@@ -19,20 +19,25 @@ const TableNews = (prop: PropTable) => {
         await newsStore.deleteNews("Bolea", news)
     }
 
-    function saveNews(news: News){
-     newsStore.updateNews(news)
-     newsStore.setModalEdit(true)
+    function saveNews(news: News) {
+        newsStore.updateNews(news)
+        newsStore.setModalEdit(true)
     }
 
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-             {newsStore.getModalEdit ? (
-        <div>
-          <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-            <EditNews />
-          </div>
-        </div>
-      ) : <></>}
+
+            {newsStore.getModalEdit ? (
+                <div>
+                    <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className="w-screen  flex justify-center mt-10">
+                                <EditNews />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                     <tr>
@@ -81,7 +86,7 @@ const TableNews = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
-            
+
         </div>
     )
 

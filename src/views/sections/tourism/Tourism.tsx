@@ -42,6 +42,17 @@ const Tourism = () => {
           </div>
         </div>
       ) : <></>}
+      {tourisStore.getModalCreate ? (
+        <div>
+          <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <div className="fixed inset-0 w-screen h-screen">
+              <div className="w-screen  flex justify-center">
+              <CreateTourism />
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : <></>}
         </div>
         <TableTourism currentPage={pageNumber} headerList={['tipo', 'Título', 'Descripción', 'Acciones']} />
       </div>

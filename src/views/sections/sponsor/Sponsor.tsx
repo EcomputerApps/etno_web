@@ -40,7 +40,11 @@ const Sponsor = () => {
           {sponsorStore.getModalCreate ? (
             <div>
               <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-                <CreateSponsor />
+                <div className="fixed inset-0 w-screen h-screen">
+                  <div className="w-screen  flex justify-center">
+                    <CreateSponsor />
+                  </div>
+                </div>
               </div>
             </div>
           ) : <></>}

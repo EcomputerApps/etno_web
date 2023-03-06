@@ -25,7 +25,7 @@ const decrementPage = () => {
 }
 
   return (
-    <div className="w-full h-full  relative">
+    <div className="w-full h-full   relative">
       <div className="flex flex-col gap-4">
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Noticias</h2>
@@ -35,10 +35,14 @@ const decrementPage = () => {
               Crear
             </button>
           </div>
-          {newsStore.getModalCreate ? (
+            {newsStore.getModalCreate ? (
         <div>
           <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-            <CreateNews />
+            <div className="fixed inset-0 w-screen h-screen">
+              <div className="w-screen  flex justify-center mt-10">
+                <CreateNews />
+              </div>
+            </div>
           </div>
         </div>
       ) : <></>}

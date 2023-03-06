@@ -16,9 +16,9 @@ interface PropTable {
 }
 
 const TableBand = (prop: PropTable) => {
-    
+
     const navigate = useNavigate()
-  
+
     const deleteBand = async (band: string) => {
         await bandStore.deleteBand('Bolea', band)
     }
@@ -29,16 +29,17 @@ const TableBand = (prop: PropTable) => {
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                           {bandStore.getModalEdit? (
-                    <div>
-                      <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-                            <div className="md:w-1/3 w-full flex flex-col px-2 overflow-auto ">
-                               
-                               <EditBand/>
+            {bandStore.getModalEdit ? (
+                <div>
+                    <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className="w-screen  flex justify-center mt-10">
+                                <EditBand />
                             </div>
                         </div>
                     </div>
-                ) : <></>}
+                </div>
+            ) : <></>}
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                     <tr>
@@ -74,7 +75,7 @@ const TableBand = (prop: PropTable) => {
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center relative">
-                               
+
                                     <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveBand(bandMap)}>Editar</a>
                                     <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteBand(bandMap.title!!)}>Eliminar</a>
                                 </div>

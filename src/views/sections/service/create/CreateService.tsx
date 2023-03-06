@@ -132,13 +132,13 @@ const CreateService = () => {
     }
 
     return (
-        <div className="flex flex-col h-screen w-1/2 border-2 rounded-md overflow-y-auto bg-white" >
+        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-3/4 mt-5   h-screen overflow-y-auto border-2 rounded-md bg-white">
 
             <div>
                 <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                     <div className="w-full flex flex-row p-2 justify-between">
                         <img src={logoEtno} alt="logo_Etno"></img>
-                        <p className='flex  text-white text-3xl p-3'>CREAR SERVICIO</p>
+                        <p className='flex  text-white lg:text-3xl text-2xl  p-3'>CREAR SERVICIO</p>
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-8 pl-3">

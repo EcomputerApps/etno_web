@@ -8,6 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import ImageStore from '../../../../viewmodels/image/ImageStore';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+import { observer } from 'mobx-react-lite';
 const regEx = new RegExp(/[^A-Za-z0-9\s]+/)
 
 const sideBarStore = SideBarStore.getSideBarStore()
@@ -19,48 +20,12 @@ interface LinkInput {
     url: string;
 }
 
-const CreateLink = () => {
-    const navigate = useNavigate()
+const EditLink = () => {
+  
     const inputRef = useRef<HTMLInputElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
     const [linkTitle, setLinkTitle] = useState<string>("")
     const [linkUrl, setLinkUrl] = useState<string>("")
-
-
-    function addLink() {
-        if (linkTitle === "" || linkUrl === "") {
-            toast.info('Rellene todos los campos', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } 
-             else {
-                const link: Link = {
-                    title: linkTitle,
-                    url: linkUrl
-                }
-                if (linkStore.getLink.title === link.title) {
-                    toast.info('Ya existe este enlace', {
-                        position: 'bottom-center',
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: false,
-                        pauseOnHover: false,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light"
-                    })
-                } else {
-                    linkStore.addRequestLink('Bolea', link); sideBarStore.updateSection('Enlaces'); hoverSectionStore.setName('Enlaces')
-                }
-            }
-    }
 
 
     return (
@@ -103,7 +68,7 @@ const CreateLink = () => {
                 </div>
             </div>
             <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-                <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => addLink()}>Publicar</button>
+                <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" >Publicar</button>
                 <button name="bandBtnCancel" className="btnStandard" onClick={() => linkStore.setModalCreate(false)}>Cancelar</button>
             </div>
    
@@ -111,4 +76,4 @@ const CreateLink = () => {
 
     )
 }
-export default CreateLink
+export default observer(EditLink)

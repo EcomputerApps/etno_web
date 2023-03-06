@@ -159,23 +159,22 @@ const EditPharmacy = () => {
     const [emptyLongLat, setEmptyLongLat] = useState(false)
 
     return (
-        <div className="flex flex-col h-screen w-1/2 border-2 rounded-md overflow-y-auto bg-white" >
+        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-3/4 mt-5   h-screen overflow-y-auto border-2 rounded-md bg-white">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
-                    <p className='flex  text-white text-3xl p-3'>FARMACIA</p>
+                    <p className='flex  text-white lg:text-3xl text-2xl  p-3 uppercase'>Editar FARMACIA</p>
                 </div>
             </div>
-            <div className="w-full flex flex-1 flex-row pl-3 mt-8 ">
-                <div className="flex flex-col p-1 relative  w-1/3">
-                    <div className="flex pt-2 ">
-
-                        <div className='flex w-1/2 '>
+            <div className="w-full flex flex-1 md:flex-row flex-col pl-3 mt-8 ">
+                <div className="flex flex-col p-1 relative  md:w-1/3 w-full md:pb-0 pb-5">
+                    <div className="flex p-1 border-2 border-transparent rounded-md">
+                        <div className='flex w-1/2 p1'>
                             <input defaultValue={pharmType} type="radio" id="radioOne" value="Normal" className="sr-only peer " name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
                                 setDatePanel(true)
                             }} />
-                            <label htmlFor="radioOne" className="w-full text-center select-none uppercase cursor-pointer p-2 mr-5 font-medium text-sm rounded-full md:rounded-md peer-checked:bg-indigo-800 border 
+                            <label htmlFor="radioOne" className="w-full text-center select-none uppercase cursor-pointer p-2 mr-5 font-medium text-sm rounded-md peer-checked:bg-indigo-800 border 
                         border-gray-300 
                         peer-checked:hover:bg-indigo-700 
                         peer-checked:text-white 
@@ -187,7 +186,7 @@ const EditPharmacy = () => {
                                 setPharmType(e.currentTarget.value)
                                 setDatePanel(false)
                             }} />
-                            <label htmlFor="radioTwo" className="w-full min-w-fit text-center select-none uppercase cursor-pointer text-sm font-medium rounded-full md:rounded-md p-2 mr-5
+                            <label htmlFor="radioTwo" className="w-full min-w-fit text-center select-none uppercase cursor-pointer text-sm font-medium rounded-md p-2 mr-5
                         peer-checked:bg-indigo-800 border 
                         border-gray-300 
                         peer-checked:hover:bg-indigo-700 
@@ -197,8 +196,9 @@ const EditPharmacy = () => {
                         </div>
                     </div>
                 </div>
+                <div className='flex flex-row'>
                 <div className="flex pt-2  p-1  relative  ">
-                    <input defaultValue={moment(pharmStartDate).toISOString().substring(0, 10)} type="date" name="necroDate" className="inputCamp peer w-40 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
+                    <input defaultValue={moment(pharmStartDate).toISOString().substring(0, 10)} type="date"  className="inputCamp peer w-40 px-2 p-0 disabled:bg-gray-200 disabled:border-gray-300" disabled={datePanel}
                         onChange={(e) => {
                             setPharmStartDate(e.currentTarget.valueAsDate!)
                         }}
@@ -238,6 +238,7 @@ const EditPharmacy = () => {
                             }
                         }} />
                     <label className={"labelFloatDate"}>Frecuencia</label>
+                </div>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-5 pl-3">
