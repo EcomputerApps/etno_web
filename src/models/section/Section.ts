@@ -31,7 +31,7 @@ interface Event {
     address?: string,
     description?: string,
     organization?: string,
-    hasSubscription? : boolean,
+    hasSubscription?: boolean,
     reservePrice?: number,
     seats?: number,
     capacity?: number,
@@ -53,54 +53,79 @@ interface PaginatedEvent {
     pageNum?: number
 }
 
-interface Reserv{
-    idReserv?: string,
+interface Reserve {
+    idReserve?: string,
     username?: string,
     name?: string,
+    description?: string,
     email?: string,
     phone?: string,
     isPrivate?: boolean,
-    place?: string,
+    place?: Place,
     hall?: string,
-    date?: string[],
-    time?: string[]
+    date?: string,
+    reserveSchedules?: ReserveSchedule[],
+    reserveUsers?: ReserveUser,
+    isReserved?: boolean
+
 }
-interface ReservList{
-    reservs? : Reserv[]
+
+interface ReserveUser {
+    idReserveUser?: string,
+    fcmToken?: string,
+    data?: string,
+    palce?: Place,
+    description?: string,
+    reservePhone?: string,
+    date?: string,
+    reserveSchedules?: ReserveSchedule[],
+    isReserved?: boolean
 }
-interface PaginatedReserv {
-    content?: Reserv[],
+interface Place {
+    idPlace?: string,
+    username?: string,
+    imageUrl?: string,
+    name?: string,
+    latitude?: number,
+    longitude?: number,
+    halls?: Hall[]
+}
+interface ReserveSchedule {
+    idReserveSchedule?: string,
+    date?: string
+}
+
+interface ReservList {
+    reserves?: Reserve[]
+}
+
+interface PlaceList{
+    places?: Place[]
+}
+
+interface PaginatedReserve {
+    content?: Reserve[],
     totalPages?: number,
     totalElements?: number,
     pageNum?: number
 }
-interface Hall{
+interface Hall {
     idHall?: string,
     username?: string,
-    hallName?: string,
-    timeStripe?: number,
-    price?: number,
-    workDays?: string,
-    morningTime?: string,
-    eveningTime?:string,
-    isActive?: boolean
+    name?: string,
+
 }
 
-interface Place{
-    idPlace?: string,
-    username?: string,
-    placeName?: string,
-    lat?: string,
-    long?: string,
-    hall?: Hall[],
-  
-}
 
-interface PaginatedPlace{
+interface PaginatedPlace {
     content?: Place[],
     totalPages?: number,
     totalElements?: number,
     pageNum?: number
+}
+interface HallList {
+    content?: Hall[],
+
 }
 
 interface Ad {
@@ -153,7 +178,7 @@ interface PaginatedBand {
     pageNum?: number
 }
 
-interface BandList{
+interface BandList {
     bandos?: Band[]
 }
 
@@ -186,14 +211,12 @@ interface PaginatedPharmacy {
 interface PharmacyOnDuty {
     content?: Pharmacy[]
 }
-interface PharmacyDutyDate{
+interface PharmacyDutyDate {
     idPharmacyDate?: string,
     username?: string,
     namePharmacy?: string,
     date?: Date
 }
-
-
 
 interface Service {
     idService?: string,
@@ -269,7 +292,8 @@ interface Incident {
     title?: string,
     description?: string,
     issuedDate?: string,
-    resolution?: boolean
+    isSolved?: boolean,
+    solution?: string
 
 }
 
@@ -309,12 +333,13 @@ interface EventList {
 }
 
 export type {
-    EventList, Event, Ad , Tourism, Band,BandList,
-    Pharmacy, Service, News, Incident,  Link,
+    EventList, Event, Ad, Tourism, Band, BandList,
+    Pharmacy, Service, News, Incident, Link,
     Necrologue, Sponsor, PaginatedEvent, PaginatedAdvert,
     PaginatedNews, PaginatedTourism, PaginatedBand,
     PaginatedPharmacy, PaginatedService, PaginatedSponsor,
     PaginatedNecro, PaginatedIncident, PaginatedLink,
-    Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserv, 
-    ReservList, PaginatedReserv, Place, Hall,PaginatedPlace
+    Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserve,
+    ReservList, PaginatedReserve, Place, Hall, PaginatedPlace,
+    HallList, ReserveUser, ReserveSchedule, PlaceList
 }

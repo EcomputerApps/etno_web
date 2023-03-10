@@ -22,26 +22,25 @@ const Incident = () => {
     setPageNumber(pageNumber - 1)
   }
   return (
-    <div className="w-full h-full min-w-5/6 relative flex flex-col">
+    <div className="w-full h-full min-w-max relative flex flex-col">
       <div className="flex flex-col gap-3">
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Incident</h2>
         </div>
         <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-4">
-                <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
-                        <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
-                        </div>
-                    </div>
-                </div>
+          <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
+              <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
+              </div>
             </div>
+          </div>
+        </div>
       </div>
       <div className="overflow-y-auto flex-1">
         <div className="">
           <TableIncident currentPage={pageNumber} />
         </div>
       </div>
-
       <div className="flex  flex-2  items-center justify-center md:flex-row flex-col ">
         <button onClick={() => decrementPage()} disabled={pageNumber < 1}
           className="btnStandard mr-10" >

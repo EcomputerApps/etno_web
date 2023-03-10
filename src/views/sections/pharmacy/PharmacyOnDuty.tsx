@@ -47,11 +47,11 @@ const PharmacyOnDutyCalendar = () => {
     })
 
     return (
-        <div className='min-w-max' >
-            <div className="relative m-auto  w-5/6  ">
+        <div className="lg:w-1/2 w-full min-w-fit mt-5" >
+            <div className="relative m-auto  w-5/6">
                 <div className=' absolute right-1    -top-4 rbc-toolbar'>
                     <div className='flex mt-5 justify-end bg-indigo-50  rbc-btn-group'>
-                        <button className='top-0 ' onClick={() => { navigate("/home") }}>Volver</button>
+                        <button className='top-0 ' onClick={() => pharmacyStore.setModalCalendar(false)}>Volver</button>
                     </div>
                 </div>
                 <div>

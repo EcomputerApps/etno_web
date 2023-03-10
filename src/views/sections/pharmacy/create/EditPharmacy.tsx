@@ -24,7 +24,7 @@ interface Marker {
 }
 
 const EditPharmacy = () => {
-    const [file, setFile] = useState<File>()
+  
     const [datePanel, setDatePanel] = useState(true)
     const [dateGuardia, setDateGuardia] = useState({
         startDate: new Date(),
@@ -87,6 +87,7 @@ const EditPharmacy = () => {
     const [pharmStartDate, setPharmStartDate] = useState<Date>(pharmacy.startDate!!)
     const [pharmPeriod, setPharmPeriod] = useState<number>(pharmacy.durationDays!!)
     const [pharmFrequency, setPharmFrequency] = useState<number>(pharmacy.frequencyInDays!!)
+    const [file, setFile] = useState<File>()
 
     function handleScheduleInput() {
 
@@ -468,7 +469,7 @@ const EditPharmacy = () => {
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input value={long} ref={inputLong} placeholder=" " type="text" name="pharmacyLong" className="inputCamp peer" onKeyDown={(e) => {
+                    <input value={long} ref={inputLong} placeholder=" " type="text" name="pharmacyLong" disabled className="inputCamp peer" onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (inputLat.current != null) {
                                 inputLat.current.focus()
@@ -483,7 +484,7 @@ const EditPharmacy = () => {
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
 
-                    <input value={lat} ref={inputLat} placeholder=" " type="text" name="pharmacyLat" className="inputCamp peer" onKeyDown={(e) => {
+                    <input value={lat} ref={inputLat} placeholder=" " type="text" name="pharmacyLat" disabled className="inputCamp peer" onKeyDown={(e) => {
                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                             if (btnRef.current != null) {
                                 btnRef.current.focus()

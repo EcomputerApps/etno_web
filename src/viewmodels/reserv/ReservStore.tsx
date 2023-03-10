@@ -1,7 +1,9 @@
 import { action, computed, makeObservable, observable } from "mobx"
 import { toast } from "react-toastify"
-import { PaginatedPlace, PaginatedReserv, Reserv, ReservList } from "../../models/section/Section"
+import { Hall, HallList, PaginatedBand, PaginatedPlace, PaginatedReserve, Place, PlaceList, Reserve, ReservList } from "../../models/section/Section"
+import ImageStore from "../image/ImageStore";
 
+const imageStore = ImageStore.getImageStore()
 class ReserveStore {
     serverIp: string = "192.168.241.51"
     static reserveStore: ReserveStore
@@ -12,60 +14,75 @@ class ReserveStore {
         }
         return this.reserveStore
     }
-
+    //Modals
     modalCreate: boolean = false
+    modalClientInfo: boolean = false
     modalEdit: boolean = false
-    modalReservList: boolean = false
-    modalReservPlaces: boolean = false
-    modalReservCreatePlaces: boolean = false
-
-    reser: Reserv = {}
-    reservList: ReservList = {}
-    paginatedReserv: PaginatedReserv = {}
+    modalCalendar: boolean = false
+    modalPlaces: boolean = false
+    modalCreatePlaces: boolean = false
+    modalAddHalls: boolean = false
+    modalEditHalls: boolean = false
+    //Modals
+    reserve: Reserve = {}
+    place: Place = {}
+    reserveList: ReservList = {}
+    placeList: PlaceList = {}
+    paginatedReserve: PaginatedReserve = {}
     paginatedPlace: PaginatedPlace = {}
+    hallList: HallList = {}
 
     constructor() {
         makeObservable(this, {
+            modalClientInfo: observable,
             modalEdit: observable,
             modalCreate: observable,
-            modalReservList: observable,
-            modalReservPlaces: observable,
-            modalReservCreatePlaces: observable,
-            paginatedReserv: observable,
+            modalCalendar: observable,
+            modalPlaces: observable,
+            modalAddHalls: observable,
+            modalCreatePlaces: observable,
+            paginatedReserve: observable,
+            hallList: observable,
+            modalEditHalls: observable,
+            paginatedPlace: observable,
             setModalCreate: action,
+            setModalClientInfo: action,
+            setModalCalendar: action,
+            setModalAddHalls: action,
             setModalEdit: action,
-            setModalReservList: action,
-            updateReserv: action,
-            updateReservList: action,
-            updatePaginatedReserv: action,
-            updatePaginatedPlace: action,
-            getModalEdit: computed,
+            setModalEditHalls: action,
+            updatePlace: action,
+            updatePaginatedReserveContent: action,
+            updatePaginatedPlacesContent: action,
+            updateReserve: action,
+            udpateAllReserves: action,
+            updatePaginatedReserve: action,
+            updatePaginatedPlaces: action,
+            updateHallList: action,
+            updatePlaceList: action,
+            getModalClientInfo: computed,
             getModalCreate: computed,
-            getModalReservList: computed,
-            getModalReservCreatePlaces: computed,
-            getReserv: computed,
-            getReservList: computed,
-            getPaginatedReserv: computed,
-            getPaginatedPlace: computed
+            getModalCalendar: computed,
+            getModalCreatePlaces: computed,
+            getReserve: computed,
+            getAllReserves: computed,
+            getPaginatedReserve: computed,
+            getPaginatedPlaces: computed,
+            getHallList: computed,
+            getModalAddHalls: computed,
+            getModalEdit: computed,
+            getPlace: computed,
+            getModalEditHalls: computed,
+            getPlaceList : computed,
+            getModalPlaceList : computed
+           
         })
     }
-    setModalReservCreatePlaces(mode: boolean) {
-        this.modalReservCreatePlaces = mode
+    setModalEditHalls(mode: boolean) {
+        this.modalEditHalls = mode
     }
-    get getModalReservCreatePlaces() {
-        return this.modalReservCreatePlaces
-    }
-    setModalReservPlaces(mode: boolean) {
-        this.modalReservPlaces = mode
-    }
-    get getModalReservPlaces() {
-        return this.modalReservPlaces
-    }
-    setModalReservList(mode: boolean) {
-        this.modalReservList = mode
-    }
-    get getModalReservList() {
-        return this.modalReservList
+    get getModalEditHalls() {
+        return this.modalEditHalls
     }
     setModalEdit(mode: boolean) {
         this.modalEdit = mode
@@ -73,49 +90,206 @@ class ReserveStore {
     get getModalEdit() {
         return this.modalEdit
     }
+    setModalAddHalls(mode: boolean) {
+        this.modalAddHalls = mode
+    }
+    get getModalAddHalls() {
+        return this.modalAddHalls
+    }
+    setModalCreatePlaces(mode: boolean) {
+        this.modalCreatePlaces = mode
+    }
+    get getModalCreatePlaces() {
+        return this.modalCreatePlaces
+    }
+    setModalPlaceList(mode: boolean) {
+        this.modalPlaces = mode
+    }
+    get getModalPlaceList() {
+        return this.modalPlaces
+    }
+    setModalCalendar(mode: boolean) {
+        this.modalCalendar = mode
+    }
+    get getModalCalendar() {
+        return this.modalCalendar
+    }
+    setModalClientInfo(mode: boolean) {
+        this.modalClientInfo = mode
+    }
+    get getModalClientInfo() {
+        return this.modalClientInfo
+    }
     setModalCreate(mode: boolean) {
         this.modalCreate = mode
     }
     get getModalCreate() {
         return this.modalCreate
     }
-    updatePaginatedReserv(paginatedReserv: PaginatedReserv) {
-        this.paginatedReserv = paginatedReserv
+    //----------------------------------------------------------------------------
+    //------------Reserves---------------------------//
+    updatePaginatedReserveContent(reserve: Reserve[]) {
+        this.paginatedReserve.content = reserve
     }
-    get getPaginatedReserv() {
-        return this.paginatedReserv
+    updatePaginatedReserve(reserve: PaginatedReserve) {
+        this.paginatedReserve = reserve
     }
-    updatePaginatedPlace(paginatedPlace: PaginatedPlace) {
-        this.paginatedPlace = paginatedPlace
+    get getPaginatedReserve() {
+        return this.paginatedReserve
     }
-    get getPaginatedPlace() {
+    //-----------------Reserves------------------------//
+    //----------------Hall----------------------------//
+    updateHallList(halls: Hall[]) {
+        this.hallList.content = halls
+    }
+    get getHallList() {
+        return this.hallList
+    }
+    //--------------Hall---------------------------//
+    //--------------Place--------------------------//
+    updatePaginatedPlacesContent(places: Place[]) {
+        this.paginatedPlace.content = places
+    }
+    updatePaginatedPlaces(places: PaginatedPlace) {
+        this.paginatedPlace = places
+    }
+    get getPaginatedPlaces() {
         return this.paginatedPlace
     }
+    updatePlaceList(places: Place[]) {
+        this.placeList.places = places
+    }
+    get getPlaceList() {
+        return this.placeList
+    }
+    updatePlace(place: Place) {
+        this.place = place
+    }
+    get getPlace() {
+        return this.place
+    }
+    //--------------Place---------------------------//
+    //--------------Reserve 4 Calendar-------------//
+    udpateAllReserves(reserve: Reserve[]) {
+        this.reserveList.reserves = reserve
+    }
+    get getAllReserves() {
+        return this.reserveList
+    }
+    updateReserve(reserve: Reserve) {
+        this.reserve = reserve
+    }
+    get getReserve() {
+        return this.reserve
+    }
+    //--------------Reserve 4 Calendar-------------//
+    //----------------------------------------------------------------------------------------------------------------------------
 
-    updateReservList(reserv: Reserv[]) {
-        this.reservList.reservs = reserv
+    async getRequestPlaces() {
+        const response = await fetch(`http://${this.serverIp}:8080/places`, {
+            method: 'GET',
+        })
+        const place = await response.json()
+
+        this.updatePlaceList(place)
     }
-    get getReservList() {
-        return this.reservList
-    }
-    updateReserv(reserv: Reserv) {
-        this.reser = reserv
-    }
-    get getReserv() {
-        return this.reser
-    }
-    //TEMPORAL METHOD
-    async addRequestReserv(username: string, reserv: Reserv) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/reserv?username=${username}`, {
-            method: 'POST',
+    async deletePlace(username: string, idPlace: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/place?username=${username}&idPlace=${idPlace}`, {
+            method: 'DELETE',
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            },
-            body: JSON.stringify(reserv)
+                'Access-Control-Allow-Origin': '*',
+            }
         })
         if (response.ok) {
+            const newPaginatedPlace = this.paginatedPlace.content!!.filter((item) => item.idPlace !== idPlace)
+            this.updatePaginatedPlacesContent(newPaginatedPlace)
+            this.updatePlace({})
+            toast.success('Se ha borrado exitosamente', {
+                position: 'top-center',
+                autoClose: 100,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha podido borrar', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
+    }
+    async editPlace(locality: string, palceId: string, place: Place, file: File) {
+        if (file !== undefined) {
+            await imageStore.addImageAPI("Bolea", "lugar", "lugar", file!!)
+            place.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/update/place?username=${locality}&placeId=${palceId}`, {
+            method: 'PUT',
+            body: JSON.stringify(place),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        if (response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
+    }
+    async getRequestPagiantedPlaces(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/places?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+            method: 'GET'
+        })
+        const pagPlaces = await response.json()
+        this.updatePaginatedPlaces(pagPlaces)
+    }
+    async addRequestPlace(username: string, place: Place, file: File) {
+        if (file !== undefined) {
+            await imageStore.addImageAPI("Bolea", "lugar", "lugar", file!!)
+            place.imageUrl = imageStore.getImage.link
+        }
+        const response = await fetch(`http://${this.serverIp}:8080/users/add/place?username=${username}`,
+            {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    'Access-Control-Allow-Origin': '*'
 
-            this.reser = reserv
+                },
+                body: JSON.stringify(place)
+            })
+        if (response.ok) {
+            this.place = place
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 300,
@@ -142,30 +316,144 @@ class ReserveStore {
             })
         }
     }
-    //TEMPORAL METHOD
-    async getRequestReservs(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/reservs?username=${locality}`, {
+    //TEMPORAL METHOD++
+    async getRequestHalls() {
+        const response = await fetch(`http://${this.serverIp}:8080/halls`, {
+            method: 'GET',
+        })
+
+        const hall = await response.json()
+
+        this.updateHallList(hall)
+    }
+    //TEMPORAL METHOD++
+    async getRequestReserves() {
+        const response = await fetch(`http://${this.serverIp}:8080/reserves`, {
+            method: 'GET',
+        })
+        const reserves = await response.json()
+
+        this.udpateAllReserves(reserves)
+    }
+    async confirmReserve(username: string, idReserve: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/confirm/reserve?username=${username}&idReserve=${idReserve}`, {
+            method: 'PUT',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+
+        })
+
+        if (response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
+
+    }
+    async deleteReserve(username: string, idReserve: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/reserve?username=${username}&idReserve=${idReserve}`, {
+            method: 'DELETE',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+        if (response.ok) {
+            const newPagiantedReserve = this.paginatedReserve.content!!.filter((item) => item.idReserve !== idReserve)
+            this.updatePaginatedReserveContent(newPagiantedReserve)
+            this.udpateAllReserves(newPagiantedReserve)
+            this.updateReserve({})
+            toast.success('Se ha borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
+
+    }
+    async addRequestReserve(username: string, reserve: Reserve, idHall: string, idPlace: string) {
+
+        const response = await fetch(`http://${this.serverIp}:8080/users/add/reserve?username=${username}&idHall=${idHall}&idPlace=${idPlace}`,
+            {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    'Access-Control-Allow-Origin': '*'
+
+                },
+                body: JSON.stringify(reserve)
+            })
+        if (response.ok) {
+            this.reserve = reserve
+            toast.success('Se ha añadido exitosamente', {
+                position: 'bottom-center',
+                autoClose: 300,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+        } else {
+            toast.error('No se ha añadido correctamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
+    }
+    async getRequestPagiantedReserves(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/reserves?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
-        const reservs = await response.json()
-        this.updateReservList(reservs)
+        const reserves = await response.json()
+        this.updatePaginatedReserve(reserves)
     }
-    //TEMPORAL METHOD
-    async getRequestReserv(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/reservs?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
-            method: 'GET',
-        })
-        const reserv = await response.json()
-        this.updatePaginatedReserv(reserv)
-    }
-    //TEMPORAL METHOD
-    async getRequestPlaces(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/places?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
-            method: 'GET',
-        })
-        const place = await response.json()
-        this.updatePaginatedPlace(place)
-    }
-
 }
 export default ReserveStore

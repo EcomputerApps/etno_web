@@ -369,7 +369,7 @@ const EditService = () => {
                         </div>
                     </div>
                 </div>
-                <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
+                <div className="lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
 
                     <button ref={btnRef} name="serviceBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => {
                         editService(service.idService!!)

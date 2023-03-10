@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { Incident, PaginatedIncident } from "../../models/section/Section";
 
 class IncidentStore {
@@ -46,11 +47,11 @@ class IncidentStore {
         return this.paginatedIncident
     }
     async getRequestIncident(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/incident?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`http://${this.serverIp}:8080/incidents?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const incident = await response.json()
-        this.updateIncidentList(incident)
+        this.updatePaginatedIncident(incident)
     }
     async deleteIncident(username: string, title: string) {
         const response = await fetch(`http://${this.serverIp}:8080/incident?username=${username}&title=${title}`, {
@@ -61,6 +62,41 @@ class IncidentStore {
         })
         const newPaginatedIncidentList = this.paginatedIncident.content!!.filter((item) => item.title !== title)
         this.updateIncidentList(newPaginatedIncidentList)
+    }
+    async solveSilution(locality: string, incidentId: string, solution:string) {
+              const response = await fetch(`http://${this.serverIp}:8080/users/solve/incidence?username=${locality}&incidentId=${incidentId}&solution=${solution}`,{
+            method: 'PUT',
+       
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        if (response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
     }
 }
 

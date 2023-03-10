@@ -21,7 +21,7 @@ interface LinkInput {
 }
 
 const EditLink = () => {
-  
+    const[link, setLink] = useState(linkStore.getLink)
     const inputRef = useRef<HTMLInputElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
     const [linkTitle, setLinkTitle] = useState<string>("")
@@ -35,11 +35,12 @@ const EditLink = () => {
                     <img src={logoEtno} alt="logo_Etno"></img>
                     <p className='flex  text-white lg:text-3xl text-2xl p-3 uppercase'>crear    ENLACES</p>
                 </div>
+                
             </div>
             <div>
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className=" flex flex-col p-1 mt-5  relative">
-                        <input autoFocus placeholder=" " name="bandType" id="test" type="text"
+                        <input autoFocus placeholder=" " defaultValue={link.title} id="test" type="text"
                             className="inputCamp peer" onChange={(e) => setLinkTitle(e.currentTarget.value)}
                             onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -54,7 +55,7 @@ const EditLink = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className=" flex flex-col p-1 mt-5  relative">
-                        <input ref={inputRef} placeholder=" " name="bandType" id="test" type="text" className="inputCamp peer" onChange={(e) => setLinkUrl(e.currentTarget.value)}
+                        <input ref={inputRef} placeholder=" " defaultValue={link.url} id="test" type="text" className="inputCamp peer" onChange={(e) => setLinkUrl(e.currentTarget.value)}
                             onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (btnRef.current != null) {

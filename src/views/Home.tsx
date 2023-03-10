@@ -16,15 +16,22 @@ import Necrologue from './sections/necrologue/Necrologue'
 import News from './sections/news/News'
 import Pharmacy from './sections/pharmacy/Pharmacy'
 import Photo from './sections/photo/Photo'
-import Reserv from './sections/reserv/Reserv'
+import ReservMain from './sections/reserv/ReservMain'
 import Service from './sections/service/Service'
 import Sponsor from './sections/sponsor/Sponsor'
 import Tourism from './sections/tourism/Tourism'
+
+import { useEffect } from 'react'
+import ReserveStore from '../viewmodels/reserv/ReservStore'
+
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
+const reserveStore = ReserveStore.getReserveStore()
 
 const Home = () => {
-
+  useEffect(() => {
+    reserveStore.getRequestReserves()
+  }, [])
   const navigate = useNavigate()
 
   function salida() {
@@ -33,17 +40,17 @@ const Home = () => {
       navigate("/logout")
     }
   }
-  
+
   function renderView(): JSX.Element | undefined {
     switch (sideBarStore.getPanel.section) {
       case 'Eventos': return <Event />
-      case 'Reservas': return<Reserv/>
+      case 'Reservas': return <ReservMain />
       case 'Turismo': return <Tourism />
       case 'Bandos': return <Band />
       case 'Farmacias': return <Pharmacy />
       case 'Servicios': return <Service />
       case 'Patrocinadores': return <Sponsor />
-      case 'Noticias': return <News />  
+      case 'Noticias': return <News />
       case 'Anuncios': return <Advert />
       case 'Fallecimientos': return <Necrologue />
       case 'Incidencias': return <Incident />
@@ -56,7 +63,7 @@ const Home = () => {
     <div className="flex">
       <div
         className={` ${sideBarStore.getPanel.open ? "w-72" : "w-20 "
-          } bg-indigo-800 h-screen p-5  pt-8 relative duration-300`}
+          } bg-indigo-800 lg:h-screen h-full p-5  pt-8 relative duration-300 `}
       >
         <img
           src={arrowLogo}

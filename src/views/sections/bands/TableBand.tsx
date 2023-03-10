@@ -62,8 +62,8 @@ const TableBand = (prop: PropTable) => {
                                     {bandMap.title}
                                 </div>
                             </th>
-                            <td className="px-6 py-4">
-                                <div className="tableCamp overflow-y-auto  min-w-full">
+                            <td className="px-6 py-4  max-w-prose">
+                                <div className="tableCampl overflow-y-auto  min-w-full">
                                     {bandMap.description}
 
                                 </div>

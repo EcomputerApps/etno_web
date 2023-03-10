@@ -134,7 +134,7 @@ const CreatePharmacy = () => {
                 pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
                 pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "" ||
                 long === 0 || lat === 0 || file === undefined ?
-                toast.info('Rellene los campos', {
+                toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
                     hideProgressBar: false,

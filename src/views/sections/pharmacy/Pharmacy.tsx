@@ -9,6 +9,7 @@ import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import { ToastContainer } from "react-toastify"
 import CreatePharmacy from "./create/CreatePharmacy"
+import PharmacyOnDuty from "./PharmacyOnDuty"
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 const Pharmacy = () => {
   const [pageNumber, setPageNumber] = useState(0)
@@ -30,7 +31,7 @@ const Pharmacy = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Farmacias</h2>
           <div className="ml-auto">
-            <button onClick={() => navigate("/findGuardia")} type="button"
+            <button onClick={() => pharmacyStore.setModalCalendar(true)} type="button"
               className="btnStandard mr-5 h-12">
               <img src={POD} alt="de guardia" />
               Farmacias de guardia
@@ -47,6 +48,17 @@ const Pharmacy = () => {
                 <div className="fixed inset-0 w-screen h-screen">
                   <div className="w-screen  flex justify-center">
                     <CreatePharmacy />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : <></>}
+          {pharmacyStore.getModalCalendar ? (
+            <div>
+              <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                <div className="fixed inset-0 w-screen h-screen">
+                  <div className="w-screen  flex justify-center">
+                    <PharmacyOnDuty />
                   </div>
                 </div>
               </div>

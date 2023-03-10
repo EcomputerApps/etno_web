@@ -72,8 +72,8 @@ const CreateNecrologue = () => {
   const [emptyFile, setEmptyFile] = useState(false)
 
   return (
- <div className="flex flex-col h-screen  md:m-auto w-full md:w-1/2 border-2 rounded-md relative  bg-white " >
-      <div>
+    <div className="flex flex-col lg:m-auto lg:w-1/2 mt-5 w-3/4 lg:h-screen border-2 rounded-md bg-white">
+  <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
             <img src={logoEtno} alt="logo_Etno"></img>
@@ -157,12 +157,14 @@ const CreateNecrologue = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
+        </div>
+      <div>
+      <div className="lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
         <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => {
           addNecrologue()
         }}>Publicar</button>
         <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => necroStore.setModalCreate(false)}>Cancelar</button>
+      </div>
       </div>
       <ToastContainer style={{ margin: "50px" }} />
     </div>

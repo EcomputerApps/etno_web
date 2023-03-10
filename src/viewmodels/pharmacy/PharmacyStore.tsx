@@ -21,14 +21,17 @@ class PharmacyStore {
     pharmacyOnDutyList: PharmacyOnDuty = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
+    modalCalendar: boolean = false
 
 
     constructor() {
         makeObservable(this, {
             modalEdit: observable,
             modalCreate: observable,
+            modalCalendar: observable,
             setModalCreate: action,
             getModalEdit: computed,
+            setModalCalendar: action,
             getModalCreate: computed,
             paginatedPharmacy: observable,
             pharmacyOnDutyList: observable,
@@ -42,7 +45,8 @@ class PharmacyStore {
             updatePaginatedPharmacy: action,
             updatePharmacyList: action,
             getPaginatedPharmacy: computed,
-            getPOD: computed
+            getPOD: computed,
+            getModalCalendar: computed
 
         })
     }
@@ -54,6 +58,12 @@ class PharmacyStore {
     }
     setModalCreate(mode: boolean) {
         this.modalCreate = mode
+    }
+    get getModalCalendar() {
+        return this.modalCalendar
+    }
+    setModalCalendar(mode: boolean) {
+        this.modalCalendar = mode
     }
     get getModalCreate() {
         return this.modalCreate

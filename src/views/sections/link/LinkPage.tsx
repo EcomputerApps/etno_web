@@ -4,12 +4,14 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../../../index.css"
 import Pencil from "../../../assets/menu/create.svg"
+import logoEtno from '../../../assets/logo_etno.png';
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import LinkStore from "../../../viewmodels/link/LinkStore"
 import { toast, ToastContainer } from "react-toastify"
 import { Link } from "../../../models/section/Section"
 import CreateLink from "./create/CreateLink"
+import EditLink from "./create/EditLink"
 
 const linkStore = LinkStore.getLinkStore()
 
@@ -62,11 +64,11 @@ const LinkPage = () => {
                 url: linkStore.getLinkString
             }
             linkStore.editLink('Bolea', linkId, linkNew)
-         
+
             saveEdition(linkStore.getTitle, linkStore.getLinkString)
             setModal(false)
         }
-       
+
 
 
     }
@@ -88,12 +90,28 @@ const LinkPage = () => {
                     </button>
                 </div>
                 {linkStore.getModalCreate ? (
-        <div>
-          <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-            <CreateLink />
-          </div>
-        </div>
-      ) : <></>}
+                    <div>
+                        <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                            <div className="fixed inset-0 w-screen h-screen">
+                                <div className="w-screen  flex justify-center mt-10">
+                                    <CreateLink />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ) : <></>}
+                {/*NOT IMPLEMENTED YET*/}
+                {linkStore.getModalEdit ? (
+                    <div>
+                        <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                            <div className="fixed inset-0 w-screen h-screen">
+                                <div className="w-screen  flex justify-center mt-10">
+                                    <EditLink />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ) : <></>}
             </div>
             <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-4">
                 <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -105,37 +123,54 @@ const LinkPage = () => {
             </div>
             {showModal ? (
                 <div>
-                    <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center ">
-                        <div className="w-1/3 h-1/2 flex flex-col rounded-md">
-                            <p>{linkStore.getId}</p>
-                            <button className="  text-blue-600  font-medium place-self-end bg-white rounded-full w-7 h-7 border-dark-purple border-2 mb-1 " onClick={() => setModal(false)}>X</button>
-                            <div className="w-full  max-h-60 rounded-md flex flex-wrap bg-gray-100 relative">
-                                <p className="font-bold text-xl uppercase underline p-3 w-full text-center underline-offset-4 ">Editar</p>
-                                <div className="flex flex-wrap md:h-40 h-1/2 max-h-40  border-t-2 border-b-2 p-2 w-full">
-                                    <div className="flex flex-col w-full">
-                                        <input autoFocus className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getTitle} onChange={(e) =>linkStore.setTitle(e.currentTarget.value)}></input>
-                                        <input className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getLinkString} onChange={(e) => linkStore.setLinkString(e.currentTarget.value)}></input>
+                    <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className="w-screen  flex justify-center mt-10">
+
+
+                                <div className="flex flex-col lg:m-auto lg:w-1/2 mt-5 w-3/4 lg:h-screen ">
+
+                                   
+                                    <div className="bg-white border-2  rounded-md">
+                                        <div className="w-full  max-h-60  flex flex-wrap">
+                                            <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
+                                                <div className="w-full flex flex-row p-2 justify-between">
+                                                    <img src={logoEtno} alt="logo_Etno"></img>
+                                                    <p className='flex  text-white lg:text-3xl text-2xl p-3 uppercase'>editar ENLACES</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-wrap md:h-40 h-1/2 max-h-40  border-t-2 border-b-2 p-2 w-full">
+                                                <div className="flex flex-col w-full">
+                                                    <input autoFocus className="my-2 w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getTitle} onChange={(e) => linkStore.setTitle(e.currentTarget.value)}></input>
+                                                    <input className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getLinkString} onChange={(e) => linkStore.setLinkString(e.currentTarget.value)}></input>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div className=" flex w-full justify-center p-3">
+                                            <button className="btnStandard disabled:bg-gray-600 mr-5" onClick={() => updateLink(linkStore.getId)}>Guardar</button>
+                                            <button className="btnStandard disabled:bg-gray-600" onClick={() => setModal(false)}>Cancelar</button>
+                                            
+                                        </div>
                                     </div>
+
                                 </div>
-                                <div className=" absolute flex w-full justify-center bottom-1">
-                                    <button className="btnStandard disabled:bg-gray-600" onClick={() => updateLink(linkStore.getId)}>Guardar</button>
-                                  
-                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             ) : <></>}
-            <div className="flex flex-1 overflow-y-auto w-full h-3/4 ">
-                <div className={"md:w-full w-1/2 md:h-full grid md:grid-cols-4 md:grid-rows-3"}>
+            <div className="flex flex-1 overflow-y-auto w-full h-3/4  ">
+                <div className={"w-full grid lg:grid-cols-4 lg:grid-rows-3 grid-cols-1"}>
                     {linkStore.paginatedLink.content?.map((link, index) => (
                         linkStore.paginatedLink.content!!.length > 0 &&
                         <div key={index} className="border-2 m-1 rounded-md relative bg-gray-100 shadow-md">
-                            <div className="h-1/3 p-2 md:text-center overflow-hidden  md:flex md:items-center md:justify-center">{link.title}</div>
-                            <div className="h-1/3 md:flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={link.url}>{link.url}</a></div>
-                            <div className="md:absolute flex m-auto md:justify-center md:bottom-1 md:left-0 md:right-0 h-1/5">
-                                <button className="btnStandard md:mr-5 mr-10" onClick={() => editLink(link.title!!, link.url!!, link.idLink!!, index)}>Editar</button>
-                                <button className="btnStandard" onClick={() => deleteLink(link.idLink!!)}>Borrar</button>
+                            <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center">{link.title}</div>
+                            <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={link.url}>{link.url}</a></div>
+                            <div className="flex m-auto justify-center lg:pt-5 h-1/5">
+                                <button className="btnStandard mr-5 h-8 lg:h-10" onClick={() => editLink(link.title!!, link.url!!, link.idLink!!, index)}>Editar</button>
+                                <button className="btnStandard h-8 lg:h-10" onClick={() => linkStore.setModalEdit(true)}>Borrar</button>
                             </div>
                         </div>
                     ))}

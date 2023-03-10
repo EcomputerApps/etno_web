@@ -6,7 +6,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class LinkStore {
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static linkStore: LinkStore
 
     static getLinkStore() {
@@ -22,7 +22,7 @@ class LinkStore {
     title: string = ""
     id: string = ""
     linkString: string = ""
-     modalCreate: boolean = false
+    modalCreate: boolean = false
     modalEdit: boolean = false
 
     constructor() {
@@ -52,7 +52,7 @@ class LinkStore {
             getLinkString: computed
         })
     }
-setModalEdit(mode: boolean) {
+    setModalEdit(mode: boolean) {
         this.modalEdit = mode
     }
     get getModalEdit() {
@@ -161,9 +161,9 @@ setModalEdit(mode: boolean) {
                 progress: undefined,
                 theme: "light"
             })
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.reload();
-             }, 1500);
+            }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
@@ -177,8 +177,8 @@ setModalEdit(mode: boolean) {
             })
         }
     }
-    async editLink(locality: string, linkId: string, link: Link){
-        
+    async editLink(locality: string, linkId: string, link: Link) {
+
         const response = await fetch(`http://${this.serverIp}:8080/users/update/link?username=${locality}&linkId=${linkId}`, {
             method: 'PUT',
             body: JSON.stringify(link),
@@ -187,7 +187,7 @@ setModalEdit(mode: boolean) {
             }
         })
 
-        if(response.ok) {
+        if (response.ok) {
             toast.success('Se ha actualizado exitosamente', {
                 position: 'top-center',
                 autoClose: 500,
@@ -197,10 +197,10 @@ setModalEdit(mode: boolean) {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
-          setTimeout(function(){
-            window.location.reload();
-         }, 1500);
+            })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'top-center',
@@ -211,7 +211,7 @@ setModalEdit(mode: boolean) {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          }) 
+            })
         }
     }
 }

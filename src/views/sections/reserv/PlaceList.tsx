@@ -3,7 +3,10 @@ import ReserveStore from "../../../viewmodels/reserv/ReservStore";
 import logoEtno from '../../../../src/assets/logo_etno.png'
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
-import CreateReservPlace from "./create/CreateReservPlace";
+import CreatePlace from "./create/CreatePlace";
+import { Place } from "../../../models/section/Section";
+import { useEffect, useState } from "react";
+import EditPlace from "./create/EditPlace";
 
 const reserveStore = ReserveStore.getReserveStore()
 interface PropTable {
@@ -13,6 +16,29 @@ interface PropTable {
 }
 
 const ReservPlaceList = (prop: PropTable) => {
+    const [pageNumber, setPageNumber] = useState(0)
+    const incrementPage = () => {
+        setPageNumber(pageNumber + 1)
+    }
+    const decrementPage = () => {
+        setPageNumber(pageNumber - 1)
+    }
+    useEffect(() => {
+        reserveStore.getRequestPagiantedPlaces("Bolea",pageNumber, 5)
+    }, [pageNumber])
+
+    function savePlace(place: Place) {
+        reserveStore.updatePlace(place)
+        reserveStore.setModalEdit(true)
+    }
+    const deletePlace = async (idPlace: string) => {
+        await reserveStore.deletePlace('Bolea', idPlace)
+    }
+
+    var lugares = new Array<Place>()
+    reserveStore.getPaginatedPlaces.content?.map((item, index) => {
+        lugares.push(item)
+    })
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2 w-max h-screen overflow-y-auto border-2 rounded-md bg-white">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
@@ -21,10 +47,17 @@ const ReservPlaceList = (prop: PropTable) => {
                     <p className='flex  text-white text-3xl p-3 uppercase'>LISTA DE Lugares</p>
                 </div>
             </div>
-            {reserveStore.getModalReservCreatePlaces ? (
+            {reserveStore.getModalCreatePlaces ? (
                 <div>
                     <div className=" fixed inset-0 z-50  flex justify-center items-center"  >
-                        <CreateReservPlace />
+                        <CreatePlace />
+                    </div>
+                </div>
+            ) : <></>}
+            {reserveStore.getModalEdit ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  flex justify-center items-center"  >
+                        <EditPlace />
                     </div>
                 </div>
             ) : <></>}
@@ -41,25 +74,25 @@ const ReservPlaceList = (prop: PropTable) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {reserveStore.getPaginatedPlace.content?.map((placeMap, index) => (
-                        reserveStore.getPaginatedReserv.content!!.length > 0 &&
+                    {lugares.map((placeMap, index) => (
+                        lugares.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" >
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                                 <div className="tableCamp">
-                                    {placeMap.placeName}
+                                    {placeMap.name}
                                 </div>
                             </th>
                             <td className="px-6 py-4">
-                                <div className="tableCamp">
-                                    {placeMap.hall?.map((item, index) => (
-                                        <label>{item.hallName}</label>
+                                <div className="tableCamp flex flex-col overflow-y-auto">
+                                    {placeMap.halls?.map((item, index) => (
+                                        <label key={index}>{item.name}</label>
                                     ))}
                                 </div>
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center">
-                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" >Editar</a>
-                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2">Eliminar</a>
+                                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => savePlace(placeMap)} >Editar</a>
+                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={()=>deletePlace(placeMap.idPlace!!)}>Eliminar</a>
                                 </div>
                             </td>
                         </tr>
@@ -67,14 +100,15 @@ const ReservPlaceList = (prop: PropTable) => {
                 </tbody>
             </table>
             <div className="md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1 ">
-                <button className="btnStandard mr-3">
+                <button className="btnStandard mr-3" disabled={pageNumber < 1} onClick={decrementPage}>
                     <img src={arrowLeft} alt="backward" />
                     Anterior
                 </button>
-                <button name="bandBtnCancel" className="btnStandard mr-3" onClick={() => reserveStore.setModalReservCreatePlaces(true)}>Crear lugar</button>
-                <button name="bandBtnCancel" className="btnStandard " onClick={() => reserveStore.setModalReservPlaces(false)}>Volver  </button>
-                <button
-                    className="btnStandard ml-3">
+                <button name="bandBtnCancel" className="btnStandard mr-3" onClick={() => reserveStore.setModalCreatePlaces(true)}>Crear lugar</button>
+                <button name="bandBtnCancel" className="btnStandard " onClick={() => reserveStore.setModalPlaceList(false)}>Volver  </button>
+                  {/*IMPLEMENT DISABLE ON PAGINATED*/}
+                <button onClick={incrementPage} disabled={pageNumber === reserveStore.getPaginatedPlaces.totalPages!! - 1 || reserveStore.getPaginatedPlaces.content?.length === 0}
+                      className="btnStandard ml-3" >
                     Siguiente
                     <img src={arrowRight} alt="forward" />
                 </button>
