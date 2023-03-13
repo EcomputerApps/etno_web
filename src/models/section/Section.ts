@@ -65,7 +65,7 @@ interface Reserve {
     hall?: string,
     date?: string,
     reserveSchedules?: ReserveSchedule[],
-    reserveUsers?: ReserveUser,
+    reserveUsers?: ReserveUser[],
     isReserved?: boolean
 
 }
@@ -74,12 +74,13 @@ interface ReserveUser {
     idReserveUser?: string,
     fcmToken?: string,
     data?: string,
-    palce?: Place,
+    place?: Place,
+    isReserved?: boolean,
     description?: string,
     reservePhone?: string,
     date?: string,
     reserveSchedules?: ReserveSchedule[],
-    isReserved?: boolean
+  
 }
 interface Place {
     idPlace?: string,
@@ -99,7 +100,7 @@ interface ReservList {
     reserves?: Reserve[]
 }
 
-interface PlaceList{
+interface PlaceList {
     places?: Place[]
 }
 
@@ -317,8 +318,6 @@ interface PaginatedLink {
     pageNum?: number
 }
 
-
-
 interface PaginatedImages {
     content?: Image[],
     totalPages?: number,
@@ -326,10 +325,37 @@ interface PaginatedImages {
     pageNum?: number
 }
 
-
-
 interface EventList {
     list: Event[]
+}
+
+interface Survey {
+    idSurvey?: string,
+    username?: string,
+    question?: string,
+    closeDate?: string,
+    closeTime?: string,
+    replies?: string[]
+}
+interface PaginatedSurveys {
+    content?: Survey[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
+}
+
+interface CustomLink {
+    idPersLink?: string,
+    username?: string,
+    title?: string,
+    url?: string,
+    icon?: string
+}
+interface PaginatedCustomLink {
+    content?: CustomLink[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
 }
 
 export type {
@@ -341,5 +367,6 @@ export type {
     PaginatedNecro, PaginatedIncident, PaginatedLink,
     Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserve,
     ReservList, PaginatedReserve, Place, Hall, PaginatedPlace,
-    HallList, ReserveUser, ReserveSchedule, PlaceList
+    HallList, ReserveUser, ReserveSchedule, PlaceList, Survey, 
+    PaginatedSurveys, CustomLink, PaginatedCustomLink
 }

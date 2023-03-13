@@ -5,7 +5,7 @@ import markerIcon from "../../../../../src/assets/marker.svg"
 import { useState } from "react";
 import ReserveStore from "../../../../viewmodels/reserv/ReservStore";
 import AddHalls from "./AddHalls";
-import { Hall, Place } from "../../../../models/section/Section";
+import {Place } from "../../../../models/section/Section";
 import { toast } from "react-toastify";
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';

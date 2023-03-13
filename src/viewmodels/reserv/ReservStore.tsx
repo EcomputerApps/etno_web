@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from "mobx"
 import { toast } from "react-toastify"
-import { Hall, HallList, PaginatedBand, PaginatedPlace, PaginatedReserve, Place, PlaceList, Reserve, ReservList } from "../../models/section/Section"
+import { Hall, HallList, PaginatedBand, PaginatedPlace, PaginatedReserve, Place, PlaceList, Reserve, ReserveUser, ReservList } from "../../models/section/Section"
 import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
@@ -31,10 +31,12 @@ class ReserveStore {
     paginatedReserve: PaginatedReserve = {}
     paginatedPlace: PaginatedPlace = {}
     hallList: HallList = {}
+    reserveUser : ReserveUser = {}
 
     constructor() {
         makeObservable(this, {
             modalClientInfo: observable,
+            reserveUser : observable,
             modalEdit: observable,
             modalCreate: observable,
             modalCalendar: observable,
@@ -52,6 +54,7 @@ class ReserveStore {
             setModalEdit: action,
             setModalEditHalls: action,
             updatePlace: action,
+            updateReserveUser: action,
             updatePaginatedReserveContent: action,
             updatePaginatedPlacesContent: action,
             updateReserve: action,
@@ -74,7 +77,8 @@ class ReserveStore {
             getPlace: computed,
             getModalEditHalls: computed,
             getPlaceList : computed,
-            getModalPlaceList : computed
+            getModalPlaceList : computed,
+            getReserveUser: computed
            
         })
     }
@@ -125,6 +129,12 @@ class ReserveStore {
     }
     get getModalCreate() {
         return this.modalCreate
+    }
+    updateReserveUser( reserveUser: ReserveUser){
+        this.reserveUser = reserveUser
+    }
+    get getReserveUser(){
+        return this.reserveUser
     }
     //----------------------------------------------------------------------------
     //------------Reserves---------------------------//
@@ -394,6 +404,9 @@ class ReserveStore {
                 progress: undefined,
                 theme: "light"
             })
+            setTimeout(function () {
+                window.location.reload();
+            }, 500);
         } else {
             toast.error('No se ha podido borrar', {
                 position: 'bottom-center',

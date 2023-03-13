@@ -31,7 +31,7 @@ const CreateReserve = () => {
     const [reservPlace, setReservPlace] = useState<Place>()
     const [reservHall, setReservHall] = useState<Hall>()
     const [reservDate, setReservDate] = useState<Value>();
-    const [reservUser, setReserveUser] = useState<ReserveUser>()
+    const [reservUser, setReserveUser] = useState<ReserveUser[]>()
     const [isReserved, setIsReserved] = useState(false)
     const [timeSelector, setTimeSelector] = useState(false)
 

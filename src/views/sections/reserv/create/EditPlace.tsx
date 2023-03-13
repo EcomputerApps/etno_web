@@ -4,7 +4,6 @@ import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../../src/assets/marker.svg"
 import { useState } from "react";
 import ReserveStore from "../../../../viewmodels/reserv/ReservStore";
-import AddHalls from "./AddHalls";
 import { Place } from "../../../../models/section/Section";
 import { toast } from "react-toastify";
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
@@ -22,7 +21,7 @@ interface Marker {
 }
 
 const EditPlace = () => {
-    //Google stuff
+    //+Google stuff
     const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
     const [emptyLongLat, setEmptyLongLat] = useState(false)
     const defaultProps = {
@@ -32,30 +31,31 @@ const EditPlace = () => {
         },
         zoom: 11
     }
-    //Google stuff
+    //-Google stuff
 
     const [place, setPlace] = useState(reserveStore.getPlace)
 
-    //Palce camps getters/setters
+    //+Palce camps getters/setters
     const [placeName, setPalceName] = useState<string>(place.name!!)
     const [lat, setLat] = useState(Number(place.latitude!!))
     const [long, setLong] = useState(Number(place.longitude!!))
     const [file, setFile] = useState<File>()
-    //Palce camps getters/setters
-    //Check if camp is empty, if so mark that camp
+    //-Palce camps getters/setters
+    //+Check if camp is empty, if so mark that camp
     function chekIfEmpty() {
         placeName === "" ? setEmptyName(true) : setEmptyName(false)
 
     }
-    //Check if camp is empty, if so mark that camp
+    //-Check if camp is empty, if so mark that camp
 
     const [emptyName, setEmptyName] = useState(false)
-    //Update values of Place selected
+    //+Update values of Place selected
 
     function editHalls() {
         reserveStore.updateHallList(place.halls!!)
         reserveStore.setModalEditHalls(true)
     }
+
     function updatePlace(placeId: string) {
         chekIfEmpty()
         if (placeName === "") {
@@ -81,7 +81,7 @@ const EditPlace = () => {
             hoverSectionStore.setName('Reservas')
         }
     }
-    //Update values of Place selected
+    //-Update values of Place selected
 
     return (
         <div className="flex flex-col md:m-auto w-1/2 md:h-screen border-2 rounded-md bg-white overflow-y-auto">

@@ -64,15 +64,10 @@ const LinkPage = () => {
                 url: linkStore.getLinkString
             }
             linkStore.editLink('Bolea', linkId, linkNew)
-
             saveEdition(linkStore.getTitle, linkStore.getLinkString)
             setModal(false)
         }
-
-
-
     }
-
     const incrementPage = () => {
         setPageNumber(pageNumber + 1)
     }
@@ -126,11 +121,7 @@ const LinkPage = () => {
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                         <div className="fixed inset-0 w-screen h-screen">
                             <div className="w-screen  flex justify-center mt-10">
-
-
                                 <div className="flex flex-col lg:m-auto lg:w-1/2 mt-5 w-3/4 lg:h-screen ">
-
-                                   
                                     <div className="bg-white border-2  rounded-md">
                                         <div className="w-full  max-h-60  flex flex-wrap">
                                             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
@@ -145,17 +136,13 @@ const LinkPage = () => {
                                                     <input className="w-full border-2 p-2 rounded-md focus:outline-none focus:border-indigo-800" defaultValue={linkStore.getLinkString} onChange={(e) => linkStore.setLinkString(e.currentTarget.value)}></input>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div className=" flex w-full justify-center p-3">
                                             <button className="btnStandard disabled:bg-gray-600 mr-5" onClick={() => updateLink(linkStore.getId)}>Guardar</button>
                                             <button className="btnStandard disabled:bg-gray-600" onClick={() => setModal(false)}>Cancelar</button>
-                                            
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
                         </div>
                     </div>

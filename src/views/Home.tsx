@@ -23,6 +23,8 @@ import Tourism from './sections/tourism/Tourism'
 
 import { useEffect } from 'react'
 import ReserveStore from '../viewmodels/reserv/ReservStore'
+import Survey from './sections/surveys/Survey'
+import CustomLinkPage from './sections/customLink/CustomLink'
 
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
@@ -56,13 +58,15 @@ const Home = () => {
       case 'Incidencias': return <Incident />
       case 'Fotos': return <Photo />
       case 'Enlaces': return <LinkPage />
+      case 'Encuestas': return <Survey />
+      case 'Enlaces Personalizados': return <CustomLinkPage />
     }
   }
 
   return (
     <div className="flex">
       <div
-        className={` ${sideBarStore.getPanel.open ? "w-72" : "w-20 "
+        className={` ${sideBarStore.getPanel.open ? "w-72" : "w-24"
           } bg-indigo-800 lg:h-screen h-full p-5  pt-8 relative duration-300 `}
       >
         <img
