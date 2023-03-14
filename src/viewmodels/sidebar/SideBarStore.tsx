@@ -27,9 +27,9 @@ class SideBarStore{
         {title: 'Servicios', src: "service.svg"},
         {title: 'Patrocinadores', src: "sponsor.svg" },
         {title: 'Fallecimientos', src: "death.svg"},
-        {title: 'Encuestas', src: "death.svg"},
+        {title: 'Encuestas', src: "survey.svg"},
         {title: 'Enlaces', src: "link.svg"},
-        {title: 'Enlaces Personalizados', src: "death.svg"},
+        {title: 'Enlaces Personalizados', src: "customLink.svg"},
         {title: 'Incidencias', src: "incident.svg"},
         {title: 'Fotos', src: "photos.svg"},
         {title: 'Salir', src: "logout.svg"},
@@ -43,7 +43,7 @@ class SideBarStore{
             updateSection: action,
             getPanel: computed
         })
-       makePersistable(this,{ name: 'SideBarStore_v2', properties: ['panel'], storage: window.localStorage })
+       makePersistable(this,{ name: 'SideBarStore_v4', properties: ['panel'], storage: window.localStorage })
     }
 
     panelHandler(){

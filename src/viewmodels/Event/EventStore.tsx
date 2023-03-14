@@ -108,7 +108,7 @@ class EventStore {
 
         if (response.ok){
             toast.success('Se ha actualizado exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -122,7 +122,7 @@ class EventStore {
              }, 1500);
         } else {
             toast.error('No se ha actualizado', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -172,7 +172,7 @@ class EventStore {
         this.updateEventList(newPaginatedEvents)
         this.updateEvent({})
         toast.success('Se ha eliminado exitosamente', {
-            position: 'top-center',
+            position: 'bottom-center',
             autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,
@@ -183,7 +183,7 @@ class EventStore {
       })
     }else{
         toast.error('No se ha eliminado exitosamente', {
-            position: 'top-center',
+            position: 'bottom-center',
             autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: false,

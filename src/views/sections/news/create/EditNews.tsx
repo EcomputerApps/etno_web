@@ -36,56 +36,56 @@ const EditNews = () => {
     "title": "Tecnología",
   },
   {
-  "id": "checkThree",
-  "value": "Salud",
-  "title": "Salud",
+    "id": "checkThree",
+    "value": "Salud",
+    "title": "Salud",
   }
- ]
+  ]
 
- function updateNews(){
+  function updateNews() {
 
-  if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === ''){
-    chekIfEmpty()
-    toast.info('Rellene los campos', {
-      position: 'top-center',
-      autoClose: 500,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light"
-  })
-  }else{
-    const news_: News = {
-      category: newsCategory,
-      title: newsTitle,
-      description: newsDescription,
-      publicationDate: newsDate,
-      imageUrl: news.imageUrl
-    }
+    if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === '') {
+      chekIfEmpty()
+      toast.info('Rellene los campos', {
+        position: 'top-center',
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light"
+      })
+    } else {
+      const news_: News = {
+        category: newsCategory,
+        title: newsTitle,
+        description: newsDescription,
+        publicationDate: newsDate,
+        imageUrl: news.imageUrl
+      }
       newsStore.editNews('Bolea', news.idNew!!, news_, file!!)
+    }
   }
- }
 
- function chekIfEmpty() {
+  function chekIfEmpty() {
 
-  newsTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
+    newsTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
 
-  newsDate === "" ? setEmptyDate(true) : setEmptyDate(false)
-  newsDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
- 
-}
+    newsDate === "" ? setEmptyDate(true) : setEmptyDate(false)
+    newsDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
 
-const [emptyTitle, setEmptyTitle] = useState(false)
-const [emptyFile, setEmptyFile] = useState(false)
-const [emptyDate, setEmptyDate] = useState(false)
-const [emptyDescption, setEmptyDescription] = useState(false)
+  }
 
- 
-  return(
-    <div className="flex flex-col md:m-auto lg:w-1/2  w-3/4 md:h-screen border-2 rounded-md bg-white">
-        <div>
+  const [emptyTitle, setEmptyTitle] = useState(false)
+  const [emptyFile, setEmptyFile] = useState(false)
+  const [emptyDate, setEmptyDate] = useState(false)
+  const [emptyDescption, setEmptyDescription] = useState(false)
+
+
+  return (
+    <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 md:h-screen border-2 rounded-md bg-white">
+      <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
             <img src={logoEtno} alt="logo_Etno"></img>
@@ -93,31 +93,31 @@ const [emptyDescption, setEmptyDescription] = useState(false)
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-8 pl-3">
-                      <div className="flex flex-col p-1 relative">
-                          <div className="flex  flex-wrap pt-2">
-                              {arrayServiceTypes.map((chkBtn, index) => (
-                                  <div key={index} className='flex lg:w-1/6 w-1/3'>
-                                      <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
-                                          setNewsCategory(e.currentTarget.value)
-                                      }} />
-                                      <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
+          <div className="flex flex-col p-1 relative">
+            <div className="flex  flex-wrap pt-2">
+              {arrayServiceTypes.map((chkBtn, index) => (
+                <div key={index} className='flex lg:w-1/6 w-1/3'>
+                  <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
+                    setNewsCategory(e.currentTarget.value)
+                  }} />
+                  <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
                               border-gray-300 
                               peer-checked:hover:bg-indigo-700 
                               peer-checked:text-white 
                               ring-indigo-500 peer-checked:ring-2 overflow-hidden">{chkBtn.title}</label>
-                                  </div>
-                              ))}
-                          </div>
-                          <label className={"labelFloatDate"}>Categoría</label>
-                      </div>
-                  </div>
+                </div>
+              ))}
+            </div>
+            <label className={"labelFloatDate"}>Categoría</label>
+          </div>
+        </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
-  
+
             <input defaultValue={news.title} ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
-                            : ''
-                            }`} onChange={(value) => {
-              console.log(value.currentTarget.value)
+              : ''
+              }`} onChange={(value) => {
+                console.log(value.currentTarget.value)
                 setNewsTitle(value.currentTarget.value)
                 setEmptyTitle(false)
               }} onKeyUp={(e) => {
@@ -133,8 +133,8 @@ const [emptyDescption, setEmptyDescription] = useState(false)
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
             <input defaultValue={news.publicationDate} ref={inputRefDate} type="date" name="newsDate" className={`inputCamp peer w-40 ${emptyDate ? 'border-red-600'
-                            : ''
-                            }`}onChange={(value) => {
+              : ''
+              }`} onChange={(value) => {
                 setNewsDate(value.currentTarget.value)
                 setEmptyDate(false)
               }} onKeyUp={(e) => {
@@ -150,8 +150,8 @@ const [emptyDescption, setEmptyDescription] = useState(false)
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="flex flex-col p-1 relative mt-3">
             <textarea defaultValue={news.description} ref={txtAreaRef} placeholder=" " name="newsDescription" rows={3} className={`inputCamp peer ${emptyDescption ? 'border-red-600'
-                            : ''
-                            }`} onChange={(value) => {
+              : ''
+              }`} onChange={(value) => {
                 setNewsDescription(value.currentTarget.value)
                 setEmptyDescription(false)
               }} onKeyDown={(e) => {
@@ -164,12 +164,12 @@ const [emptyDescption, setEmptyDescription] = useState(false)
             <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>
-        
+
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="text-left p-1 ">
             <div className={`photoBoard ${emptyFile ? 'border-red-600'
-                            : ''
-                            }`}>
+              : ''
+              }`}>
               <div className='absolute left-3'>
                 Foto {file?.name}
               </div>
@@ -192,9 +192,9 @@ const [emptyDescption, setEmptyDescription] = useState(false)
           <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => updateNews()}>Actualizar</button>
           <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => newsStore.setModalEdit(false)}>Cancelar</button>
         </div>
-        </div>
-   
       </div>
-    )
+
+    </div>
+  )
 }
 export default observer(EditNews)

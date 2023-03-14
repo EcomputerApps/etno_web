@@ -88,7 +88,7 @@ const LinkPage = () => {
                     <div>
                         <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                             <div className="fixed inset-0 w-screen h-screen">
-                                <div className="w-screen  flex justify-center mt-10">
+                                <div className="w-screen  flex justify-center">
                                     <CreateLink />
                                 </div>
                             </div>
@@ -148,16 +148,16 @@ const LinkPage = () => {
                     </div>
                 </div>
             ) : <></>}
-            <div className="flex flex-1 overflow-y-auto w-full h-3/4  ">
+            <div className="flex flex-1 overflow-y-auto lg:overflow-hidden w-full h-3/4  ">
                 <div className={"w-full grid lg:grid-cols-4 lg:grid-rows-3 grid-cols-1"}>
                     {linkStore.paginatedLink.content?.map((link, index) => (
                         linkStore.paginatedLink.content!!.length > 0 &&
-                        <div key={index} className="border-2 m-1 rounded-md relative bg-gray-100 shadow-md">
+                        <div key={index} className="border-2 p-1     rounded-md relative bg-gray-100 shadow-md lg:h-full h-40">
                             <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center">{link.title}</div>
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={link.url}>{link.url}</a></div>
                             <div className="flex m-auto justify-center lg:pt-5 h-1/5">
                                 <button className="btnStandard mr-5 h-8 lg:h-10" onClick={() => editLink(link.title!!, link.url!!, link.idLink!!, index)}>Editar</button>
-                                <button className="btnStandard h-8 lg:h-10" onClick={() => linkStore.setModalEdit(true)}>Borrar</button>
+                                <button className="btnStandard h-8 lg:h-10" onClick={() => deleteLink(link.idLink!!)}>Borrar</button>
                             </div>
                         </div>
                     ))}

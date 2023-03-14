@@ -150,7 +150,7 @@ class BandStore {
             this.updateBandList(newPaginatedBands)
             this.updateBand({})
             toast.success('Se ha borrado exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 100,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -161,7 +161,7 @@ class BandStore {
             })
         } else {
             toast.error('No se ha podido borrar', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,

@@ -3,7 +3,7 @@ import logoEtno from '../../../../assets/logo_etno.png'
 import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../../src/assets/marker.svg"
 import { useState } from "react";
-import ReserveStore from "../../../../viewmodels/reserv/ReservStore";
+import ReserveStore from "../../../../viewmodels/reserv/ReserveStore";
 import { Place } from "../../../../models/section/Section";
 import { toast } from "react-toastify";
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
@@ -21,6 +21,7 @@ interface Marker {
 }
 
 const EditPlace = () => {
+
     //+Google stuff
     const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
     const [emptyLongLat, setEmptyLongLat] = useState(false)
@@ -34,6 +35,7 @@ const EditPlace = () => {
     //-Google stuff
 
     const [place, setPlace] = useState(reserveStore.getPlace)
+    reserveStore.updateHallList(place.halls!!)
 
     //+Palce camps getters/setters
     const [placeName, setPalceName] = useState<string>(place.name!!)
@@ -50,11 +52,6 @@ const EditPlace = () => {
 
     const [emptyName, setEmptyName] = useState(false)
     //+Update values of Place selected
-
-    function editHalls() {
-        reserveStore.updateHallList(place.halls!!)
-        reserveStore.setModalEditHalls(true)
-    }
 
     function updatePlace(placeId: string) {
         chekIfEmpty()
@@ -74,7 +71,7 @@ const EditPlace = () => {
                 name: placeName,
                 latitude: lat,
                 longitude: long,
-                halls: reserveStore.getHallList.content
+                halls: reserveStore.getHallList
             }
             reserveStore.editPlace('Bolea', placeId, newPlace, file!!)
             sideBarStore.updateSection('Reservas');
@@ -84,7 +81,7 @@ const EditPlace = () => {
     //-Update values of Place selected
 
     return (
-        <div className="flex flex-col md:m-auto w-1/2 md:h-screen border-2 rounded-md bg-white overflow-y-auto">
+        <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 border-2 rounded-md bg-white overflow-y-auto">
             {/*Header*/}
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
@@ -156,7 +153,7 @@ const EditPlace = () => {
             </div>
             {/*GoogleMaps camp*/}
             {/*Longitud camp*/}
-            <div className="flex flex-row">
+            <div className="flex lg:flex-row flex-col">
                 <div className="w-full flex flex-col mt-5 pl-3 ">
                     <div className="flex flex-col p-1 relative">
                         <input value={long} autoFocus placeholder=" " defaultValue={place.longitude} name="pharmacyName" disabled type="text" className="inputCamp peer  "
@@ -179,7 +176,11 @@ const EditPlace = () => {
             {reserveStore.getModalEditHalls ? (
                 <div>
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50  backdrop-blur-sm flex justify-center items-center"  >
+                    <div className="fixed inset-0 w-screen h-screen">
+                            <div className="w-screen  flex justify-start ">
                         <EditHalls />
+                    </div>
+                    </div>
                     </div>
                 </div>
             ) : <></>}
@@ -187,7 +188,7 @@ const EditPlace = () => {
             {/*Set of button that call Modal and camp that shows what hall have selected Place*/}
             <div className="flex flex-row  mt-5 pl-3 ">
                 <div className="pr-5">
-                    <button className="btnStandard uppercase justify-center" onClick={() => editHalls()}>Añadir salas</button>
+                    <button className="btnStandard uppercase justify-center" onClick={() => reserveStore.setModalEditHalls(true)}>Añadir salas</button>
                 </div>
                 <div className="  border-2 w-5/6  m-auto p-2 rounded-md h-12 ">
                     {place.halls?.map((item, index) => (

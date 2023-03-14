@@ -31,7 +31,7 @@ const TableAdvert = (prop: PropTable) => {
                 <div>
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                         <div className="fixed inset-0 w-screen h-screen">
-                            <div className="w-screen  flex justify-center mt-10">
+                            <div className="w-screen  flex justify-start">
                                 <EditAdvert />
                             </div>
                         </div>

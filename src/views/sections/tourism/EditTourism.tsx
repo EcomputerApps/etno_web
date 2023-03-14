@@ -103,7 +103,7 @@ const EditTourism = () => {
   const [emptyLongLat, setEmptyLongLat] = useState(false)
 
   return (
-    <div className="flex flex-col lg:m-auto  lg:w-1/2  w-3/4 mt-5   h-screen overflow-y-auto border-2 rounded-md bg-white">
+    <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white">
       <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">

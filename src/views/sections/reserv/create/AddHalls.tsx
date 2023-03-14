@@ -3,24 +3,15 @@ import { useState } from "react"
 import { toast } from "react-toastify"
 import logoEtno from '../../../../assets/logo_etno.png'
 import { Hall } from "../../../../models/section/Section"
-import ReserveStore from "../../../../viewmodels/reserv/ReservStore"
+import ReserveStore from "../../../../viewmodels/reserv/ReserveStore"
 
 
 var tempHallList = new Array<Hall>()
 const reserveStore = ReserveStore.getReserveStore()
 
 const AddHalls = () => {
-
-
     const [hallName, setHallName] = useState<string>("")
-    const [hallFranja, setHallFranja] = useState<number>(0)
-    const [hallPrice, setHallPrice] = useState<number>(0)
-    const [hallMornStart, setHallMornStart] = useState<Date>()
-    const [hallMornStop, setHallMornStop] = useState<Date>()
-    const [hallEvningStart, setHallEvningStart] = useState<Date>()
-    const [hallEvningStop, setHallEvningStop] = useState<Date>()
     const [hallList, setHallList] = useState<Array<Hall>>()
-
     function addHallToList() {
         const hall: Hall = {
             username: "Bolea",
@@ -39,11 +30,10 @@ const AddHalls = () => {
                 theme: "light"
             })
         } else {
-             tempHallList.push(hall)
+            tempHallList.push(hall)
             setHallList(tempHallList)
             setHallName("")
         }
-
 
     }
     function addHallToPlace() {
@@ -57,9 +47,8 @@ const AddHalls = () => {
         hallName === "" ? setEmptyName(true) : setEmptyName(false)
 
     }
-
     return (
-        <div className="flex flex-col lg:m-auto lg:w-1/2  w-3/4 lg:h-screen border-2 rounded-md bg-white">
+        <div className="flex flex-col lg:m-auto lg:w-1/2  w-11/12 lg:h-screen border-2 rounded-md bg-white">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -77,19 +66,8 @@ const AddHalls = () => {
                         <label className="labelFloatInput">Nombre de la sala</label>
                     </div>
                 </div>
-
-                <div className="w-1/3 flex flex-1 flex-col pl-3">
-                    <div className=" flex flex-col p-1 mt-5  relative">
-                        <input placeholder=" "
-                            name="bandType" type="text" required={true}
-                            className="inputCamp peer " />
-                        <label className="labelFloatInput">Precio</label>
-                    </div>
-                </div>
-
                 <div className="flex justify-center items-center m-auto py-5 pl-10">
                     <button name="bandBtnSave" className="btnStandard mr-10" onClick={() => addHallToList()}>Añadir sala</button>
-
                 </div>
                 <div className="lg:w-full  w-full flex border-2 rounded-md  flex-col shadow-sm">
                     <div className="flex justify-center text-xl font-semibold">Salas</div>

@@ -23,7 +23,6 @@ const Tourism = () => {
   const decrementPage = () => {
     setPageNumber(pageNumber - 1)
   }
-
   return (
     <div className="w-full h-full  relative">
       <div className="flex flex-col gap-4">
@@ -35,18 +34,12 @@ const Tourism = () => {
               Crear
             </button>
           </div>
-          {tourisStore.getModalCreate ? (
-        <div>
-          <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-            <CreateTourism />
-          </div>
-        </div>
-      ) : <></>}
+    
       {tourisStore.getModalCreate ? (
         <div>
           <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
             <div className="fixed inset-0 w-screen h-screen">
-              <div className="w-screen  flex justify-center">
+              <div className="w-screen  flex justify-start">
               <CreateTourism />
               </div>
             </div>
@@ -69,7 +62,7 @@ const Tourism = () => {
           <img src={arrowRight} alt="forward"/>
         </button>
       </div>
-      <ToastContainer/>
+      <ToastContainer style={{ margin: "50px" }} />
     </div>
   )
 }

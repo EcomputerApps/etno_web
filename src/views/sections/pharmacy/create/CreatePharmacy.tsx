@@ -137,7 +137,7 @@ const CreatePharmacy = () => {
                 toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
-                    hideProgressBar: false,
+                    hideProgressBar: false, 
                     closeOnClick: false,
                     pauseOnHover: false,
                     draggable: true,

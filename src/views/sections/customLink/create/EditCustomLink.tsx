@@ -1,10 +1,47 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png';
+import { CustomLink } from '../../../../models/section/Section';
 import CustomLinkStore from "../../../../viewmodels/customLink/CustomLinkStore";
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const customLinkStore = CustomLinkStore.getCustomLinkStore()
 const EditCustomLink = () => {
-    const [customLink, setCustomLink] = useState(customLinkStore.getPersonalLink)
+    const [customLink, setCustomLink] = useState(customLinkStore.getCustomlLink)
+    const [cLinkName, setCLinkName] = useState<string>(customLink.name!!)
+    const [cLinkUrl, setCLinkUrl] = useState<string>(customLink.webUrl!!)
+    const [cLinkIncon, setcLinkIcon] = useState<string>(customLink.iconName!!)
+
+    function updateCustomLink(customLinkId: string) {
+            
+        if (cLinkName === "" || cLinkUrl === "") {
+          toast.error('Rellene los campos', {
+            position: 'bottom-center',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light"
+          })
+        } else {
+          const newCustomLink: CustomLink = {
+            name: cLinkName,
+            webUrl: cLinkUrl,
+            iconName: cLinkIncon
+    
+          }
+    
+          customLinkStore.editCustomLink('Bolea', customLinkId, newCustomLink)
+      
+         sideBarStore.updateSection('Enlaces Personalizados'); hoverSectionStore.setName('Enlaces Personalizados')
+        }
+      }
+  
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2 mt-5 w-3/4 lg:h-screen border-2 rounded-md bg-white">
             <div>
@@ -17,22 +54,23 @@ const EditCustomLink = () => {
                 <div>
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
-                            <input autoFocus placeholder=" " value={customLink.title} name="bandType" id="test" type="text"
-                                className="inputCamp peer"
+                            <input autoFocus placeholder=" " defaultValue={customLink.name} name="bandType" id="test" type="text"
+                                className="inputCamp peer" onChange={(e) => setCLinkName(e.currentTarget.value)}
                             />
                             <label className={"labelFloatInput"}>Titulo</label>
                         </div>
                     </div>
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
-                            <input placeholder=" " name="bandType" value={customLink.url} id="test" type="text" className="inputCamp peer"
+                            <input placeholder=" " name="bandType" defaultValue={customLink.webUrl} id="test" type="text" className="inputCamp peer"
+                            onChange={(e) => setCLinkUrl(e.currentTarget.value)}
                             />
                             <label className={"labelFloatInput"}>Pagina Web</label>
                         </div>
                     </div>
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
-                            <input placeholder=" " name="bandType" value={customLink.icon} id="test" type="text" className="inputCamp peer"
+                            <input placeholder=" " name="bandType" defaultValue={customLink.iconName} id="test" type="text" className="inputCamp peer" onChange={(e) => setcLinkIcon(e.currentTarget.value)}
                             />
                             <label className={"labelFloatInput"}>Icono</label>
                         </div>
@@ -41,7 +79,7 @@ const EditCustomLink = () => {
             </div>
             <div>
                 <div className=" lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-                    <button name="bandBtnSave" className="btnStandard mr-10">Guardar</button>
+                    <button name="bandBtnSave" className="btnStandard mr-10" onClick={()=>updateCustomLink(customLink.idCustomLink!!)}>Guardar</button>
                     <button name="bandBtnCancel" className="btnStandard" onClick={() => customLinkStore.setEditLinkModal(false)}>Cancelar</button>
                 </div>
             </div>

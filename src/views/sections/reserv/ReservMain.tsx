@@ -5,7 +5,7 @@ import moment from 'moment';
 import Pencil from "../../../assets/menu/create.svg"
 import 'moment/locale/es';
 import { useEffect, useMemo, useState } from "react";
-import ReserveStore from "../../../viewmodels/reserv/ReservStore";
+import ReserveStore from "../../../viewmodels/reserv/ReserveStore";
 import CreateReserve from "./create/CreateReserv";
 import PlaceList from "./PlaceList";
 import TableReserves from "./TableReserves";
@@ -37,8 +37,8 @@ const Reserve = () => {
         <div className="w-full h-full  relative">
             <div className="flex flex-col gap-4">
                 <div className="flex flex-row">
-                    <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Reservas</h2>
-                    <div className="ml-auto  flex">
+                    <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl mr-3 sm:tracking-tight">Reservas</h2>
+                    <div className="lg:ml-auto  flex ">
                         <button type="button"
                             className="btnStandard mr-5 h-12"
                             onClick={() => reserveStore.setModalCalendar(true)}>
@@ -61,8 +61,8 @@ const Reserve = () => {
                 {reserveStore.getModalPlaceList ? (
                     <div>
                         <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-                            <div className="fixed inset-0 w-screen h-screen">
-                                <div className="w-screen  flex justify-center mt-10">
+                        <div className=" w-screen h-screen top-0 -left-1 fixed">
+                                <div className="w-screen  flex justify-start">
                                     <PlaceList headerList={["Nombre", "Salas", "Acciones"]} />
                                 </div>
                             </div>
@@ -71,17 +71,26 @@ const Reserve = () => {
                 ) : <></>}
                 {reserveStore.getModalCalendar ? (
                     <div>
-                        <div className=" fixed inset-0 z-50 bg-black bg-opacity-50  backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 z-50  bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className=" w-screen h-screen top-0 -left-1 fixed">
+                                <div className="flex w-full aspect-square">
+                                    <ReservesCalendar />
+                                </div>
+                            </div>
 
-                            <ReservesCalendar />
                         </div>
                     </div>
                 ) : <></>}
                 {reserveStore.getModalCreate ? (
                     <div>
                         <div className=" fixed inset-0 z-50 bg-black bg-opacity-50  backdrop-blur-sm flex justify-center items-center"  >
+                        <div className=" w-screen h-screen top-0 -left-1 fixed">
+                                <div className="flex w-full aspect-square">
                             <CreateReserve />
                         </div>
+                        </div>
+                    </div>
+        
                     </div>
                 ) : <></>}
 

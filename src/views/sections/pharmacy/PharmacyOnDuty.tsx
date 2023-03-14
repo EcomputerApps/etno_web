@@ -47,14 +47,12 @@ const PharmacyOnDutyCalendar = () => {
     })
 
     return (
-        <div className="lg:w-1/2 w-full min-w-fit mt-5" >
-            <div className="relative m-auto  w-5/6">
-                <div className=' absolute right-1    -top-4 rbc-toolbar'>
+        <div className="rounded-md lg:h-screen inset-0 border-2  relative w-full ">
+            <div className=' absolute right-1  -top-4 rbc-toolbar'>
                     <div className='flex mt-5 justify-end bg-indigo-50  rbc-btn-group'>
                         <button className='top-0 ' onClick={() => pharmacyStore.setModalCalendar(false)}>Volver</button>
                     </div>
                 </div>
-                <div>
                     <Calendar
                         localizer={localizer}
                         className=" bg-indigo-50 p-1"
@@ -72,12 +70,11 @@ const PharmacyOnDutyCalendar = () => {
                         }}
                         defaultView="month"
                         popup
-                        style={{ height: "90vh" }}
-                        views={views}
+                                               views={views}
                     />
                 </div>
-            </div>
-        </div>
+        
+  
 
     )
 }

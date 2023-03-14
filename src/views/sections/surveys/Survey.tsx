@@ -1,7 +1,4 @@
 import Pencil from "../../../assets/menu/create.svg"
-import arrowRight from "../../../assets/menu/arrowRight.svg"
-import arrowLeft from "../../../assets/menu/arrowLeft.svg"
-
 import SurveyStore from "../../../viewmodels/survey/SurveyStore"
 import CreateSurvey from "./create/CreateSurvey"
 import { observer } from "mobx-react-lite"
@@ -11,13 +8,6 @@ import { useState } from "react"
 
 const surveyStore = SurveyStore.getSurveyStore()
 const Survey = () => {
-    const [pageNumber, setPageNumber] = useState(0)
-    const incrementPage = () => {
-        setPageNumber(pageNumber + 1)
-    }
-    const decrementPage = () => {
-        setPageNumber(pageNumber - 1)
-    }
     return (
         <div className="w-full h-full  relative">
             <div className="flex flex-col gap-4">

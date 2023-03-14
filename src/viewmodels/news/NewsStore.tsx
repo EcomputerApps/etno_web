@@ -133,7 +133,7 @@ class NewsStore{
 
         if(response.ok) {
             toast.success('Se ha actualizado exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -147,7 +147,7 @@ class NewsStore{
          }, 1500);
         } else {
             toast.error('No se ha actualizado', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,

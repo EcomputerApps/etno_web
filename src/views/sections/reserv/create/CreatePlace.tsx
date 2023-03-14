@@ -3,9 +3,9 @@ import logoEtno from '../../../../assets/logo_etno.png'
 import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../../src/assets/marker.svg"
 import { useState } from "react";
-import ReserveStore from "../../../../viewmodels/reserv/ReservStore";
+import ReserveStore from "../../../../viewmodels/reserv/ReserveStore";
 import AddHalls from "./AddHalls";
-import {Place } from "../../../../models/section/Section";
+import { Place } from "../../../../models/section/Section";
 import { toast } from "react-toastify";
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
@@ -41,11 +41,11 @@ const CreatePlace = () => {
             name: placeName,
             latitude: lat,
             longitude: long,
-            halls: reserveStore.getHallList.content
+            halls: reserveStore.getHallList
         }
 
         chekIfEmpty()
-        if (placeName === "" || lat === 0 || long === 0 || file === undefined || reserveStore.getHallList.content?.length === 0 || reserveStore.getHallList.content![0].name === "") {
+        if (placeName === "" || lat === 0 || long === 0 || file === undefined || reserveStore.getHallList?.length === 0 || reserveStore.getHallList!![0].name === "") {
             toast.error('Rellene los campos', {
                 position: 'bottom-center',
                 autoClose: 1000,
@@ -71,7 +71,7 @@ const CreatePlace = () => {
     }
     function chekIfEmpty() {
         placeName === "" ? setEmptyName(true) : setEmptyName(false)
-        reserveStore.getHallList.content?.length === 0 || reserveStore.getHallList === undefined ? setEmptyHalls(true) : setEmptyHalls(false)
+        reserveStore.getHallList?.length === 0 || reserveStore.getHallList === undefined ? setEmptyHalls(true) : setEmptyHalls(false)
         file === undefined ? setEmptyFile(true) : setEmptyFile(false)
         long === 0 || lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
     }
@@ -82,16 +82,16 @@ const CreatePlace = () => {
     const [emptyLongLat, setEmptyLongLat] = useState(false)
 
     return (
-        <div className="flex flex-col md:m-auto w-1/2 md:h-screen border-2 rounded-md bg-white overflow-y-auto">
+        <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 border-2 rounded-md bg-white overflow-y-auto">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
-                    <p className='flex  text-white text-3xl p-3 uppercase'>Crear nuevo lugar</p>
+                    <p className='flex  text-white lg:text-3xl text-xl p-3 uppercase'>Crear nuevo lugar</p>
                 </div>
             </div>
             <div className="w-full flex flex-col mt-5 pl-3  ">
                 <div className="flex flex-col p-1 relative">
-                    <input autoFocus placeholder=" " name="pharmacyName" type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
+                    <input autoFocus placeholder=" " type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
                         : ''
                         }`}
                         onChange={(e) => setPalceName(e.currentTarget.value)} />
@@ -144,7 +144,7 @@ const CreatePlace = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row">
+            <div className="flex lg:flex-row flex-col">
                 <div className="w-full flex flex-col mt-5 pl-3 ">
                     <div className="flex flex-col p-1 relative">
                         <input value={long} autoFocus placeholder=" " name="pharmacyName" disabled type="text" className="inputCamp peer  "
@@ -163,7 +163,11 @@ const CreatePlace = () => {
             {reserveStore.getModalAddHalls ? (
                 <div>
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50  backdrop-blur-sm flex justify-center items-center"  >
-                        <AddHalls />
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className="w-screen  flex justify-start">
+                                <AddHalls />
+                            </div>
+                        </div>
                     </div>
                 </div>
             ) : <></>}
@@ -174,7 +178,7 @@ const CreatePlace = () => {
                 <div className={`border-2 w-5/6  m-auto p-2 rounded-md h-12 ${emptyHalls ? 'border-red-600'
                     : ''
                     }`}>
-                    {reserveStore.getHallList.content?.map((item, index) => (
+                    {reserveStore.getHallList?.map((item, index) => (
                         <label key={index} className="text-xl">{item.name + " "}</label>
                     ))}
 

@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite"
-import ReserveStore from "../../../../viewmodels/reserv/ReservStore"
+import ReserveStore from "../../../../viewmodels/reserv/ReserveStore"
 import { useEffect, useState } from "react"
 import logoEtno from '../../../../assets/logo_etno.png'
 import { Calendar, DateObject } from "react-multi-date-picker"
@@ -17,9 +17,9 @@ import moment from "moment"
 const reserveStore = ReserveStore.getReserveStore()
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
-
+var reservTime = new Array<ReserveSchedule>()
 const CreateReserve = () => {
-    
+
 
     const [hallMarker, setHallMarker] = useState<number>(0)
 
@@ -35,7 +35,7 @@ const CreateReserve = () => {
     const [isReserved, setIsReserved] = useState(false)
     const [timeSelector, setTimeSelector] = useState(false)
 
-    var reservTime = new Array<ReserveSchedule>()
+
     function addReserv() {
         const newReserv: Reserve = {
             name: reservName,
@@ -53,8 +53,8 @@ const CreateReserve = () => {
         }
         checkIfEmpty()
         reservName === "" || reservDescription === "" || reservEmail === "" || reservPhone === "" || reservPhone === "" ||
-            reservPlace?.name === "Elige Lugar" || reservHall?.name === "" || reservDate?.toString() === undefined || reservDate?.toString() === "" || reservTime.length === 0 ?
-
+            reservPlace?.name === "Elige Lugar" || reservHall?.name === "" || reservDate?.toString() === undefined ||
+            reservDate?.toString()=== "" || reservTime.length === 0 ?
             toast.error('Rellene los campos', {
                 position: 'bottom-center',
                 autoClose: 1000,
@@ -65,9 +65,7 @@ const CreateReserve = () => {
                 progress: undefined,
                 theme: "light"
             }) : reserveStore.addRequestReserve('Bolea', newReserv, reservHall?.idHall!!, reservPlace?.idPlace!!);
-        sideBarStore.updateSection('Reservas')
-        hoverSectionStore.setName('Reservas')
-
+        reservTime = new Array(); sideBarStore.updateSection('Reservas'); hoverSectionStore.setName('Reservas');
 
     }
     function checkIfEmpty() {
@@ -75,11 +73,10 @@ const CreateReserve = () => {
         reservDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
         reservEmail === "" ? setEmptyEmail(true) : setEmptyEmail(false)
         reservPhone === "" ? setEmptyPhone(true) : setEmptyPhone(false)
-        reservPlace?.name === "Elige Lugar" ? setEmptyPalce(true) : setEmptyPalce(false)
-        reservHall?.name === "" ? setEmptyHall(true) : setEmptyHall(false)
-        reservDate === undefined ? setEmptyDate(true) : setEmptyDate(false)
-        reservTime.length === 0 ? setEmptyTime(true) : setEmptyTime(false)
-
+        reservPlace?.name === "Elige Lugar" || reservPlace === undefined ? setEmptyPalce(true) : setEmptyPalce(false)
+        reservHall?.name === "" || reservPlace === undefined  ? setEmptyHall(true) : setEmptyHall(false)
+        reservDate === undefined ||   reservDate?.toString()=== "" ? setEmptyDate(true) : setEmptyDate(false)
+        reservTime.length === 0 && reservDate !== undefined? setEmptyTime(true) : setEmptyTime(false)
     }
 
     const [emptyName, setEmptyName] = useState(false)
@@ -165,11 +162,17 @@ const CreateReserve = () => {
         const index = reservTimeArray.indexOf({ date: reservTime })
         return index
     }
-
+    function showMe() {
+        console.log(reservTime.length)
+        console.log( reservDate?.toString().length) 
+        console.log(reservPlace)
+        console.log(reservHall)
+        checkIfEmpty()
+    }
     return (
-        <div className="flex flex-col lg:m-auto lg:w-1/2 w-max h-screen overflow-y-auto border-2 rounded-md bg-white    ">
+        <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white    ">
             <div >
-                    <div>
+                <div>
                     <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                         <div className="w-full flex flex-row p-2 justify-between">
                             <img src={logoEtno} alt="logo_Etno"></img>
@@ -239,7 +242,9 @@ const CreateReserve = () => {
                     <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                         <div className="flex flex-col p-1 mt-3 relative">
                             <div className="flex flex-col  rounded-md">
-                                <select className="inputCamp peer" defaultValue="" onChange={(e) => {
+                                <select className={`inputCamp peer ${emptyPalce ? 'border-red-600'
+                                : ''
+                                }`} defaultValue="" onChange={(e) => {
                                     setHallMarker(Number(e.currentTarget.value))
                                     setReservPlace(lugares[Number(e.currentTarget.value)]!!)
                                 }}>
@@ -255,7 +260,9 @@ const CreateReserve = () => {
                     <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                         <div className="flex flex-col p-1 mt-3 relative">
                             <div className="flex flex-col rounded-md">
-                                <select className="inputCamp peer" defaultValue=""
+                                <select className={`inputCamp peer ${emptyHall ? 'border-red-600'
+                                : ''
+                                }`} defaultValue=""
                                     onChange={(e) => {
                                         setReservHall(reservPlace?.halls!![Number(e.currentTarget.value)])
                                     }}
@@ -293,26 +300,26 @@ const CreateReserve = () => {
                             </div>
                         </div>
                         {/*HORAS*/}
-                        <div className={`lg:w-2/5  w-full flex border-2 rounded-md  flex-col shadow-sm ${emptyTime ? 'border-red-600' : ''}`}>
-                            <div className="flex justify-center text-xl font-semibold">Hora</div>
+                        <div className="lg:w-2/5  w-full flex border-2 rounded-md  flex-col shadow-sm">
+                            <div className="flex flex-row text-center items-center justify-center">
+                            <div className="flex justify-center">{emptyTime ? <label className="text-xl font-semibold text-red-600">Seleccione la hora</label> : <label className="text-xl font-semibold">Hora</label>}</div>
+                               
+                            </div>
                             <div className="flex flex-col h-64 items-center overflow-y-auto" >
                                 {horas.map((item, index) => (
                                     <div key={index} className='flex w-full border-t-2'>
                                         <input type="checkbox" id={index.toString()} className="peer sr-only" value={item.hora}
                                             onClick={(e) => {
                                                 e.currentTarget.checked ? reservTime.push({ date: e.currentTarget.value }) : reservTime.splice(addOrDelTime(reservTime, e.currentTarget.value), 1)
-
-                                            }} disabled={reservDate?.toString === undefined || reservDate?.toString() === ""}
+                                            }} disabled={reservDate === undefined || reservDate?.toString() === ""}
                                         />
                                         <label htmlFor={index.toString()} className="peer-checked:bg-indigo-300 hover:bg-indigo-100 w-full flex  m-auto justify-center items-center peer-disabled:bg-gray-300   h-10 text-xl ">{item.hora}</label>
                                     </div>
                                 ))}
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </div>
             <div className="relative">
                 <div className="flex m-auto justify-center left-0 right-0 p-3 bottom-1">

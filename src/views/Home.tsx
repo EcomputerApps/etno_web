@@ -22,7 +22,7 @@ import Sponsor from './sections/sponsor/Sponsor'
 import Tourism from './sections/tourism/Tourism'
 
 import { useEffect } from 'react'
-import ReserveStore from '../viewmodels/reserv/ReservStore'
+import ReserveStore from '../viewmodels/reserv/ReserveStore'
 import Survey from './sections/surveys/Survey'
 import CustomLinkPage from './sections/customLink/CustomLink'
 

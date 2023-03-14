@@ -345,11 +345,11 @@ interface PaginatedSurveys {
 }
 
 interface CustomLink {
-    idPersLink?: string,
+    idCustomLink?: string,
     username?: string,
-    title?: string,
-    url?: string,
-    icon?: string
+    name?: string,
+    webUrl?: string,
+    iconName?: string
 }
 interface PaginatedCustomLink {
     content?: CustomLink[],

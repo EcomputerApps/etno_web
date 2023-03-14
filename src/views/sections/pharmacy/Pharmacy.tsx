@@ -54,20 +54,20 @@ const Pharmacy = () => {
             </div>
           ) : <></>}
           {pharmacyStore.getModalCalendar ? (
-            <div>
-              <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-                <div className="fixed inset-0 w-screen h-screen">
-                  <div className="w-screen  flex justify-center">
+
+
+            <div className=" fixed inset-0 z-50 bg-black bg-opacity-50  backdrop-blur-sm flex justify-center items-center"  >
+        
+                <div className=" w-screen h-screen lg:top-0 top-5 -left-1 fixed">
+                  <div className="flex w-full aspect-square">
                     <PharmacyOnDuty />
                   </div>
-                </div>
-              </div>
-            </div>
+                </div> </div> 
           ) : <></>}
         </div>
         <TablePharmacy currentPage={pageNumber} headerList={['tipo', 'nombre', 'horario', 'Dirección', 'Teléfono', 'enlace', 'acciones']} />
       </div>
-      <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
+      <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center lg:flex-row flex-col">
         <button onClick={decrementPage} disabled={pageNumber < 1} className="btnStandard mr-10">
           <img src={arrowLeft} alt="backward" />
           Anterior

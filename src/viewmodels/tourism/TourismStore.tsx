@@ -88,7 +88,7 @@ class TourismStore{
             this.paginatedTourism.content?.push(tourism)
             this.tourism = tourism
             toast.success('Se ha añadido exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 100,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -102,7 +102,7 @@ class TourismStore{
          }, 1500);
         }else{
             toast.error('No se ha podido añadir exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -129,7 +129,7 @@ class TourismStore{
 
         if (response.ok){
             toast.success('Se ha actualizado exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -143,7 +143,7 @@ class TourismStore{
              }, 1500);
         } else {
             toast.error('No se ha actualizado', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -176,7 +176,7 @@ class TourismStore{
             this.updateTourismList(newPaginatedTourism)
             this.updateTourism({})
             toast.success('Se ha eliminado exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 100,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -187,7 +187,7 @@ class TourismStore{
           })
         }else{
             toast.success('No se ha podido eliminar exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,

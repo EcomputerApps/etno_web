@@ -3,15 +3,19 @@ import { Survey } from "../../../models/section/Section"
 import SurveyStore from "../../../viewmodels/survey/SurveyStore"
 import EditSurvey from "./create/EditSurvey"
 
-
 const surveyStore = SurveyStore.getSurveyStore()
-
 
 const array = new Array<Survey>(surveyStore.getSurvey)
 function saveSurvey(survey: Survey) {
     surveyStore.updateSurvey(survey)
     surveyStore.setEditSurvey(true)
 }
+const results = new Array(
+    { reply: "12" },
+    { reply: "13" },
+    { reply: "5" },
+    { reply: "1" }
+)
 
 const TableSurvey = () => {
     return (
@@ -29,7 +33,7 @@ const TableSurvey = () => {
             ) : <></>}
             {surveyStore.getSurvey.replies?.length!! > 1 ? (
                 <div>
-                    <div className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
+                    <div className="bg-white border-b border-2 rounded-md dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
                         <div className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
                             Pregunta:
                             <div className="tableCamp border-2 rounded-md">
@@ -39,67 +43,73 @@ const TableSurvey = () => {
                         <div className="px-6 py-4">
                             <div className="tableCampl overflow-y-auto  text-justify flex flex-col w-full ">
                                 {surveyStore.getSurvey.replies?.map((item, index) => (
-                                    <div key={index} className="tableCamp flex flex-col  ">
-                                        <div className="font-medium text-gray-900 w-full ">
-                                            Respuesta {index + 1}
-                                        </div>
-                                        <div className="font-medium text-gray-900  w-full text-center border-2 rounded-md">
-                                            <label >{item}</label>
-                                        </div>
+                                    <div key={index} className="tableCamp flex flex-col ">
+                                        {item !== "" ? (
+                                            <div className=" w-full">
+                                                <div className="font-medium text-gray-900 w-full ">
+                                                    <label>Respuesta {index + 1}</label>
+                                                </div>
+                                                <div className="font-medium text-gray-900  w-full text-center p-2 border-2 rounded-md">
+                                                    <label >{item}</label>
+                                                </div>
+                                            </div>
+                                        ) : <></>}
                                     </div>
                                 ))}
                             </div>
                         </div>
-                        <div className=" px-6 py-4 w-1/3">
-                            <div className="font-medium text-gray-900">
-                                Fecha de Cierre
+                        <div className="flex flex-row">
+                            <div className=" px-6 py-4 w-1/2">
+                                <div className="font-medium text-gray-900 w-1/2">
+                                    Fecha de Cierre
+                                </div>
+                                <div className="font-medium text-gray-900  text-center border-2 rounded-md w-1/2">
+                                    {surveyStore.getSurvey.closeDate} {surveyStore.getSurvey.closeTime}
+                                </div>
                             </div>
-                            <div className="font-medium text-gray-900  w-full text-center border-2 rounded-md">
-                                {surveyStore.getSurvey.closeDate} {surveyStore.getSurvey.closeTime}
-                            </div>
-                        </div>
-                        <div className="px-6 py-4">
-                            <div className="h-20 flex items-center justify-center relative">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveSurvey(array[0])} >Editar</a>
-                                <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" >Eliminar</a>
+                            <div className="px-6 py-4 w-1/2">
+                                <div className="h-20 flex items-center justify-end relative ">
+                                    <button className="btnStandard w-20 mr-5" onClick={() => saveSurvey(array[0])}> Editar</button>
+                                    <button className="btnStandard" >Eliminar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="rounded-md ">
-                        <div className="mt-4 font-medium text-gray-900">
+                        <div className="mt-5 font-medium text-gray-900 text-xl">
                             Resultados
                         </div>
                         <div className="flex flex-row mb-5">
                             <div className="w-1/4 mr-1">
                                 <div >
-                                    1
+                                    <label>Pregunta 1</label>
                                 </div>
                                 <div className="font-medium text-gray-900  w-full text-center border-2 rounded-md">
-                                    10
+                                    {results[0].reply}
                                 </div>
                             </div>
                             <div className="w-1/4 mr-1">
                                 <div >
-                                    2
+                                    <label>Pregunta 2</label>
                                 </div>
                                 <div className="font-medium text-gray-900  w-full text-center border-2 rounded-md">
-                                    7
+                                    {results[1].reply}
                                 </div>
                             </div>
                             <div className="w-1/4 mr-1">
                                 <div >
-                                    3
+                                    <label>Pregunta 3</label>
                                 </div>
                                 <div className=" font-medium text-gray-900  w-full text-center border-2 rounded-md">
-                                    5
+                                    {results[2].reply}
                                 </div>
                             </div>
                             <div className="w-1/4">
                                 <div >
-                                    4
+                                    <label>Pregunta 4</label>
                                 </div>
                                 <div className="font-medium text-gray-900  w-full text-center border-2 rounded-md">
-                                    0
+                                    {results[3].reply}
                                 </div>
                             </div>
                         </div>

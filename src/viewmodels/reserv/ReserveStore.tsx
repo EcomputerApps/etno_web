@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from "mobx"
 import { toast } from "react-toastify"
-import { Hall, HallList, PaginatedBand, PaginatedPlace, PaginatedReserve, Place, PlaceList, Reserve, ReserveUser, ReservList } from "../../models/section/Section"
+import { Hall, HallList, PaginatedPlace, PaginatedReserve, Place, PlaceList, Reserve, ReserveUser, ReservList } from "../../models/section/Section"
 import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
@@ -40,7 +40,7 @@ class ReserveStore {
             modalEdit: observable,
             modalCreate: observable,
             modalCalendar: observable,
-            modalPlaces: observable,
+            modalPlaces:observable,
             modalAddHalls: observable,
             modalCreatePlaces: observable,
             paginatedReserve: observable,
@@ -153,7 +153,7 @@ class ReserveStore {
         this.hallList.content = halls
     }
     get getHallList() {
-        return this.hallList
+        return this.hallList.content
     }
     //--------------Hall---------------------------//
     //--------------Place--------------------------//
@@ -215,7 +215,7 @@ class ReserveStore {
             this.updatePaginatedPlacesContent(newPaginatedPlace)
             this.updatePlace({})
             toast.success('Se ha borrado exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 100,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -226,7 +226,7 @@ class ReserveStore {
             })
         } else {
             toast.error('No se ha podido borrar', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -406,7 +406,7 @@ class ReserveStore {
             })
             setTimeout(function () {
                 window.location.reload();
-            }, 500);
+            }, 1000);
         } else {
             toast.error('No se ha podido borrar', {
                 position: 'bottom-center',

@@ -1,14 +1,14 @@
 import { useState } from "react"
-import ReserveStore from "../../../../viewmodels/reserv/ReservStore"
+import ReserveStore from "../../../../viewmodels/reserv/ReserveStore"
 const reserveStore = ReserveStore.getReserveStore()
 const ClientInfo = () => {
   function confirmReserve(idReserve: string) {
     reserveStore.confirmReserve("Bolea", idReserve)
-}
-const deleteReserva = async (reserve: string) => {
-  await reserveStore.deleteReserve("Bolea", reserve)
-  reserveStore.setModalClientInfo(false)
-}
+  }
+  const deleteReserva = async (reserve: string) => {
+    await reserveStore.deleteReserve("Bolea", reserve)
+    reserveStore.setModalClientInfo(false)
+  }
   const [reserve, setreserve] = useState(reserveStore.getReserve)
   return (
     <div className="flex flex-col md:m-auto w-1/2 md:h-screen">
@@ -27,7 +27,7 @@ const deleteReserva = async (reserve: string) => {
           </div>
           <div className="flex flex-col">
             <label className="font-medium">Estado de reserva</label>
-            <label className="border-2 rounded-md p-1">{reserve.reserveUsers!![0].isReserved ?  <label className="text-green-600 ">Confirmado</label> : <label className="text-gray-600   ">Pendiente</label>}</label>
+            <label className="border-2 rounded-md p-1">{reserve.reserveUsers!![0].isReserved ? <label className="text-green-600 ">Confirmado</label> : <label className="text-gray-600   ">Pendiente</label>}</label>
           </div>
           <div className="flex flex-col">
             <label className="font-medium">Description</label>
@@ -50,11 +50,10 @@ const deleteReserva = async (reserve: string) => {
             </div>
             <div className="flex justify-center items-center mt-3">
               <div hidden={reserve.reserveUsers!![0].isReserved}>
-              <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-3" onClick={() => confirmReserve(reserve.idReserve!!)} >Confirmar</a>
+                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-3" onClick={() => confirmReserve(reserve.idReserve!!)} >Confirmar</a>
               </div>
-                   <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline " onClick={() => deleteReserva(reserve.idReserve!!)}>Rechazar</a>
+              <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline " onClick={() => deleteReserva(reserve.idReserve!!)}>Rechazar</a>
             </div>
-           
           </div>
         </div>
       </div>
