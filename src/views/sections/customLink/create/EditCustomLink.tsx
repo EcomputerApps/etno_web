@@ -68,13 +68,7 @@ const EditCustomLink = () => {
                             <label className={"labelFloatInput"}>Pagina Web</label>
                         </div>
                     </div>
-                    <div className="w-full flex flex-1 flex-col pl-3">
-                        <div className=" flex flex-col p-1 mt-5  relative">
-                            <input placeholder=" " name="bandType" defaultValue={customLink.iconName} id="test" type="text" className="inputCamp peer" onChange={(e) => setcLinkIcon(e.currentTarget.value)}
-                            />
-                            <label className={"labelFloatInput"}>Icono</label>
-                        </div>
-                    </div>
+                 
                 </div>
             </div>
             <div>

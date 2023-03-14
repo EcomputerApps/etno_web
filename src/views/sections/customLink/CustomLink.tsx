@@ -83,12 +83,10 @@ const CustomLinkPage = () => {
                     {customLinkStore.getPaginatedCustomLink.content?.map((item, index) => (
                         customLinkStore.getPaginatedCustomLink.content!!.length > 0 &&
                         <div key={index} className="border-2  p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full h-40  ">
-                            <div className="h-1/4 p-2 text-center overflow-hidden  flex items-center justify-center flex-col">{item.name}</div>
-                            <div className="h-1/4 flex m-auto items-center text-blue-500 hover:text-blue-600 
+                            <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center flex-col">{item.name}</div>
+                            <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 
                             hover:font-medium justify-center   text-xl overflow-hidden bg-gray-200 flex-col"><a href={item.webUrl}>{item.webUrl}</a></div>
-                            <div className="h-1/4 p-2 text-center overflow-hidden  flex items-center justify-center flex-col">
-                            {item.iconName}</div>
-                            <div className="h-1/4  p-2 text-center overflow-hidden  flex items-center bg-gray-200 justify-center flex-row">
+                                                       <div className="h-1/3  p-2 text-center overflow-hidden  flex items-center bg-gray-200 justify-center flex-row">
                                 <button className="btnStandard mr-5 h-8 lg:h-10" onClick={() => saveLink(item)}>Editar</button>
                                 <button className="btnStandard h-8 lg:h-10" onClick={()=>deleteCustomLink(item.idCustomLink!!)}>Borrar</button>
                             </div>
