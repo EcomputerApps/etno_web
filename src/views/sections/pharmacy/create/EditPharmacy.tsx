@@ -114,7 +114,7 @@ const EditPharmacy = () => {
     const [pharmFrequency, setPharmFrequency] = useState<number>(pharmacy.frequencyInDays!!)
     const [file, setFile] = useState<File>()
 
-    const [dutyDates, setDutyDates] = useState<Value>(Date(dateCutter(pharmacy.dates!!)))
+    const [dutyDates, setDutyDates] = useState<Value>(dateCutter(pharmacy.dates!!))
 
     function handleScheduleInput() {
         if (pharmacyShcedulSelector === "Otro") {
