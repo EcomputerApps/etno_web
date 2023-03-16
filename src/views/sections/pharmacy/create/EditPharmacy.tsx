@@ -7,7 +7,6 @@ import { toast, ToastContainer } from 'react-toastify';
 import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../assets/marker.svg"
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
-import moment from 'moment';
 import { Pharmacy, PharmacyDutyDate } from '../../../../models/section/Section';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
@@ -15,7 +14,6 @@ import DatePicker, { Value } from 'react-multi-date-picker';
 
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
-
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
 interface Marker {
@@ -93,7 +91,13 @@ const EditPharmacy = () => {
         date.map((item, index) => {
             arrayAux.push(item.date!!)
         })
-        return arrayAux
+        if (!chekGuardiaType(pharmacy.frequencyInDays!!)) {
+            
+            return arrayAux[arrayAux.length-1]
+        }else{
+            return arrayAux
+        }
+       
     }
 
     const [pharmType, setPharmType] = useState(pharmacy.type)
@@ -113,7 +117,6 @@ const EditPharmacy = () => {
     const [pharmPeriod, setPharmPeriod] = useState<number>(pharmacy.durationDays!!)
     const [pharmFrequency, setPharmFrequency] = useState<number>(pharmacy.frequencyInDays!!)
     const [file, setFile] = useState<File>()
-
     const [dutyDates, setDutyDates] = useState<Value>(dateCutter(pharmacy.dates!!))
 
     function handleScheduleInput() {
@@ -166,9 +169,9 @@ const EditPharmacy = () => {
 
             }
             console.log(dutyDates)
-            // pharmacyStore.editPharmacy('Bolea', pharmacy.idPharmacy!!, pharmacy_, file!!)
-            //  sideBarStore.updateSection('Farmacias')
-            // hoverSectionStore.setName('Farmacias')
+            pharmacyStore.editPharmacy('Bolea', pharmacy.idPharmacy!!, pharmacy_, file!!)
+            sideBarStore.updateSection('Farmacias')
+            hoverSectionStore.setName('Farmacias')
         }
     }
     function chekIfEmpty() {
@@ -228,6 +231,7 @@ const EditPharmacy = () => {
                 arrayDate.push(new Date(item))
             })
         }
+        
 
         return arrayDate
     }
@@ -251,7 +255,6 @@ const EditPharmacy = () => {
             return false
         }
     }
-
 
     return (
         <div className="flex flex-col lg:m-auto  lg:w-1/2  w-3/4 mt-5   h-screen overflow-y-auto border-2 rounded-md bg-white">
@@ -319,7 +322,6 @@ const EditPharmacy = () => {
                                 </button>
                                 <button
                                     style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
-
                                 >
                                     <label className='text-white cursor-pointer'>Anular seleccion</label>
                                 </button>
@@ -329,7 +331,7 @@ const EditPharmacy = () => {
                     </div>
                     <div className="flex pt-2  p-1  relative ">
                         <input defaultValue={pharmPeriod} type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
-                            disabled={dutyDates?.toString().length!! !== 67 && dutyDates?.toString().length!! !== 10}
+                            disabled={dutyDates?.toString().length!! !== 67 && dutyDates?.toString().length!! !== 10 && chekGuardiaType(pharmacy.frequencyInDays!!)}
                             onChange={(e) => {
                                 setPharmFrequency(e.currentTarget.valueAsNumber)
                             }}
@@ -344,7 +346,7 @@ const EditPharmacy = () => {
                     </div>
                     <div className="flex pt-2  p-1  relative ">
                         <input defaultValue={pharmFrequency} type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
-                            disabled={dutyDates?.toString().length!! !== 67 && dutyDates?.toString().length!! !== 10}
+                            disabled={dutyDates?.toString().length!! !== 67 && dutyDates?.toString().length!! !== 10 && chekGuardiaType(pharmacy.frequencyInDays!!)}
                             onChange={(e) => {
                                 setPharmPeriod(e.currentTarget.valueAsNumber)
                             }}
@@ -361,7 +363,7 @@ const EditPharmacy = () => {
             </div>
             <div className="w-full flex flex-1 flex-col mt-5 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <input defaultValue={dutyDates?.toString()} autoFocus ref={inputTitle} placeholder=" " name="pharmacyName" type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
+                    <input defaultValue={pharmacy.name} autoFocus ref={inputTitle} placeholder=" " name="pharmacyName" type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
                         : ''
                         }`} onChange={(e) => {
                             setPharmacyName(e.currentTarget.value)
@@ -415,7 +417,6 @@ const EditPharmacy = () => {
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-
                     <input defaultValue={pharmacyTel} ref={inputTel} placeholder=" " name="pharmacyTel" type="text" onInput={(e) =>
                         e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} minLength={9} className={`inputCamp peer w-1/4 ${emptyName ? 'border-red-600'
                             : ''

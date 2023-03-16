@@ -106,7 +106,7 @@ const TableReserves = (prop: PropTable) => {
 
                             <td className="px-6 py-4">
                                 <div className="h-20 flex flex-col items-center justify-center">
-                                    {reservMap.reserveUsers!![0].isReserved ? (
+                                    {reservMap.reserveUsers !== undefined? (
                                         <div>
                                             <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteReserva(reservMap.idReserve!!)}>Cancelar</a>
                                         </div>
