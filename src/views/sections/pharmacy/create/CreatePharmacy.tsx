@@ -140,13 +140,13 @@ const CreatePharmacy = () => {
     }
     function fillDates(dates: string): Date[] {
         var arrayDate = new Array()
-        if(dates !== undefined){
+        if (dates !== undefined) {
             var arrayAux = dates.split(",")
-                       arrayAux.map((item) => {
+            arrayAux.map((item) => {
                 arrayDate.push(new Date(item))
             })
         }
-       
+
         return arrayDate
     }
 
@@ -164,7 +164,7 @@ const CreatePharmacy = () => {
     }
 
     function addPharmacy() {
-        if (fillDates(dutyDates?.toString()!!).length >1) {
+        if (fillDates(dutyDates?.toString()!!).length !=1) {
             setPharmPeriod(0)
             setPharmFrequency(0)
         } 
@@ -197,24 +197,45 @@ const CreatePharmacy = () => {
             })
         } else {
             chekIfEmpty()
-            pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
+            if(pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
                 pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
                 (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === "" ||
-                long === 0 || lat === 0 || file === undefined ?
-                toast.error('Rellene los campos', {
-                    position: 'bottom-center',
-                    autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light"
-                }) : pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias') 
-                console.log(pharmacy)
+                long === 0 || lat === 0 || file === undefined){
+                    toast.error('Rellene los campos', {
+                        position: 'bottom-center',
+                        autoClose: 1000,
+                        hideProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light"
+                    })
+                }else{
+                    if(pharmType === "Normal"){
+                        pharmacy.startDate = undefined
+                        pharmacy.dates = undefined
+                        pharmacy.durationDays = 0
+                        pharmacy.frequencyInDays = 0
+                    }
+                    console.log(pharmacy)
+                    pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias') 
+                }
+                  
+                 
+                
+               
         }
     }
-
+    const datePickerRef = useRef<any>();
+    const [shouldCloseCalendar, setShouldCloseCalendar] = useState(false)
+    function chekDatesCount() {
+        if (fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "") {
+            setPharmPeriod(0)
+            setPharmFrequency(0)
+        }
+        datePickerRef.current.closeCalendar()
+    }
     return (
         <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12 mt-5   h-screen overflow-y-auto border-2 rounded-md bg-white">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
@@ -264,11 +285,14 @@ const CreatePharmacy = () => {
                     <div className="flex pt-2  p-1  relative  ">
                         <div className='mt-1 peer'>
                             <DatePicker
-                                locale={greorgian_es}
-                                disabled={datePanel}
-                                value={dutyDates}
-                                onChange={setDutyDates}
-                                weekStartDayIndex={1}
+                                 locale={greorgian_es}
+                                 disabled={pharmType === "Normal"}
+                                 value={dutyDates}
+                                 onChange={setDutyDates}
+                                 weekStartDayIndex={1}
+                                 ref={datePickerRef}
+                                 onOpen={() => setShouldCloseCalendar(false)}
+                                 onClose={() => shouldCloseCalendar}
                                 style={{
                                     height: "40px",
                                     borderRadius: "6px",
@@ -280,7 +304,7 @@ const CreatePharmacy = () => {
                                     padding: "3px 10px"
                                 }}
                                 multiple>
-                                <button
+                               <button
                                     style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
                                     onClick={() => setDutyDates(new Date())}
                                 >
@@ -288,9 +312,9 @@ const CreatePharmacy = () => {
                                 </button>
                                 <button
                                     style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
-                                    onClick={() => setDutyDates(undefined)}
+                                    onClick={() => chekDatesCount()} onFocus={() => setShouldCloseCalendar(true)}
                                 >
-                                    <label className='text-white cursor-pointer'>Anular seleccion</label>
+                                    <label className='text-white cursor-pointer'>Cerrar</label>
                                 </button>
                             </DatePicker>
                         </div>
@@ -326,7 +350,7 @@ const CreatePharmacy = () => {
                                 }
                             }} />
                         <label className={"labelFloatDate"}>Repeticiones</label>
-                        <button className='btnStandard' onClick={()=>console.log(dutyDates?.toString())}>XXXX</button>
+                        <button className='btnStandard' onClick={()=>addPharmacy()}>XXXX</button>
                     </div>
                 </div>
             </div>
@@ -390,7 +414,7 @@ const CreatePharmacy = () => {
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
                     <input ref={inputTel} placeholder=" " name="pharmacyTel" type="text" onInput={(e) =>
-                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} minLength={9} className={`inputCamp peer w-1/4 ${emptyTel ? 'border-red-600'
+                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} minLength={9} className={`inputCamp peer lg:w-1/4 ${emptyTel ? 'border-red-600'
                             : ''
                             }`} onKeyUp={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
