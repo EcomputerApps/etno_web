@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import ReserveStore from "../../../../viewmodels/reserv/ReserveStore"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import logoEtno from '../../../../assets/logo_etno.png'
 import { Calendar, DateObject } from "react-multi-date-picker"
 import DatePanel from "react-multi-date-picker/plugins/date_panel"
@@ -54,7 +54,7 @@ const CreateReserve = () => {
         checkIfEmpty()
         reservName === "" || reservDescription === "" || reservEmail === "" || reservPhone === "" || reservPhone === "" ||
             reservPlace?.name === "Elige Lugar" || reservHall?.name === "" || reservDate?.toString() === undefined ||
-            reservDate?.toString()=== "" || reservTime.length === 0 ?
+            reservDate?.toString() === "" || reservTime.length === 0 ?
             toast.error('Rellene los campos', {
                 position: 'bottom-center',
                 autoClose: 1000,
@@ -74,9 +74,9 @@ const CreateReserve = () => {
         reservEmail === "" ? setEmptyEmail(true) : setEmptyEmail(false)
         reservPhone === "" ? setEmptyPhone(true) : setEmptyPhone(false)
         reservPlace?.name === "Elige Lugar" || reservPlace === undefined ? setEmptyPalce(true) : setEmptyPalce(false)
-        reservHall?.name === "" || reservPlace === undefined  ? setEmptyHall(true) : setEmptyHall(false)
-        reservDate === undefined ||   reservDate?.toString()=== "" ? setEmptyDate(true) : setEmptyDate(false)
-        reservTime.length === 0 && reservDate !== undefined? setEmptyTime(true) : setEmptyTime(false)
+        reservHall?.name === "" || reservPlace === undefined ? setEmptyHall(true) : setEmptyHall(false)
+        reservDate === undefined || reservDate?.toString() === "" ? setEmptyDate(true) : setEmptyDate(false)
+        reservTime.length === 0 && reservDate !== undefined ? setEmptyTime(true) : setEmptyTime(false)
     }
 
     const [emptyName, setEmptyName] = useState(false)
@@ -164,11 +164,20 @@ const CreateReserve = () => {
     }
     function showMe() {
         console.log(reservTime.length)
-        console.log( reservDate?.toString().length) 
+        console.log(reservDate?.toString().length)
         console.log(reservPlace)
         console.log(reservHall)
         checkIfEmpty()
     }
+
+    const txtAreaRef = useRef<HTMLTextAreaElement>(null)
+    const inputEmail = useRef<HTMLInputElement>(null)
+    const inputTel = useRef<HTMLInputElement>(null)
+    const inputPlace = useRef<HTMLSelectElement>(null)
+    const inputHall = useRef<HTMLSelectElement>(null)
+    const btnRef = useRef<HTMLButtonElement>(null)
+
+
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white    ">
             <div >
@@ -188,35 +197,53 @@ const CreateReserve = () => {
                                     }`} onChange={(value) => {
                                         setReservName(value.currentTarget.value)
                                         setEmptyName(false)
+                                    }} onKeyUp={(e) => {
+                                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                            if (txtAreaRef.current != null) {
+                                                txtAreaRef.current.focus()
+                                            }
+                                        }
                                     }} />
                             <label className="labelFloatInput">Nombre</label>
                         </div>
                     </div>
                     <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                         <div className="flex flex-col p-1 relative">
-                            <textarea placeholder=" " rows={3} className={`inputCamp peer ${emptyDescription ? 'border-red-600'
+                            <textarea ref={txtAreaRef} placeholder=" " rows={3} className={`inputCamp peer ${emptyDescription ? 'border-red-600'
                                 : ''
                                 }`} onChange={(e) => setReservDescription(e.currentTarget.value
-                                )} />
+                                )} onKeyDown={(e) => {
+                                    if ((e.code === "NumpadEnter")) {
+                                        if (inputEmail.current != null) {
+                                            inputEmail.current.focus()
+                                        }
+                                    }
+                                }} />
                             <label className={"labelFloatTxtArea"}>Descripción</label>
                         </div>
                     </div>
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
-                            <input placeholder=" "
+                            <input ref={inputEmail} placeholder=" "
                                 type="text" required={true}
                                 className={`inputCamp peer ${emptyEmail ? 'border-red-600'
                                     : ''
                                     }`} onChange={(value) => {
                                         setReservEmail(value.currentTarget.value)
                                         setEmptyEmail(false)
+                                    }} onKeyDown={(e) => {
+                                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                            if (inputTel.current != null) {
+                                                inputTel.current.focus()
+                                            }
+                                        }
                                     }} />
                             <label className="labelFloatInput">Correo de contacto</label>
                         </div>
                     </div>
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
-                            <input placeholder=" "
+                            <input placeholder=" " ref={inputTel}
                                 type="text" required={true}
                                 className={`inputCamp peer ${emptyPhone ? 'border-red-600'
                                     : ''
@@ -224,6 +251,12 @@ const CreateReserve = () => {
                                         e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} onChange={(value) => {
                                             setReservPhone(value.currentTarget.value)
                                             setEmptyPhone(false)
+                                        }} onKeyDown={(e) => {
+                                            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                                if (inputPlace.current != null) {
+                                                    inputPlace.current.focus()
+                                                }
+                                            }
                                         }} />
                             <label className="labelFloatInput">Telefono de contacto</label>
                         </div>
@@ -242,12 +275,18 @@ const CreateReserve = () => {
                     <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                         <div className="flex flex-col p-1 mt-3 relative">
                             <div className="flex flex-col  rounded-md">
-                                <select className={`inputCamp peer ${emptyPalce ? 'border-red-600'
-                                : ''
-                                }`} defaultValue="" onChange={(e) => {
-                                    setHallMarker(Number(e.currentTarget.value))
-                                    setReservPlace(lugares[Number(e.currentTarget.value)]!!)
-                                }}>
+                                <select ref={inputPlace} className={`inputCamp peer ${emptyPalce ? 'border-red-600'
+                                    : ''
+                                    }`} defaultValue="" onChange={(e) => {
+                                        setHallMarker(Number(e.currentTarget.value))
+                                        setReservPlace(lugares[Number(e.currentTarget.value)]!!)
+                                    }} onKeyDown={(e) => {
+                                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                            if (inputHall.current != null) {
+                                                inputHall.current.focus()
+                                            }
+                                        }
+                                    }}>
                                     {lugares.map((item, index) => (
                                         <option key={index} className="peer" value={index}>{item.name}</option>
                                     ))}
@@ -260,11 +299,18 @@ const CreateReserve = () => {
                     <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                         <div className="flex flex-col p-1 mt-3 relative">
                             <div className="flex flex-col rounded-md">
-                                <select className={`inputCamp peer ${emptyHall ? 'border-red-600'
-                                : ''
-                                }`} defaultValue=""
+                                <select ref={inputHall} className={`inputCamp peer ${emptyHall ? 'border-red-600'
+                                    : ''
+                                    }`} defaultValue=""
                                     onChange={(e) => {
                                         setReservHall(reservPlace?.halls!![Number(e.currentTarget.value)])
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                            if (btnRef.current != null) {
+                                                btnRef.current.focus()
+                                            }
+                                        }
                                     }}
                                 >
                                     <option className="peer" value={""} >{
@@ -302,8 +348,8 @@ const CreateReserve = () => {
                         {/*HORAS*/}
                         <div className="lg:w-2/5  w-full flex border-2 rounded-md  flex-col shadow-sm">
                             <div className="flex flex-row text-center items-center justify-center">
-                            <div className="flex justify-center">{emptyTime ? <label className="text-xl font-semibold text-red-600">Seleccione la hora</label> : <label className="text-xl font-semibold">Hora</label>}</div>
-                               
+                                <div className="flex justify-center">{emptyTime ? <label className="text-xl font-semibold text-red-600">Seleccione la hora</label> : <label className="text-xl font-semibold">Hora</label>}</div>
+
                             </div>
                             <div className="flex flex-col h-64 items-center overflow-y-auto" >
                                 {horas.map((item, index) => (
@@ -323,7 +369,7 @@ const CreateReserve = () => {
             </div>
             <div className="relative">
                 <div className="flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-                    <button name="bandBtnSave" className="btnStandard mr-10" onClick={() => addReserv()}>Publicar</button>
+                    <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => addReserv()}>Publicar</button>
                     <button name="bandBtnCancel" className="btnStandard" onClick={() => reserveStore.setModalCreate(false)} >Cancelar</button>
                 </div>
             </div>

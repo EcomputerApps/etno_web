@@ -46,8 +46,7 @@ const ReservesCalendar = () => {
                 }
             }
         }
-        console.log("Calendario actualizado")
-    })
+         })
     const Button = () => {
 
     }

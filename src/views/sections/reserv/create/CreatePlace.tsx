@@ -63,8 +63,6 @@ const CreatePlace = () => {
             hoverSectionStore.setName('Reservas')
         }
 
-
-
     } function goBack() {
         reserveStore.updateHallList([])
         reserveStore.setModalCreatePlaces(false)
@@ -80,9 +78,9 @@ const CreatePlace = () => {
     const [emptyName, setEmptyName] = useState(false)
     const [emptyFile, setEmptyFile] = useState(false)
     const [emptyLongLat, setEmptyLongLat] = useState(false)
-
+ 
     return (
-        <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 border-2 rounded-md bg-white overflow-y-auto">
+        <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 border-2 rounded-md bg-white overflow-y-auto  h-screen">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -94,7 +92,8 @@ const CreatePlace = () => {
                     <input autoFocus placeholder=" " type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
                         : ''
                         }`}
-                        onChange={(e) => setPalceName(e.currentTarget.value)} />
+                        onChange={(e) => setPalceName(e.currentTarget.value)}
+                         />
                     <label className={"labelFloatInput"}>Nombre</label>
                 </div>
             </div>
@@ -173,7 +172,7 @@ const CreatePlace = () => {
             ) : <></>}
             <div className="flex flex-row  mt-5 pl-3 ">
                 <div className="pr-5">
-                    <button className="btnStandard uppercase justify-center" onClick={() => reserveStore.setModalAddHalls(true)}>Añadir salas</button>
+                    <button className="btnStandard uppercase justify-center" onClick={() => reserveStore.setModalAddHalls(true)} >Añadir salas</button>
                 </div>
                 <div className={`border-2 w-5/6  m-auto p-2 rounded-md h-12 ${emptyHalls ? 'border-red-600'
                     : ''
@@ -181,12 +180,10 @@ const CreatePlace = () => {
                     {reserveStore.getHallList?.map((item, index) => (
                         <label key={index} className="text-xl">{item.name + " "}</label>
                     ))}
-
                 </div>
-
             </div>
             <div className=" flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-                <button name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPlace()}>Publicar</button>
+                <button  name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPlace()}>Publicar</button>
                 <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => goBack()}>Cancelar</button>
             </div>
         </div>

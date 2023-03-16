@@ -74,14 +74,20 @@ const EditPlace = () => {
                 halls: reserveStore.getHallList
             }
             reserveStore.editPlace('Bolea', placeId, newPlace, file!!)
+            reserveStore.updateHallList([]);
             sideBarStore.updateSection('Reservas');
             hoverSectionStore.setName('Reservas')
+           
         }
     }
     //-Update values of Place selected
 
+    function goBack(){
+        reserveStore.updateHallList([])
+        reserveStore.setModalEdit(false)
+    }
     return (
-        <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 border-2 rounded-md bg-white overflow-y-auto">
+        <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 border-2 rounded-md bg-white overflow-y-auto h-screen ">
             {/*Header*/}
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
@@ -200,7 +206,7 @@ const EditPlace = () => {
             {/*Main buttons*/}
             <div className="flex m-auto justify-center left-0 right-0 p-3 bottom-1">
                 <button name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => updatePlace(place.idPlace!!)}>Guardar</button>
-                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => reserveStore.setModalEdit(false)}>Cancelar</button>
+                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => goBack()}>Cancelar</button>
             </div>
             {/*Main buttons*/}
         </div>

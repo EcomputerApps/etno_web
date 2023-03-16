@@ -17,8 +17,6 @@ const TableReserves = (prop: PropTable) => {
         await reserveStore.deleteReserve("Bolea", reserve)
     }
 
-
-
     function fillDates(dates: string): Date[] {
         var arrayAux = dates.split(",")
         var arrayDate = new Array()

@@ -4,10 +4,16 @@ import CreateSurvey from "./create/CreateSurvey"
 import { observer } from "mobx-react-lite"
 import TableSurvey from "./TableSurvey"
 import { ToastContainer } from "react-toastify"
-import { useState } from "react"
+import { useEffect } from "react"
+
 
 const surveyStore = SurveyStore.getSurveyStore()
 const Survey = () => {
+
+    useEffect(() => {
+        surveyStore.getRequestSurvey()
+      }, [])
+
     return (
         <div className="w-full h-full  relative">
             <div className="flex flex-col gap-4">
@@ -19,13 +25,13 @@ const Survey = () => {
                             Crear
                         </button>
                     </div>
-                </div>
+                                  </div>
                 <TableSurvey />
                 {surveyStore.getCreateSurvey ? (
                     <div>
                         <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                             <div className="fixed inset-0 w-screen h-screen">
-                                <div className="w-screen  flex justify-center">
+                                <div className="w-screen  flex justify-left">
                                     <CreateSurvey />
                                 </div>
                             </div>

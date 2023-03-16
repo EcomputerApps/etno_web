@@ -16,11 +16,12 @@ interface PropTable {
 }
 
 const TableBand = (prop: PropTable) => {
-
+    const [confirm, setConfirm] = useState(false)
     const navigate = useNavigate()
 
     const deleteBand = async (band: string) => {
         await bandStore.deleteBand('Bolea', band)
+        setConfirm(false)
     }
     const [showModal, setModal] = useState(false)
     function saveBand(band: Band) {
@@ -75,16 +76,34 @@ const TableBand = (prop: PropTable) => {
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center relative">
-
+                                    {confirm ? (
+                                        <div>
+                                            <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                                                <div className="fixed inset-0 w-screen h-screen">
+                                                    <div className=" flex justify-center mt-10 ">
+                                                        <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                                            <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {bandMap.title}?</label>
+                                                            <div className="flex justify-center m-auto">
+                                                                <button className="btnStandard w-14 mr-5 " onClick={() => deleteBand(bandMap.title!!)}>SI</button>
+                                                                <button className="btnStandard" onClick={() => setConfirm(false)}>NO</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : <></>}
                                     <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveBand(bandMap)}>Editar</a>
-                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteBand(bandMap.title!!)}>Eliminar</a>
+                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => setConfirm(true)}>Eliminar</a>
                                 </div>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+
         </div>
+
     )
 }
 

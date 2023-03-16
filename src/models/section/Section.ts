@@ -330,12 +330,19 @@ interface EventList {
 }
 
 interface Survey {
-    idSurvey?: string,
+    idQuiz?: string,
     username?: string,
     question?: string,
-    closeDate?: string,
-    closeTime?: string,
-    replies?: string[]
+    answerOne?: string,
+    resultOne?: number,
+    answerTwo?: string,
+    resultTwo?: number,
+    answerThree?: string,
+    resultThree?: number,
+    answerFour?: string,
+    resultFour?: number,
+    isActive?: boolean
+   
 }
 interface PaginatedSurveys {
     content?: Survey[],
