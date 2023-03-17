@@ -30,7 +30,7 @@ const Router = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/home" element={ <ViewRender element={<HomePage/>}/> }/>
-                <Route path="/login" element={ <ViewRender element={<LoginPage/>}/> }/>
+                <Route path="/" element={ <ViewRender element={<LoginPage/>}/> }/>
                 <Route path="/logout" element={<ViewRender element={<LogoutPage/>}/>}/>
                 <Route path="/addEvent" element={<ViewRender element={<CreateEventPage/>}/>}/>
                 <Route path="/AddTourism" element={<ViewRender element={<CreateTourismPage/>}/>}/>

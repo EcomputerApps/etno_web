@@ -19,6 +19,7 @@
     "mobx-react-lite": "^3.4.0",
     "react": "^18.2.0",
     "react-big-calendar": "^1.6.8",
+    "react-csv": "^2.2.2",
     "react-currency-input-field": "^3.6.9",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",

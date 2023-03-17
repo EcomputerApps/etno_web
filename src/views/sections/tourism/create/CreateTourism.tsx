@@ -31,6 +31,20 @@ const CreateTourism = () => {
     zoom: 11
   };
 
+  const arrayTourismType = [{
+    "id": "checkOne",
+    "value": "Restaurante",
+    "title": "Restaurante",
+}, {
+    "id": "checkTwo",
+    "value": "Museo",
+    "title": "Museo",
+}, {
+    "id": "checkThree",
+    "value": "Hotel",
+    "title": "Hotel",
+}]
+
 
   const navigate = useNavigate()
 
@@ -113,23 +127,30 @@ const CreateTourism = () => {
             <p className='flex  text-white lg:text-3xl text-2xl  p-3'>CREAR TURISMO</p>
           </div>
         </div>
-        <div className="w-full flex flex-1 flex-col mt-5 pl-3">
-          <div className="flex flex-col p-1 relative">
-            <input autoFocus placeholder=" " name="tourismType" type="text" className={`inputCamp peer ${emptyType ? 'border-red-600'
-              : ''
-              }`} onChange={(e) => {
-                setTourismType(e.currentTarget.value)
-                setEmptyType(false)
-              }} onKeyUp={(e) => {
-                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                  if (inputTitle.current != null) {
-                    inputTitle.current.focus()
-                  }
-                }
-              }} />
-            <label className={"labelFloatInput"}>Tipo</label>
-          </div>
-        </div>
+        <div className="w-full flex flex-1 flex-col mt-8 pl-3">
+                    <div className={`rounded-md border-2 ${emptyType ? 'border-red-600'
+                        : 'border-transparent'
+                        }`}>
+                        <div className="flex flex-col pb-3 p-1 relative ">
+                            <div className="flex flex-wrap">
+                                {arrayTourismType.map((chkBtn, index) => (
+                                    <div key={index} className='flex lg:w-1/6 w-1/3'>
+                                        <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
+                                            setTourismType(e.currentTarget.value)
+                                            setEmptyType(false)
+                                        }} />
+                                        <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
+                            border-gray-300 
+                            peer-checked:hover:bg-indigo-700 
+                            peer-checked:text-white 
+                            ring-indigo-500 peer-checked:ring-2 overflow-hidden ">{chkBtn.title}</label>
+                                    </div>
+                                ))}
+                            </div>
+                            <label className={"labelFloatDate"}>Categoría</label>
+                        </div>
+                    </div>
+                </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col p-1 relative">
             <input ref={inputTitle} placeholder=" " name="tourismTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
