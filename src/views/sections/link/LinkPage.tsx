@@ -18,7 +18,7 @@ const LinkPage = () => {
     const [pageNumber, setPageNumber] = useState(0)
     const [showModal, setModal] = useState(false)
     const [position, setPosition] = useState(0)
-   
+
     useEffect(() => {
         linkStore.getRequestLink('Bolea', pageNumber, 12)
     }, [pageNumber])
@@ -147,13 +147,11 @@ const LinkPage = () => {
                 <div className={"w-full grid lg:grid-cols-4 lg:grid-rows-3 grid-cols-1"}>
                     {linkStore.paginatedLink.content?.map((link, index) => (
                         linkStore.paginatedLink.content!!.length > 0 &&
-                        <div key={index} className="border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full h-40 ">
-
-
-
+                        <div key={index} className={`border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full  ${linkStore.paginatedLink.content!!.length > 2 ? 'h-40'
+                            : 'h-60'}`}>
                             <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center">{link.title}</div>
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={link.url}>{link.url}</a></div>
-                            <div className="flex m-auto justify-center lg:pt-5 h-1/5">
+                            <div className="flex m-auto justify-center lg:pt-5 h-1/5 pt-3">
                                 <button className="btnStandard mr-5 h-8 lg:h-10" onClick={() => editLink(link.title!!, link.url!!, link.idLink!!, index)}>Editar</button>
                                 <button className="btnStandard h-8 lg:h-10" onClick={() => deleteLink(link.idLink!!)}>Borrar</button>
                             </div>
