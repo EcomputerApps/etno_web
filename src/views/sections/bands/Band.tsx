@@ -40,12 +40,8 @@ const Band = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Bandos</h2>
           <div className="lg:ml-auto flex ml-1">
-            <button onClick={() => bandStore.setModalCreate(true)} type="button" className="btnStandard mr-3">
-              <img src={Pencil} alt="Create" />
-              Crear
-            </button>
             {bandStore.getPaginatedBands.content! && (
-              <button className="btnStandard">
+              <button className="btnStandard  mr-3">
                 <CSVLink
                   data={bandStore.getPaginatedBands.content!}
                   filename={'bandos.csv'}
@@ -54,6 +50,10 @@ const Band = () => {
                   headers={headers} >Exportar a excel
                 </CSVLink>
               </button>)}
+            <button onClick={() => bandStore.setModalCreate(true)} type="button" className="btnStandard">
+              <img src={Pencil} alt="Create" />
+              Crear
+            </button>
           </div>
         </div>
         <TableBand currentPage={pageNumber} headerList={['Título', 'Descripción', 'fecha', 'acciones']} />

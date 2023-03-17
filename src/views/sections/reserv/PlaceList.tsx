@@ -31,8 +31,17 @@ const ReservPlaceList = (prop: PropTable) => {
         reserveStore.updatePlace(place)
         reserveStore.setModalEdit(true)
     }
+    const [confirm, setConfirm] = useState(false)
+    const [deltitle, setDelTitle] = useState<string>("")
+    const [delId, setDelId] = useState<string>("")
+    function deleteConfirmation(place: Place) {
+        setConfirm(true)
+        setDelTitle(place.name!!)
+        setDelId(place.idPlace!!)
+    }
     const deletePlace = async (idPlace: string) => {
         await reserveStore.deletePlace('Bolea', idPlace)
+        setConfirm(false)
     }
 
     var lugares = new Array<Place>()
@@ -101,13 +110,30 @@ const ReservPlaceList = (prop: PropTable) => {
                                 <td className="px-6 py-4">
                                     <div className="h-20 flex items-center justify-center">
                                         <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => savePlace(placeMap)} >Editar</a>
-                                        <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deletePlace(placeMap.idPlace!!)}>Eliminar</a>
+                                        <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(placeMap)}>Eliminar</a>
                                     </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {deltitle}?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deletePlace(delId)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             </div>
             <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center lg:flex-row flex-col">
                 <button className="btnStandard mr-3" disabled={pageNumber < 1} onClick={decrementPage}>

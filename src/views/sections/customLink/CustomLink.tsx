@@ -28,8 +28,17 @@ const CustomLinkPage = () => {
         customLinkStore.setEditLinkModal(true)
         customLinkStore.updateCustomLink(link)
     }
+    const [confirm, setConfirm] = useState(false)
+    const [delName, setDelName] = useState<string>("")
+    const [delId, setDelId] = useState<string>("")
+    function deleteConfirmation(link: CustomLink) {
+        setConfirm(true)
+        setDelName(link.name!!)
+        setDelId(link.idCustomLink!!)
+    }
     const deleteCustomLink = async (idLink: string) => {
         await customLinkStore.deleteCustomLink('Bolea', idLink)
+        setConfirm(false)
     }
     return (
         <div className="w-full h-full min-w-5/6 relative flex flex-col">
@@ -83,7 +92,7 @@ const CustomLinkPage = () => {
                             hover:font-medium justify-center   text-xl overflow-hidden bg-gray-200 flex-col"><a href={item.webUrl}>{item.webUrl}</a></div>
                                                        <div className="h-1/3  p-2 text-center overflow-hidden  flex items-center bg-gray-200 justify-center flex-row">
                                 <button className="btnStandard mr-5 h-8 lg:h-10" onClick={() => saveLink(item)}>Editar</button>
-                                <button className="btnStandard h-8 lg:h-10" onClick={()=>deleteCustomLink(item.idCustomLink!!)}>Borrar</button>
+                                <button className="btnStandard h-8 lg:h-10" onClick={()=>deleteConfirmation(item)}>Borrar</button>
                             </div>
                         </div>
                     ))}
@@ -104,6 +113,23 @@ const CustomLinkPage = () => {
                     <img src={arrowRight} alt="forward" />
                 </button>
             </div>
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {delName}?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteCustomLink(delId)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
         </div>
     )
 }

@@ -38,8 +38,17 @@ const LinkPage = () => {
             }
         })
     }
+    const [confirm, setConfirm] = useState(false)
+    const [delName, setDelName] = useState<string>("")
+    const [delId, setDelId] = useState<string>("")
+    function deleteConfirmation(link: Link) {
+        setConfirm(true)
+        setDelName(link.title!!)
+        setDelId(link.idLink!!)
+    }
     const deleteLink = async (idLink: string) => {
         await linkStore.deleteLink('Bolea', idLink)
+        setConfirm(false)
     }
     function updateLink(linkId: string) {
         if (linkStore.getTitle === '' || linkStore.getLinkString === '') {
@@ -153,7 +162,7 @@ const LinkPage = () => {
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={link.url}>{link.url}</a></div>
                             <div className="flex m-auto justify-center lg:pt-5 h-1/5 pt-3">
                                 <button className="btnStandard mr-5 h-8 lg:h-10" onClick={() => editLink(link.title!!, link.url!!, link.idLink!!, index)}>Editar</button>
-                                <button className="btnStandard h-8 lg:h-10" onClick={() => deleteLink(link.idLink!!)}>Borrar</button>
+                                <button className="btnStandard h-8 lg:h-10" onClick={() => deleteConfirmation(link)}>Borrar</button>
                             </div>
                         </div>
                     ))}
@@ -172,6 +181,23 @@ const LinkPage = () => {
                     <img src={arrowRight} alt="forward" />
                 </button>
             </div>
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {delName}?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteLink(delId)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             <ToastContainer style={{ marginBottom: "50px" }} />
         </div>
     )

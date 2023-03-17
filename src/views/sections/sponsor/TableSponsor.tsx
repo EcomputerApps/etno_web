@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Sponsor } from "../../../models/section/Section"
 import SposnsorStore from "../../../viewmodels/sponsor/SponsorStore"
@@ -13,10 +14,17 @@ interface PropTable {
 }
 
 const TableSponsor = (prop: PropTable) => {
+    const [confirm, setConfirm] = useState(false)
+    const [deltitle, setDelTitle] = useState<string>("")
+    function deleteConfirmation(Title: string) {
+        setConfirm(true)
+        setDelTitle(Title)
+    }
     const deleteSponsor = async (sponsor: string) => {
         await sponsorStore.deleteSponsor('Bolea', sponsor)
+        setConfirm(false)
     }
-    const navigate = useNavigate()
+
     function saveSponsor(sponsor: Sponsor) {
         sponsorStore.updateSponsor(sponsor)
         sponsorStore.setModalEdit(true)
@@ -69,13 +77,30 @@ const TableSponsor = (prop: PropTable) => {
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center">
                                     <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => { saveSponsor(sponsor) }}>Editar</a>
-                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteSponsor(sponsor.title!!)}>Eliminar</a>
+                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(sponsor.title!!)}>Eliminar</a>
                                 </div>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {deltitle}?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteSponsor(deltitle)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
         </div>
     )
 }
