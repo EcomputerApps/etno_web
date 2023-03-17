@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
-
+import { CSVLink } from 'react-csv';
 import Pencil from "../../../assets/menu/create.svg"
 import BandStore from "../../../viewmodels/band/BandsStore"
 import TableBand from "./TableBand"
@@ -11,8 +11,14 @@ import CreateBand from "./create/CreateBand"
 const bandStore = BandStore.getBandStore()
 
 const Band = () => {
+  const headers = [
+    { label: 'Titulo', key: 'title' },
+    { label: 'Descripción', key: 'description' },
+    { label: 'Fecha', key: 'issuedDate' },
+  ]
+
   const [pageNumber, setPageNumber] = useState(0)
- 
+
   useEffect(() => {
     bandStore.getRequestBand('Bolea', pageNumber, 5)
   }, [pageNumber])
@@ -34,10 +40,20 @@ const Band = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Bandos</h2>
           <div className="lg:ml-auto flex ml-1">
-            <button onClick={() => bandStore.setModalCreate(true)} type="button" className="btnStandard">
+            <button onClick={() => bandStore.setModalCreate(true)} type="button" className="btnStandard mr-3">
               <img src={Pencil} alt="Create" />
               Crear
             </button>
+            {bandStore.getPaginatedBands.content! && (
+              <button className="btnStandard">
+                <CSVLink
+                  data={bandStore.getPaginatedBands.content!}
+                  filename={'bandos.csv'}
+                  enclosingCharacter={` `}
+                  target="_blank"
+                  headers={headers} >Exportar a excel
+                </CSVLink>
+              </button>)}
           </div>
         </div>
         <TableBand currentPage={pageNumber} headerList={['Título', 'Descripción', 'fecha', 'acciones']} />

@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import { useNavigate } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-
+import { Event } from '../../../models/section/Section'
 import EventStore from "../../../viewmodels/Event/EventStore"
 import EditEvent from './create/EditEvent'
+import SubscribersList from './create/SubscribersList'
 const eventStore = EventStore.getEventStore()
 
 interface PropTable {
@@ -13,9 +12,13 @@ interface PropTable {
 }
 
 const TableEvent = (prop: PropTable) => {
-    const navigate = useNavigate()
+
     const deleteEvent = async (event: string) => {
         await eventStore.deleteEvent('Bolea', event)
+    }
+    function showParticipants(event: Event) {
+        eventStore.setModalSubs(true)
+        eventStore.updateEvent(event)
     }
 
     return (
@@ -31,7 +34,18 @@ const TableEvent = (prop: PropTable) => {
                     </div>
                 </div>
             ) : <></>}
-            <div className='bg-red-500'>
+            {eventStore.getModalSubs ? (
+                <div>
+                    <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className="w-screen  flex justify-start">
+                                <SubscribersList headerList={['Título', 'Plazas', 'Nombre', 'Email', 'Teléfono', 'Precio', 'Suscripcion', 'Acciones']}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
+            <div>
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                         <tr>
@@ -45,62 +59,67 @@ const TableEvent = (prop: PropTable) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {eventStore.getPaginatedEvents.content?.map((event, index) => (
+                        {eventStore.getPaginatedEvents.content?.map((eventMap, index) => (
                             eventStore.getPaginatedEvents.content!!.length > 0 &&
                             <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                                     <div className="tableCamp">
-                                        {event.title}
+                                        {eventMap.title}
                                     </div>
                                 </th>
                                 <td className="px-6 py-4">
                                     <div className="tableCamp overflow-y-auto  min-w-full">
-                                        {event.description}
+                                        {eventMap.description}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 ">
                                     <div className="tableCamp">
-                                        {event.hasSubscription ? "Evento de pago" : "Evento gratuito"}
+                                        {eventMap.hasSubscription ? "Evento de pago" : "Evento gratuito"}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 ">
                                     <div className="tableCamp">
-                                        {event.reservePrice + " €"}
+                                        {eventMap.reservePrice + " €"}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 ">
                                     <div className="tableCamp">
-                                        {event.seats}
+                                        {eventMap.seats}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 ">
                                     <div className="tableCamp">
-                                        {event.capacity}
+                                        {eventMap.capacity}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 ">
                                     <div className="tableCamp">
-                                        {event.username}
+                                        {eventMap.username}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 ">
                                     <div className="tableCamp">
-                                        {event.address}
+                                        {eventMap.address}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="tableCamp">
-                                        {event.organization}
+                                        {eventMap.organization}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 ">
                                     <div className='h-20 flex items-center justify-center'>
-                                        <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => {
-                                            eventStore.updateEvent(event)
+                                        {eventMap.hasSubscription ? (
+                                            <a href="#" className="font-medium text-green-600 dark:text-green-500 hover:underline mr-2" onClick={() => {
+                                                showParticipants(eventMap)
+                                            }}>Participantes</a>
+                                        ) : <></>}
+                                        <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2" onClick={() => {
+                                            eventStore.updateEvent(eventMap)
                                             eventStore.setModalEdit(true)
                                         }}>Editar</a>
-                                        <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteEvent(event.title!!)}>Eliminar</a>
+                                        <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline" onClick={() => deleteEvent(eventMap.title!!)}>Eliminar</a>
                                     </div>
                                 </td>
                             </tr>
@@ -108,7 +127,7 @@ const TableEvent = (prop: PropTable) => {
                     </tbody>
                 </table>
             </div>
-           
+
         </div>
     )
 }

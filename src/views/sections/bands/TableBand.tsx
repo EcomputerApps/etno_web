@@ -24,11 +24,11 @@ const TableBand = (prop: PropTable) => {
         await bandStore.deleteBand('Bolea', band)
         setConfirm(false)
     }
-    function deleteConfirmation(title : string){
+    function deleteConfirmation(title: string) {
         setConfirm(true)
         setDelTiele(title)
     }
-    const [showModal, setModal] = useState(false)
+
     function saveBand(band: Band) {
         bandStore.updateBand(band)
         bandStore.setModalEdit(true)
@@ -62,7 +62,6 @@ const TableBand = (prop: PropTable) => {
                     {bandStore.getPaginatedBands.content?.map((bandMap, index) => (
                         bandStore.getPaginatedBands.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white    ">
                                 <div className="tableCamp">
                                     {bandMap.title}
@@ -71,7 +70,6 @@ const TableBand = (prop: PropTable) => {
                             <td className="px-6 py-4  max-w-prose">
                                 <div className="tableCampl overflow-y-auto  min-w-full">
                                     {bandMap.description}
-
                                 </div>
                             </td>
                             <td className="px-6 py-4">
@@ -81,7 +79,6 @@ const TableBand = (prop: PropTable) => {
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center relative">
-
                                     {confirm ? (
                                         <div>
                                             <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
@@ -99,7 +96,7 @@ const TableBand = (prop: PropTable) => {
                                             </div>
                                         </div>
                                     ) : <></>}
-                                    
+
                                     <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveBand(bandMap)}>Editar</a>
                                     <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(bandMap.title!!)}>Eliminar</a>
                                 </div>
@@ -108,10 +105,7 @@ const TableBand = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
-
         </div>
-
     )
 }
-
 export default observer(TableBand)

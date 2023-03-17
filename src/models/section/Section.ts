@@ -42,7 +42,21 @@ interface Event {
     publicationDate?: string,
     time?: string,
     lat?: string,
-    long?: string
+    long?: string,
+    userSubscriptions?: SubscriptionUser[]
+}
+
+interface SubscriptionUser {
+    idSubscriptionUser?: string,
+    fcmToken?: string,
+    title?: string,
+    seats?: string,
+    name?: string,
+    mail?: string,
+    phone?: string,
+    wallet?: string,
+    isSubscribe?: boolean
+
 }
 
 
@@ -386,5 +400,5 @@ export type {
     Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserve,
     ReservList, PaginatedReserve, Place, Hall, PaginatedPlace,
     HallList, ReserveUser, ReserveSchedule, PlaceList, Survey,
-    PaginatedSurveys, CustomLink, PaginatedCustomLink, ServiceType, DateTime
+    PaginatedSurveys, CustomLink, PaginatedCustomLink, ServiceType, DateTime, SubscriptionUser
 }

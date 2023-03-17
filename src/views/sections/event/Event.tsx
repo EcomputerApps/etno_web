@@ -7,10 +7,23 @@ import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import { ToastContainer } from "react-toastify"
 import CreateEvent from "./create/CreateEvent"
+import { CSVLink } from 'react-csv';
 const eventStore = EventStore.getEventStore()
 
 const Event = () => {
-  const [pageNumber, setPageNumber] = useState(0)
+  const headers = [
+    { label: 'Título', key: 'title' },
+    { label: 'Descripción', key: 'description' },
+    { label: 'Tipo', key: 'hasSubscription' },
+    { label: 'Precio', key: 'reservePrice' },
+    { label: 'Plazas', key: 'seats' },
+    { label: 'Capacidad', key: 'capacity' },
+    { label: 'Localidad', key: 'username' },
+    { label: 'Dirección', key: 'address' },
+    { label: 'Organmización', key: 'organization' },
+   ]
+
+   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
     eventStore.getRequestEvents('Bolea', pageNumber, 5)
@@ -29,10 +42,20 @@ const Event = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Eventos</h2>
           <div className="lg:ml-auto flex ml-1">
-            <button onClick={() => eventStore.setModalCreate(true)} type="button" className="btnStandard">
+            <button onClick={() => eventStore.setModalCreate(true)} type="button" className="btnStandard mr-3">
               <img src={Pencil} alt="Create" />
               Crear
             </button>
+            {eventStore.getPaginatedEvents.content! && (
+              <button className="btnStandard">
+                <CSVLink
+                  data={eventStore.getPaginatedEvents.content!}
+                  filename={'events.csv'}
+                  enclosingCharacter={` `}
+                  target="_blank"
+                  headers={headers} >Exportar a excel
+                </CSVLink>
+              </button>)}
           </div>
           {eventStore.getModalCreate ? (
             <div>
