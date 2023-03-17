@@ -22,8 +22,9 @@ const headers = [
 ]
 
 const SubscribersList = (prop: PropTable) => {
-    const [subs, setSubs] = useState<SubscriptionUser[]>(eventStore.getEvent.userSubscriptions!!)
+    const [subs] = useState<SubscriptionUser[]>(eventStore.getEvent.userSubscriptions!!)
 
+    var sortedUserList = subs.slice().sort((n1, n2) => n1.name!! > n2.name!! ? 1 : -1)
 
     const falseUsers = [{
         title: "Pepe",
@@ -162,7 +163,7 @@ const SubscribersList = (prop: PropTable) => {
 
     ]
 
-     return (
+    return (
         <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white   ">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
@@ -189,8 +190,8 @@ const SubscribersList = (prop: PropTable) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {subs.map((subUsersMap, index) => (
-                                subs.length > 0 &&
+                            {sortedUserList.map((subUsersMap, index) => (
+                                sortedUserList.length > 0 &&
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                                         <div className="tableCamp h-10 ">

@@ -59,7 +59,6 @@ interface SubscriptionUser {
 
 }
 
-
 interface PaginatedEvent {
     content?: Event[],
     totalPages?: number,
