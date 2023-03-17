@@ -82,7 +82,7 @@ const CreateBand = () => {
   }
 
   return (
-    <div className="flex flex-col lg:m-auto lg:w-1/2  w-3/4 lg:h-screen border-2 rounded-md bg-white">
+    <div className="flex flex-col lg:m-auto lg:w-1/2  w-11/12 lg:h-screen border-2 rounded-md bg-white">
       <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">

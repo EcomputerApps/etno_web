@@ -1,5 +1,4 @@
 import { observer } from "mobx-react-lite"
-import { useNavigate } from "react-router-dom"
 import { Service } from "../../../models/section/Section"
 import ServiceStore from "../../../viewmodels/service/ServiceStore"
 import EditService from "./create/EditService"
@@ -15,7 +14,6 @@ const TableService = (prop: PropTable) => {
     const deleteService = async (owner: string) => {
         await serviceStore.deleteService('Bolea', owner)
     }
-    const navigate = useNavigate()
     function saveService(service: Service) {
         serviceStore.updateService(service)
         serviceStore.setModalEdit(true)
@@ -26,7 +24,7 @@ const TableService = (prop: PropTable) => {
                 <div>
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                         <div className="fixed inset-0 w-screen h-screen">
-                            <div className="w-screen  flex justify-center mt-10">
+                            <div className="w-screen  flex justify-start">
                                 <EditService />
                             </div>
                         </div>

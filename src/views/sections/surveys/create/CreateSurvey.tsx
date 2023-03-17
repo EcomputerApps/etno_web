@@ -15,18 +15,23 @@ const CreateSurvey = () => {
     const [answerThree, setAnswerThree] = useState<string>("")
     const [answerFour, setAnswerFour] = useState<string>("")
 
+
+
     function addSurvey() {
         const newSurvey: Survey = {
             question: question,
             answerOne: answerOne,
             answerTwo: answerTwo,
             answerThree: answerThree,
-            answerFour: answerFour
+            answerFour: answerFour,
+            isActive: true,
+            datePicker:new Date(finalDate + " " + finalTime)
+            
 
 
         }
         chekIfEmpty()
-        question === "" || 
+        question === "" ||
             minimumReplies() ?
             toast.error('Rellene los campos', {
                 position: 'bottom-center',
@@ -38,6 +43,8 @@ const CreateSurvey = () => {
                 progress: undefined,
                 theme: "light"
             }) : surveyStore.addRequestSurvey("Bolea", newSurvey)
+        
+            
 
     }
     function minimumReplies() {
@@ -68,7 +75,8 @@ const CreateSurvey = () => {
     const [emptyDate, setEmptyDate] = useState(false)
     const [emptyTime, setEmptyTime] = useState(false)
     const [emptyReplies, setEmptyReplies] = useState(false)
-
+    const inputDate = useRef<HTMLInputElement>(null)
+    const inputTime = useRef<HTMLInputElement>(null)
     const inputAnswerOne = useRef<HTMLInputElement>(null)
     const inputAnswerTwo = useRef<HTMLInputElement>(null)
     const inputAnswerThree = useRef<HTMLInputElement>(null)
@@ -90,15 +98,42 @@ const CreateSurvey = () => {
                             name="bandType" type="text" required={true}
                             className={`inputCamp peer ${emptyName ? 'border-red-600'
                                 : ''
-                                }`} onChange={(e) => { setQuestion(e.currentTarget.value) }} onInput={(e)=> e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} 
-                                onKeyDown={(e) => {
-                                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                }`} onChange={(e) => { setQuestion(e.currentTarget.value) }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}
+                            onKeyDown={(e) => {
+                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                    if (inputDate.current != null) {
+                                        inputDate.current.focus()
+                                    }
+                                }
+                            }} />
+                        <label className="labelFloatInput">Pregunta</label>
+                    </div>
+                </div>
+                <div className="w-full flex flex-1 flex-col pl-3">
+                    <div className=" flex flex-row p-1 mt-5  relative">
+                        <input placeholder=" " ref={inputDate}
+                            type="date"
+                            className={`inputCamp peer ${emptyDate ? 'border-red-600'
+                                : ''
+                                }`} onChange={(e) => { setFinalDate(e.currentTarget.value) }} onKeyDown={(e) => {
+                                    if (e.code === "NumpadEnter") {
+                                        if (inputTime.current != null) {
+                                            inputTime.current.focus()
+                                        }
+                                    }
+                                }} />
+                        <input placeholder=" " ref={inputTime}
+                            type="time"
+                            className={`inputCamp peer ${emptyTime ? 'border-red-600'
+                                : ''
+                                }`} onChange={(e) => { setFinalTime(e.currentTarget.value) }} onKeyDown={(e) => {
+                                    if (e.code === "NumpadEnter") {
                                         if (inputAnswerOne.current != null) {
                                             inputAnswerOne.current.focus()
                                         }
                                     }
                                 }} />
-                        <label className="labelFloatInput">Pregunta</label>
+                        <label className="labelFloatInput">Fecha de Cierre</label>
                     </div>
                 </div>
                 <div className={`border-t-2 border-b-2 border-transparent rounded-md pb-5 ${emptyReplies ? 'border-red-600'
@@ -108,65 +143,67 @@ const CreateSurvey = () => {
                         <div className=" flex flex-col p-1 mt-5  relative">
                             <input placeholder=" " ref={inputAnswerOne}
                                 name="bandType" type="text"
-                                className="inputCamp peer" onChange={(e) => { setAnswerOne(e.currentTarget.value) }} onInput={(e)=> e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} 
+                                className="inputCamp peer" onChange={(e) => { setAnswerOne(e.currentTarget.value) }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}
                                 onKeyDown={(e) => {
                                     if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                         if (inputAnswerTwo.current != null) {
                                             inputAnswerTwo.current.focus()
                                         }
                                     }
-                                }}/>
+                                }} />
                             <label className="labelFloatInput">Respuesta 1</label>
                         </div>
                     </div><div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
                             <input placeholder=" " ref={inputAnswerTwo}
                                 name="bandType" type="text"
-                                className="inputCamp peer" onChange={(e) => { setAnswerTwo(e.currentTarget.value) }} onInput={(e)=> e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}
+                                className="inputCamp peer" onChange={(e) => { setAnswerTwo(e.currentTarget.value) }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}
                                 onKeyDown={(e) => {
                                     if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                         if (inputAnswerThree.current != null) {
                                             inputAnswerThree.current.focus()
                                         }
                                     }
-                                }}/>
+                                }} />
                             <label className="labelFloatInput">Respuesta 2</label>
                         </div>
                     </div><div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
                             <input placeholder=" " ref={inputAnswerThree}
                                 name="bandType" type="text"
-                                className="inputCamp peer" onChange={(e) => { setAnswerThree(e.currentTarget.value) }} onInput={(e)=> e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} onKeyDown={(e) => {
+                                className="inputCamp peer" onChange={(e) => { setAnswerThree(e.currentTarget.value) }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} onKeyDown={(e) => {
                                     if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                         if (inputAnswerFour.current != null) {
                                             inputAnswerFour.current.focus()
                                         }
                                     }
-                                }}/>
+                                }} />
                             <label className="labelFloatInput">Respuesta 3</label>
                         </div>
                     </div><div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
                             <input placeholder=" " ref={inputAnswerFour}
                                 name="bandType" type="text"
-                                className="inputCamp peer" onChange={(e) => { setAnswerFour(e.currentTarget.value) }} onInput={(e)=> e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} onKeyDown={(e) => {
+                                className="inputCamp peer" onChange={(e) => { setAnswerFour(e.currentTarget.value) }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}
+                                onKeyDown={(e) => {
                                     if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                         if (btnRef.current != null) {
                                             btnRef.current.focus()
                                         }
                                     }
-                                }}/>
+                                }} />
                             <label className="labelFloatInput">Respuesta 4</label>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div className='flex justify-center font-medium text-red-600 text-xl'>
                 {emptyReplies ? "Minimo 2 respuestas" : ""}
             </div>
             <div className="lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-                <button  ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => addSurvey()}>Publicar</button>
-                <button name="bandBtnCancel" className="btnStandard" onClick={() => surveyStore.setCreateSurvey(false)}>Cancelar</button>
+                <button ref={btnRef} className="btnStandard mr-10" onClick={() => addSurvey()}>Publicar</button>
+                <button className="btnStandard" onClick={() => surveyStore.setCreateSurvey(false)}>Cancelar</button>
             </div>
         </div>
     )

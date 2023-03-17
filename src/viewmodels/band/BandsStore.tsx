@@ -129,8 +129,7 @@ class BandStore {
         this.updatePaginatedBand(band)
     }
     async getAllBandRequest(locality: string) {
-        console.log("here")
-        const response = await fetch(`http://${this.serverIp}:8080/bandos?username=${locality}`, {
+             const response = await fetch(`http://${this.serverIp}:8080/bandos?username=${locality}`, {
             method: 'GET',
 
         })

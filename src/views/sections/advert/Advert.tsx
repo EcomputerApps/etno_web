@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import "../../../index.css"
 import AdvertStore from "../../../viewmodels/advert/AdvertStore"
 import TableAdvert from "./TableAdvert"
@@ -13,8 +12,7 @@ const adverStore = AdvertStore.getAdvertStore()
 
 const Advert = () => {
     const [pageNumber, setPageNumber] = useState(0)
-    const navigate = useNavigate()
-
+  
     useEffect(() => {
         adverStore.getRequestAdvert('Bolea', pageNumber, 5)//calcular cuantos eventos por pagina optimales
     }, [pageNumber])
@@ -31,7 +29,7 @@ const Advert = () => {
             <div className="flex flex-col gap-4">
                 <div className="flex flex-row">
                     <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Anuncios</h2>
-                    <div className="ml-auto">
+                    <div className="lg:ml-auto flex ml-1">
                         <button onClick={() => adverStore.setModalCreate(true)} type="button" className="btnStandard">
                             <img src={Pencil} alt="Create" />
                             Crear

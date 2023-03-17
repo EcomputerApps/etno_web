@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useState, useRef } from 'react';
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../assets/marker.svg"
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
@@ -23,7 +23,7 @@ interface Marker {
 }
 
 const EditPharmacy = () => {
-
+    const datePickerRef = useRef<any>();
     const [datePanel, setDatePanel] = useState(true)
     const [dateGuardia, setDateGuardia] = useState({
         startDate: new Date(),
@@ -87,37 +87,19 @@ const EditPharmacy = () => {
 
     }
     function dateCutter(date: PharmacyDutyDate[]) {
-        var arrayAux = new Array<Date>()
-        date.map((item, index) => {
-            arrayAux.push(item.date!!)
+        var arrayAux = new Array<PharmacyDutyDate>()
+        var arrayTrue = new Array<Date>()
+        arrayAux = date.sort((a, b) => Number(a.date) - Number(b.date))
+        arrayAux.map((item, index) => {
+            arrayTrue.push(item.date!!)
         })
         if (!chekGuardiaType(pharmacy.frequencyInDays!!)) {
-            
-            return arrayAux[arrayAux.length-1]
-        }else{
-            return arrayAux
+            return arrayTrue[0]
+        } else {
+            return arrayTrue
         }
-       
-    }
 
-    const [pharmType, setPharmType] = useState(pharmacy.type)
-    const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
-    const [pharmacyName, setPharmacyName] = useState<string>(pharmacy.name!!)
-    const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>(pharmacy.link!!)
-    const [pharmacyTel, setPharmacyTel] = useState<string>(pharmacy.phone!!)
-    const [pharmacyShcedulMorningOne, setPharmacyShcedulMorningOne] = useState<string>(timeCutter(pharmacy.schedule!!)!![0])
-    const [pharmacyShcedulEvenOne, setPharmacyShcedulEvenOne] = useState<string>(timeCutter(pharmacy.schedule!!)!![2])
-    const [pharmacyShcedulMorningTwo, setPharmacyShcedulMorningTwo] = useState<string>(timeCutter(pharmacy.schedule!!)!![1])
-    const [pharmacyShcedulEvenTwo, setPharmacyShcedulEvenTwo] = useState<string>(timeCutter(pharmacy.schedule!!)!![3])
-    const [pharmacyShcedulExtra, setPharmacyShcedulExtra] = useState<string>("")
-    const [pharmacyDescription, setPharmacyDescription] = useState<string>(pharmacy.description!!)
-    const [pharmacyLong, setPharmacyLong] = useState<string>(pharmacy.longitude!!)
-    const [pharmacyLat, setPharmacyLat] = useState<string>(pharmacy.latitude!!)
-    const [pharmacySchedule, setPharmacySchedule] = useState<string>(pharmacy.schedule!!)
-    const [pharmPeriod, setPharmPeriod] = useState<number>(pharmacy.durationDays!!)
-    const [pharmFrequency, setPharmFrequency] = useState<number>(pharmacy.frequencyInDays!!)
-    const [file, setFile] = useState<File>()
-    const [dutyDates, setDutyDates] = useState<Value>(dateCutter(pharmacy.dates!!))
+    }
 
     function handleScheduleInput() {
         if (pharmacyShcedulSelector === "Otro") {
@@ -133,47 +115,7 @@ const EditPharmacy = () => {
             }
         }
     }
-    function updatePharmacy(pharmaciId: string) {
-        if (fillDates(dutyDates?.toString()!!).length > 1) {
-            setPharmPeriod(0)
-            setPharmFrequency(0)
-        }
-        chekIfEmpty()
-        if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-            pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
-            pharmacyLong === '' || pharmacyLat === '') {
-            toast.info('Rellene los campos', {
-                position: 'top-center',
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: 'light'
-            })
-        } else {
-            const pharmacy_: Pharmacy = {
-                type: pharmType,
-                name: pharmacyName,
-                link: pharmacyWebUrl,
-                phone: pharmacyTel,
-                schedule: pharmacySchedule,
-                description: pharmacyDescription,
-                longitude: String(long),
-                latitude: String(lat),
-                startDate: fillDates(dutyDates?.toString()!!)[0],
-                durationDays: pharmPeriod,
-                frequencyInDays: pharmFrequency,
-                dates: fillPharmacyDates(fillDates(dutyDates?.toString()!!))
 
-            }
-            console.log(dutyDates)
-            pharmacyStore.editPharmacy('Bolea', pharmacy.idPharmacy!!, pharmacy_, file!!)
-            sideBarStore.updateSection('Farmacias')
-            hoverSectionStore.setName('Farmacias')
-        }
-    }
     function chekIfEmpty() {
         pharmacyName === "" ? setEmptyName(true) : setEmptyName(false)
         pharmacyWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
@@ -224,15 +166,27 @@ const EditPharmacy = () => {
     }
 
     function fillDates(dates: string): Date[] {
-        var arrayDate = new Array()
+        var arrayDate = new Array<Date>()
         if (dates !== undefined) {
             var arrayAux = dates.split(",")
-            arrayAux.map((item) => {
-                arrayDate.push(new Date(item))
-            })
+            if (arrayAux.length === 1) {
+                if (Number(dates)) {
+                    arrayDate.push(new Date(Number(dates)))
+                } else {
+                    arrayDate.push(new Date(dates))
+                }
+            } else {
+                if (Number(arrayAux[0])) {
+                    arrayAux.map((item) => {
+                        arrayDate.push(new Date(Number(item)))
+                    })
+                } else {
+                    arrayAux.map((item) => {
+                        arrayDate.push(new Date(item))
+                    })
+                }
+            }
         }
-        
-
         return arrayDate
     }
 
@@ -250,14 +204,93 @@ const EditPharmacy = () => {
 
     function chekGuardiaType(frequencia: number) {
         if (frequencia === 0) {
+            //Custom days
             return true
         } else {
+            //Chain of days
             return false
         }
     }
 
+
+    const [pharmType, setPharmType] = useState(pharmacy.type)
+    const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
+    const [pharmacyName, setPharmacyName] = useState<string>(pharmacy.name!!)
+    const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>(pharmacy.link!!)
+    const [pharmacyTel, setPharmacyTel] = useState<string>(pharmacy.phone!!)
+    const [pharmacyShcedulMorningOne, setPharmacyShcedulMorningOne] = useState<string>(timeCutter(pharmacy.schedule!!)!![0])
+    const [pharmacyShcedulEvenOne, setPharmacyShcedulEvenOne] = useState<string>(timeCutter(pharmacy.schedule!!)!![2])
+    const [pharmacyShcedulMorningTwo, setPharmacyShcedulMorningTwo] = useState<string>(timeCutter(pharmacy.schedule!!)!![1])
+    const [pharmacyShcedulEvenTwo, setPharmacyShcedulEvenTwo] = useState<string>(timeCutter(pharmacy.schedule!!)!![3])
+    const [pharmacyShcedulExtra, setPharmacyShcedulExtra] = useState<string>("")
+    const [pharmacyDescription, setPharmacyDescription] = useState<string>(pharmacy.description!!)
+    const [pharmacyLong, setPharmacyLong] = useState<string>(pharmacy.longitude!!)
+    const [pharmacyLat, setPharmacyLat] = useState<string>(pharmacy.latitude!!)
+    const [pharmacySchedule, setPharmacySchedule] = useState<string>(pharmacy.schedule!!)
+    const [pharmPeriod, setPharmPeriod] = useState<number>(pharmacy.durationDays!!)
+    const [pharmFrequency, setPharmFrequency] = useState<number>(pharmacy.frequencyInDays!!)
+    const [file, setFile] = useState<File>()
+    const [dutyDates, setDutyDates] = useState<Value>(dateCutter(pharmacy.dates!!))
+
+    function updatePharmacy(pharmaciId: string) {
+        if (fillDates(dutyDates?.toString()!!).length !== 1) {
+            setPharmPeriod(0)
+            setPharmFrequency(0)
+        }
+        chekIfEmpty()
+        if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
+            pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
+            (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === ""
+        ) {
+            toast.info('Rellene los campos', {
+                position: 'top-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+            })
+        } else {
+            const pharmacy_: Pharmacy = {
+                type: pharmType,
+                name: pharmacyName,
+                link: pharmacyWebUrl,
+                phone: pharmacyTel,
+                schedule: pharmacySchedule,
+                description: pharmacyDescription,
+                longitude: String(long),
+                latitude: String(lat),
+                startDate: fillDates(dutyDates?.toString()!!)[0],
+                durationDays: pharmPeriod,
+                frequencyInDays: pharmFrequency,
+                dates: fillPharmacyDates(fillDates(dutyDates?.toString()!!))
+
+            }
+            if (pharmType === "Normal") {
+                pharmacy_.startDate = undefined
+                pharmacy_.dates = undefined
+                pharmacy_.durationDays = 0
+                pharmacy_.frequencyInDays = 0
+            } console.log(pharmacy_)
+            pharmacyStore.editPharmacy('Bolea', pharmaciId, pharmacy_, file!!)
+            sideBarStore.updateSection('Farmacias')
+            hoverSectionStore.setName('Farmacias')
+        }
+    }
+    const [shouldCloseCalendar, setShouldCloseCalendar] = useState(false)
+
+    function chekDatesCount() {
+        if (fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "") {
+            setPharmPeriod(0)
+            setPharmFrequency(0)
+        }
+        datePickerRef.current.closeCalendar()
+    }
+
     return (
-        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-3/4 mt-5   h-screen overflow-y-auto border-2 rounded-md bg-white">
+        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12  h-screen overflow-y-auto border-2 rounded-md bg-white">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -294,7 +327,7 @@ const EditPharmacy = () => {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-row'>
+                <div className='flex lg:flex-row flex-col'>
                     <div className="flex pt-2  p-1  relative  ">
                         <div className=' peer'>
                             <DatePicker
@@ -303,6 +336,9 @@ const EditPharmacy = () => {
                                 value={dutyDates}
                                 onChange={setDutyDates}
                                 weekStartDayIndex={1}
+                                ref={datePickerRef}
+                                onOpen={() => setShouldCloseCalendar(false)}
+                                onClose={() => shouldCloseCalendar}
                                 style={{
                                     height: "40px",
                                     borderRadius: "6px",
@@ -322,16 +358,18 @@ const EditPharmacy = () => {
                                 </button>
                                 <button
                                     style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
+                                    onClick={() => chekDatesCount()} onFocus={() => setShouldCloseCalendar(true)}
                                 >
-                                    <label className='text-white cursor-pointer'>Anular seleccion</label>
+                                    <label className='text-white cursor-pointer'>Cerrar</label>
                                 </button>
                             </DatePicker>
                         </div>
                         <label className={"labelFloatDate"}>Dias de Guardia</label>
                     </div>
+                    <div className='flex flex-row lg:mt-0 mt-3'>
                     <div className="flex pt-2  p-1  relative ">
-                        <input defaultValue={pharmPeriod} type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
-                            disabled={dutyDates?.toString().length!! !== 67 && dutyDates?.toString().length!! !== 10 && chekGuardiaType(pharmacy.frequencyInDays!!)}
+                        <input value={pharmFrequency} type="number" ref={inputPeriod} min={0} className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
+                            disabled={fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "" || pharmType === "Normal"}
                             onChange={(e) => {
                                 setPharmFrequency(e.currentTarget.valueAsNumber)
                             }}
@@ -345,8 +383,8 @@ const EditPharmacy = () => {
                         <label className={"labelFloatDate"}>Frecuencia</label>
                     </div>
                     <div className="flex pt-2  p-1  relative ">
-                        <input defaultValue={pharmFrequency} type="number" ref={inputPeriod} min={0} name="necroDate" className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
-                            disabled={dutyDates?.toString().length!! !== 67 && dutyDates?.toString().length!! !== 10 && chekGuardiaType(pharmacy.frequencyInDays!!)}
+                        <input value={pharmPeriod} type="number" ref={inputPeriod} min={0} className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
+                            disabled={fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "" || pharmType === "Normal"}
                             onChange={(e) => {
                                 setPharmPeriod(e.currentTarget.valueAsNumber)
                             }}
@@ -358,6 +396,7 @@ const EditPharmacy = () => {
                                 }
                             }} />
                         <label className={"labelFloatDate"}>Repeticiones</label>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -614,12 +653,9 @@ const EditPharmacy = () => {
                 <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => updatePharmacy(pharmacy.idPharmacy!!)}>Publicar</button>
                 <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => pharmacyStore.setModalEdit(false)}>Cancelar</button>
             </div>
-
         </div>
     )
 }
 export default EditPharmacy
 
-function setHours(arg0: string, arg1: string): string | number | Date {
-    throw new Error('Function not implemented.');
-}
+

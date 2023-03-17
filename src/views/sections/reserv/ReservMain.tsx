@@ -1,10 +1,8 @@
 import { observer } from "mobx-react-lite"
-import { Calendar, DateLocalizer, momentLocalizer, Navigate } from 'react-big-calendar'
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import moment from 'moment';
 import Pencil from "../../../assets/menu/create.svg"
 import 'moment/locale/es';
-import { useEffect, useMemo, useState } from "react";
+import { useEffect,  useState } from "react";
 import ReserveStore from "../../../viewmodels/reserv/ReserveStore";
 import CreateReserve from "./create/CreateReserv";
 import PlaceList from "./PlaceList";
@@ -37,8 +35,8 @@ const Reserve = () => {
         <div className="w-full h-full  relative">
             <div className="flex flex-col gap-4">
                 <div className="flex flex-row">
-                    <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl mr-3 sm:tracking-tight">Reservas</h2>
-                    <div className="lg:ml-auto  flex ">
+                    <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl  sm:tracking-tight">Reservas</h2>
+                    <div className="lg:ml-auto flex ml-1">
                         <button type="button"
                             className="btnStandard mr-5 h-12"
                             onClick={() => reserveStore.setModalCalendar(true)}>

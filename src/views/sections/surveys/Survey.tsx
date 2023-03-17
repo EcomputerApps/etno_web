@@ -19,10 +19,10 @@ const Survey = () => {
             <div className="flex flex-col gap-4">
                 <div className="flex flex-row">
                     <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Encuestas</h2>
-                    <div className="ml-auto">
+                    <div className="lg:ml-auto flex ml-1">
                         <button type="button" className="btnStandard" onClick={() => surveyStore.setCreateSurvey(true)}>
-                            <img src={Pencil} alt="Create" />
-                            Crear
+                            <img src={Pencil} alt="Create"/>
+                            <label className="lg:text-base text-xs">Crear</label>
                         </button>
                     </div>
                                   </div>

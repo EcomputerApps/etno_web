@@ -242,8 +242,7 @@ const EditTourism = () => {
           </div>
         </div>
         <div className="  flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-
-          <button ref={btnRef} name="tourismBtnSave" className="btnStandard mr-10" onClick={() => updateTourism()}>Publicar</button>
+          <button ref={btnRef} name="tourismBtnSave" className="btnStandard mr-10" onClick={() => updateTourism()}>Guardar</button>
           <button name="tourismBtnCancel" className="btnStandard" onClick={() => tourismStore.setModalEdit(false)}>Cancelar</button>
         </div>
       </div>

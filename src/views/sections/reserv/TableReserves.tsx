@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import ReserveStore from "../../../viewmodels/reserv/ReserveStore";
-import { Reserve, ReserveUser } from "../../../models/section/Section";
+import { Reserve} from "../../../models/section/Section";
 import ClientInfo from "./create/ClienInfo";
 import moment from "moment";
 
@@ -31,13 +31,9 @@ const TableReserves = (prop: PropTable) => {
             reserveStore.updateReserve(reserve)
             reserveStore.setModalClientInfo(true)
         }
-
-
     }
-
     return (
         <div className=" w-full relative overflow-x-auto shadow-md sm:rounded-lg">
-
             {reserveStore.getModalClientInfo ? (
                 <div>
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50  backdrop-blur-sm flex justify-center items-center">

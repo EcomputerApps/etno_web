@@ -76,7 +76,7 @@ const CreateSponsor = () => {
   const [emptyDescption, setEmptyDescription] = useState(false)
   
   return (
-     <div className="flex flex-col lg:m-auto lg:w-1/2 mt-5   w-3/4 lg:h-screen border-2 rounded-md bg-white">
+     <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 lg:h-screen border-2 rounded-md bg-white">
       <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
@@ -123,7 +123,7 @@ const CreateSponsor = () => {
           <div className="flex flex-col p-1 relative">
 
             <input ref={inputRef} placeholder=" " name="sponsorTel" type="text" onInput={(e) =>
-              e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className={`inputCamp peer w-1/4 ${emptyTel ? 'border-red-600'
+              e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} className={`inputCamp peer lg:w-1/4  ${emptyTel ? 'border-red-600'
               : ''
               }`} maxLength={9} minLength={9} onChange={(e) => {
                 setSponsorTel(e.currentTarget.value)

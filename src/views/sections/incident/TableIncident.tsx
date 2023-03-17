@@ -3,7 +3,6 @@ import { useState } from "react"
 import resolved from "../../../assets/menu/resolved.svg"
 import error from "../../../assets/menu/error.svg"
 import IncidentStore from "../../../viewmodels/incident/IncidentStore"
-import { Incident } from "../../../models/section/Section"
 import { toast, ToastContainer } from "react-toastify"
 
 const incidentStore = IncidentStore.getIncidentStore()
@@ -11,15 +10,13 @@ interface PropTable {
     list?: any,
     currentPage?: number
 }
-const deleteIncident = async (incident: string) => {
-    await incidentStore.deleteIncident('Bolea', incident)
-}
+
 const TableIncident = (prop: PropTable) => {
     const [showModal, setModal] = useState(false)
     const [emptySolution, setEmptySolution] = useState(false)
 
     function chekIfEmpty() {
-        incidentSolution === "" ? setEmptySolution(true) : setEmptySolution(false)
+        incidentSolution === "" ||  incidentSolution === null ? setEmptySolution(true) : setEmptySolution(false)
     }
 
     function showDescription(description: string, id: string,
@@ -40,13 +37,14 @@ const TableIncident = (prop: PropTable) => {
     const [incidentDate, setIncidentDate] = useState("")
     const [id, setID] = useState("")
     const [fcmToken, setFcmToken] = useState("")
-    const [incidentSolution, setIncidentSolution] = useState("")
+    const [incidentSolution, setIncidentSolution] = useState<string>("")
     const [insicentIsSolved, setIcindentIsSolved] = useState<boolean>(false)
 
     function solutionPositive(incidentId: string) {
 
         chekIfEmpty()
-        incidentSolution === "" ? toast.error('Rellene el campo de solution', {
+        incidentSolution === "" ||   incidentSolution === null ? 
+        toast.error('Rellene el campo de solution', {
             position: 'bottom-center',
             autoClose: 1000,
             hideProgressBar: false,
@@ -55,8 +53,12 @@ const TableIncident = (prop: PropTable) => {
             draggable: true,
             progress: undefined,
             theme: "light"
-        }) :
-            incidentStore.solveSilution("Bolea", incidentId, incidentSolution)
+        }) : incidentStore.solveSilution("Bolea", incidentId, incidentSolution)
+    }
+
+    function goBack(){
+        setModal(false)
+        setEmptySolution(false)
     }
     return (
         <div className="relative overflow-x-auto ">
@@ -65,9 +67,9 @@ const TableIncident = (prop: PropTable) => {
                     {showModal ? (
                         <div>
                             <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center">
-                                <div className="w-1/2 h-1/2 flex flex-col">
-                                    <button className="  text-blue-600  font-medium place-self-end bg-white rounded-full w-7 h-7 border-dark-purple border-2 mb-1 " onClick={() => setModal(false)}>X</button>
-                                    <div className="w-full  max-h-full rounded-md flex flex-wrap bg-gray-100 ">
+                                <div className="lg:w-1/2 w-11/12 h-1/2 flex flex-col">
+                                    <button className="  text-blue-600  font-medium place-self-end bg-white rounded-full w-7 h-7 border-dark-purple border-2 mb-1 " onClick={() => goBack()}>X</button>
+                                    <div className="w-full min-h-full max-h-full rounded-md flex flex-wrap bg-gray-100 ">
                                         <p className="font-bold text-xl uppercase underline p-3 w-full text-center underline-offset-4 ">Descripción detallada</p>
                                         <div className="flex flex-wrap md:h-40 h-1/2 max-h-40 overflow-y-scroll border-t-2 border-b-2 p-2 w-full " > 
                                        {incidentStore.getDescription}
@@ -94,7 +96,7 @@ const TableIncident = (prop: PropTable) => {
                             <div className="grid md:grid-cols-2 md:grid-rows-3 grid-cols-1 grid-rows-none h-full" >
                                 {incidentStore.getPaginatedIncident.content?.map((incident, index) => (
                                     incidentStore.getPaginatedIncident.content!!.length > 0 &&
-                                    <div key={index} id="divIndex" className="min-w-fit relative flex flex-col m-1 border-2 rounded-md bg-gray-100 shadow-md max-w-min" onClick={() => {
+                                    <div key={index} id="divIndex" className="min-w-full relative flex flex-col m-1 p-1 border-2 rounded-md bg-gray-100 shadow-md max-w-min" onClick={() => {
                                         showDescription(incident.description!!, incident.idIncident!!, incident.fcmToken!!, incident.title!!, incident.issuedDate!!, incident.isSolved!!, incident.solution!!)
                                     }}>
                                         <div className=" flex flex-2 justify-between ">

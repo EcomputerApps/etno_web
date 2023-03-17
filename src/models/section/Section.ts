@@ -80,7 +80,7 @@ interface ReserveUser {
     reservePhone?: string,
     date?: string,
     reserveSchedules?: ReserveSchedule[],
-  
+
 }
 interface Place {
     idPlace?: string,
@@ -238,6 +238,12 @@ interface PaginatedService {
     pageNum?: number
 }
 
+interface ServiceType {
+    idServiceType?: string,
+    value?: string,
+    title?: string
+}
+
 interface Sponsor {
     idSponsor?: string,
     username?: string,
@@ -341,8 +347,13 @@ interface Survey {
     resultThree?: number,
     answerFour?: string,
     resultFour?: number,
-    isActive?: boolean
-   
+    isActive?: boolean,
+    datePicker?: DateTime | Date;
+}
+interface DateTime {
+    value?: number,
+    dateOnly?: boolean,
+    tzShift?: number
 }
 interface PaginatedSurveys {
     content?: Survey[],
@@ -374,6 +385,6 @@ export type {
     PaginatedNecro, PaginatedIncident, PaginatedLink,
     Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserve,
     ReservList, PaginatedReserve, Place, Hall, PaginatedPlace,
-    HallList, ReserveUser, ReserveSchedule, PlaceList, Survey, 
-    PaginatedSurveys, CustomLink, PaginatedCustomLink
+    HallList, ReserveUser, ReserveSchedule, PlaceList, Survey,
+    PaginatedSurveys, CustomLink, PaginatedCustomLink, ServiceType, DateTime
 }

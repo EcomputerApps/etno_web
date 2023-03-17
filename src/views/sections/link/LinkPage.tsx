@@ -1,7 +1,5 @@
-
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import "../../../index.css"
 import Pencil from "../../../assets/menu/create.svg"
 import logoEtno from '../../../assets/logo_etno.png';
@@ -18,16 +16,13 @@ const linkStore = LinkStore.getLinkStore()
 
 const LinkPage = () => {
     const [pageNumber, setPageNumber] = useState(0)
-    const navigate = useNavigate()
     const [showModal, setModal] = useState(false)
-
     const [position, setPosition] = useState(0)
-    const [newTitle, setNewTitle] = useState("")
-    const [newLink, setNewLink] = useState("")
-
+   
     useEffect(() => {
         linkStore.getRequestLink('Bolea', pageNumber, 12)
     }, [pageNumber])
+
     function editLink(title: string, link: string, id: string, pos: number) {
         linkStore.setTitle(title)
         linkStore.setLinkString(link)
@@ -75,10 +70,10 @@ const LinkPage = () => {
         setPageNumber(pageNumber - 1)
     }
     return (
-        <div className="w-full h-full min-w-5/6 relative flex flex-col">
+        <div className="lg:w-full h-full min-w-5/6 relative flex flex-col">
             <div className="flex flex-row">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces</h2>
-                <div className="ml-auto">
+                <div className="lg:ml-auto flex ml-1 ">
                     <button onClick={() => linkStore.setModalCreate(true)} type="button" className="btnStandard">
                         <img src={Pencil} alt="Create" />
                         Crear
@@ -152,7 +147,10 @@ const LinkPage = () => {
                 <div className={"w-full grid lg:grid-cols-4 lg:grid-rows-3 grid-cols-1"}>
                     {linkStore.paginatedLink.content?.map((link, index) => (
                         linkStore.paginatedLink.content!!.length > 0 &&
-                        <div key={index} className="border-2 p-1     rounded-md relative bg-gray-100 shadow-md lg:h-full h-40">
+                        <div key={index} className="border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full h-40 ">
+
+
+
                             <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center">{link.title}</div>
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={link.url}>{link.url}</a></div>
                             <div className="flex m-auto justify-center lg:pt-5 h-1/5">
