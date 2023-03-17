@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import ReserveStore from "../../../viewmodels/reserv/ReserveStore";
-import { Reserve} from "../../../models/section/Section";
+import { Reserve } from "../../../models/section/Section";
 import ClientInfo from "./create/ClienInfo";
 import moment from "moment";
 import { useState } from "react";
-
+import { CSVLink } from 'react-csv';
 
 const reserveStore = ReserveStore.getReserveStore()
 interface PropTable {
@@ -14,6 +14,12 @@ interface PropTable {
 }
 
 const TableReserves = (prop: PropTable) => {
+
+    const hourHeader = [
+        { label: 'id', key: 'idReserveSchedule' },
+        { label: 'hora', key: 'date' },
+    ]
+
     const [confirm, setConfirm] = useState(false)
     const [delId, setDelId] = useState<string>("")
     const [delName, setDelName] = useState<string>("")
@@ -64,11 +70,12 @@ const TableReserves = (prop: PropTable) => {
                         ))}
                     </tr>
                 </thead>
-                <tbody >
+
+                <tbody>
                     {reserveStore.getPaginatedReserve.content?.map((reservMap, index) => (
                         reserveStore.getPaginatedReserve.content!!.length > 0 &&
 
-                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <tr onClick={() => console.log(reservMap.name)} key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                             <th scope="row" className="px-6 py-4">
                                 <div className="tableCamp flex flex-col">
@@ -94,10 +101,25 @@ const TableReserves = (prop: PropTable) => {
                                 </div>
                             </td>
                             <td className="px-6 py-4">
-                                <div className="tableCamp flex flex-col overflow-y-auto">
-                                    {reservMap.reserveSchedules?.map((item, index) => (
-                                        <label key={index}>{item.date}</label>
-                                    ))}
+                                <div className="flex flex-col">
+                                    
+                                    <div className="tableCamp flex flex-col overflow-y-auto">
+                                        {reservMap.reserveSchedules?.map((item, index) => (
+                                            <label key={index}>{item.date}</label>
+                                        ))}
+                                    </div>
+                                    <div className=" flex justify-center w-full">
+                                        <CSVLink
+                                            data={reservMap.reserveSchedules}
+                                            filename={'reserves.csv'}
+                                            enclosingCharacter={` `}
+                                            className={"btnStandard mr-3 h-5"}
+                                            target="_blank"
+                                            headers={hourHeader} >Exportar horario
+                                        </CSVLink>
+                                    </div>
+
+
                                 </div>
                             </td>
                             <td className=" px-6 py-4" >
@@ -113,7 +135,7 @@ const TableReserves = (prop: PropTable) => {
 
                             <td className="px-6 py-4">
                                 <div className="h-20 flex flex-col items-center justify-center">
-                                    {reservMap.reserveUsers?.length === 0? (
+                                    {reservMap.reserveUsers?.length === 0 ? (
                                         <div>
                                             <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(reservMap)}>Cancelar</a>
                                         </div>

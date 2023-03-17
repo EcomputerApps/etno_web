@@ -16,14 +16,14 @@ import { CSVLink } from 'react-csv';
 const reserveStore = ReserveStore.getReserveStore()
 
 const Reserve = () => {
+
     const headers = [
         { label: 'Nombre', key: 'name' },
         { label: 'Lugar', key: 'place.name' },
         { label: 'Sala', key: 'hall' },
         { label: 'Fecha', key: 'date' },
-        { label: 'Hora', key: 'reserveSchedules.date' },
         { label: 'Tipo', key: 'isPrivate' },
-        { label: 'Status', key: 'isReserved' },
+        { label: 'Status', key: 'isReserved' }
     ]
     const [pageNumber, setPageNumber] = useState(0)
     useEffect(() => {
@@ -40,7 +40,6 @@ const Reserve = () => {
         setPageNumber(pageNumber - 1)
     }
 
-
     return (
         <div className="w-full h-full  relative">
             <div className="flex flex-col gap-4">
@@ -48,22 +47,23 @@ const Reserve = () => {
                     <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl  sm:tracking-tight">Reservas</h2>
                     <div className="lg:ml-auto flex ml-1">
                         {reserveStore.getPaginatedReserve.content! && (
-                            <button className="btnStandard mr-3">
+                            
                                 <CSVLink
                                     data={reserveStore.getPaginatedReserve.content!}
                                     filename={'reserves.csv'}
                                     enclosingCharacter={` `}
                                     target="_blank"
-                                    headers={headers} >Exportar a excel
+                                    className={"btnStandard mr-3 h-12"}
+                                    headers={headers} >Exportar reservas a excel
                                 </CSVLink>
-                            </button>)}
+                            )}
                         <button type="button"
-                            className="btnStandard mr-5 h-12"
+                            className="btnStandard mr-3 h-12"
                             onClick={() => reserveStore.setModalCalendar(true)}>
                             Calendario
                         </button>
                         <button type="button"
-                            className="btnStandard mr-5 h-12"
+                            className="btnStandard mr-3 h-12"
                             onClick={() => reserveStore.setModalPlaceList(true)}>
                             Lugares
                         </button>
