@@ -25,11 +25,12 @@ import EditAdvert from "../views/sections/advert/create/EditAdvert"
 import EditTourism from "../views/sections/tourism/EditTourism"
 import EditEvent from "../views/sections/event/create/EditEvent"
 
+
 const Router = () => {
     return(
         <BrowserRouter>
             <Routes>
-                <Route path="/home" element={ <ViewRender element={<HomePage/>}/> }/>
+                <Route path="/home" element={ <ViewRender element={<HomePage/>}/>}/>
                 <Route path="/" element={ <ViewRender element={<LoginPage/>}/> }/>
                 <Route path="/logout" element={<ViewRender element={<LogoutPage/>}/>}/>
                 <Route path="/addEvent" element={<ViewRender element={<CreateEventPage/>}/>}/>

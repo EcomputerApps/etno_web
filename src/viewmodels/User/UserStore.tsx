@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { clearPersistedStore, makePersistable } from "mobx-persist-store";
 import { toast } from "react-toastify";
 import { UserLogin } from "../../models/user/UserLogin";
 
@@ -28,6 +29,7 @@ class UserStore {
         makeObservable(this, {
             userLogin: observable,
             getUserLogin: action,
+            clearStoredDate: action,
             getUserCredencials: computed,
             getError: computed
         })
@@ -42,6 +44,8 @@ class UserStore {
         if(request.status === 200){
             const response = await request.json()
             this.userLogin = response
+            localStorage.setItem('token_user_etno', this.userLogin.token!)
+            localStorage.setItem('user_etno_locality', this.userLogin.user?.username!)
             this.error = false
             toast.success('Logueado correctamente', {
                 position: 'bottom-center',
@@ -68,6 +72,9 @@ class UserStore {
             })
         }
     }
+    async clearStoredDate() {
+        await clearPersistedStore(this);
+      }
     
     get getUserCredencials(){
         return this.userLogin

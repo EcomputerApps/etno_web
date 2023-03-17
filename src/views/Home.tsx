@@ -1,5 +1,3 @@
-
-
 import { observer } from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom'
 import 'tailwindcss/tailwind.css'
@@ -20,7 +18,7 @@ import ReservMain from './sections/reserv/ReservMain'
 import Service from './sections/service/Service'
 import Sponsor from './sections/sponsor/Sponsor'
 import Tourism from './sections/tourism/Tourism'
-
+import UserStore from '../viewmodels/User/UserStore'
 import { useEffect } from 'react'
 import ReserveStore from '../viewmodels/reserv/ReserveStore'
 import Survey from './sections/surveys/Survey'
@@ -29,12 +27,18 @@ import CustomLinkPage from './sections/customLink/CustomLink'
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const reserveStore = ReserveStore.getReserveStore()
+const userStore = UserStore.getUserStore()
+
 
 const Home = () => {
-  useEffect(() => {
-    reserveStore.getRequestReserves()
-  }, [])
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (localStorage.getItem('token_user_etno') === null){
+      navigate('/')
+    }
+  }, [])
+
 
   function salida() {
     if (hoverSectionStore.getName === "Salir") {
