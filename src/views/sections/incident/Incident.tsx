@@ -5,6 +5,7 @@ import Search from "../../../assets/menu/search.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import TableIncident from "./TableIncident"
+import { CSVLink } from 'react-csv';
 const incidentStore = IncidentStore.getIncidentStore()
 
 const Incident = () => {
@@ -14,13 +15,21 @@ const Incident = () => {
     incidentStore.getRequestIncident('Bolea', pageNumber, 6)
   }, [pageNumber])
 
-
   const incrementPage = () => {
     setPageNumber(pageNumber + 1)
   }
   const decrementPage = () => {
     setPageNumber(pageNumber - 1)
   }
+
+  const headers = [
+    { label: 'FCM Token', key: 'fcmToken'},
+    { label: 'Titulo', key: 'title'},
+    { label: 'Descripción', key: 'description'},
+    { label: 'Resuelta', key: 'isSolved'},
+    { label: 'Solución', key: 'solution'}
+  ]
+
   return (
     <div className="w-full h-full min-w-max relative flex flex-col">
       <div className="flex flex-col gap-3">
@@ -38,19 +47,29 @@ const Incident = () => {
       </div>
       <div className="overflow-y-auto flex-1">
         <div className="">
+          {incidentStore.getPaginatedIncident.content! && (
+          <button className="bg-green-500 hover:bg-green-600 mt-2 text-white py-2 px-4 rounded inline-flex items-center">
+            <CSVLink
+          data={incidentStore.getPaginatedIncident.content!} 
+          filename={'incidents.csv'}
+          enclosingCharacter={` `}
+          target="_blank"
+          headers ={headers} >Exportar a excel
+          </CSVLink>
+          </button>)}
           <TableIncident currentPage={pageNumber} />
         </div>
       </div>
       <div className="flex  flex-2  items-center justify-center md:flex-row flex-col ">
         <button onClick={() => decrementPage()} disabled={pageNumber < 1}
-          className="btnStandard mr-10" >
+          className="btnStandard mr-10">
           <img src={arrowLeft} alt="backward" />
           Anterior
         </button>
         <button onClick={() => incrementPage()} disabled={pageNumber === incidentStore.getPaginatedIncident.totalPages!! - 1 || incidentStore.getPaginatedIncident.content?.length === 0}
           className="btnStandard">
           Siguiente
-          <img src={arrowRight} alt="forward" />
+          <img src={arrowRight} alt="forward"/>
         </button>
       </div>
     </div>

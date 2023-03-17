@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { UserLogin } from "../../models/user/UserLogin";
 
 class UserStore {
@@ -42,9 +43,29 @@ class UserStore {
             const response = await request.json()
             this.userLogin = response
             this.error = false
+            toast.success('Logueado correctamente', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
         }else{
             const response = await request.json()
             this.error = true
+            toast.error('Credenciales Incorrectas', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
         }
     }
     

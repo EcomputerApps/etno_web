@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import logoEtno from '../assets/logo_etno.png'
 import 'tailwindcss/tailwind.css'
 import UserStore from '../viewmodels/User/UserStore'
+import { ToastContainer } from 'react-toastify'
 
 const userStore = UserStore.getUserStore()
 
@@ -62,7 +63,8 @@ const Login = () => {
             </div>
           </form>
         </div>
+        <ToastContainer/>
       </div>
     )
 }
-export default observer(Login) 
+export default observer(Login)
