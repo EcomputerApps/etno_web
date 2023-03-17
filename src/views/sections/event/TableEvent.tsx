@@ -134,7 +134,6 @@ const TableEvent = (prop: PropTable) => {
                     </tbody>
                 </table>
             </div>
-
         </div>
     )
 }

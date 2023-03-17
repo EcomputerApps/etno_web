@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 
@@ -15,6 +15,15 @@ const Login = () => {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
+  /*
+  useEffect(() => {
+    if (localStorage.getItem('token_user_etno') !== null){
+      navigate('/home')
+    }
+  }, [])
+  */
+
+  
   const handleLogin = async(e: any) => {
     e.preventDefault()
     await userStore.getUserLogin(username, password)
