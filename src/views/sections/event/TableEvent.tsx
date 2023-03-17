@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+import { useState } from 'react'
 import { Event } from '../../../models/section/Section'
 import EventStore from "../../../viewmodels/Event/EventStore"
 import EditEvent from './create/EditEvent'
@@ -12,9 +13,15 @@ interface PropTable {
 }
 
 const TableEvent = (prop: PropTable) => {
-
+    const [confirm, setConfirm] = useState(false)
+    const [delTitle, setDelTitle] = useState<string>("")
+    function deleteConfirmation(title: string) {
+        setConfirm(true)
+        setDelTitle(title)
+    }
     const deleteEvent = async (event: string) => {
         await eventStore.deleteEvent('Bolea', event)
+        setConfirm(false)
     }
     function showParticipants(event: Event) {
         eventStore.setModalSubs(true)

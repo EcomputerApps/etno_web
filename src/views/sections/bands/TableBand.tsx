@@ -17,7 +17,7 @@ interface PropTable {
 
 const TableBand = (prop: PropTable) => {
     const [confirm, setConfirm] = useState(false)
-    const [delTitle, setDelTiele] = useState<string>("")
+    const [delTitle, setDelTitle] = useState<string>("")
     const navigate = useNavigate()
 
     const deleteBand = async (band: string) => {
@@ -26,7 +26,7 @@ const TableBand = (prop: PropTable) => {
     }
     function deleteConfirmation(title: string) {
         setConfirm(true)
-        setDelTiele(title)
+        setDelTitle(title)
     }
 
     function saveBand(band: Band) {
@@ -96,7 +96,6 @@ const TableBand = (prop: PropTable) => {
                                             </div>
                                         </div>
                                     ) : <></>}
-
                                     <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveBand(bandMap)}>Editar</a>
                                     <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(bandMap.title!!)}>Eliminar</a>
                                 </div>
