@@ -15,6 +15,7 @@ import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 const reserveStore = ReserveStore.getReserveStore()
 
 const Reserve = () => {
+    
     const [pageNumber, setPageNumber] = useState(0)
     useEffect(() => {
         reserveStore.getRequestPagiantedReserves("Bolea", pageNumber, 5)

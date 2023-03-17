@@ -3,6 +3,7 @@ import ReserveStore from "../../../viewmodels/reserv/ReserveStore";
 import { Reserve} from "../../../models/section/Section";
 import ClientInfo from "./create/ClienInfo";
 import moment from "moment";
+import { useState } from "react";
 
 const reserveStore = ReserveStore.getReserveStore()
 interface PropTable {
@@ -12,9 +13,18 @@ interface PropTable {
 }
 
 const TableReserves = (prop: PropTable) => {
+    const [confirm, setConfirm] = useState(false)
+    const [delId, setDelId] = useState<string>("")
+    const [delName, setDelName] = useState<string>("")
+    function deleteConfirmation(reserve: Reserve) {
+        setConfirm(true)
+        setDelId(reserve.idReserve!!)
+        setDelName(reserve.name!!)
+    }
 
-    const deleteReserva = async (reserve: string) => {
-        await reserveStore.deleteReserve("Bolea", reserve)
+    const deleteReserva = async (reserveId: string) => {
+        await reserveStore.deleteReserve("Bolea", reserveId)
+        setConfirm(false)
     }
 
     function fillDates(dates: string): Date[] {
@@ -104,12 +114,12 @@ const TableReserves = (prop: PropTable) => {
                                 <div className="h-20 flex flex-col items-center justify-center">
                                     {reservMap.reserveUsers?.length === 0? (
                                         <div>
-                                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteReserva(reservMap.idReserve!!)}>Cancelar</a>
+                                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(reservMap)}>Cancelar</a>
                                         </div>
                                     ) : (
                                         <div className="flex flex-col">
                                             <a href="#" className="font-medium text-green-600 dark:text-red-500 hover:underline m-2" onClick={() => saveClient(reservMap)}>Procesar</a>
-                                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteReserva(reservMap.idReserve!!)}>Rechazar</a>
+                                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(reservMap)}>Rechazar</a>
                                         </div>
                                     )}
                                 </div>
@@ -118,6 +128,23 @@ const TableReserves = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {delName}?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteReserva(delId)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
         </div>
     )
 }

@@ -46,7 +46,7 @@ const TableEvent = (prop: PropTable) => {
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                         <div className="fixed inset-0 w-screen h-screen">
                             <div className="w-screen  flex justify-start">
-                                <SubscribersList headerList={['Título', 'Plazas', 'Nombre', 'Email', 'Teléfono', 'Precio', 'Suscripcion', 'Acciones']}/>
+                                <SubscribersList headerList={['Título', 'Plazas', 'Nombre', 'Email', 'Teléfono', 'Precio', 'Suscripcion']} />
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@ const TableEvent = (prop: PropTable) => {
                                             eventStore.updateEvent(eventMap)
                                             eventStore.setModalEdit(true)
                                         }}>Editar</a>
-                                        <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline" onClick={() => deleteEvent(eventMap.title!!)}>Eliminar</a>
+                                        <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline" onClick={() => deleteConfirmation(eventMap.title!!)}>Eliminar</a>
                                     </div>
                                 </td>
                             </tr>
@@ -134,6 +134,23 @@ const TableEvent = (prop: PropTable) => {
                     </tbody>
                 </table>
             </div>
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {delTitle}?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteEvent(delTitle)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
         </div>
     )
 }
