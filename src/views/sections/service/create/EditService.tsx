@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from 'react-toastify';
+
+import { toast } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png';
 import add_Photo from '../../../../assets/menu/add_photo.svg';
 import "../../../../index.css";
@@ -15,49 +15,15 @@ const serviceStore = ServiceStore.getServiceStore()
 
 
 const EditService = () => {
-    const [service, setService] = useState(serviceStore.getService)
-    let arraySchedules: { selector: string, morning: string, evening: string, complete: string }[] = []
-    const navigate = useNavigate()
-    const arrayServiceTypes = [{
-        "id": "checkOne",
-        "value": "Restaurante",
-        "title": "Restaurante",
-    }, {
-        "id": "checkTwo",
-        "value": "Alojamiento",
-        "title": "Alojamiento",
-    }, {
-        "id": "checkThree",
-        "value": "Casa Rural",
-        "title": "Casa Rural",
-    }, {
-        "id": "checkFour",
-        "value": "Piscina",
-        "title": "Piscina",
-    }, {
-        "id": "checkFive",
-        "value": "Iglesia",
-        "title": "Iglesia",
-    }, {
-        "id": "checkSix",
-        "value": "Productos",
-        "title": "Productos",
-    }, {
-        "id": "checkSeven",
-        "value": "Bar",
-        "title": "Bar",
-    },
-    {
-        "id": "checkEight",
-        "value": "Ninguno",
-        "title": "Ninguno",
-    }]
+    const [service] = useState(serviceStore.getService)
 
     const inputWebUrl = useRef<HTMLInputElement>(null)
     const inputTel = useRef<HTMLInputElement>(null)
     const inputScheSelect = useRef<HTMLSelectElement>(null)
-    const inputScheMorn = useRef<HTMLInputElement>(null)
-    const inputScheEven = useRef<HTMLInputElement>(null)
+    const inputScheMornOne = useRef<HTMLInputElement>(null)
+    const inputScheEvenOne = useRef<HTMLInputElement>(null)
+    const inputScheMornTwo = useRef<HTMLInputElement>(null)
+    const inputScheEvenTwo = useRef<HTMLInputElement>(null)
     const inputScheExtra = useRef<HTMLInputElement>(null)
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
@@ -69,10 +35,10 @@ const EditService = () => {
     const [serviceDescription, setServiceDescription] = useState<string>(service.description!!)
     const [serviceTel, setServiceTel] = useState<string>(service.number!!)
     const [serviceShcedulSelector, setServiceShcedulSelector] = useState<string>("Lunes-Viernes")
-    const [serviceShcedulMorningOne, setServiceShcedulMorningOne] = useState<string>("")
-    const [serviceShcedulEvenOne, setServiceShcedulEvenOne] = useState<string>("")
-    const [serviceShcedulMorningTwo, setServiceShcedulMorningTwo] = useState<string>("")
-    const [serviceShcedulEvenTwo, setServiceShcedulEvenTwo] = useState<string>("")
+    const [serviceShcedulMorningOne, setServiceShcedulMorningOne] = useState<string>(timeCutter(service.schedule!!)!![0])
+    const [serviceShcedulEvenOne, setServiceShcedulEvenOne] = useState<string>(timeCutter(service.schedule!!)!![2])
+    const [serviceShcedulMorningTwo, setServiceShcedulMorningTwo] = useState<string>(timeCutter(service.schedule!!)!![1])
+    const [serviceShcedulEvenTwo, setServiceShcedulEvenTwo] = useState<string>(timeCutter(service.schedule!!)!![3])
     const [serviceShcedulExtra, setServiceShcedulExtra] = useState<string>("")
     const [serviceSchedule, setServiceSchedule] = useState<string>(service.schedule!!)
 
@@ -118,7 +84,7 @@ const EditService = () => {
                 schedule: serviceSchedule,
                 imageUrl: service.imageUrl
             }
-            serviceStore.editService('Bolea', serviceId, newService, file!!)
+            serviceStore.editService('Bolea', serviceId, newService, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
         }
     }
     function chekIfEmpty() {
@@ -142,8 +108,25 @@ const EditService = () => {
     const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState(false)
     const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState(false)
 
+    function timeCutter(time: string) {
+        var arrayAux = new Array<string>()
+        var timeListAux = new Array<string>()
+        var timeList = new Array<string>()
+        arrayAux = time.split(" ")
+        arrayAux = arrayAux.slice(1, 3)
+        arrayAux.map((item, index) => {
+            timeListAux = item.split("-")
+            timeListAux.map((item, index) => {
+                timeList.push(item)
+            })
+        })
+
+        return timeList
+
+    }
+
     return (
-        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-3/4 mt-5   h-screen overflow-y-auto border-2 rounded-md bg-white">
+        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white">
             <div>
                 <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                     <div className="w-full flex flex-row p-2 justify-between">
@@ -154,12 +137,12 @@ const EditService = () => {
                 <div className="w-full flex flex-1 flex-col mt-8 pl-3">
                     <div className="flex flex-col p-1 relative">
                         <div className="flex  flex-wrap pt-2">
-                            {arrayServiceTypes.map((chkBtn, index) => (
+                            {serviceStore.getServiceType.map((chkBtn, index) => (
                                 <div key={index} className='flex lg:w-1/6 w-1/3'>
-                                    <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
+                                    <input type="radio" id={chkBtn.idServiceType} defaultChecked={service.category === chkBtn.title} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
                                         setServiceType(e.currentTarget.value)
                                     }} />
-                                    <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
+                                    <label htmlFor={chkBtn.idServiceType} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
                             peer-checked:text-white 
@@ -248,8 +231,8 @@ const EditService = () => {
                                 setServiceShcedulSelector(e.target.value)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "NumpadEnter")) {
-                                    if (inputScheMorn.current != null) {
-                                        inputScheMorn.current.focus()
+                                    if (inputScheMornOne.current != null) {
+                                        inputScheMornOne.current.focus()
                                     } if (inputScheExtra.current != null) {
                                         inputScheExtra.current.focus()
                                     }
@@ -264,28 +247,28 @@ const EditService = () => {
                             <div className="p-3 flex flex-row" >
                                 <div hidden={serviceShcedulSelector === "Otro"} className="w-full">
                                     <div className="relative p-2 flex lg:flex-row flex-col">
-                                        <input ref={inputScheMorn} placeholder=" " name="serviceShedulesMorningOne" type="time"
+                                        <input ref={inputScheMornOne} defaultValue={timeCutter(service.schedule!!)!![0]} placeholder=" " name="serviceShedulesMorningOne" type="time"
                                             className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheMorningOne ? 'border-red-600'
                                                 : ''
                                                 }`}
                                             onKeyDown={(e) => {
                                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                    if (inputScheEven.current != null) {
-                                                        inputScheEven.current.focus()
+                                                    if (inputScheMornTwo.current != null) {
+                                                        inputScheMornTwo.current.focus()
                                                     }
                                                 }
                                             }} onChange={(e) => {
                                                 setServiceShcedulMorningOne(e.target.value)
                                                 setEmptyScheMorningOne(false)
                                             }} />
-                                        <input ref={inputScheMorn} placeholder=" " name="serviceShedulesMorningTwo" type="time"
+                                        <input ref={inputScheMornTwo} defaultValue={timeCutter(service.schedule!!)!![1]} placeholder=" " name="serviceShedulesMorningTwo" type="time"
                                             className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheMorningTwo ? 'border-red-600'
                                                 : ''
                                                 }`}
                                             onKeyDown={(e) => {
                                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                    if (inputScheEven.current != null) {
-                                                        inputScheEven.current.focus()
+                                                    if (inputScheEvenOne.current != null) {
+                                                        inputScheEvenOne.current.focus()
                                                     }
                                                 }
                                             }} onChange={(e) => {
@@ -297,29 +280,25 @@ const EditService = () => {
                                 </div>
                                 <div hidden={serviceShcedulSelector === "Otro"} className="w-full">
                                     <div className="relative p-2 flex lg:flex-row flex-col">
-                                        <input maxLength={100} ref={inputScheEven} placeholder=" " name="serviceShedulesEveningOne" type="time"
+                                        <input maxLength={100} ref={inputScheEvenOne} defaultValue={timeCutter(service.schedule!!)!![2]} placeholder=" " name="serviceShedulesEveningOne" type="time"
                                             className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheEveningOne ? 'border-red-600'
                                                 : ''
                                                 }`} onKeyDown={(e) => {
                                                     if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                        if (inputScheExtra.current != null) {
-                                                            inputScheExtra.current.focus()
-                                                        } if (txtAreaRef.current != null) {
-                                                            txtAreaRef.current.focus()
+                                                        if (inputScheEvenTwo.current != null) {
+                                                            inputScheEvenTwo.current.focus()
                                                         }
                                                     }
                                                 }} onChange={(e) => {
                                                     setServiceShcedulEvenOne(e.target.value)
                                                     setEmptyScheEveningOne(false)
                                                 }} />
-                                        <input maxLength={100} ref={inputScheEven} placeholder=" " name="serviceShedulesEveningTwo" type="time"
+                                        <input maxLength={100} ref={inputScheEvenTwo} defaultValue={timeCutter(service.schedule!!)!![3]} placeholder=" " name="serviceShedulesEveningTwo" type="time"
                                             className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheEveningTwo ? 'border-red-600'
                                                 : ''
                                                 }`} onKeyDown={(e) => {
                                                     if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                                        if (inputScheExtra.current != null) {
-                                                            inputScheExtra.current.focus()
-                                                        } if (txtAreaRef.current != null) {
+                                                        if (txtAreaRef.current != null) {
                                                             txtAreaRef.current.focus()
                                                         }
                                                     }

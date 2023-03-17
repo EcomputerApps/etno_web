@@ -73,7 +73,7 @@ const TableTourism = (prop: PropTable) => {
                     ))}
                 </tbody>
             </table>
-            <ToastContainer />
+           
         </div>
     )
 }

@@ -237,7 +237,7 @@ const CreatePharmacy = () => {
         datePickerRef.current.closeCalendar()
     }
     return (
-        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12 mt-5   h-screen overflow-y-auto border-2 rounded-md bg-white">
+        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12  h-screen overflow-y-auto border-2 rounded-md bg-white">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -350,8 +350,7 @@ const CreatePharmacy = () => {
                                 }
                             }} />
                         <label className={"labelFloatDate"}>Repeticiones</label>
-                        <button className='btnStandard' onClick={()=>addPharmacy()}>XXXX</button>
-                    </div>
+                                 </div>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-5 pl-3">

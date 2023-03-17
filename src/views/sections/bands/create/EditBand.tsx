@@ -62,7 +62,7 @@ const EditBand = () => {
   const [emptyDescription, setEmptyDescription] = useState(false)
 
   return (
-    <div className="flex flex-col md:m-auto lg:w-1/2  w-3/4 md:h-screen border-2 rounded-md bg-white">
+    <div className="flex flex-col md:m-auto lg:w-1/2  w-11/12 md:h-screen border-2 rounded-md bg-white">
       <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">

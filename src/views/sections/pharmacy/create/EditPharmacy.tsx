@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom"
 import { useState, useRef } from 'react';
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../assets/marker.svg"
 import PharmacyStore from '../../../../viewmodels/pharmacy/PharmacyStore';
 import { Pharmacy, PharmacyDutyDate } from '../../../../models/section/Section';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
-import DatePicker, { Calendar, Value } from 'react-multi-date-picker';
+import DatePicker, { Value } from 'react-multi-date-picker';
 
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
@@ -290,7 +290,7 @@ const EditPharmacy = () => {
     }
 
     return (
-        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-3/4 mt-5   h-screen overflow-y-auto border-2 rounded-md bg-white">
+        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12  h-screen overflow-y-auto border-2 rounded-md bg-white">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -327,7 +327,7 @@ const EditPharmacy = () => {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-row'>
+                <div className='flex lg:flex-row flex-col'>
                     <div className="flex pt-2  p-1  relative  ">
                         <div className=' peer'>
                             <DatePicker
@@ -366,6 +366,7 @@ const EditPharmacy = () => {
                         </div>
                         <label className={"labelFloatDate"}>Dias de Guardia</label>
                     </div>
+                    <div className='flex flex-row lg:mt-0 mt-3'>
                     <div className="flex pt-2  p-1  relative ">
                         <input value={pharmFrequency} type="number" ref={inputPeriod} min={0} className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
                             disabled={fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "" || pharmType === "Normal"}
@@ -395,6 +396,7 @@ const EditPharmacy = () => {
                                 }
                             }} />
                         <label className={"labelFloatDate"}>Repeticiones</label>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -651,7 +653,6 @@ const EditPharmacy = () => {
                 <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => updatePharmacy(pharmacy.idPharmacy!!)}>Publicar</button>
                 <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => pharmacyStore.setModalEdit(false)}>Cancelar</button>
             </div>
-
         </div>
     )
 }

@@ -153,7 +153,7 @@ const EditAdvert = () => {
                 </div>
             </div>
             <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-                <button ref={btnRef} name="advertBtnSave" className="btnStandard mr-10" onClick={() => updateAdvert()}>Publicar</button>
+                <button ref={btnRef} name="advertBtnSave" className="btnStandard mr-10" onClick={() => updateAdvert()}>Guardar</button>
                 <button name="advertBtnCancel" className="btnStandard" onClick={() => advertStore.setModalEdit(false)}>Cancelar</button>
             </div>
             </div>

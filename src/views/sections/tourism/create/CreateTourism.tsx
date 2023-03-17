@@ -64,7 +64,7 @@ const CreateTourism = () => {
     }
     if (tourismStore.getTourism.title === tourism.title) {
       toast.info('Ya existe este turismo', {
-        position: 'top-center',
+        position: 'bottom-center',
         autoClose: 500,
         hideProgressBar: false,
         closeOnClick: false,
@@ -76,8 +76,8 @@ const CreateTourism = () => {
     } else {
       checkIfEmpty()
       tourismType === '' || tourism.title === '' || tourism.description === '' || long === 0 || lat === 0 || file === undefined ?
-        toast.info('Rellene los campos vacíos', {
-          position: 'top-center',
+        toast.error('Rellene los campos vacíos', {
+          position: 'bottom-center',
           autoClose: 500,
           hideProgressBar: false,
           closeOnClick: false,
@@ -242,7 +242,6 @@ const CreateTourism = () => {
           </div>
         </div>
         <div className="  flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-
           <button ref={btnRef} name="tourismBtnSave" className="btnStandard mr-10" onClick={addTourism}>Publicar</button>
           <button name="tourismBtnCancel" className="btnStandard" onClick={() => tourismStore.setModalCreate(false)}>Cancelar</button>
         </div>

@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { toast } from "react-toastify";
-import { PaginatedService, Service } from "../../models/section/Section";
+import { PaginatedService, Service, ServiceType } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -15,6 +15,41 @@ class ServiceStore {
         return this.serviceStore
     }
 
+    serviceTypes: Array<ServiceType> = [{
+        "idServiceType": "checkOne",
+        "value": "Restaurante",
+        "title": "Restaurante",
+    }, {
+        "idServiceType": "checkTwo",
+        "value": "Alojamiento",
+        "title": "Alojamiento",
+    }, {
+        "idServiceType": "checkThree",
+        "value": "Casa Rural",
+        "title": "Casa Rural",
+    }, {
+        "idServiceType": "checkFour",
+        "value": "Piscina",
+        "title": "Piscina",
+    }, {
+        "idServiceType": "checkFive",
+        "value": "Iglesia",
+        "title": "Iglesia",
+    }, {
+        "idServiceType": "checkSix",
+        "value": "Productos",
+        "title": "Productos",
+    }, {
+        "idServiceType": "checkSeven",
+        "value": "Bar",
+        "title": "Bar",
+    },
+    {
+        "idServiceType": "checkEight",
+        "value": "Ninguno",
+        "title": "Ninguno",
+    }]
+
     //Observables =>
     paginatedService: PaginatedService = {}
     service: Service = {}
@@ -23,6 +58,7 @@ class ServiceStore {
 
     constructor() {
         makeObservable(this, {
+            serviceTypes: observable,
             modalEdit: observable,
             modalCreate: observable,
             setModalCreate: action,
@@ -40,19 +76,26 @@ class ServiceStore {
             getPaginatedService: computed
 
         })
- }
- setModalEdit(mode: boolean) {
-    this.modalEdit = mode
-}
-get getModalEdit() {
-    return this.modalEdit
-}
-setModalCreate(mode: boolean) {
-    this.modalCreate = mode
-}
-get getModalCreate() {
-    return this.modalCreate
-}
+    }
+    updateServiceTypes(newServiceTypes: ServiceType[]) {
+        this.serviceTypes = newServiceTypes
+    }
+    get getServiceType() {
+        return this.serviceTypes
+    }
+
+    setModalEdit(mode: boolean) {
+        this.modalEdit = mode
+    }
+    get getModalEdit() {
+        return this.modalEdit
+    }
+    setModalCreate(mode: boolean) {
+        this.modalCreate = mode
+    }
+    get getModalCreate() {
+        return this.modalCreate
+    }
 
     updateServiceList(services: Service[]) {
         this.paginatedService.content = services
@@ -135,9 +178,9 @@ get getModalCreate() {
                 progress: undefined,
                 theme: "light"
             })
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.reload();
-             }, 1500);
+            }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
@@ -151,8 +194,8 @@ get getModalCreate() {
             })
         }
     }
-    async editService(locality: string, serviceID: string, service: Service, file: File){
-        if (file !== undefined){
+    async editService(locality: string, serviceID: string, service: Service, file: File) {
+        if (file !== undefined) {
             await imageStore.addImageAPI('Bolea', 'servicio', 'servicio', file!!)
             service.imageUrl = imageStore.getImage.link
         }
@@ -164,7 +207,7 @@ get getModalCreate() {
             }
         })
 
-        if(response.ok) {
+        if (response.ok) {
             toast.success('Se ha actualizado exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -174,10 +217,10 @@ get getModalCreate() {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
-          setTimeout(function(){
-            window.location.reload();
-         }, 1500);
+            })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'bottom-center',
@@ -188,7 +231,7 @@ get getModalCreate() {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          }) 
+            })
         }
     }
 }

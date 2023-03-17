@@ -396,7 +396,7 @@ class ReserveStore {
             this.updateReserve({})
             toast.success('Se ha borrado exitosamente', {
                 position: 'bottom-center',
-                autoClose: 1000,
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -406,7 +406,7 @@ class ReserveStore {
             })
             setTimeout(function () {
                 window.location.reload();
-            }, 1000);
+            }, 1500);
         } else {
             toast.error('No se ha podido borrar', {
                 position: 'bottom-center',

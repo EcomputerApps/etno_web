@@ -23,13 +23,7 @@ const CustomLinkPage = () => {
     const decrementPage = () => {
         setPageNumber(pageNumber - 1)
     }
-
-    const linkTemp: CustomLink = {
-        name: "Enlace temp",
-        webUrl: "Www.algo.es",
-        iconName: "figura 1"
-    }
-
+    
     function saveLink(link: CustomLink) {
         customLinkStore.setEditLinkModal(true)
         customLinkStore.updateCustomLink(link)
@@ -40,8 +34,8 @@ const CustomLinkPage = () => {
     return (
         <div className="w-full h-full min-w-5/6 relative flex flex-col">
             <div className="flex flex-row">
-                <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces Personalizados</h2>
-                <div className="ml-auto">
+                <h2 className="lg:text-2xl text-xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces Personalizados</h2>
+                <div className="lg:ml-auto flex ml-1 ">
                     <button type="button" className="btnStandard" onClick={() => customLinkStore.setCreateLinkModal(true)}>
                         <img src={Pencil} alt="Create" />
                         Crear

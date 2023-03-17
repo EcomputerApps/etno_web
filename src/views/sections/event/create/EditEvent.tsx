@@ -50,7 +50,7 @@ const EditEvent = () => {
         || eventOrganization === '' || eventPrice === ''
         || eventSeats === '' || eventLink === '' || eventDateStart === ''
         || eventDateFin === '') {
-        toast.info('Rellene los campos', {
+        toast.error('Rellene los campos', {
           position: 'top-center',
           autoClose: 500,
           hideProgressBar: false,
@@ -73,10 +73,12 @@ const EditEvent = () => {
           link: eventLink,
           startDate: eventDateStart,
           endDate: eventDateFin
+         
         }
-        eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
-        sideBarStore.updateSection('Eventos') 
-        hoverSectionStore.setName('Eventos')
+  
+       eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+       sideBarStore.updateSection('Eventos') 
+       hoverSectionStore.setName('Eventos')
       }
 
     } else {
@@ -109,9 +111,10 @@ const EditEvent = () => {
           startDate: eventDateStart,
           endDate: eventDateFin
         }
+       
         eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
         sideBarStore.updateSection('Eventos')
-        hoverSectionStore.setName('Eventos')
+       hoverSectionStore.setName('Eventos')
       }
     }
 

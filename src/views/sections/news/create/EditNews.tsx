@@ -46,8 +46,8 @@ const EditNews = () => {
 
     if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === '') {
       chekIfEmpty()
-      toast.info('Rellene los campos', {
-        position: 'top-center',
+      toast.error('Rellene los campos', {
+        position: 'bottom-center',
         autoClose: 500,
         hideProgressBar: false,
         closeOnClick: false,
@@ -63,18 +63,15 @@ const EditNews = () => {
         description: newsDescription,
         publicationDate: newsDate,
         imageUrl: news.imageUrl
-      }
-      newsStore.editNews('Bolea', news.idNew!!, news_, file!!)
+      } 
+           newsStore.editNews('Bolea', news.idNew!!, news_, file!!)
     }
   }
 
   function chekIfEmpty() {
-
     newsTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
-
     newsDate === "" ? setEmptyDate(true) : setEmptyDate(false)
     newsDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-
   }
 
   const [emptyTitle, setEmptyTitle] = useState(false)
@@ -97,7 +94,7 @@ const EditNews = () => {
             <div className="flex  flex-wrap pt-2">
               {arrayServiceTypes.map((chkBtn, index) => (
                 <div key={index} className='flex lg:w-1/6 w-1/3'>
-                  <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
+                  <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" defaultChecked={news.category === chkBtn.title} value={chkBtn.value} onChange={(e) => {
                     setNewsCategory(e.currentTarget.value)
                   }} />
                   <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
@@ -114,7 +111,7 @@ const EditNews = () => {
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
 
-            <input defaultValue={news.title} ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
+            <input  autoFocus defaultValue={news.title} ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
               : ''
               }`} onChange={(value) => {
                 console.log(value.currentTarget.value)
@@ -126,7 +123,7 @@ const EditNews = () => {
                     inputRefDate.current.focus()
                   }
                 }
-              }} />
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
             <label className={"labelFloatInput"}>Titulo</label>
           </div>
         </div>
@@ -160,7 +157,7 @@ const EditNews = () => {
                     inputRefLink.current.focus()
                   }
                 }
-              }} />
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
             <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>

@@ -67,7 +67,7 @@ const CreateNews = () => {
     } else {
       chekIfEmpty()
       if (newsCategory === '' || newsTitle === '' || newsDate === '' || file === undefined) {
-        toast.info('Rellene los campos', {
+        toast.error('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 1000,
           hideProgressBar: false,
@@ -109,7 +109,7 @@ const CreateNews = () => {
         </div>
         <div className="w-full flex flex-1 flex-col mt-8 pl-3">
           <div className={`rounded-md border-2  ${emptyCategory ? 'border-red-600'
-            : ''
+            : 'border-transparent'
             }`}>
             <div className="flex flex-col p-1 relative">
               <div className="flex  flex-wrap">
@@ -118,7 +118,7 @@ const CreateNews = () => {
                     <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
                       setNewsCategory(e.currentTarget.value)
                       setEmptyCategory(false)
-                    }} />
+                    }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
                     <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer  p-2 mr-3 my-2 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
@@ -145,7 +145,7 @@ const CreateNews = () => {
                     inputRefDate.current.focus()
                   }
                 }
-              }} />
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
             <label className={"labelFloatInput"}>Titulo</label>
           </div>
         </div>
@@ -179,7 +179,7 @@ const CreateNews = () => {
                     inputRefLink.current.focus()
                   }
                 }
-              }} />
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
             <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>

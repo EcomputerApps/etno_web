@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import Pencil from "../../../assets/menu/create.svg"
 import NewsStore from "../../../viewmodels/news/NewsStore"
 import TableNews from "./TableNews"
@@ -11,8 +10,8 @@ import CreateNews from "./create/CreateNews"
 const newsStore = NewsStore.getNewsStore()
 
 const News = () => {
-  const navigate = useNavigate()
-  const [pageNumber, setPageNumber] = useState(0)
+   const [pageNumber, setPageNumber] = useState(0)
+   
   useEffect(() => {
     newsStore.getRequestNews('Bolea', pageNumber, 5)
   }, [pageNumber])
@@ -29,7 +28,7 @@ const decrementPage = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Noticias</h2>
-          <div className="ml-auto">
+          <div className="lg:ml-auto flex ml-1">
             <button onClick={() => newsStore.setModalCreate(true)} type="button" className="btnStandard">
               <img src={Pencil} alt="Create"/>
               Crear
