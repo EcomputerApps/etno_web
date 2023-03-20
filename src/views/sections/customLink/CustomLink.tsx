@@ -12,7 +12,12 @@ import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 const customLinkStore = CustomLinkStore.getCustomLinkStore()
 
 const CustomLinkPage = () => {
-    const [pageNumber, setPageNumber] = useState(0)
+
+    const [pageNumber, setPageNumber] = useState<number>(0)
+    const [confirm, setConfirm] = useState<boolean>(false)
+    const [delName, setDelName] = useState<string>("")
+    const [delId, setDelId] = useState<string>("")
+
     useEffect(() => {
         customLinkStore.getRequestCustomLink('Bolea', pageNumber, 12)
     }, [pageNumber])
@@ -23,14 +28,12 @@ const CustomLinkPage = () => {
     const decrementPage = () => {
         setPageNumber(pageNumber - 1)
     }
-    
+
     function saveLink(link: CustomLink) {
         customLinkStore.setEditLinkModal(true)
         customLinkStore.updateCustomLink(link)
     }
-    const [confirm, setConfirm] = useState(false)
-    const [delName, setDelName] = useState<string>("")
-    const [delId, setDelId] = useState<string>("")
+
     function deleteConfirmation(link: CustomLink) {
         setConfirm(true)
         setDelName(link.name!!)
@@ -40,6 +43,7 @@ const CustomLinkPage = () => {
         await customLinkStore.deleteCustomLink('Bolea', idLink)
         setConfirm(false)
     }
+
     return (
         <div className="w-full h-full min-w-5/6 relative flex flex-col">
             <div className="flex flex-row">
@@ -60,7 +64,7 @@ const CustomLinkPage = () => {
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
             ) : <></>}
             {customLinkStore.getEditLinkModal ? (
                 <div>
@@ -86,18 +90,17 @@ const CustomLinkPage = () => {
                     {customLinkStore.getPaginatedCustomLink.content?.map((item, index) => (
                         customLinkStore.getPaginatedCustomLink.content!!.length > 0 &&
                         <div key={index} className={`border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full  ${customLinkStore.paginatedCustomLink.content!!.length > 2 ? 'h-40'
-                        : 'h-60'}`}>
+                            : 'h-60'}`}>
                             <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center flex-col">{item.name}</div>
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 
                             hover:font-medium justify-center   text-xl overflow-hidden bg-gray-200 flex-col"><a href={item.webUrl}>{item.webUrl}</a></div>
-                                                       <div className="h-1/3  p-2 text-center overflow-hidden  flex items-center bg-gray-200 justify-center flex-row">
+                            <div className="h-1/3  p-2 text-center overflow-hidden  flex items-center bg-gray-200 justify-center flex-row">
                                 <button className="btnStandard mr-5 h-8 lg:h-10" onClick={() => saveLink(item)}>Editar</button>
-                                <button className="btnStandard h-8 lg:h-10" onClick={()=>deleteConfirmation(item)}>Borrar</button>
+                                <button className="btnStandard h-8 lg:h-10" onClick={() => deleteConfirmation(item)}>Borrar</button>
                             </div>
                         </div>
                     ))}
                 </div>
-                
             </div>
             <ToastContainer style={{ marginBottom: "50px" }} />
             <div className="flex flex-2  items-center justify-center md:flex-row flex-col ">

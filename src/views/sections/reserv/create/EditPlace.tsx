@@ -21,7 +21,6 @@ interface Marker {
 }
 
 const EditPlace = () => {
-
     //+Google stuff
     const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
     const [emptyLongLat, setEmptyLongLat] = useState(false)
@@ -33,8 +32,8 @@ const EditPlace = () => {
         zoom: 11
     }
     //-Google stuff
-
-    const [place, setPlace] = useState(reserveStore.getPlace)
+    const [place] = useState<Place>(reserveStore.getPlace)
+    const [confirm, setConfirm] = useState<boolean>(false)
     reserveStore.updateHallList(place.halls!!)
 
     //+Palce camps getters/setters
@@ -46,13 +45,10 @@ const EditPlace = () => {
     //+Check if camp is empty, if so mark that camp
     function chekIfEmpty() {
         placeName === "" ? setEmptyName(true) : setEmptyName(false)
-
     }
     //-Check if camp is empty, if so mark that camp
-
     const [emptyName, setEmptyName] = useState(false)
     //+Update values of Place selected
-
     function updatePlace(placeId: string) {
         chekIfEmpty()
         if (placeName === "") {
@@ -77,17 +73,33 @@ const EditPlace = () => {
             reserveStore.updateHallList([]);
             sideBarStore.updateSection('Reservas');
             hoverSectionStore.setName('Reservas')
-           
         }
     }
     //-Update values of Place selected
-
-    function goBack(){
+    function goBack() {
         reserveStore.updateHallList([])
         reserveStore.setModalEdit(false)
     }
+
     return (
         <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 border-2 rounded-md bg-white overflow-y-auto h-screen ">
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => goBack()}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             {/*Header*/}
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
@@ -105,7 +117,7 @@ const EditPlace = () => {
                         onChange={(e) => {
                             setPalceName(e.currentTarget.value)
                             setEmptyName(false)
-                        }} />
+                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                     <label className={"labelFloatInput"}>Nombre</label>
                 </div>
             </div>
@@ -120,7 +132,6 @@ const EditPlace = () => {
                         <form id="form-file-upload" className=" w-full flex justify-center">
                             <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
                                 setFile(e.currentTarget.files!![0])
-
                             }} />
                             <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                 <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
@@ -182,11 +193,11 @@ const EditPlace = () => {
             {reserveStore.getModalEditHalls ? (
                 <div>
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50  backdrop-blur-sm flex justify-center items-center"  >
-                    <div className="fixed inset-0 w-screen h-screen">
+                        <div className="fixed inset-0 w-screen h-screen">
                             <div className="w-screen  flex justify-start ">
-                        <EditHalls />
-                    </div>
-                    </div>
+                                <EditHalls />
+                            </div>
+                        </div>
                     </div>
                 </div>
             ) : <></>}
@@ -206,7 +217,7 @@ const EditPlace = () => {
             {/*Main buttons*/}
             <div className="flex m-auto justify-center left-0 right-0 p-3 bottom-1">
                 <button name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => updatePlace(place.idPlace!!)}>Guardar</button>
-                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => goBack()}>Cancelar</button>
+                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
             </div>
             {/*Main buttons*/}
         </div>

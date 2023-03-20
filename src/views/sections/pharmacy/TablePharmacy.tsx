@@ -1,6 +1,5 @@
 import { observer, Observer } from "mobx-react-lite";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Pharmacy } from "../../../models/section/Section";
 import PharmacyStore from "../../../viewmodels/pharmacy/PharmacyStore";
 import EditPharmacy from "./create/EditPharmacy";
@@ -17,7 +16,7 @@ const TablePharmacy = (prop: PropTable) => {
         setConfirm(true)
         setDelName(name)
     }
- 
+
     const deletePharmacy = async (pharmacy: string) => {
         await pharmacyStore.deletePharmacy('Bolea', pharmacy)
         setConfirm(false)
@@ -27,7 +26,7 @@ const TablePharmacy = (prop: PropTable) => {
         pharmacyStore.setModalEdit(true)
     }
     return (
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg    ">
             {pharmacyStore.getModalEdit ? (
                 <div>
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
@@ -54,36 +53,24 @@ const TablePharmacy = (prop: PropTable) => {
                 <tbody>
                     {pharmacyStore.getPaginatedPharmacy.content?.map((pharmMap, index) => (
                         pharmacyStore.getPaginatedPharmacy.content!!.length > 0 &&
-                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" >
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                <div className="tableCamp">
-                                    {pharmMap.type}
-                                </div>
+                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 " >
+                            <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center max-w-prose">
+                                {pharmMap.type}
                             </th>
-                            <td className="px-6 py-4 ">
-                                <div className="tableCamp">
-                                    {pharmMap.name}
-                                </div>
+                            <td className="tableCamp">
+                                {pharmMap.name}
                             </td>
-                            <td className="px-6 py-4 ">
-                                <div className="tableCamp">
-                                    {pharmMap.schedule}
-                                </div>
+                            <td className="tableCamp">
+                                {pharmMap.schedule}
                             </td>
-                            <td className=" px-6 py-4">
-                                <div className="tableCamp overflow-y-auto  min-w-full ">
-                                    {pharmMap.description}
-                                </div>
+                            <td className=" tableCamp">
+                                {pharmMap.description}
                             </td>
-                            <td className="px-6 py-4">
-                                <div className="tableCamp">
-                                    {pharmMap.phone}
-                                </div>
+                            <td className="tableCamp">
+                                {pharmMap.phone}
                             </td>
-                            <td className="px-6 py-4">
-                                <div className="tableCamp">
-                                    <a className=" text-blue-500 hover:text-blue-600" href={pharmMap.link}>{pharmMap.link}</a>
-                                </div>
+                            <td className="tableCamp">
+                                <a className=" text-blue-500 hover:text-blue-600" href={pharmMap.link}>{pharmMap.link}</a>
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center">
@@ -101,7 +88,7 @@ const TablePharmacy = (prop: PropTable) => {
                         <div className="fixed inset-0 w-screen h-screen">
                             <div className=" flex justify-center mt-10 ">
                                 <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
-                                    <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {delName}?</label>
+                                    <label className="text-2xl text-center mt-5 overflow-hidden">¿Seguro quiere eliminar {delName}?</label>
                                     <div className="flex justify-center m-auto mt-5 mb-3">
                                         <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deletePharmacy(delName)}>SI</button>
                                         <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>

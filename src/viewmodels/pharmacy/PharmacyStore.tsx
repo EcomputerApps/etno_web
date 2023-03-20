@@ -19,6 +19,7 @@ class PharmacyStore {
     paginatedPharmacy: PaginatedPharmacy = {}
     pharmacy: Pharmacy = {}
     pharmacyOnDutyList: PharmacyOnDuty = {}
+    selector: number = 0
     modalCreate: boolean = false
     modalEdit: boolean = false
     modalCalendar: boolean = false
@@ -29,6 +30,7 @@ class PharmacyStore {
             modalEdit: observable,
             modalCreate: observable,
             modalCalendar: observable,
+            selector: observable,
             setModalCreate: action,
             getModalEdit: computed,
             setModalCalendar: action,
@@ -44,11 +46,18 @@ class PharmacyStore {
             deletePharmacy: action,
             updatePaginatedPharmacy: action,
             updatePharmacyList: action,
+            setSelector: action,
             getPaginatedPharmacy: computed,
             getPOD: computed,
-            getModalCalendar: computed
-
+            getModalCalendar: computed,
+            getSelector: computed
         })
+    }
+    setSelector(position: number) {
+        this.selector = position
+    }
+    get getSelector() {
+        return this.selector
     }
     setModalEdit(mode: boolean) {
         this.modalEdit = mode

@@ -1,5 +1,4 @@
 import logoEtno from '../../../../assets/logo_etno.png'
-import { useNavigate } from "react-router-dom"
 import { useState, useRef } from 'react';
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
@@ -38,14 +37,6 @@ const EditPharmacy = () => {
         zoom: 11
     };
 
-
-
-    const handleValueChange = (newValue: any) => {
-        setDateGuardia(newValue);
-    }
-
-    const navigate = useNavigate()
-
     const inputTitle = useRef<HTMLInputElement>(null)
     const inputPeriod = useRef<HTMLInputElement>(null)
     const inputWebUrl = useRef<HTMLInputElement>(null)
@@ -61,31 +52,59 @@ const EditPharmacy = () => {
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
 
-    const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
-
-    const [pharmacy, setPharmacy] = useState(pharmacyStore.getPharmacy)
+    const [pharmacy] = useState<Pharmacy>(pharmacyStore.getPharmacy)
     if (pharmacy.startDate === null) {
         pharmacy.startDate = new Date()
     }
+    const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
     const [lat, setLat] = useState(Number(pharmacy.latitude!!))
     const [long, setLong] = useState(Number(pharmacy.longitude!!))
+    const [emptyName, setEmptyName] = useState<boolean>(false)
+    const [emptyWebUrl, setEmptyWebUrl] = useState<boolean>(false)
+    const [emptyTel, setEmptyTel] = useState<boolean>(false)
+    const [emptyScheMorningOne, setEmptyScheMorningOne] = useState<boolean>(false)
+    const [emptyScheEveningOne, setEmptyScheEveningOne] = useState<boolean>(false)
+    const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState<boolean>(false)
+    const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState<boolean>(false)
+    const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
+    const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
+    const [pharmType, setPharmType] = useState<string>(pharmacy.type!!)
+    const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>(timeCutter(pharmacy.schedule!!).length === 6 ? timeCutter(pharmacy.schedule!!)!![0] + "-" + timeCutter(pharmacy.schedule!!)!![1] : "Otro")
+    const [pharmacyName, setPharmacyName] = useState<string>(pharmacy.name!!)
+    const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>(pharmacy.link!!)
+    const [pharmacyTel, setPharmacyTel] = useState<string>(pharmacy.phone!!)
+    const [pharmacyShcedulMorningOne, setPharmacyShcedulMorningOne] = useState<string>(timeCutter(pharmacy.schedule!!)!![2])
+    const [pharmacyShcedulMorningTwo, setPharmacyShcedulMorningTwo] = useState<string>(timeCutter(pharmacy.schedule!!)!![3])
+    const [pharmacyShcedulEvenOne, setPharmacyShcedulEvenOne] = useState<string>(timeCutter(pharmacy.schedule!!)!![4])
+    const [pharmacyShcedulEvenTwo, setPharmacyShcedulEvenTwo] = useState<string>(timeCutter(pharmacy.schedule!!)!![5])
+    const [pharmacyShcedulExtra, setPharmacyShcedulExtra] = useState<string>("")
+    const [pharmacyDescription, setPharmacyDescription] = useState<string>(pharmacy.description!!)
+    const [pharmacySchedule, setPharmacySchedule] = useState<string>(pharmacy.schedule!!)
+    const [pharmPeriod, setPharmPeriod] = useState<number>(pharmacy.durationDays!!)
+    const [pharmFrequency, setPharmFrequency] = useState<number>(pharmacy.frequencyInDays!!)
+    const [file, setFile] = useState<File>()
+    const [dutyDates, setDutyDates] = useState<Value>(dateCutter(pharmacy.dates!!))
+    const [shouldCloseCalendar, setShouldCloseCalendar] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
 
     function timeCutter(time: string) {
         var arrayAux = new Array<string>()
         var timeListAux = new Array<string>()
         var timeList = new Array<string>()
         arrayAux = time.split(" ")
-        arrayAux = arrayAux.slice(1, 3)
         arrayAux.map((item, index) => {
             timeListAux = item.split("-")
             timeListAux.map((item, index) => {
                 timeList.push(item)
             })
         })
-
-        return timeList
-
+        if (timeList.length === 6) {
+            return timeList
+        } else {
+            return time
+        }
     }
+
     function dateCutter(date: PharmacyDutyDate[]) {
         var arrayAux = new Array<PharmacyDutyDate>()
         var arrayTrue = new Array<Date>()
@@ -98,7 +117,6 @@ const EditPharmacy = () => {
         } else {
             return arrayTrue
         }
-
     }
 
     function handleScheduleInput() {
@@ -122,16 +140,6 @@ const EditPharmacy = () => {
         pharmacyTel === "" ? setEmptyTel(true) : setEmptyTel(false)
         pharmacyDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
     }
-
-    const [emptyName, setEmptyName] = useState(false)
-    const [emptyWebUrl, setEmptyWebUrl] = useState(false)
-    const [emptyTel, setEmptyTel] = useState(false)
-    const [emptyScheMorningOne, setEmptyScheMorningOne] = useState(false)
-    const [emptyScheEveningOne, setEmptyScheEveningOne] = useState(false)
-    const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState(false)
-    const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState(false)
-    const [emptyDescption, setEmptyDescription] = useState(false)
-    const [emptyLongLat, setEmptyLongLat] = useState(false)
 
     const greorgian_es = {
         name: "greorgian_es",
@@ -212,26 +220,6 @@ const EditPharmacy = () => {
         }
     }
 
-
-    const [pharmType, setPharmType] = useState(pharmacy.type)
-    const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
-    const [pharmacyName, setPharmacyName] = useState<string>(pharmacy.name!!)
-    const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>(pharmacy.link!!)
-    const [pharmacyTel, setPharmacyTel] = useState<string>(pharmacy.phone!!)
-    const [pharmacyShcedulMorningOne, setPharmacyShcedulMorningOne] = useState<string>(timeCutter(pharmacy.schedule!!)!![0])
-    const [pharmacyShcedulEvenOne, setPharmacyShcedulEvenOne] = useState<string>(timeCutter(pharmacy.schedule!!)!![2])
-    const [pharmacyShcedulMorningTwo, setPharmacyShcedulMorningTwo] = useState<string>(timeCutter(pharmacy.schedule!!)!![1])
-    const [pharmacyShcedulEvenTwo, setPharmacyShcedulEvenTwo] = useState<string>(timeCutter(pharmacy.schedule!!)!![3])
-    const [pharmacyShcedulExtra, setPharmacyShcedulExtra] = useState<string>("")
-    const [pharmacyDescription, setPharmacyDescription] = useState<string>(pharmacy.description!!)
-    const [pharmacyLong, setPharmacyLong] = useState<string>(pharmacy.longitude!!)
-    const [pharmacyLat, setPharmacyLat] = useState<string>(pharmacy.latitude!!)
-    const [pharmacySchedule, setPharmacySchedule] = useState<string>(pharmacy.schedule!!)
-    const [pharmPeriod, setPharmPeriod] = useState<number>(pharmacy.durationDays!!)
-    const [pharmFrequency, setPharmFrequency] = useState<number>(pharmacy.frequencyInDays!!)
-    const [file, setFile] = useState<File>()
-    const [dutyDates, setDutyDates] = useState<Value>(dateCutter(pharmacy.dates!!))
-
     function updatePharmacy(pharmaciId: string) {
         if (fillDates(dutyDates?.toString()!!).length !== 1) {
             setPharmPeriod(0)
@@ -278,8 +266,8 @@ const EditPharmacy = () => {
             sideBarStore.updateSection('Farmacias')
             hoverSectionStore.setName('Farmacias')
         }
+
     }
-    const [shouldCloseCalendar, setShouldCloseCalendar] = useState(false)
 
     function chekDatesCount() {
         if (fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "") {
@@ -289,8 +277,32 @@ const EditPharmacy = () => {
         datePickerRef.current.closeCalendar()
     }
 
+    const selectorOptions = [
+        { value: 'Lunes-Viernes', label: 'De lunes a viernes.' },
+        { value: 'Lunes-Sabado', label: 'De lunes a sabado.' },
+        { value: 'Lunes-Domingo', label: 'Todos los dias.' },
+        { value: 'Otro', label: 'Otro horrario' }
+    ]
+
     return (
         <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12  h-screen overflow-y-auto border-2 rounded-md bg-white">
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => pharmacyStore.setModalEdit(false)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -367,36 +379,36 @@ const EditPharmacy = () => {
                         <label className={"labelFloatDate"}>Dias de Guardia</label>
                     </div>
                     <div className='flex flex-row lg:mt-0 mt-3'>
-                    <div className="flex pt-2  p-1  relative ">
-                        <input value={pharmFrequency} type="number" ref={inputPeriod} min={0} className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
-                            disabled={fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "" || pharmType === "Normal"}
-                            onChange={(e) => {
-                                setPharmFrequency(e.currentTarget.valueAsNumber)
-                            }}
-                            onKeyUp={(e) => {
-                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                    if (inputTitle.current != null) {
-                                        inputTitle.current.focus()
+                        <div className="flex pt-2  p-1  relative ">
+                            <input value={pharmFrequency} type="number" ref={inputPeriod} min={0} className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
+                                disabled={fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "" || pharmType === "Normal"}
+                                onChange={(e) => {
+                                    setPharmFrequency(e.currentTarget.valueAsNumber)
+                                }}
+                                onKeyUp={(e) => {
+                                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                        if (inputTitle.current != null) {
+                                            inputTitle.current.focus()
+                                        }
                                     }
-                                }
-                            }} />
-                        <label className={"labelFloatDate"}>Frecuencia</label>
-                    </div>
-                    <div className="flex pt-2  p-1  relative ">
-                        <input value={pharmPeriod} type="number" ref={inputPeriod} min={0} className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
-                            disabled={fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "" || pharmType === "Normal"}
-                            onChange={(e) => {
-                                setPharmPeriod(e.currentTarget.valueAsNumber)
-                            }}
-                            onKeyUp={(e) => {
-                                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                                    if (inputTitle.current != null) {
-                                        inputTitle.current.focus()
+                                }} />
+                            <label className={"labelFloatDate"}>Frecuencia</label>
+                        </div>
+                        <div className="flex pt-2  p-1  relative ">
+                            <input value={pharmPeriod} type="number" ref={inputPeriod} min={0} className="inputCamp peer h-10 w-20 px-2  disabled:bg-gray-200 disabled:border-gray-300"
+                                disabled={fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "" || pharmType === "Normal"}
+                                onChange={(e) => {
+                                    setPharmPeriod(e.currentTarget.valueAsNumber)
+                                }}
+                                onKeyUp={(e) => {
+                                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                                        if (inputTitle.current != null) {
+                                            inputTitle.current.focus()
+                                        }
                                     }
-                                }
-                            }} />
-                        <label className={"labelFloatDate"}>Repeticiones</label>
-                    </div>
+                                }} />
+                            <label className={"labelFloatDate"}>Repeticiones</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -413,7 +425,7 @@ const EditPharmacy = () => {
                                     inputWebUrl.current.focus()
                                 }
                             }
-                        }} />
+                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                     <label className={"labelFloatInput"}>Nombre</label>
                 </div>
             </div>
@@ -430,7 +442,7 @@ const EditPharmacy = () => {
                                     inputTel.current.focus()
                                 }
                             }
-                        }} />
+                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                     <label className={"labelFloatInput"}>Pagina Web</label>
                 </div>
             </div>
@@ -472,10 +484,11 @@ const EditPharmacy = () => {
                     <label className={"labelFloatInput"}>Teléfono</label>
                 </div>
             </div>
+            {/*Horario-----------------------------------------------------------------------*/}
             <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                 <div className="flex flex-col p-1 mt-1 relative">
                     <div className="flex flex-col border-2 rounded-md">
-                        <select ref={inputScheSelect} className="inputCamp p-0" defaultValue="Lunes-Viernes" onChange={(e) => {
+                        <select ref={inputScheSelect} className="inputCamp p-0" defaultValue={pharmacyShcedulSelector} onChange={(e) => {
                             setPharmacyShcedulSelector(e.target.value)
                         }} onKeyDown={(e) => {
                             if ((e.code === "NumpadEnter")) {
@@ -486,16 +499,15 @@ const EditPharmacy = () => {
                                 }
                             }
                         }}>
-                            <option className="peer" value="Lunes-Viernes">De lunes a viernes.</option>
-                            <option value="Lunes-Sabado">De lunes a sabado.</option>
-                            <option value="Lunes-Domingo">Todos los dias.</option>
-                            <option value="Otro">Otro horrario.</option>
+                            {selectorOptions.map((option, index) => (
+                                <option key={index} value={option.value}>{option.label}</option>
+                            ))}
                         </select>
                         <label className={"labelFloatDate"}>Horario</label>
                         <div className="p-3 flex flex-row" >
                             <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
                                 <div className="relative p-2 flex lg:flex-row flex-col">
-                                    <input defaultValue={timeCutter(pharmacy.schedule!!)!![0]} ref={inputScheMornOne} placeholder=" " name="pharmacyShedulesMorning" type="time"
+                                    <input defaultValue={timeCutter(pharmacy.schedule!!)!![2]} ref={inputScheMornOne} placeholder=" " name="pharmacyShedulesMorning" type="time"
                                         className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheMorningOne ? 'border-red-600'
                                             : ''
                                             }`}
@@ -509,7 +521,7 @@ const EditPharmacy = () => {
                                             setPharmacyShcedulMorningOne(e.target.value)
                                             setEmptyScheMorningOne(false)
                                         }} />
-                                    <input defaultValue={timeCutter(pharmacy.schedule!!)!![1]} ref={inputScheMornTwo} placeholder=" " name="pharmacyShedulesMorning" type="time"
+                                    <input defaultValue={timeCutter(pharmacy.schedule!!)!![3]} ref={inputScheMornTwo} placeholder=" " name="pharmacyShedulesMorning" type="time"
                                         className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheMorningTwo ? 'border-red-600'
                                             : ''
                                             }`}
@@ -529,7 +541,7 @@ const EditPharmacy = () => {
                             <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
                                 <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
                                     <div className="relative p-2 flex lg:flex-row flex-col">
-                                        <input defaultValue={timeCutter(pharmacy.schedule!!)!![2]} ref={inputScheEvenOne} placeholder=" " name="pharmacyShedulesEvening" type="time"
+                                        <input defaultValue={timeCutter(pharmacy.schedule!!)!![4]} ref={inputScheEvenOne} placeholder=" " name="pharmacyShedulesEvening" type="time"
                                             className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheEveningOne ? 'border-red-600'
                                                 : ''
                                                 }`} onKeyDown={(e) => {
@@ -542,7 +554,7 @@ const EditPharmacy = () => {
                                                     setPharmacyShcedulEvenOne(e.target.value)
                                                     setEmptyScheEveningOne(false)
                                                 }} />
-                                        <input defaultValue={timeCutter(pharmacy.schedule!!)!![3]} ref={inputScheEvenTwo} placeholder=" " name="pharmacyShedulesEvening" type="time"
+                                        <input defaultValue={timeCutter(pharmacy.schedule!!)!![5]} ref={inputScheEvenTwo} placeholder=" " name="pharmacyShedulesEvening" type="time"
                                             className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheEveningTwo ? 'border-red-600'
                                                 : ''
                                                 }`} onKeyUp={(e) => {
@@ -561,7 +573,7 @@ const EditPharmacy = () => {
                             </div>
                             <div hidden={pharmacyShcedulSelector !== "Otro"} className="  w-full">
                                 <div className="relative p-2 ">
-                                    <input ref={inputScheExtra} placeholder=" " name="pharmacyShedulesExtra" type="text" className="w-full p-1 mr-2 inputCamp peer" onKeyDown={(e) => {
+                                    <input ref={inputScheExtra} defaultValue={timeCutter(pharmacy.schedule!!)} placeholder=" " name="pharmacyShedulesExtra" type="text" className="w-full p-1 mr-2 inputCamp peer" onKeyDown={(e) => {
                                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                             if (txtAreaRef.current != null) {
                                                 txtAreaRef.current.focus()
@@ -591,7 +603,7 @@ const EditPharmacy = () => {
                             }} onChange={(e) => {
                                 setPharmacyDescription(e.target.value)
                                 setEmptyDescription(false)
-                            }} />
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                     <label className={"labelFloatTxtArea"}>Descripción</label>
                 </div>
             </div>
@@ -608,7 +620,6 @@ const EditPharmacy = () => {
                                 setLat(e.lat)
                                 setLong(e.lng)
                             }}
-
                         >
                             <AnyReactComponent
                                 lat={lat}
@@ -628,8 +639,6 @@ const EditPharmacy = () => {
                                 inputLat.current.focus()
                             }
                         }
-                    }} onChange={(e) => {
-                        setPharmacyLong(e.target.value)
                     }} />
                     <label className={"labelFloatInput"}>Longitud</label>
                 </div>
@@ -643,15 +652,13 @@ const EditPharmacy = () => {
                                 btnRef.current.focus()
                             }
                         }
-                    }} onChange={(e) => {
-                        setPharmacyLat(e.target.value)
                     }} />
                     <label className={"labelFloatInput"}>Latitude</label>
                 </div>
             </div>
             <div className="flex m-auto justify-center p-3">
                 <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => updatePharmacy(pharmacy.idPharmacy!!)}>Publicar</button>
-                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => pharmacyStore.setModalEdit(false)}>Cancelar</button>
+                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
             </div>
         </div>
     )

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
-  import PharmacyStore from "../../../viewmodels/pharmacy/PharmacyStore"
+import PharmacyStore from "../../../viewmodels/pharmacy/PharmacyStore"
 import TablePharmacy from "./TablePharmacy"
 import Pencil from "../../../assets/menu/create.svg"
 import POD from "../../../assets/menu/pharmacyOnDuty.svg"
@@ -9,8 +9,11 @@ import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import { ToastContainer } from "react-toastify"
 import CreatePharmacy from "./create/CreatePharmacy"
 import PharmacyOnDuty from "./PharmacyOnDuty"
+
 const pharmacyStore = PharmacyStore.getPharmacyStore()
+
 const Pharmacy = () => {
+
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
@@ -24,7 +27,7 @@ const Pharmacy = () => {
     setPageNumber(pageNumber - 1)
   }
   return (
-    <div className="w-full h-full  relative">
+    <div className="w-full h-full  relative ">
       <div className="flex flex-col gap-4">
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Farmacias</h2>
@@ -53,11 +56,11 @@ const Pharmacy = () => {
           ) : <></>}
           {pharmacyStore.getModalCalendar ? (
             <div className=" fixed inset-0 z-50 bg-black bg-opacity-50  backdrop-blur-sm flex justify-center items-center"  >
-                        <div className=" w-screen h-screen lg:top-0 top-5 -left-1 fixed">
-                  <div className="flex w-full aspect-square">
-                    <PharmacyOnDuty />
-                  </div>
-                </div> </div> 
+              <div className=" w-screen h-screen lg:top-0 top-5 -left-1 fixed">
+                <div className="flex w-full aspect-square">
+                  <PharmacyOnDuty />
+                </div>
+              </div> </div>
           ) : <></>}
         </div>
         <TablePharmacy currentPage={pageNumber} headerList={['tipo', 'nombre', 'horario', 'Dirección', 'Teléfono', 'Pagina Web', 'acciones']} />

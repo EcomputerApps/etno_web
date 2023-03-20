@@ -14,7 +14,7 @@ const Advert = () => {
     const [pageNumber, setPageNumber] = useState(0)
   
     useEffect(() => {
-        adverStore.getRequestAdvert('Bolea', pageNumber, 5)//calcular cuantos eventos por pagina optimales
+        adverStore.getRequestAdvert('Bolea', pageNumber, 5)
     }, [pageNumber])
 
     const incrementPage = () => {

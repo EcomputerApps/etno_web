@@ -10,6 +10,7 @@ import CreateNecrologue from "./create/CreateNecrologue"
 const necrologueStore = NecrologueStore.getNecrologueStore()
 
 const Necrologue = () => {
+
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const Necrologue = () => {
   const decrementPage = () => {
     setPageNumber(pageNumber - 1)
   }
+  
   return (
     <div className="w-full h-full relative">
       <div className="flex flex-col gap-4">

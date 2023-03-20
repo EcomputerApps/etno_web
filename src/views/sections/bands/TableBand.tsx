@@ -1,10 +1,9 @@
 import { observer } from "mobx-react-lite"
 import BandStore from "../../../viewmodels/band/BandsStore"
 import "../../../index.css"
-import { useNavigate } from "react-router-dom"
+
 import { Band } from "../../../models/section/Section"
 import { useState } from "react"
-import EditPharmacy from "../pharmacy/create/EditPharmacy"
 import EditBand from "./create/EditBand"
 
 const bandStore = BandStore.getBandStore()
@@ -16,14 +15,15 @@ interface PropTable {
 }
 
 const TableBand = (prop: PropTable) => {
+
     const [confirm, setConfirm] = useState(false)
     const [delTitle, setDelTitle] = useState<string>("")
-    const navigate = useNavigate()
 
     const deleteBand = async (band: string) => {
         await bandStore.deleteBand('Bolea', band)
         setConfirm(false)
     }
+
     function deleteConfirmation(title: string) {
         setConfirm(true)
         setDelTitle(title)
@@ -33,6 +33,7 @@ const TableBand = (prop: PropTable) => {
         bandStore.updateBand(band)
         bandStore.setModalEdit(true)
     }
+
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             {bandStore.getModalEdit ? (
@@ -62,20 +63,14 @@ const TableBand = (prop: PropTable) => {
                     {bandStore.getPaginatedBands.content?.map((bandMap, index) => (
                         bandStore.getPaginatedBands.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white    ">
-                                <div className="tableCamp">
-                                    {bandMap.title}
-                                </div>
+                            <th scope="row" className="tableCampl font-medium text-gray-900 whitespace-nowrap dark:text-white    ">
+                                {bandMap.title}
                             </th>
-                            <td className="px-6 py-4  max-w-prose">
-                                <div className="tableCampl overflow-y-auto  min-w-full">
-                                    {bandMap.description}
-                                </div>
+                            <td className="tableCampl  max-w-prose">
+                                {bandMap.description}
                             </td>
-                            <td className="px-6 py-4">
-                                <div className="tableCamp">
-                                    {bandMap.issuedDate}
-                                </div>
+                            <td className="tableCampl">
+                                {bandMap.issuedDate}
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center relative">

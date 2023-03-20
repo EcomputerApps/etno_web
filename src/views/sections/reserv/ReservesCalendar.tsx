@@ -20,8 +20,6 @@ const ReservesCalendar = () => {
                 week: true,
                 day: true,
                 agenda: true,
-
-
             },
         }),
         []
@@ -46,10 +44,7 @@ const ReservesCalendar = () => {
                 }
             }
         }
-         })
-    const Button = () => {
-
-    }
+    })
 
     return (
         <div className="rounded-md lg:h-screen inset-0 border-2  relative w-full ">
@@ -72,15 +67,14 @@ const ReservesCalendar = () => {
                     today: 'Hoy',
                     agenda: 'El Diario',
                     showMore: total => `+${total} mas`,
-                    noEventsInRange : "No hay eventos para estas fechas.",
-                    tomorrow : "mañana"
+                    noEventsInRange: "No hay eventos para estas fechas.",
+                    tomorrow: "mañana"
                 }}
                 defaultView="month"
                 popup
                 views={views}
             />
         </div>
-
     )
 }
 export default ReservesCalendar

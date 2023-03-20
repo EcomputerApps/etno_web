@@ -5,7 +5,6 @@ import logoEtno from '../../../../assets/logo_etno.png'
 import { Hall } from "../../../../models/section/Section"
 import ReserveStore from "../../../../viewmodels/reserv/ReserveStore"
 
-
 var tempHallList = new Array<Hall>()
 const reserveStore = ReserveStore.getReserveStore()
 
@@ -34,8 +33,8 @@ const AddHalls = () => {
             setHallList(tempHallList)
             setHallName("")
         }
-
     }
+
     function addHallToPlace() {
         reserveStore.updateHallList(hallList!!)
         setHallList([{ name: "" }])
@@ -45,8 +44,8 @@ const AddHalls = () => {
     const [emptyName, setEmptyName] = useState(false)
     function chekIfEmpty() {
         hallName === "" ? setEmptyName(true) : setEmptyName(false)
-
     }
+
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2  w-11/12 lg:h-screen border-2 rounded-md bg-white">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
@@ -62,7 +61,7 @@ const AddHalls = () => {
                             name="bandType" type="text" required={true} value={hallName}
                             className={`inputCamp peer ${emptyName ? 'border-red-600'
                                 : ''
-                                }`} onChange={(e) => setHallName(e.currentTarget.value)} />
+                                }`} onChange={(e) => setHallName(e.currentTarget.value)} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className="labelFloatInput">Nombre de la sala</label>
                     </div>
                 </div>
@@ -82,7 +81,7 @@ const AddHalls = () => {
                 </div>
             </div>
             <div className=" lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-                <button name="bandBtnSave" className="btnStandard mr-10" onClick={() => addHallToPlace()}>Publicar</button>
+                <button name="bandBtnSave" className="btnStandard mr-10" onClick={() => addHallToPlace()}>Guardar</button>
                 <button name="bandBtnCancel" className="btnStandard" onClick={() => reserveStore.setModalAddHalls(false)}>Volver</button>
             </div>
         </div>

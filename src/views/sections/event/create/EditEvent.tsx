@@ -3,20 +3,18 @@ import { useRef, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 import add_Photo from '../../../../assets/menu/add_photo.svg';
 import "../../../../index.css"
-import { useNavigate } from "react-router-dom";
 import EventStore from '../../../../viewmodels/Event/EventStore';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Event } from '../../../../models/section/Section';
-import React from 'react';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+import { observer } from 'mobx-react-lite';
 
 const eventStore = EventStore.getEventStore()
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const EditEvent = () => {
-  const navigate = useNavigate()
 
   const inputRefDir = useRef<HTMLInputElement>(null)
   const inputRefOrg = useRef<HTMLInputElement>(null)
@@ -28,8 +26,7 @@ const EditEvent = () => {
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
-  const [event, setEvent] = useState(eventStore.getEvent)
-
+  const [event] = useState<Event>(eventStore.getEvent)
   const [eventTitle, setEventTitle] = useState<string>(event.title!!)
   const [eventDirection, setEventDirection] = useState<string>(event.address!!)
   const [eventDescription, setEventDescription] = useState<string>(event.description!!)
@@ -42,6 +39,7 @@ const EditEvent = () => {
   const [eventDateStart, setEventDateStart] = useState<string>(event.startDate!!)
   const [eventDateFin, setEventDateFin] = useState<string>(event.endDate!!)
   const [file, setFile] = useState<File>()
+  const[confirm, setConfirm] = useState<boolean>(false)
 
   function updateEvent() {
     if (subscription) {
@@ -73,14 +71,11 @@ const EditEvent = () => {
           link: eventLink,
           startDate: eventDateStart,
           endDate: eventDateFin
-         
         }
-  
-       eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
-       sideBarStore.updateSection('Eventos') 
-       hoverSectionStore.setName('Eventos')
+        eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+        sideBarStore.updateSection('Eventos')
+        hoverSectionStore.setName('Eventos')
       }
-
     } else {
       checkIfEmpty()
       if (eventTitle === '' || eventDirection === '' || eventDescription === ''
@@ -111,10 +106,10 @@ const EditEvent = () => {
           startDate: eventDateStart,
           endDate: eventDateFin
         }
-       
+
         eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
         sideBarStore.updateSection('Eventos')
-       hoverSectionStore.setName('Eventos')
+        hoverSectionStore.setName('Eventos')
       }
     }
 
@@ -127,9 +122,9 @@ const EditEvent = () => {
       return "Evento gratuito."
     }
   }
+
   function changePrice() {
     if (subscription) {
-
       setEventPrice((document.getElementById("money") as HTMLInputElement).value)
     } else {
       setEventPrice((document.getElementById("money") as HTMLInputElement).value)
@@ -143,23 +138,37 @@ const EditEvent = () => {
     eventOrganization === "" ? setEmptyOrganization(true) : setEmptyOrganization(false)
     eventSeats === '' ? setEmptySeats(true) : setEmptySeats(false)
     eventLink === '' ? setEmptyLink(true) : setEmptyLink(false)
-
-
-
   }
-  const [emptyTitle, setEmptyTitle] = useState(false)
-  const [emptyDescription, setEmptyDescription] = useState(false)
-  const [emptyDirection, setEmptyDirection] = useState(false)
-  const [emptyFile, setEmptyFile] = useState(false)
-  const [emptyOrganization, setEmptyOrganization] = useState(false)
-  const [emptySeats, setEmptySeats] = useState(false)
-  const [emptyLink, setEmptyLink] = useState(false)
-  const [emptyStartdate, setEmptyStartdate] = useState(false)
-  const [emptyFinDate, setEmptyFinDate] = useState(false)
+
+  const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
+  const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
+  const [emptyDirection, setEmptyDirection] = useState<boolean>(false)
+  const [emptyFile, setEmptyFile] = useState<boolean>(false)
+  const [emptyOrganization, setEmptyOrganization] = useState<boolean>(false)
+  const [emptySeats, setEmptySeats] = useState<boolean>(false)
+  const [emptyLink, setEmptyLink] = useState<boolean>(false)
+  const [emptyStartdate, setEmptyStartdate] = useState<boolean>(false)
+  const [emptyFinDate, setEmptyFinDate] = useState<boolean>(false)
 
   return (
-
     <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12  h-screen overflow-y-auto border-2 rounded-md bg-white">
+       {confirm ? (
+        <div>
+          <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <div className="fixed inset-0 w-screen h-screen">
+              <div className=" flex justify-center mt-10 ">
+                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                  <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                  <div className="flex justify-center m-auto mt-5 mb-3">
+                    <button className="btnStandard w-14 h-10 mr-5 " onClick={() => eventStore.setModalEdit(false)}>SI</button>
+                    <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : <></>}
       <div className="h-20 w-full flex bg-indigo-800 rounded-t-md ">
         <div className="w-full flex flex-row gap-8 p-2 justify-between">
           <img src={logoEtno} alt="logo_Etno"></img>
@@ -179,7 +188,7 @@ const EditEvent = () => {
                   inputRefDir.current.focus()
                 }
               }
-            }}></input>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
           <label className={"labelFloatInput"}>Título</label>
         </div>
         <div className="flex flex-col mt-3 p-1 relative ">
@@ -194,7 +203,7 @@ const EditEvent = () => {
                   txtAreaRef.current.focus()
                 }
               }
-            }}></input>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
           <label className={"labelFloatInput"}>Dirección</label>
         </div>
         <div className="flex flex-col mt-3 p-1 relative">
@@ -209,7 +218,7 @@ const EditEvent = () => {
                   inputRefOrg.current.focus()
                 }
               }
-            }}></textarea>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
           <label className={"labelFloatTxtArea"}>Descripción</label>
         </div>
         <div className="flex flex-col mt-3 p-1 relative">
@@ -224,10 +233,9 @@ const EditEvent = () => {
                   inputRefPric.current.focus()
                 }
               }
-            }}></input>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
           <label className={"labelFloatTxtArea"}>Organización</label>
         </div>
-
         <div className="flex flex-row p-1 mt-5 relative ">
           <label className="relative inline-flex items-center mr-5 cursor-pointer w-14">
             <input type="checkbox" value="" checked={subscription} className="sr-only peer" onChange={(e) => {
@@ -248,7 +256,6 @@ const EditEvent = () => {
               onInput={(e) => (e.currentTarget.value = e.currentTarget.value.replace(/^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/, ""),
                 e.currentTarget.value = e.currentTarget.value.replace(/[^-,0-9]/, ""))} onChange={(value) => {
                   setEventPrice(value.currentTarget.value)
-
                 }} onKeyDown={(e) => {
                   if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                     if (inputRefSeat.current != null) {
@@ -260,7 +267,6 @@ const EditEvent = () => {
           </div>
         </div>
         <div className="flex flex-col p-1 mt-5 relative">
-
           <input defaultValue={eventSeats} ref={inputRefSeat} type="text" name="eventSeats" placeholder="0" onInput={(e) => (
             e.currentTarget.value = e.currentTarget.value.replace(/^[^1-9]/, ""),
             e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")
@@ -290,7 +296,7 @@ const EditEvent = () => {
                   inputRefDS.current.focus()
                 }
               }
-            }}></input>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
           <label className={"labelFloatInput"}>Pagina Web</label>
         </div>
         <div className="w-full flex flex-1 flex-col ">
@@ -314,43 +320,41 @@ const EditEvent = () => {
           </div>
         </div>
         <div className="flex flex-col p-1 relative mt-5">
-          <input defaultValue={eventDateStart} ref={inputRefDS} type="date" name="eventStart" className={`inputCamp peer w-40 ${emptyStartdate? 'border-red-600'
-                        : ''
-                        }`} onChange={(value) => {
-            setEventDateStart(value.currentTarget.value)
-            setEmptyStartdate(false)
-          }} onKeyDown={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (inputRefDF.current != null) {
-                inputRefDF.current.focus()
+          <input defaultValue={eventDateStart} ref={inputRefDS} type="date" name="eventStart" className={`inputCamp peer w-40 ${emptyStartdate ? 'border-red-600'
+            : ''
+            }`} onChange={(value) => {
+              setEventDateStart(value.currentTarget.value)
+              setEmptyStartdate(false)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (inputRefDF.current != null) {
+                  inputRefDF.current.focus()
+                }
               }
-            }
-          }} />
+            }} />
           <label className={"labelFloatDate"}>Fecha de Inicio</label>
         </div>
         <div className="flex flex-col p-1 relative mt-5">
-          <input defaultValue={eventDateFin} ref={inputRefDF} type="date" name="eventFinish" className={`inputCamp peer w-40 ${emptyFinDate? 'border-red-600'
-                        : ''
-                        }`} onChange={(value) => {
-            setEventDateFin(value.currentTarget.value)
-            setEmptyFinDate(false)
-          }} onKeyDown={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (btnRef.current != null) {
-                btnRef.current.focus()
+          <input defaultValue={eventDateFin} ref={inputRefDF} type="date" name="eventFinish" className={`inputCamp peer w-40 ${emptyFinDate ? 'border-red-600'
+            : ''
+            }`} onChange={(value) => {
+              setEventDateFin(value.currentTarget.value)
+              setEmptyFinDate(false)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (btnRef.current != null) {
+                  btnRef.current.focus()
+                }
               }
-            }
-          }} />
+            }} />
           <label className={"labelFloatDate"}>Fecha de Final</label>
         </div>
       </div>
       <div className="flex m-auto justify-center p-3">
         <button ref={btnRef} name="eventBtnSave" className="btnStandard mr-10" onFocus={changePrice} onClick={() => updateEvent()}>Actualizar</button>
-        <button name="eventBtnCancel" className="btnStandard" onClick={() => eventStore.setModalEdit(false)}>Cancelar</button>
+        <button name="eventBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
       </div>
     </div>
-
-
   )
 }
-export default EditEvent
+export default observer(EditEvent)

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Reserve } from "../../../../models/section/Section"
 import ReserveStore from "../../../../viewmodels/reserv/ReserveStore"
 const reserveStore = ReserveStore.getReserveStore()
 const ClientInfo = () => {
@@ -9,7 +10,7 @@ const ClientInfo = () => {
     await reserveStore.deleteReserve("Bolea", reserve)
     reserveStore.setModalClientInfo(false)
   }
-  const [reserve, setreserve] = useState(reserveStore.getReserve)
+  const [reserve] = useState<Reserve>(reserveStore.getReserve)
   return (
     <div className="flex flex-col md:m-auto w-1/2 md:h-screen">
       <div className="w-1/2 m-auto">

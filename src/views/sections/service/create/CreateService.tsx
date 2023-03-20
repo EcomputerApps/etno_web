@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-
 import { toast } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png';
 import add_Photo from '../../../../assets/menu/add_photo.svg';
@@ -27,8 +26,7 @@ const CreateService = () => {
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
 
-    const [serviceType, setServiceType] = useState("")
-
+    const [serviceType, setServiceType] = useState<string>("")
     const [serviceName, setServiceName] = useState<string>("")
     const [serviceWebUrl, setServiceWebUrl] = useState<string>("")
     const [serviceDescription, setServiceDescription] = useState<string>("")
@@ -40,8 +38,18 @@ const CreateService = () => {
     const [serviceShcedulEvenTwo, setServiceShcedulEvenTwo] = useState<string>("")
     const [serviceShcedulExtra, setServiceShcedulExtra] = useState<string>("")
     const [serviceSchedule, setServiceSchedule] = useState<string>("")
-
     const [file, setFile] = useState<File>()
+    const [emptyType, setEmptyType] = useState<boolean>(false)
+    const [emptyName, setEmptyName] = useState<boolean>(false)
+    const [emptyFile, setEmptyFile] = useState<boolean>(false)
+    const [emptyWebUrl, setEmptyWebUrl] = useState<boolean>(false)
+    const [emptyTel, setEmptyTel] = useState<boolean>(false)
+    const [emptyScheMorningOne, setEmptyScheMorningOne] = useState<boolean>(false)
+    const [emptyScheEveningOne, setEmptyScheEveningOne] = useState<boolean>(false)
+    const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState<boolean>(false)
+    const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState<boolean>(false)
+    const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
 
     function handleScheduleInput() {
         if (serviceShcedulSelector === "Otro") {
@@ -51,6 +59,7 @@ const CreateService = () => {
                 " " + serviceShcedulEvenOne + "-" + serviceShcedulEvenTwo)
         }
     }
+
     function chekIfEmpty() {
         serviceType === "" ? setEmptyType(true) : setEmptyType(false)
         serviceName === "" ? setEmptyName(true) : setEmptyName(false)
@@ -64,19 +73,6 @@ const CreateService = () => {
         serviceDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
 
     }
-
-    const [emptyType, setEmptyType] = useState(false)
-    const [emptyName, setEmptyName] = useState(false)
-    const [emptyFile, setEmptyFile] = useState(false)
-    const [emptyWebUrl, setEmptyWebUrl] = useState(false)
-    const [emptyTel, setEmptyTel] = useState(false)
-    const [emptyScheMorningOne, setEmptyScheMorningOne] = useState(false)
-    const [emptyScheEveningOne, setEmptyScheEveningOne] = useState(false)
-    const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState(false)
-    const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState(false)
-    const [emptyDescption, setEmptyDescription] = useState(false)
-
-   
 
     function addService() {
         const service: Service = {
@@ -101,8 +97,7 @@ const CreateService = () => {
         } else {
             chekIfEmpty()
             serviceType === "" || serviceName === "" || serviceDescription === "" ||
-                serviceWebUrl === "" || serviceTel === "" || serviceShcedulMorningOne === ""
-                || serviceShcedulEvenOne === "" || serviceShcedulMorningTwo === "" || serviceShcedulEvenTwo === ""
+                serviceWebUrl === "" || serviceTel === "" || (serviceShcedulMorningOne === "" || serviceShcedulEvenOne === "" || serviceShcedulMorningTwo === "" || serviceShcedulEvenTwo === "") && serviceShcedulExtra === ""
                 || file === undefined
                 ?
                 toast.error('Rellene los campos', {
@@ -119,9 +114,32 @@ const CreateService = () => {
 
     }
 
+    const selectorOptions = [
+        { value: 'Lunes-Viernes', label: 'De lunes a viernes.' },
+        { value: 'Lunes-Sabado', label: 'De lunes a sabado.' },
+        { value: 'Lunes-Domingo', label: 'Todos los dias.' },
+        { value: 'Otro', label: 'Otro horrario' }
+    ]
+
     return (
         <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12   h-screen overflow-y-auto border-2 rounded-md bg-white">
-
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => serviceStore.setModalCreate(false)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             <div>
                 <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                     <div className="w-full flex flex-row p-2 justify-between">
@@ -166,7 +184,7 @@ const CreateService = () => {
                                         txtAreaRef.current.focus()
                                     }
                                 }
-                            }} />
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
                         <label className={"labelFloatInput"}>Nombre</label>
                     </div>
                 </div>
@@ -183,7 +201,7 @@ const CreateService = () => {
                                         inputWebUrl.current.focus()
                                     }
                                 }
-                            }} />
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
                         <label className={"labelFloatTxtArea"}>Descripción</label>
                     </div>
                 </div>
@@ -200,7 +218,7 @@ const CreateService = () => {
                                         inputTel.current.focus()
                                     }
                                 }
-                            }} />
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
                         <label className={"labelFloatInput"}>Pagina Web</label>
                     </div>
                 </div>
@@ -222,6 +240,7 @@ const CreateService = () => {
                         <label className={"labelFloatInput"}>Teléfono</label>
                     </div>
                 </div>
+                {/*Horario----------------------------------------------------------------*/}
                 <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                     <div className="flex flex-col p-1 mt-1 relative">
                         <div className="flex flex-col border-2 rounded-md">
@@ -236,10 +255,9 @@ const CreateService = () => {
                                     }
                                 }
                             }}>
-                                <option className="peer" value="Lunes-Viernes">De lunes a viernes.</option>
-                                <option value="Lunes-Sabado">De lunes a sabado.</option>
-                                <option value="Lunes-Domingo">Todos los dias.</option>
-                                <option value="Otro">Otro horrario.</option>
+                                {selectorOptions.map((option, index) => (
+                                    <option key={index} label={option.label} value={option.value}>{option.label}</option>
+                                ))}
                             </select>
                             <label className={"labelFloatDate"}>Horario</label>
                             <div className="p-3 flex flex-row" >
@@ -350,11 +368,10 @@ const CreateService = () => {
                     </div>
                 </div>
                 <div className="lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-
                     <button ref={btnRef} name="serviceBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => {
                         addService()
                     }}>Publicar</button>
-                    <button name="serviceBtnCancel" className="btnStandard" onClick={() => serviceStore.setModalCreate(false)}>Cancelar</button>
+                    <button name="serviceBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
                 </div>
             </div>
         </div>

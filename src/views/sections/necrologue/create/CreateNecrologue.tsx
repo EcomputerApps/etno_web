@@ -1,6 +1,5 @@
 import logoEtno from '../../../../assets/logo_etno.png'
 import { useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import NecrologueStore from '../../../../viewmodels/necrologue/NecrologueStore'
@@ -14,7 +13,6 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const necroStore = NecrologueStore.getNecrologueStore()
 
 const CreateNecrologue = () => {
-  const navigate = useNavigate()
 
   const inputRef = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
@@ -24,16 +22,20 @@ const CreateNecrologue = () => {
   const [necroDate, setNecroDate] = useState<string>("")
   const [necroDescription, setNecroDescription] = useState<string>("")
   const [file, setFile] = useState<File>()
+  const [emptyName, setEmptyName] = useState<boolean>(false)
+  const [emptyDate, setEmptyDate] = useState<boolean>(false)
+  const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
+  const [emptyFile, setEmptyFile] = useState<boolean>(false)
+  const [confirm, setConfirm] = useState<boolean>(false)
 
   function addNecrologue() {
     const necro: Necrologue = {
       name: necroName,
       deathDate: necroDate,
       description: necroDescription,
-
     }
     if (necroStore.getNecro.name === necro.name) {
-      toast.info('Ya existe este servicio', {
+      toast.error('Ya existe este servicio', {
         position: 'bottom-center',
         autoClose: 1000,
         hideProgressBar: false,
@@ -66,14 +68,26 @@ const CreateNecrologue = () => {
     file === undefined ? setEmptyFile(true) : setEmptyFile(false)
   }
 
-  const [emptyName, setEmptyName] = useState(false)
-  const [emptyDate, setEmptyDate] = useState(false)
-  const [emptyDescption, setEmptyDescription] = useState(false)
-  const [emptyFile, setEmptyFile] = useState(false)
-
   return (
     <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 lg:h-screen border-2 rounded-md bg-white">
-  <div>
+      {confirm ? (
+        <div>
+          <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <div className="fixed inset-0 w-screen h-screen">
+              <div className=" flex justify-center mt-10 ">
+                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                  <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                  <div className="flex justify-center m-auto mt-5 mb-3">
+                    <button className="btnStandard w-14 h-10 mr-5 " onClick={() => necroStore.setModalCreate(false)}>SI</button>
+                    <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : <></>}
+      <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
             <img src={logoEtno} alt="logo_Etno"></img>
@@ -82,7 +96,6 @@ const CreateNecrologue = () => {
         </div>
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 relative">
-
             <input autoFocus placeholder=" " name="necroName" type="text" className={`inputCamp peer ${emptyName ? 'border-red-600'
               : ''
               }`} onChange={(value) => {
@@ -94,13 +107,12 @@ const CreateNecrologue = () => {
                     inputRef.current.focus()
                   }
                 }
-              }}></input>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
             <label className={"labelFloatInput"}>Nombre</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 relative">
-
             <input ref={inputRef} type="date" name="necroDate" className={`inputCamp peer w-40 ${emptyDate ? 'border-red-600'
               : ''
               }`} onChange={(value) => {
@@ -118,7 +130,6 @@ const CreateNecrologue = () => {
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col  p-1 relative">
-
             <textarea ref={txtAreaRef} placeholder=" " name="eventDescription" rows={3} className={`inputCamp peer ${emptyDescption ? 'border-red-600'
               : ''
               }`} onChange={(value) => {
@@ -130,7 +141,8 @@ const CreateNecrologue = () => {
                     btnRef.current.focus()
                   }
                 }
-              }} /><label className={"labelFloatTxtArea"}>Descripción</label>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
@@ -157,14 +169,14 @@ const CreateNecrologue = () => {
             </div>
           </div>
         </div>
-        </div>
-      <div>
-      <div className="lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-        <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => {
-          addNecrologue()
-        }}>Publicar</button>
-        <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => necroStore.setModalCreate(false)}>Cancelar</button>
       </div>
+      <div>
+        <div className="lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
+          <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => {
+            addNecrologue()
+          }}>Publicar</button>
+          <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
+        </div>
       </div>
       <ToastContainer style={{ margin: "50px" }} />
     </div>

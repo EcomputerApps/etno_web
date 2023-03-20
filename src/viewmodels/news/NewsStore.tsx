@@ -1,7 +1,7 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import { toast } from "react-toastify";
-import { News, PaginatedNews } from "../../models/section/Section";
+import { News, NewsType, PaginatedNews } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -15,6 +15,26 @@ class NewsStore{
         }
         return this.newsStore
     }
+     newsTypes: Array<NewsType> = [{
+        "id": "checkOne",
+        "value": "General",
+        "title": "General",
+      }, {
+        "id": "checkTwo",
+        "value": "Tecnología",
+        "title": "Tecnología",
+      },
+      {
+        "id": "checkThree",
+        "value": "Salud",
+        "title": "Salud",
+      },
+      {
+        "id": "checkFour",
+        "value": "Deporte",
+        "title": "Deporte",
+      }
+      ]
 
        //Observables =>
        paginatedNews : PaginatedNews = {}
@@ -24,6 +44,7 @@ class NewsStore{
       
     constructor(){
         makeObservable(this, {
+            newsTypes: observable,
             modalEdit: observable,
             modalCreate: observable,
             setModalCreate: action,
@@ -40,9 +61,17 @@ class NewsStore{
             updateNewsList: action,
             updatePaginatedNews: action,
             updateNews: action,
-            getPaginatedNews: computed
+            getPaginatedNews: computed,
+            updateNewsTypes: action,
+            getNewsTypes: computed
         })
     
+    }
+    updateNewsTypes(newsTypes : NewsType[]){
+        this.newsTypes = newsTypes
+    }
+    get getNewsTypes(){
+        return this.newsTypes
     }
     setModalEdit(mode: boolean) {
         this.modalEdit = mode

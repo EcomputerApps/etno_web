@@ -13,8 +13,9 @@ interface PropTable {
 }
 
 const TableEvent = (prop: PropTable) => {
-    const [confirm, setConfirm] = useState(false)
+   
     const [delTitle, setDelTitle] = useState<string>("")
+    const[confirm, setConfirm] = useState<boolean>(false)
     function deleteConfirmation(title: string) {
         setConfirm(true)
         setDelTitle(title)
@@ -70,50 +71,32 @@ const TableEvent = (prop: PropTable) => {
                             eventStore.getPaginatedEvents.content!!.length > 0 &&
                             <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                    <div className="tableCamp">
-                                        {eventMap.title}
-                                    </div>
+                                <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                    {eventMap.title}
                                 </th>
-                                <td className="px-6 py-4">
-                                    <div className="tableCamp overflow-y-auto  min-w-full">
-                                        {eventMap.description}
-                                    </div>
+                                <td className="tableCamp">
+                                    {eventMap.description}
                                 </td>
-                                <td className="px-6 py-4 ">
-                                    <div className="tableCamp">
-                                        {eventMap.hasSubscription ? "Evento de pago" : "Evento gratuito"}
-                                    </div>
+                                <td className="tableCamp ">
+                                    {eventMap.hasSubscription ? "Evento de pago" : "Evento gratuito"}
                                 </td>
-                                <td className="px-6 py-4 ">
-                                    <div className="tableCamp">
-                                        {eventMap.reservePrice + " €"}
-                                    </div>
+                                <td className="tableCamp ">
+                                    {eventMap.reservePrice + " €"}
                                 </td>
-                                <td className="px-6 py-4 ">
-                                    <div className="tableCamp">
-                                        {eventMap.seats}
-                                    </div>
+                                <td className="tableCamp">
+                                    {eventMap.seats}
                                 </td>
-                                <td className="px-6 py-4 ">
-                                    <div className="tableCamp">
-                                        {eventMap.capacity}
-                                    </div>
+                                <td className="tableCamp ">
+                                    {eventMap.capacity}
                                 </td>
-                                <td className="px-6 py-4 ">
-                                    <div className="tableCamp">
-                                        {eventMap.username}
-                                    </div>
+                                <td className="tableCamp ">
+                                    {eventMap.username}
                                 </td>
-                                <td className="px-6 py-4 ">
-                                    <div className="tableCamp">
-                                        {eventMap.address}
-                                    </div>
+                                <td className="tableCamp">
+                                    {eventMap.address}
                                 </td>
-                                <td className="px-6 py-4">
-                                    <div className="tableCamp">
-                                        {eventMap.organization}
-                                    </div>
+                                <td className="tableCamp">
+                                    {eventMap.organization}
                                 </td>
                                 <td className="px-6 py-4 ">
                                     <div className='h-20 flex items-center justify-center'>

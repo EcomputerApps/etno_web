@@ -7,19 +7,22 @@ import EditSurvey from "./create/EditSurvey"
 const surveyStore = SurveyStore.getSurveyStore()
 
 const TableSurvey = () => {
-    const [confirm, setConfirm] = useState(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
     const [delName, setDelName] = useState<string>("")
     const [delId, setDelId] = useState<string>("")
+
     function deleteConfirmation(survey: Survey) {
         setConfirm(true)
         setDelName(survey.question!!)
         setDelId(survey.idQuiz!!)
 
     }
+
     const deleteSurvey = async (surveyId: string) => {
         await surveyStore.deleteSurvey('Bolea', surveyId)
         setConfirm(false)
     }
+
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             {surveyStore.getEditSurvey ? (
@@ -35,7 +38,6 @@ const TableSurvey = () => {
             ) : <></>}
             {surveyStore.getSurvey !== undefined ? (
                 <div>
-
                     <div className="bg-white border-b border-2 rounded-md dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50">
                         <div className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
                             <label className="text-xl font-medium">Pregunta:</label>

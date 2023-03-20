@@ -175,6 +175,11 @@ interface PaginatedTourism {
     totalElements?: number,
     pageNum?: number
 }
+interface TourismType {
+    id?: string,
+    value?: string,
+    title?: string
+}
 
 interface Band {
     idBando?: string,
@@ -304,6 +309,11 @@ interface PaginatedNews {
     totalElements?: number,
     pageNum?: number
 }
+interface NewsType {
+    id?: string,
+    value?: string,
+    title?: string
+}
 
 interface Incident {
     idIncident?: string,
@@ -399,5 +409,6 @@ export type {
     Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserve,
     ReservList, PaginatedReserve, Place, Hall, PaginatedPlace,
     HallList, ReserveUser, ReserveSchedule, PlaceList, Survey,
-    PaginatedSurveys, CustomLink, PaginatedCustomLink, ServiceType, DateTime, SubscriptionUser
+    PaginatedSurveys, CustomLink, PaginatedCustomLink, ServiceType,
+    DateTime, SubscriptionUser, NewsType, TourismType
 }

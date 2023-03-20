@@ -7,12 +7,11 @@ import SurveyStore from "../../../../viewmodels/survey/SurveyStore"
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import moment from 'moment'
+
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
-
-
-
 const surveyStore = SurveyStore.getSurveyStore()
+
 const EditSurvey = () => {
 
     const [dateTime] = useState(surveyStore.getSurvey.datePicker as DateTime)
@@ -23,12 +22,11 @@ const EditSurvey = () => {
     const [answerTwo, setAnswerTwo] = useState<string>(surveyStore.getSurvey.answerTwo!!)
     const [answerThree, setAnswerThree] = useState<string>(surveyStore.getSurvey.answerThree!!)
     const [answerFour, setAnswerFour] = useState<string>(surveyStore.getSurvey.answerFour!!)
-
-    const [emptyName, setEmptyName] = useState(false)
-    const [emptyDate, setEmptyDate] = useState(false)
-    const [emptyTime, setEmptyTime] = useState(false)
-    const [emptyReplies, setEmptyReplies] = useState(false)
-
+    const [emptyName, setEmptyName] = useState<boolean>(false)
+    const [emptyDate, setEmptyDate] = useState<boolean>(false)
+    const [emptyTime, setEmptyTime] = useState<boolean>(false)
+    const [emptyReplies, setEmptyReplies] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
 
     const inputDate = useRef<HTMLInputElement>(null)
     const inputTime = useRef<HTMLInputElement>(null)
@@ -89,10 +87,25 @@ const EditSurvey = () => {
         }
     }
 
-
-
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2  w-11/12  lg:h-screen border-2 rounded-md bg-white">
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => surveyStore.setEditSurvey(false)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             <div>
                 <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                     <div className="w-full flex flex-row p-2 justify-between">
@@ -211,7 +224,7 @@ const EditSurvey = () => {
             </div>
             <div className="md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
                 <button ref={btnRef} className="btnStandard mr-10" onClick={() => updateSurvey(surveyStore.getSurvey.idQuiz!!)}>Guardar</button>
-                <button className="btnStandard" onClick={() => surveyStore.setEditSurvey(false)}>Cancelar</button>
+                <button className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
             </div>
         </div>
     )

@@ -12,6 +12,8 @@ const EditHalls = () => {
 
     const [hallName, setHallName] = useState<string>("")
     const [hallList, setHallList] = useState<Array<Hall>>(reserveStore.getHallList!!)
+    const [emptyName, setEmptyName] = useState(false)
+
     function addHallToList() {
         const hall: Hall = {
             username: "Bolea",
@@ -35,18 +37,19 @@ const EditHalls = () => {
             setHallList(hallList)
             setHallName("")
         }
-
     }
+
     function addHallToPlace() {
         reserveStore.updateHallList(hallList)
         setHallList([{ name: "" }])
         reserveStore.setModalEditHalls(false)
     }
-    const [emptyName, setEmptyName] = useState(false)
+
     function chekIfEmpty() {
         hallName === "" ? setEmptyName(true) : setEmptyName(false)
 
     }
+
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2  w-11/12 overflow-y-auto h-screen border-2 rounded-md bg-white">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
@@ -62,7 +65,8 @@ const EditHalls = () => {
                             name="bandType" type="text" required={true} value={hallName}
                             className={`inputCamp peer ${emptyName ? 'border-red-600'
                                 : ''
-                                }`} onChange={(e) => setHallName(e.currentTarget.value)} />
+                                }`} onChange={(e) => setHallName(e.currentTarget.value)}
+                            onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className="labelFloatInput">Nombre de la sala</label>
                     </div>
                 </div>

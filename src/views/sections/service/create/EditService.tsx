@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-
 import { toast } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png';
 import add_Photo from '../../../../assets/menu/add_photo.svg';
@@ -8,15 +7,14 @@ import { Service } from '../../../../models/section/Section';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import ServiceStore from '../../../../viewmodels/service/ServiceStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
-
 const serviceStore = ServiceStore.getServiceStore()
 
-
 const EditService = () => {
-    const [service] = useState(serviceStore.getService)
 
+    const [service] = useState(serviceStore.getService)
     const inputWebUrl = useRef<HTMLInputElement>(null)
     const inputTel = useRef<HTMLInputElement>(null)
     const inputScheSelect = useRef<HTMLSelectElement>(null)
@@ -27,29 +25,34 @@ const EditService = () => {
     const inputScheExtra = useRef<HTMLInputElement>(null)
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
-
-    const [serviceType, setServiceType] = useState(service.category!!)
-
+    const [serviceType, setServiceType] = useState<string>(service.category!!)
     const [serviceName, setServiceName] = useState<string>(service.owner!!)
     const [serviceWebUrl, setServiceWebUrl] = useState<string>(service.urlWeb!!)
     const [serviceDescription, setServiceDescription] = useState<string>(service.description!!)
     const [serviceTel, setServiceTel] = useState<string>(service.number!!)
-    const [serviceShcedulSelector, setServiceShcedulSelector] = useState<string>("Lunes-Viernes")
-    const [serviceShcedulMorningOne, setServiceShcedulMorningOne] = useState<string>(timeCutter(service.schedule!!)!![0])
-    const [serviceShcedulEvenOne, setServiceShcedulEvenOne] = useState<string>(timeCutter(service.schedule!!)!![2])
-    const [serviceShcedulMorningTwo, setServiceShcedulMorningTwo] = useState<string>(timeCutter(service.schedule!!)!![1])
-    const [serviceShcedulEvenTwo, setServiceShcedulEvenTwo] = useState<string>(timeCutter(service.schedule!!)!![3])
+    const [serviceShcedulSelector, setServiceShcedulSelector] = useState<string>(timeCutter(service.schedule!!).length === 6 ? timeCutter(service.schedule!!)!![0] + "-" + timeCutter(service.schedule!!)!![1] : "Otro")
+    const [serviceShcedulMorningOne, setServiceShcedulMorningOne] = useState<string>(timeCutter(service.schedule!!)!![2])
+    const [serviceShcedulMorningTwo, setServiceShcedulMorningTwo] = useState<string>(timeCutter(service.schedule!!)!![3])
+    const [serviceShcedulEvenOne, setServiceShcedulEvenOne] = useState<string>(timeCutter(service.schedule!!)!![4])
+    const [serviceShcedulEvenTwo, setServiceShcedulEvenTwo] = useState<string>(timeCutter(service.schedule!!)!![5])
     const [serviceShcedulExtra, setServiceShcedulExtra] = useState<string>("")
     const [serviceSchedule, setServiceSchedule] = useState<string>(service.schedule!!)
-
     const [file, setFile] = useState<File>()
+    const [emptyName, setEmptyName] = useState<boolean>(false)
+    const [emptyWebUrl, setEmptyWebUrl] = useState<boolean>(false)
+    const [emptyTel, setEmptyTel] = useState<boolean>(false)
+    const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
+    const [emptyScheMorningOne, setEmptyScheMorningOne] = useState<boolean>(false)
+    const [emptyScheEveningOne, setEmptyScheEveningOne] = useState<boolean>(false)
+    const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState<boolean>(false)
+    const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
 
     function handleScheduleInput() {
         if (serviceShcedulSelector === "Otro") {
             if (serviceShcedulExtra !== "") {
                 setServiceSchedule(serviceShcedulExtra)
             }
-
         } else {
             if (serviceShcedulMorningOne !== "" && serviceShcedulMorningTwo !== "" && serviceShcedulEvenOne !== "" && serviceShcedulEvenTwo !== "") {
                 setServiceSchedule(serviceShcedulSelector + " " + serviceShcedulMorningOne + "-" + serviceShcedulMorningTwo +
@@ -73,7 +76,6 @@ const EditService = () => {
                 progress: undefined,
                 theme: "light"
             })
-
         } else {
             const newService: Service = {
                 category: serviceType,
@@ -87,6 +89,7 @@ const EditService = () => {
             serviceStore.editService('Bolea', serviceId, newService, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
         }
     }
+
     function chekIfEmpty() {
         serviceName === "" ? setEmptyName(true) : setEmptyName(false)
         serviceWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
@@ -96,17 +99,7 @@ const EditService = () => {
         serviceShcedulEvenOne === "" ? setEmptyScheEveningOne(true) : setEmptyScheEveningOne(false)
         serviceShcedulMorningTwo === "" ? setEmptyScheMorningTwo(true) : setEmptyScheMorningTwo(false)
         serviceShcedulEvenTwo === "" ? setEmptyScheEveningTwo(true) : setEmptyScheEveningTwo(false)
-
     }
-
-    const [emptyName, setEmptyName] = useState(false)
-    const [emptyWebUrl, setEmptyWebUrl] = useState(false)
-    const [emptyTel, setEmptyTel] = useState(false)
-    const [emptyDescption, setEmptyDescription] = useState(false)
-    const [emptyScheMorningOne, setEmptyScheMorningOne] = useState(false)
-    const [emptyScheEveningOne, setEmptyScheEveningOne] = useState(false)
-    const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState(false)
-    const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState(false)
 
     function timeCutter(time: string) {
         var arrayAux = new Array<string>()
@@ -120,13 +113,39 @@ const EditService = () => {
                 timeList.push(item)
             })
         })
-
-        return timeList
-
+        if (timeList.length === 6) {
+            return timeList
+        } else {
+            return time
+        }
     }
+
+    const selectorOptions = [
+        { value: 'Lunes-Viernes', label: 'De lunes a viernes.' },
+        { value: 'Lunes-Sabado', label: 'De lunes a sabado.' },
+        { value: 'Lunes-Domingo', label: 'Todos los dias.' },
+        { value: 'Otro', label: 'Otro horrario' }
+    ]
 
     return (
         <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white">
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => serviceStore.setModalEdit(false)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             <div>
                 <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                     <div className="w-full flex flex-row p-2 justify-between">
@@ -166,7 +185,7 @@ const EditService = () => {
                                         txtAreaRef.current.focus()
                                     }
                                 }
-                            }} />
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatInput"}>Nombre</label>
                     </div>
                 </div>
@@ -184,7 +203,7 @@ const EditService = () => {
                                             inputWebUrl.current.focus()
                                         }
                                     }
-                                }} />
+                                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatTxtArea"}>Descripción</label>
                     </div>
                 </div>
@@ -202,7 +221,7 @@ const EditService = () => {
                                             inputTel.current.focus()
                                         }
                                     }
-                                }} />
+                                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatInput"}>Pagina Web</label>
                     </div>
                 </div>
@@ -224,10 +243,11 @@ const EditService = () => {
                         <label className={"labelFloatInput"}>Teléfono</label>
                     </div>
                 </div>
+                {/*Horario----------------------------------------------------------------------*/}
                 <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                     <div className="flex flex-col p-1 mt-1 relative">
                         <div className="flex flex-col border-2 rounded-md">
-                            <select ref={inputScheSelect} className="inputCamp p-0 peer" defaultValue="Lunes-Viernes" onChange={(e) => {
+                            <select ref={inputScheSelect} className="inputCamp p-0 peer" defaultValue={serviceShcedulSelector} onChange={(e) => {
                                 setServiceShcedulSelector(e.target.value)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "NumpadEnter")) {
@@ -238,10 +258,9 @@ const EditService = () => {
                                     }
                                 }
                             }}>
-                                <option className="peer" value="Lunes-Viernes">De lunes a viernes.</option>
-                                <option value="Lunes-Sabado">De lunes a sabado.</option>
-                                <option value="Lunes-Domingo">Todos los dias.</option>
-                                <option value="Otro">Otro horrario.</option>
+                                {selectorOptions.map((option, index) => (
+                                    <option key={index} value={option.value}>{option.label}</option>
+                                ))}
                             </select>
                             <label className={"labelFloatDate"}>Horario</label>
                             <div className="p-3 flex flex-row" >
@@ -311,7 +330,7 @@ const EditService = () => {
                                 </div>
                                 <div hidden={serviceShcedulSelector !== "Otro"} className="  w-full">
                                     <div className="relative p-2 ">
-                                        <input ref={inputScheExtra} placeholder=" " name="pharmacyShedulesExtra" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
+                                        <input ref={inputScheExtra} defaultValue={timeCutter(service.schedule!!)} placeholder=" " name="pharmacyShedulesExtra" type="text" className="inputCamp w-full p-1 mr-2 peer" onKeyDown={(e) => {
                                             if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                                 if (txtAreaRef.current != null) {
                                                     txtAreaRef.current.focus()
@@ -325,7 +344,6 @@ const EditService = () => {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div className="w-full flex flex-1 flex-col pl-3">
@@ -349,11 +367,10 @@ const EditService = () => {
                     </div>
                 </div>
                 <div className="lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-
                     <button ref={btnRef} name="serviceBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => {
                         editService(service.idService!!)
                     }}>Actualizar</button>
-                    <button name="serviceBtnCancel" className="btnStandard" onClick={() => serviceStore.setModalEdit(false)}>Cancelar</button>
+                    <button name="serviceBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
                 </div>
             </div>
         </div>

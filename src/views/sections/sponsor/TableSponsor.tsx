@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { Sponsor } from "../../../models/section/Section"
 import SposnsorStore from "../../../viewmodels/sponsor/SponsorStore"
 import EditSponsor from "./create/EditSponsor"
@@ -14,12 +13,15 @@ interface PropTable {
 }
 
 const TableSponsor = (prop: PropTable) => {
+
     const [confirm, setConfirm] = useState(false)
     const [deltitle, setDelTitle] = useState<string>("")
+
     function deleteConfirmation(Title: string) {
         setConfirm(true)
         setDelTitle(Title)
     }
+
     const deleteSponsor = async (sponsor: string) => {
         await sponsorStore.deleteSponsor('Bolea', sponsor)
         setConfirm(false)
@@ -29,6 +31,7 @@ const TableSponsor = (prop: PropTable) => {
         sponsorStore.updateSponsor(sponsor)
         sponsorStore.setModalEdit(true)
     }
+
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             {sponsorStore.getModalEdit ? (
@@ -58,21 +61,14 @@ const TableSponsor = (prop: PropTable) => {
                     {sponsorStore.getPaginatedSponsor.content?.map((sponsor, index) => (
                         sponsorStore.getPaginatedSponsor.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                <div className="tableCamp">
-                                    {sponsor.title}
-                                </div>
+                            <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                {sponsor.title}
                             </th>
-                            <td className="px-6 py-4 text-center">
-                                <div className="tableCamp overflow-y-auto  min-w-full">
-                                    {sponsor.description}
-                                </div>
+                            <td className="tableCamp">
+                                {sponsor.description}
                             </td>
-                            <td className="px-6 py-4 text-center">
-                                <div className="tableCamp">
-                                    {sponsor.phone}
-                                </div>
+                            <td className="tableCamp">
+                                {sponsor.phone}
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center">
@@ -104,5 +100,4 @@ const TableSponsor = (prop: PropTable) => {
         </div>
     )
 }
-
 export default observer(TableSponsor)

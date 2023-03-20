@@ -16,7 +16,12 @@ interface PropTable {
 }
 
 const ReservPlaceList = (prop: PropTable) => {
+
+    const [confirm, setConfirm] = useState(false)
+    const [deltitle, setDelTitle] = useState<string>("")
+    const [delId, setDelId] = useState<string>("")
     const [pageNumber, setPageNumber] = useState(0)
+
     const incrementPage = () => {
         setPageNumber(pageNumber + 1)
     }
@@ -31,14 +36,13 @@ const ReservPlaceList = (prop: PropTable) => {
         reserveStore.updatePlace(place)
         reserveStore.setModalEdit(true)
     }
-    const [confirm, setConfirm] = useState(false)
-    const [deltitle, setDelTitle] = useState<string>("")
-    const [delId, setDelId] = useState<string>("")
+
     function deleteConfirmation(place: Place) {
         setConfirm(true)
         setDelTitle(place.name!!)
         setDelId(place.idPlace!!)
     }
+
     const deletePlace = async (idPlace: string) => {
         await reserveStore.deletePlace('Bolea', idPlace)
         setConfirm(false)
@@ -48,6 +52,7 @@ const ReservPlaceList = (prop: PropTable) => {
     reserveStore.getPaginatedPlaces.content?.map((item, index) => {
         lugares.push(item)
     })
+
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white">
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
@@ -95,17 +100,13 @@ const ReservPlaceList = (prop: PropTable) => {
                         {lugares.map((placeMap, index) => (
                             lugares.length > 0 &&
                             <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" >
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                    <div className="tableCamp">
-                                        {placeMap.name}
-                                    </div>
+                                <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                    {placeMap.name}
                                 </th>
-                                <td className="px-6 py-4">
-                                    <div className="tableCamp flex flex-col overflow-y-auto">
-                                        {placeMap.halls?.map((item, index) => (
-                                            <label key={index}>{item.name}</label>
-                                        ))}
-                                    </div>
+                                <td className="tableCamp">
+                                    {placeMap.halls?.map((item, index) => (
+                                        <label key={index}>{item.name}</label>
+                                    ))}
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="h-20 flex items-center justify-center">
@@ -118,22 +119,22 @@ const ReservPlaceList = (prop: PropTable) => {
                     </tbody>
                 </table>
                 {confirm ? (
-                <div>
-                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-                        <div className="fixed inset-0 w-screen h-screen">
-                            <div className=" flex justify-center mt-10 ">
-                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
-                                    <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {deltitle}?</label>
-                                    <div className="flex justify-center m-auto mt-5 mb-3">
-                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deletePlace(delId)}>SI</button>
-                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                    <div>
+                        <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                            <div className="fixed inset-0 w-screen h-screen">
+                                <div className=" flex justify-center mt-10 ">
+                                    <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                        <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {deltitle}?</label>
+                                        <div className="flex justify-center m-auto mt-5 mb-3">
+                                            <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deletePlace(delId)}>SI</button>
+                                            <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ) : <></>}
+                ) : <></>}
             </div>
             <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center lg:flex-row flex-col">
                 <button className="btnStandard mr-3" disabled={pageNumber < 1} onClick={decrementPage}>
@@ -144,14 +145,12 @@ const ReservPlaceList = (prop: PropTable) => {
                     <button name="bandBtnCancel" className="btnStandard mr-3" onClick={() => reserveStore.setModalCreatePlaces(true)}>Crear lugar</button>
                     <button name="bandBtnCancel" className="btnStandard " onClick={() => reserveStore.setModalPlaceList(false)}>Volver  </button>
                 </div>
-
                 <button onClick={incrementPage} disabled={pageNumber === reserveStore.getPaginatedPlaces.totalPages!! - 1 || reserveStore.getPaginatedPlaces.content?.length === 0}
                     className="btnStandard ml-3" >
                     Siguiente
                     <img src={arrowRight} alt="forward" />
                 </button>
             </div>
-
         </div>
     )
 }

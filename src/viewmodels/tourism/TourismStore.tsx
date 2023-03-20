@@ -1,28 +1,43 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
-import { Tourism , PaginatedTourism} from "../../models/section/Section";
+import { Tourism, PaginatedTourism, TourismType } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
-class TourismStore{
+class TourismStore {
     serverIp: string = "192.168.241.51"
     static tourismStore: TourismStore
 
-    static getTourismStore(){
-        if(this.tourismStore === undefined){
+    static getTourismStore() {
+        if (this.tourismStore === undefined) {
             this.tourismStore = new TourismStore()
         }
         return this.tourismStore
     }
 
+    tourismTypes: Array<TourismType> = [{
+        "id": "checkOne",
+        "value": "Restaurante",
+        "title": "Restaurante",
+    }, {
+        "id": "checkTwo",
+        "value": "Museo",
+        "title": "Museo",
+    }, {
+        "id": "checkThree",
+        "value": "Hotel",
+        "title": "Hotel",
+    }]
+
     //Observables =>
-    paginatedTourism : PaginatedTourism = {}
+    paginatedTourism: PaginatedTourism = {}
     tourism: Tourism = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
-    
-    constructor(){
+
+    constructor() {
         makeObservable(this, {
+            tourismTypes: observable,
             modalEdit: observable,
             modalCreate: observable,
             setModalCreate: action,
@@ -36,10 +51,19 @@ class TourismStore{
             updateTourismList: action,
             updatePaginatedTourism: action,
             updateTourism: action,
-            getPaginatedTourism : computed,
-            getTourism: computed
+            getPaginatedTourism: computed,
+            getTourism: computed,
+            updateTourismTypes: action,
+            getTourismTypes: computed
         })
     }
+    updateTourismTypes(tourismType: TourismType[]) {
+        this.tourismTypes = tourismType
+    }
+    get getTourismTypes() {
+        return this.tourismTypes
+    }
+
     setModalEdit(mode: boolean) {
         this.modalEdit = mode
     }
@@ -53,11 +77,11 @@ class TourismStore{
         return this.modalCreate
     }
 
-    updateTourismList(tourism: Tourism[]){
+    updateTourismList(tourism: Tourism[]) {
         this.paginatedTourism.content = tourism
     }
 
-     updatePaginatedTourism( paginatedTourism : PaginatedTourism){
+    updatePaginatedTourism(paginatedTourism: PaginatedTourism) {
         this.paginatedTourism = paginatedTourism
     }
 
@@ -65,18 +89,18 @@ class TourismStore{
         this.tourism = tourism
     }
 
-    get getPaginatedTourism(){
+    get getPaginatedTourism() {
         return this.paginatedTourism
     }
-    get getTourism(){
+    get getTourism() {
         return this.tourism
     }
 
-    async addRequestTourism(locality: string, tourism: Tourism, file: File){
+    async addRequestTourism(locality: string, tourism: Tourism, file: File) {
         await imageStore.addImageAPI('Bolea', 'turismo', 'turismo', file!!)
 
         tourism.imageUrl = imageStore.getImage.link
-        
+
         const response = await fetch(`http://${this.serverIp}:8080/users/add/tourism?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(tourism),
@@ -84,7 +108,7 @@ class TourismStore{
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-        if(response.ok){
+        if (response.ok) {
             this.paginatedTourism.content?.push(tourism)
             this.tourism = tourism
             toast.success('Se ha añadido exitosamente', {
@@ -96,11 +120,11 @@ class TourismStore{
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
-          setTimeout(function(){
-            window.location.reload();
-         }, 1500);
-        }else{
+            })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+        } else {
             toast.error('No se ha podido añadir exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -110,12 +134,12 @@ class TourismStore{
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
+            })
+        }
     }
-}
 
-    async editTourism(locality: string, tourismId: string, tourism: Tourism, file: File){
-        if (file !== undefined){
+    async editTourism(locality: string, tourismId: string, tourism: Tourism, file: File) {
+        if (file !== undefined) {
             await imageStore.addImageAPI('Bolea', 'turismo', 'turismo', file!!)
             tourism.imageUrl = imageStore.getImage.link
         }
@@ -127,7 +151,7 @@ class TourismStore{
             }
         })
 
-        if (response.ok){
+        if (response.ok) {
             toast.success('Se ha actualizado exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -138,9 +162,9 @@ class TourismStore{
                 progress: undefined,
                 theme: 'light'
             })
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.reload();
-             }, 1500);
+            }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'bottom-center',
@@ -150,20 +174,20 @@ class TourismStore{
                 pauseOnHover: false,
                 draggable: true,
                 progress: undefined,
-                theme: 'light'            
+                theme: 'light'
             })
         }
     }
 
-    async getRequestTourism(locality: string, pageNum: number, elementSize: number){
+    async getRequestTourism(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`http://${this.serverIp}:8080/tourism/?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
-        method: 'GET',
-    })
-    const tourism = await response.json()
-    this.updatePaginatedTourism(tourism)
+            method: 'GET',
+        })
+        const tourism = await response.json()
+        this.updatePaginatedTourism(tourism)
     }
 
-    async deleteTourism(username: string, title: string){
+    async deleteTourism(username: string, title: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/tourism?username=${username}&title=${title}`, {
             method: 'DELETE',
             headers: {
@@ -171,7 +195,7 @@ class TourismStore{
             }
         })
 
-        if(response.ok){
+        if (response.ok) {
             const newPaginatedTourism = this.paginatedTourism.content!!.filter((item) => item.title !== title)
             this.updateTourismList(newPaginatedTourism)
             this.updateTourism({})
@@ -184,8 +208,8 @@ class TourismStore{
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
-        }else{
+            })
+        } else {
             toast.success('No se ha podido eliminar exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -195,8 +219,8 @@ class TourismStore{
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          }) 
+            })
         }
-    }    
+    }
 }
 export default TourismStore

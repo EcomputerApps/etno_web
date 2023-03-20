@@ -23,6 +23,7 @@ const TableReserves = (prop: PropTable) => {
     const [confirm, setConfirm] = useState(false)
     const [delId, setDelId] = useState<string>("")
     const [delName, setDelName] = useState<string>("")
+
     function deleteConfirmation(reserve: Reserve) {
         setConfirm(true)
         setDelId(reserve.idReserve!!)
@@ -42,6 +43,7 @@ const TableReserves = (prop: PropTable) => {
         })
         return arrayDate
     }
+
     function saveClient(reserve: Reserve) {
         console.log(reserve.reserveUsers?.length)
         if (reserve.reserveUsers?.length !== 0) {
@@ -49,6 +51,7 @@ const TableReserves = (prop: PropTable) => {
             reserveStore.setModalClientInfo(true)
         }
     }
+
     return (
         <div className=" w-full relative overflow-x-auto shadow-md sm:rounded-lg">
             {reserveStore.getModalClientInfo ? (
@@ -70,40 +73,29 @@ const TableReserves = (prop: PropTable) => {
                         ))}
                     </tr>
                 </thead>
-
                 <tbody>
                     {reserveStore.getPaginatedReserve.content?.map((reservMap, index) => (
                         reserveStore.getPaginatedReserve.content!!.length > 0 &&
-
                         <tr onClick={() => console.log(reservMap.name)} key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                            <th scope="row" className="px-6 py-4">
-                                <div className="tableCamp flex flex-col">
-                                    {reservMap.name}
-                                </div>
+                            <th scope="row" className="tableCamp">
+                                {reservMap.name}
                             </th>
-                            <td className="px-6 py-4" >
-                                <div className="tableCamp ">
-                                    {reservMap.place?.name}
-                                </div>
+                            <td className="tableCamp" >
+                                {reservMap.place?.name}
                             </td>
-                            <td className="px-6 py-4">
-                                <div className="tableCamp">
-                                    {reservMap.hall}
-                                </div>
+                            <td className="tableCamp">
+                                {reservMap.hall}
                             </td>
-                            <td className="px-6 py-4" >
-                                <div className="tableCamp flex flex-col overflow-y-auto">
+                            <td className="tableCamp" >
+                                <div className=" flex flex-col overflow-y-auto">
                                     {fillDates(reservMap.date!!).map((item, index) => (
                                         <label>{moment(item).format("dd, DD MMMM")}</label>
                                     ))}
-
                                 </div>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="tableCamp">
                                 <div className="flex flex-col">
-                                    
-                                    <div className="tableCamp flex flex-col overflow-y-auto">
+                                    <div className=" flex flex-col overflow-y-auto">
                                         {reservMap.reserveSchedules?.map((item, index) => (
                                             <label key={index}>{item.date}</label>
                                         ))}
@@ -118,21 +110,14 @@ const TableReserves = (prop: PropTable) => {
                                             headers={hourHeader} >Exportar horario
                                         </CSVLink>
                                     </div>
-
-
                                 </div>
                             </td>
-                            <td className=" px-6 py-4" >
-                                <div className="tableCamp overflow-y-auto  min-w-full ">
-                                    {reservMap.isPrivate ? "Privado" : "Publico"}
-                                </div>
+                            <td className="tableCamp" >
+                                {reservMap.isPrivate ? "Privado" : "Publico"}
                             </td>
-                            <td className="px-6 py-4" >
-                                <div className="tableCamp">
-                                    {reservMap.isReserved ? <label className="text-green-600 font-bold">Confirmado</label> : <label className="text-gray-600 font-bold">Pendiente</label>}
-                                </div>
+                            <td className="tableCamp" >
+                                {reservMap.isReserved ? <label className="text-green-600 font-bold">Confirmado</label> : <label className="text-gray-600 font-bold">Pendiente</label>}
                             </td>
-
                             <td className="px-6 py-4">
                                 <div className="h-20 flex flex-col items-center justify-center">
                                     {reservMap.reserveUsers?.length === 0 ? (

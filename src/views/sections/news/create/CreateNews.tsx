@@ -13,24 +13,6 @@ const newsStore = NewsStore.getNewsStore()
 
 const CreateNews = () => {
 
-  const arrayServiceTypes = [{
-    "id": "checkOne",
-    "value": "General",
-    "title": "General",
-  }, {
-    "id": "checkTwo",
-    "value": "Tecnología",
-    "title": "Tecnología",
-  },
-  {
-    "id": "checkThree",
-    "value": "Salud",
-    "title": "Salud",
-  }
-  ]
-
-  const navigate = useNavigate()
-
   const inputRefTit = useRef<HTMLInputElement>(null)
   const inputRefDate = useRef<HTMLInputElement>(null)
   const inputRefLink = useRef<HTMLInputElement>(null)
@@ -41,9 +23,15 @@ const CreateNews = () => {
   const [newsTitle, setNewsTitle] = useState<string>("")
   const [newsDate, setNewsDate] = useState<string>("")
   const [newsDescription, setNewsDescription] = useState<string>("")
-  const [newsLink, setNewstLink] = useState<string>("")
-  const [newsPhoto, setNewsPhoto] = useState<string>("")
   const [file, setFile] = useState<File>()
+  const [confirm, setConfirm] = useState<boolean>(false)
+  const [emptyCategory, setEmptyCategory] = useState<boolean>(false)
+  const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
+  const [emptyFile, setEmptyFile] = useState<boolean>(false)
+  const [emptyDate, setEmptyDate] = useState<boolean>(false)
+  const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
+
+
 
   function addNews(e: any) {
     const news: News = {
@@ -52,7 +40,6 @@ const CreateNews = () => {
       description: newsDescription,
       publicationDate: newsDate
     }
-
     if (newsStore.getNews.title === news.title) {
       toast.info('Ya existe esta noticia', {
         position: 'bottom-center',
@@ -82,24 +69,34 @@ const CreateNews = () => {
       }
     }
   }
+
   function chekIfEmpty() {
     newsCategory === "" ? setEmptyCategory(true) : setEmptyCategory(false)
     newsTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
     file === undefined ? setEmptyFile(true) : setEmptyFile(false)
     newsDate === "" ? setEmptyDate(true) : setEmptyDate(false)
     newsDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-
   }
-
-  const [emptyCategory, setEmptyCategory] = useState(false)
-  const [emptyTitle, setEmptyTitle] = useState(false)
-  const [emptyFile, setEmptyFile] = useState(false)
-  const [emptyDate, setEmptyDate] = useState(false)
-  const [emptyDescption, setEmptyDescription] = useState(false)
-
 
   return (
     <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 md:h-screen border-2 rounded-md bg-white">
+      {confirm ? (
+        <div>
+          <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <div className="fixed inset-0 w-screen h-screen">
+              <div className=" flex justify-center mt-10 ">
+                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                  <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                  <div className="flex justify-center m-auto mt-5 mb-3">
+                    <button className="btnStandard w-14 h-10 mr-5 " onClick={() => newsStore.setModalCreate(false)}>SI</button>
+                    <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : <></>}
       <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
@@ -113,12 +110,12 @@ const CreateNews = () => {
             }`}>
             <div className="flex flex-col p-1 relative">
               <div className="flex  flex-wrap">
-                {arrayServiceTypes.map((chkBtn, index) => (
+                {newsStore.getNewsTypes.map((chkBtn, index) => (
                   <div key={index} className='flex lg:w-1/6 w-1/3'>
                     <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
                       setNewsCategory(e.currentTarget.value)
                       setEmptyCategory(false)
-                    }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                    }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                     <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer  p-2 mr-3 my-2 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
@@ -133,7 +130,6 @@ const CreateNews = () => {
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
-
             <input ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
               : ''
               }`} onChange={(value) => {
@@ -145,7 +141,7 @@ const CreateNews = () => {
                     inputRefDate.current.focus()
                   }
                 }
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className={"labelFloatInput"}>Titulo</label>
           </div>
         </div>
@@ -179,7 +175,7 @@ const CreateNews = () => {
                     inputRefLink.current.focus()
                   }
                 }
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>
@@ -210,10 +206,9 @@ const CreateNews = () => {
         </div>
         <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
           <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={addNews}>Publicar</button>
-          <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => newsStore.setModalCreate(false)}>Cancelar</button>
+          <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
         </div>
       </div>
-
     </div>
   )
 }

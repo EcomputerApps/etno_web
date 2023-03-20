@@ -1,6 +1,5 @@
 import { useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { toast, ToastContainer } from "react-toastify"
+import { toast} from "react-toastify"
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import { Ad } from "../../../../models/section/Section"
@@ -12,14 +11,13 @@ const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const EditAdvert = () => {
-    const navigate = useNavigate()
-
+   
     const inputRef = useRef<HTMLInputElement>(null)
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
 
-    const [advert, setAdvert] = useState(advertStore.getAdvert)
-
+    const [advert] = useState(advertStore.getAdvert)
+    const [confirm, setConfirm] = useState<boolean>(false)
     const [advertTitle, setAdvertTitle] = useState<string>(advert.title!!)
     const [advertDescription, setAdvertDescription] = useState<string>(advert.description!!)
     const [advertPhoto, setAdvertPhoto] = useState<string>()
@@ -68,6 +66,23 @@ const EditAdvert = () => {
     
     return(
         <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 md:h-screen border-2 rounded-md bg-white">
+             {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => advertStore.setModalEdit(false)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             <div>
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
@@ -88,7 +103,7 @@ const EditAdvert = () => {
                                 txtAreaRef.current.focus()
                             }
                         }
-                    }}></input>
+                    }}onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
                     <label className={"labelFloatInput"}>Título</label>
                 </div>
             </div>
@@ -106,7 +121,7 @@ const EditAdvert = () => {
                                     inputRef.current.focus()
                                 }
                             }
-                        }}></textarea>
+                        }}onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
                     <label className={"labelFloatTxtArea"}>Descripcíon</label>
                 </div>
             </div>
@@ -148,13 +163,13 @@ const EditAdvert = () => {
                                     btnRef.current.focus()
                                 }
                             }
-                        }} ></input>
+                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
                     <label className={"labelFloatInput"}>Enlace</label>
                 </div>
             </div>
             <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
                 <button ref={btnRef} name="advertBtnSave" className="btnStandard mr-10" onClick={() => updateAdvert()}>Guardar</button>
-                <button name="advertBtnCancel" className="btnStandard" onClick={() => advertStore.setModalEdit(false)}>Cancelar</button>
+                <button name="advertBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
             </div>
             </div>
          </div>

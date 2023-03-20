@@ -3,7 +3,6 @@ import { useState } from "react"
 import "../../../index.css"
 import { Ad } from "../../../models/section/Section"
 import AdvertStore from "../../../viewmodels/advert/AdvertStore"
-import EditNews from "../news/create/EditNews"
 import EditAdvert from "./create/EditAdvert"
 const advertStore = AdvertStore.getAdvertStore()
 
@@ -16,6 +15,7 @@ interface PropTable {
 const TableAdvert = (prop: PropTable) => {
     const [confirm, setConfirm] = useState(false)
     const [delTitle, setDelTitle] = useState<string>("")
+
     function deleteConfirmation(title: string) {
         setConfirm(true)
         setDelTitle(title)
@@ -57,23 +57,16 @@ const TableAdvert = (prop: PropTable) => {
                     {advertStore.getPaginatedAdverts.content?.map((advert, index) => (
                         advertStore.getPaginatedAdverts.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
-
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <div className="tableCamp">
-                                    {advert.title}
-                                </div>
+                            <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {advert.title}
                             </th>
-                            <td className="px-6 py-4 ">
-                                <div className="tableCamp overflow-y-auto  min-w-full">
-                                    {advert.description}
-                                </div>
+                            <td className="tableCamp">
+                                {advert.description}
                             </td>
-                            <td className="px-6 py-4">
-                                <div className="tableCampt">
-                                    < a className=" text-blue-500 hover:text-blue-600" href={advert.webUrl}>{advert.webUrl}</a>
-                                </div>
+                            <td className="tableCamp">
+                                < a className=" text-blue-500 hover:text-blue-600" href={advert.webUrl}>{advert.webUrl}</a>
                             </td>
-                            <td className="px-6 py-4 ">
+                            <td className="tableCamp">
                                 <div className="h-20 flex items-center justify-center">
                                     <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveNews(advert)}>Editar</a>
                                     <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(advert.title!!)}>Eliminar</a>

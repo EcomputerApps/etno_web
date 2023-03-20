@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { Necrologue } from "../../../models/section/Section"
 import NecrologueStore from "../../../viewmodels/necrologue/NecrologueStore"
 import EditNecrologue from "./create/EditNecro"
@@ -13,13 +12,15 @@ interface PropTable {
 }
 
 const TableNecrologue = (prop: PropTable) => {
+
     const [confirm, setConfirm] = useState(false)
     const [delName, setDelName] = useState<string>("")
+
     function deleteConfirmation(Name: string) {
         setConfirm(true)
         setDelName(Name)
     }
-   
+
     const deleteNecro = async (necro: string) => {
         await necrologueStore.deleteNecrologue('Bolea', necro)
         setConfirm(false)
@@ -28,6 +29,7 @@ const TableNecrologue = (prop: PropTable) => {
         necrologueStore.updateNecro(necro)
         necrologueStore.setModalEdit(true)
     }
+
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             {necrologueStore.getModalEdit ? (
@@ -57,21 +59,14 @@ const TableNecrologue = (prop: PropTable) => {
                     {necrologueStore.getPaginatedNecro.content?.map((newNecro, index) => (
                         necrologueStore.getPaginatedNecro.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center ">
-                                <div className="tableCamp">
-                                    {newNecro.name}
-                                </div>
+                            <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center ">
+                                {newNecro.name}
                             </th>
-                            <td className="px-6 py-4 text-center">
-                                <div className="tableCamp">
-                                    {newNecro.deathDate}
-                                </div>
+                            <td className="tableCamp">
+                                {newNecro.deathDate}
                             </td>
-                            <td className="px-6 py-4 text-center overflow-y-auto items-start min-w-full">
-                                <div className="tableCamp">
-                                    {newNecro.description}
-                                </div>
+                            <td className="tableCamp">
+                                {newNecro.description}
                             </td>
                             <td className="px-6 py-4 flex items-center justify-center ">
                                 <div className="h-20 flex items-center justify-center">
@@ -105,5 +100,4 @@ const TableNecrologue = (prop: PropTable) => {
         </div>
     )
 }
-
 export default observer(TableNecrologue)

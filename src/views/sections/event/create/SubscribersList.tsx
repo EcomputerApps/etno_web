@@ -23,145 +23,7 @@ const headers = [
 
 const SubscribersList = (prop: PropTable) => {
     const [subs] = useState<SubscriptionUser[]>(eventStore.getEvent.userSubscriptions!!)
-
     var sortedUserList = subs.slice().sort((n1, n2) => n1.name!! > n2.name!! ? 1 : -1)
-
-    const falseUsers = [{
-        title: "Pepe",
-        seats: "2",
-        name: "btro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "btro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "otro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "btro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "btro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "atro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "aepe",
-        seats: "2",
-        name: "ztro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "atro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "mtro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "ntro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "ktro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    }, {
-        title: "Pepe",
-        seats: "2",
-        name: "ytro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "oro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "ptro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-    {
-        title: "Pepe",
-        seats: "2",
-        name: "ptro pepe",
-        mail: "mail",
-        phone: "123456",
-        wallet: "28€",
-        isSubscribe: true
-    },
-
-    ]
 
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white   ">
@@ -193,43 +55,28 @@ const SubscribersList = (prop: PropTable) => {
                             {sortedUserList.map((subUsersMap, index) => (
                                 sortedUserList.length > 0 &&
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                        <div className="tableCamp h-10 ">
-                                            {subUsersMap.title}
-                                        </div>
+                                    <th scope="row" className="tableCamp first-letter:font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                        {subUsersMap.title}
                                     </th>
-                                    <td className="px-6 py-4">
-                                        <div className="tableCamp overflow-y-auto  min-w-full h-10 ">
-                                            {subUsersMap.seats}
-                                        </div>
+                                    <td className="tableCamp">
+                                        {subUsersMap.seats}
                                     </td>
-                                    <td className="px-6 py-4 ">
-                                        <div className="tableCamp h-10 ">
-                                            {subUsersMap.name}
-                                        </div>
+                                    <td className="tableCamp">
+                                        {subUsersMap.name}
                                     </td>
-                                    <td className="px-6 py-4 ">
-                                        <div className="tableCamp h-10 ">
-                                            {subUsersMap.mail}
-                                        </div>
+                                    <td className="tableCamp ">
+                                        {subUsersMap.mail}
                                     </td>
-                                    <td className="px-6 py-4 ">
-                                        <div className="tableCamp h-10 ">
-                                            {subUsersMap.phone
-                                            }
-                                        </div>
+                                    <td className="tableCamp">
+                                        {subUsersMap.phone}
                                     </td>
-                                    <td className="px-6 py-4 ">
-                                        <div className="tableCamp h-10 ">
-                                            {subUsersMap.wallet}
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 ">
-                                        <div className="tableCamp h-10 ">
-                                            {subUsersMap.isSubscribe ? "si" : "no"}
-                                        </div>
-                                    </td>
+                                    <td className="tableCamp ">
+                                        {subUsersMap.wallet}
 
+                                    </td>
+                                    <td className="tableCamp h-10 ">
+                                       {subUsersMap.isSubscribe ? "si" : "no"}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

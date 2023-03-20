@@ -12,7 +12,7 @@ const Survey = () => {
 
     useEffect(() => {
         surveyStore.getRequestSurvey()
-      }, [])
+    }, [])
 
     return (
         <div className="w-full h-full  relative">
@@ -21,11 +21,11 @@ const Survey = () => {
                     <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Encuestas</h2>
                     <div className="lg:ml-auto flex ml-1">
                         <button type="button" className="btnStandard" onClick={() => surveyStore.setCreateSurvey(true)}>
-                            <img src={Pencil} alt="Create"/>
+                            <img src={Pencil} alt="Create" />
                             <label className="lg:text-base text-xs">Crear</label>
                         </button>
                     </div>
-                                  </div>
+                </div>
                 <TableSurvey />
                 {surveyStore.getCreateSurvey ? (
                     <div>

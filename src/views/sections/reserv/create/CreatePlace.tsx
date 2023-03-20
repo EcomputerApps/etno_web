@@ -23,9 +23,15 @@ reserveStore.updateHallList([])
 const CreatePlace = () => {
 
     const [file, setFile] = useState<File>()
-    const [lat, setLat] = useState(0)
-    const [long, setLong] = useState(0)
+    const [lat, setLat] = useState<number>(0)
+    const [long, setLong] = useState<number>(0)
     const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
+    const [emptyHalls, setEmptyHalls] = useState<boolean>(false)
+    const [emptyName, setEmptyName] = useState<boolean>(false)
+    const [emptyFile, setEmptyFile] = useState<boolean>(false)
+    const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
+    const[confirm, setConfirm] = useState<boolean>(false)
+
 
     const defaultProps = {
         center: {
@@ -62,11 +68,13 @@ const CreatePlace = () => {
             sideBarStore.updateSection('Reservas');
             hoverSectionStore.setName('Reservas')
         }
+    }
 
-    } function goBack() {
+    function goBack() {
         reserveStore.updateHallList([])
         reserveStore.setModalCreatePlaces(false)
     }
+
     function chekIfEmpty() {
         placeName === "" ? setEmptyName(true) : setEmptyName(false)
         reserveStore.getHallList?.length === 0 || reserveStore.getHallList === undefined ? setEmptyHalls(true) : setEmptyHalls(false)
@@ -74,13 +82,25 @@ const CreatePlace = () => {
         long === 0 || lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
     }
 
-    const [emptyHalls, setEmptyHalls] = useState(false)
-    const [emptyName, setEmptyName] = useState(false)
-    const [emptyFile, setEmptyFile] = useState(false)
-    const [emptyLongLat, setEmptyLongLat] = useState(false)
- 
     return (
         <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 border-2 rounded-md bg-white overflow-y-auto  h-screen">
+             {confirm ? (
+        <div>
+          <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <div className="fixed inset-0 w-screen h-screen">
+              <div className=" flex justify-center mt-10 ">
+                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                  <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                  <div className="flex justify-center m-auto mt-5 mb-3">
+                    <button className="btnStandard w-14 h-10 mr-5 " onClick={() => goBack()}>SI</button>
+                    <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : <></>}
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -93,7 +113,8 @@ const CreatePlace = () => {
                         : ''
                         }`}
                         onChange={(e) => setPalceName(e.currentTarget.value)}
-                         />
+                        onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}
+                    />
                     <label className={"labelFloatInput"}>Nombre</label>
                 </div>
             </div>
@@ -183,8 +204,8 @@ const CreatePlace = () => {
                 </div>
             </div>
             <div className=" flex m-auto justify-center left-0 right-0 p-3 bottom-1">
-                <button  name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPlace()}>Publicar</button>
-                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => goBack()}>Cancelar</button>
+                <button name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => addPlace()}>Publicar</button>
+                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
             </div>
         </div>
     )

@@ -6,7 +6,16 @@ import { Survey } from '../../../../models/section/Section'
 import { toast } from 'react-toastify'
 
 const surveyStore = SurveyStore.getSurveyStore()
+
 const CreateSurvey = () => {
+    const inputDate = useRef<HTMLInputElement>(null)
+    const inputTime = useRef<HTMLInputElement>(null)
+    const inputAnswerOne = useRef<HTMLInputElement>(null)
+    const inputAnswerTwo = useRef<HTMLInputElement>(null)
+    const inputAnswerThree = useRef<HTMLInputElement>(null)
+    const inputAnswerFour = useRef<HTMLInputElement>(null)
+    const btnRef = useRef<HTMLButtonElement>(null)
+
     const [question, setQuestion] = useState<string>("")
     const [finalDate, setFinalDate] = useState<string>("")
     const [finalTime, setFinalTime] = useState<string>("")
@@ -14,8 +23,11 @@ const CreateSurvey = () => {
     const [answerTwo, setAnswerTwo] = useState<string>("")
     const [answerThree, setAnswerThree] = useState<string>("")
     const [answerFour, setAnswerFour] = useState<string>("")
-
-
+    const [emptyName, setEmptyName] = useState<boolean>(false)
+    const [emptyDate, setEmptyDate] = useState<boolean>(false)
+    const [emptyTime, setEmptyTime] = useState<boolean>(false)
+    const [emptyReplies, setEmptyReplies] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
 
     function addSurvey() {
         const newSurvey: Survey = {
@@ -25,10 +37,7 @@ const CreateSurvey = () => {
             answerThree: answerThree,
             answerFour: answerFour,
             isActive: true,
-            datePicker:new Date(finalDate + " " + finalTime)
-            
-
-
+            datePicker: new Date(finalDate + " " + finalTime)
         }
         chekIfEmpty()
         question === "" ||
@@ -43,10 +52,8 @@ const CreateSurvey = () => {
                 progress: undefined,
                 theme: "light"
             }) : surveyStore.addRequestSurvey("Bolea", newSurvey)
-        
-            
-
     }
+
     function minimumReplies() {
         var counter = 0
         if (answerOne !== "") {
@@ -64,6 +71,7 @@ const CreateSurvey = () => {
             return true
         }
     }
+
     function chekIfEmpty() {
         question === "" ? setEmptyName(true) : setEmptyName(false)
         finalDate === "" ? setEmptyDate(true) : setEmptyDate(false)
@@ -71,20 +79,25 @@ const CreateSurvey = () => {
         minimumReplies() ? setEmptyReplies(true) : setEmptyReplies(false)
     }
 
-    const [emptyName, setEmptyName] = useState(false)
-    const [emptyDate, setEmptyDate] = useState(false)
-    const [emptyTime, setEmptyTime] = useState(false)
-    const [emptyReplies, setEmptyReplies] = useState(false)
-    const inputDate = useRef<HTMLInputElement>(null)
-    const inputTime = useRef<HTMLInputElement>(null)
-    const inputAnswerOne = useRef<HTMLInputElement>(null)
-    const inputAnswerTwo = useRef<HTMLInputElement>(null)
-    const inputAnswerThree = useRef<HTMLInputElement>(null)
-    const inputAnswerFour = useRef<HTMLInputElement>(null)
-    const btnRef = useRef<HTMLButtonElement>(null)
-
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 lg:h-screen border-2 rounded-md bg-white">
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => surveyStore.setCreateSurvey(false)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             <div>
                 <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                     <div className="w-full flex flex-row p-2 justify-between">
@@ -195,7 +208,6 @@ const CreateSurvey = () => {
                             <label className="labelFloatInput">Respuesta 4</label>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div className='flex justify-center font-medium text-red-600 text-xl'>
@@ -203,7 +215,7 @@ const CreateSurvey = () => {
             </div>
             <div className="lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
                 <button ref={btnRef} className="btnStandard mr-10" onClick={() => addSurvey()}>Publicar</button>
-                <button className="btnStandard" onClick={() => surveyStore.setCreateSurvey(false)}>Cancelar</button>
+                <button className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
             </div>
         </div>
     )

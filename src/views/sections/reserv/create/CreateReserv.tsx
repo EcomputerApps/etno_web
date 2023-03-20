@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite"
 import ReserveStore from "../../../../viewmodels/reserv/ReserveStore"
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import logoEtno from '../../../../assets/logo_etno.png'
-import { Calendar, DateObject } from "react-multi-date-picker"
+import { Calendar } from "react-multi-date-picker"
 import DatePanel from "react-multi-date-picker/plugins/date_panel"
 import Toolbar from "react-multi-date-picker/plugins/toolbar"
 import weekends from "react-multi-date-picker/plugins/highlight_weekends"
@@ -11,8 +11,6 @@ import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import type { Value } from "react-multi-date-picker"
 import { Reserve, Place, Hall, ReserveUser, ReserveSchedule } from "../../../../models/section/Section"
 import { toast } from "react-toastify"
-import moment from "moment"
-
 
 const reserveStore = ReserveStore.getReserveStore()
 const sideBarStore = SideBarStore.getSideBarStore()
@@ -20,21 +18,32 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 var reservTime = new Array<ReserveSchedule>()
 const CreateReserve = () => {
 
-
-    const [hallMarker, setHallMarker] = useState<number>(0)
+    const txtAreaRef = useRef<HTMLTextAreaElement>(null)
+    const inputEmail = useRef<HTMLInputElement>(null)
+    const inputTel = useRef<HTMLInputElement>(null)
+    const inputPlace = useRef<HTMLSelectElement>(null)
+    const inputHall = useRef<HTMLSelectElement>(null)
+    const btnRef = useRef<HTMLButtonElement>(null)
 
     const [reservName, setReservName] = useState<string>("")
     const [reservEmail, setReservEmail] = useState<string>("")
     const [reservDescription, setReservDescription] = useState<string>("")
     const [reservPhone, setReservPhone] = useState<string>("")
-    const [isPrivate, setIsPrivate] = useState(false)
+    const [isPrivate, setIsPrivate] = useState<boolean>(false)
     const [reservPlace, setReservPlace] = useState<Place>()
     const [reservHall, setReservHall] = useState<Hall>()
     const [reservDate, setReservDate] = useState<Value>();
-    const [reservUser, setReserveUser] = useState<ReserveUser[]>()
-    const [isReserved, setIsReserved] = useState(false)
-    const [timeSelector, setTimeSelector] = useState(false)
-
+    const [reservUser] = useState<ReserveUser[]>()
+    const [isReserved] = useState<boolean>(false)
+    const [emptyName, setEmptyName] = useState<boolean>(false)
+    const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
+    const [emptyEmail, setEmptyEmail] = useState<boolean>(false)
+    const [emptyPhone, setEmptyPhone] = useState<boolean>(false)
+    const [emptyPalce, setEmptyPalce] = useState<boolean>(false)
+    const [emptyHall, setEmptyHall] = useState<boolean>(false)
+    const [emptyDate, setEmptyDate] = useState<boolean>(false)
+    const [emptyTime, setEmptyTime] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
 
     function addReserv() {
         const newReserv: Reserve = {
@@ -49,11 +58,10 @@ const CreateReserve = () => {
             reserveSchedules: reservTime,
             reserveUsers: reservUser,
             isReserved: isReserved
-
         }
         checkIfEmpty()
         reservName === "" || reservDescription === "" || reservEmail === "" || reservPhone === "" || reservPhone === "" ||
-            reservPlace?.name === "Elige Lugar" || reservHall?.name === "" || reservDate?.toString() === undefined ||
+            reservPlace?.name === "Elige Lugar" || reservPlace === undefined || reservHall?.name === "Elige la sala" || reservHall?.name === undefined || reservDate?.toString() === undefined ||
             reservDate?.toString() === "" || reservTime.length === 0 ?
             toast.error('Rellene los campos', {
                 position: 'bottom-center',
@@ -64,29 +72,22 @@ const CreateReserve = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-            }) : reserveStore.addRequestReserve('Bolea', newReserv, reservHall?.idHall!!, reservPlace?.idPlace!!);
-        reservTime = new Array(); sideBarStore.updateSection('Reservas'); hoverSectionStore.setName('Reservas');
-
+            }) : reserveStore.addRequestReserve('Bolea', newReserv, reservHall?.idHall!!, reservPlace?.idPlace!!); sideBarStore.updateSection('Reservas'); hoverSectionStore.setName('Reservas');
+        console.log(newReserv)
     }
+
     function checkIfEmpty() {
         reservName === "" ? setEmptyName(true) : setEmptyName(false)
         reservDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
         reservEmail === "" ? setEmptyEmail(true) : setEmptyEmail(false)
         reservPhone === "" ? setEmptyPhone(true) : setEmptyPhone(false)
         reservPlace?.name === "Elige Lugar" || reservPlace === undefined ? setEmptyPalce(true) : setEmptyPalce(false)
-        reservHall?.name === "" || reservPlace === undefined ? setEmptyHall(true) : setEmptyHall(false)
+        reservHall?.name === "Elige la sala" || reservHall === undefined ? setEmptyHall(true) : setEmptyHall(false)
         reservDate === undefined || reservDate?.toString() === "" ? setEmptyDate(true) : setEmptyDate(false)
         reservTime.length === 0 && reservDate !== undefined ? setEmptyTime(true) : setEmptyTime(false)
     }
 
-    const [emptyName, setEmptyName] = useState(false)
-    const [emptyDescription, setEmptyDescription] = useState(false)
-    const [emptyEmail, setEmptyEmail] = useState(false)
-    const [emptyPhone, setEmptyPhone] = useState(false)
-    const [emptyPalce, setEmptyPalce] = useState(false)
-    const [emptyHall, setEmptyHall] = useState(false)
-    const [emptyDate, setEmptyDate] = useState(false)
-    const [emptyTime, setEmptyTime] = useState(false)
+
     //Essential for spanish language in calendar
     const greorgian_es = {
         name: "greorgian_es",
@@ -162,24 +163,26 @@ const CreateReserve = () => {
         const index = reservTimeArray.indexOf({ date: reservTime })
         return index
     }
-    function showMe() {
-        console.log(reservTime.length)
-        console.log(reservDate?.toString().length)
-        console.log(reservPlace)
-        console.log(reservHall)
-        checkIfEmpty()
-    }
-
-    const txtAreaRef = useRef<HTMLTextAreaElement>(null)
-    const inputEmail = useRef<HTMLInputElement>(null)
-    const inputTel = useRef<HTMLInputElement>(null)
-    const inputPlace = useRef<HTMLSelectElement>(null)
-    const inputHall = useRef<HTMLSelectElement>(null)
-    const btnRef = useRef<HTMLButtonElement>(null)
-
 
     return (
-        <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white    ">
+        <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white">
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => reserveStore.setModalCreate(false)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             <div >
                 <div>
                     <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
@@ -203,7 +206,7 @@ const CreateReserve = () => {
                                                 txtAreaRef.current.focus()
                                             }
                                         }
-                                    }} />
+                                    }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                             <label className="labelFloatInput">Nombre</label>
                         </div>
                     </div>
@@ -218,7 +221,7 @@ const CreateReserve = () => {
                                             inputEmail.current.focus()
                                         }
                                     }
-                                }} />
+                                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                             <label className={"labelFloatTxtArea"}>Descripción</label>
                         </div>
                     </div>
@@ -237,7 +240,7 @@ const CreateReserve = () => {
                                                 inputTel.current.focus()
                                             }
                                         }
-                                    }} />
+                                    }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                             <label className="labelFloatInput">Correo de contacto</label>
                         </div>
                     </div>
@@ -278,7 +281,6 @@ const CreateReserve = () => {
                                 <select ref={inputPlace} className={`inputCamp peer ${emptyPalce ? 'border-red-600'
                                     : ''
                                     }`} defaultValue="" onChange={(e) => {
-                                        setHallMarker(Number(e.currentTarget.value))
                                         setReservPlace(lugares[Number(e.currentTarget.value)]!!)
                                     }} onKeyDown={(e) => {
                                         if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -349,7 +351,6 @@ const CreateReserve = () => {
                         <div className="lg:w-2/5  w-full flex border-2 rounded-md  flex-col shadow-sm">
                             <div className="flex flex-row text-center items-center justify-center">
                                 <div className="flex justify-center">{emptyTime ? <label className="text-xl font-semibold text-red-600">Seleccione la hora</label> : <label className="text-xl font-semibold">Hora</label>}</div>
-
                             </div>
                             <div className="flex flex-col h-64 items-center overflow-y-auto" >
                                 {horas.map((item, index) => (
@@ -370,7 +371,7 @@ const CreateReserve = () => {
             <div className="relative">
                 <div className="flex m-auto justify-center left-0 right-0 p-3 bottom-1">
                     <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={() => addReserv()}>Publicar</button>
-                    <button name="bandBtnCancel" className="btnStandard" onClick={() => reserveStore.setModalCreate(false)} >Cancelar</button>
+                    <button name="bandBtnCancel" className="btnStandard" onClick={() => setConfirm(true)} >Cancelar</button>
                 </div>
             </div>
         </div>

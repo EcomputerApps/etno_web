@@ -1,9 +1,7 @@
 import { observer } from "mobx-react-lite"
 import TourismStore from "../../../viewmodels/tourism/TourismStore"
 import "../../../index.css"
-import { ToastContainer } from "react-toastify"
-import { useNavigate } from "react-router-dom"
-import EditTourism from "./EditTourism"
+import EditTourism from "./create/EditTourism"
 import { useState } from "react"
 
 const tourismStore = TourismStore.getTourismStore()
@@ -52,21 +50,14 @@ const TableTourism = (prop: PropTable) => {
                     {tourismStore.getPaginatedTourism.content?.map((tourism, index) => (
                         tourismStore.getPaginatedTourism.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
-
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                <div className="tableCamp">
-                                    {tourism.type}
-                                </div>
+                            <th scope="row" className="tableCampfont-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                {tourism.type}
                             </th>
-                            <td className="px-6 py-4">
-                                <div className="tableCamp">
-                                    {tourism.title}
-                                </div>
+                            <td className="tableCamp">
+                                {tourism.title}
                             </td>
                             <td className="px-6 py-4 text-center">
-                                <div className="tableCamp overflow-y-auto  min-w-full">
-                                    {tourism.description}
-                                </div>
+                                {tourism.description}
                             </td>
                             <td className="px-6 py-4">
                                 <div className="h-20 flex items-center justify-center">

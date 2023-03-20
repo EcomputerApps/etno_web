@@ -1,16 +1,16 @@
 import { useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { toast, ToastContainer } from "react-toastify"
+import { toast } from "react-toastify"
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import { Tourism } from "../../../../models/section/Section"
 import GoogleMapReact from 'google-map-react';
-
 import TourismStore from "../../../../viewmodels/tourism/TourismStore"
 import markerIcon from "../../../../assets/marker.svg"
 import HoverSectionStore from "../../../../viewmodels/hoverSection/HoverSectionStore"
 import SideBarStore from "../../../../viewmodels/sidebar/SideBarStore"
+import { observer } from "mobx-react-lite"
+
 const tourismStore = TourismStore.getTourismStore()
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
@@ -31,42 +31,25 @@ const CreateTourism = () => {
     zoom: 11
   };
 
-  const arrayTourismType = [{
-    "id": "checkOne",
-    "value": "Restaurante",
-    "title": "Restaurante",
-}, {
-    "id": "checkTwo",
-    "value": "Museo",
-    "title": "Museo",
-}, {
-    "id": "checkThree",
-    "value": "Hotel",
-    "title": "Hotel",
-}]
-
-
-  const navigate = useNavigate()
-
   const inputTitle = useRef<HTMLInputElement>(null)
   const inputLong = useRef<HTMLInputElement>(null)
   const inputLat = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
-  const [lat, setLat] = useState(0)
-  const [long, setLong] = useState(0)
-
+  const [lat, setLat] = useState<number>(0)
+  const [long, setLong] = useState<number>(0)
+  const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
   const [tourismType, setTourismType] = useState<string>("")
   const [tourismTitle, setTourismTitle] = useState<string>("")
   const [tourismDescription, setTourismDescription] = useState<string>("")
-  const [tourismPhoto, setTourismPhoto] = useState<string>("")
-  const [tourismLong, setTourismLong] = useState<string>("")
-  const [tourismLat, setTourismLat] = useState<string>("")
   const [file, setFile] = useState<File>()
-
-  const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
-
+  const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
+  const [emptyType, setEmptyType] = useState<boolean>(false)
+  const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
+  const [emptyFile, setEmptyFile] = useState<boolean>(false)
+  const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
+  const [confirm, setConfirm] = useState<boolean>(false)
 
   function addTourism() {
     const tourism: Tourism = {
@@ -102,6 +85,7 @@ const CreateTourism = () => {
         }) : tourismStore.addRequestTourism('Bolea', tourism, file!!); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
     }
   }
+
   function checkIfEmpty() {
     tourismType === "" ? setEmptyType(true) : setEmptyType(false)
     tourismTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
@@ -109,17 +93,27 @@ const CreateTourism = () => {
     file === undefined ? setEmptyFile(true) : setEmptyFile(false)
     lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
     long === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
-
-
   }
-  const [emptyTitle, setEmptyTitle] = useState(false)
-  const [emptyType, setEmptyType] = useState(false)
-  const [emptyDescription, setEmptyDescription] = useState(false)
-  const [emptyFile, setEmptyFile] = useState(false)
-  const [emptyLongLat, setEmptyLongLat] = useState(false)
 
   return (
     <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white">
+      {confirm ? (
+        <div>
+          <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <div className="fixed inset-0 w-screen h-screen">
+              <div className=" flex justify-center mt-10 ">
+                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                  <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                  <div className="flex justify-center m-auto mt-5 mb-3">
+                    <button className="btnStandard w-14 h-10 mr-5 " onClick={() => tourismStore.setModalCreate(false)}>SI</button>
+                    <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : <></>}
       <div>
         <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
@@ -128,29 +122,29 @@ const CreateTourism = () => {
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-8 pl-3">
-                    <div className={`rounded-md border-2 ${emptyType ? 'border-red-600'
-                        : 'border-transparent'
-                        }`}>
-                        <div className="flex flex-col pb-3 p-1 relative ">
-                            <div className="flex flex-wrap">
-                                {arrayTourismType.map((chkBtn, index) => (
-                                    <div key={index} className='flex lg:w-1/6 w-1/3'>
-                                        <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
-                                            setTourismType(e.currentTarget.value)
-                                            setEmptyType(false)
-                                        }} />
-                                        <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
+          <div className={`rounded-md border-2 ${emptyType ? 'border-red-600'
+            : 'border-transparent'
+            }`}>
+            <div className="flex flex-col pb-3 p-1 relative ">
+              <div className="flex flex-wrap">
+                {tourismStore.getTourismTypes.map((chkBtn, index) => (
+                  <div key={index} className='flex lg:w-1/6 w-1/3'>
+                    <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
+                      setTourismType(e.currentTarget.value)
+                      setEmptyType(false)
+                    }} />
+                    <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer p-2 mr-3 mt-3 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
                             border-gray-300 
                             peer-checked:hover:bg-indigo-700 
                             peer-checked:text-white 
                             ring-indigo-500 peer-checked:ring-2 overflow-hidden ">{chkBtn.title}</label>
-                                    </div>
-                                ))}
-                            </div>
-                            <label className={"labelFloatDate"}>Categoría</label>
-                        </div>
-                    </div>
-                </div>
+                  </div>
+                ))}
+              </div>
+              <label className={"labelFloatDate"}>Categoría</label>
+            </div>
+          </div>
+        </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col p-1 relative">
             <input ref={inputTitle} placeholder=" " name="tourismTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
@@ -164,7 +158,7 @@ const CreateTourism = () => {
               }} onChange={(e) => {
                 setTourismTitle(e.currentTarget.value)
                 setEmptyTitle(false)
-              }} />
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
             <label className="labelFloatInput">Título</label>
           </div>
         </div >
@@ -181,7 +175,7 @@ const CreateTourism = () => {
               }} onChange={(e) => {
                 setTourismDescription(e.currentTarget.value)
                 setEmptyDescription(false)
-              }} />
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
             <label className={"labelFloatTxtArea"}>Descripcíon</label>
           </div>
         </div>
@@ -222,7 +216,6 @@ const CreateTourism = () => {
                   setLong(e.lng)
                   setEmptyLongLat(false)
                 }}
-
               >
                 <AnyReactComponent
                   lat={lat}
@@ -235,15 +228,12 @@ const CreateTourism = () => {
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col p-1 relative">
-
             <input value={long} ref={inputLong} placeholder=" " type="text" disabled name="tourismLong" className="inputCamp peer" onKeyUp={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                 if (inputLat.current != null) {
                   inputLat.current.focus()
                 }
               }
-            }} onChange={(e) => {
-              setTourismLong(e.currentTarget.value)
             }} />
             <label className={"labelFloatInput"}>Longitud</label>
           </div>
@@ -256,18 +246,16 @@ const CreateTourism = () => {
                   btnRef.current.focus()
                 }
               }
-            }} onChange={(e) => {
-              setTourismLat(e.currentTarget.value)
             }} />
             <label className={"labelFloatInput"}>Latitud</label>
           </div>
         </div>
         <div className="  flex m-auto justify-center left-0 right-0 p-3 bottom-1">
           <button ref={btnRef} name="tourismBtnSave" className="btnStandard mr-10" onClick={addTourism}>Publicar</button>
-          <button name="tourismBtnCancel" className="btnStandard" onClick={() => tourismStore.setModalCreate(false)}>Cancelar</button>
+          <button name="tourismBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
         </div>
       </div>
     </div>
   )
 }
-export default CreateTourism
+export default observer(CreateTourism)

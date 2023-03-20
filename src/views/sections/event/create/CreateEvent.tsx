@@ -3,14 +3,12 @@ import { useRef, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
-
-import { useNavigate } from "react-router-dom";
 import { Event } from '../../../../models/section/Section';
-
 import EventStore from '../../../../viewmodels/Event/EventStore';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+import { observer } from 'mobx-react-lite';
 const eventStore = EventStore.getEventStore()
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
@@ -34,13 +32,13 @@ const CreateEvent = () => {
   const [eventPrice, setEventPrice] = useState<string>("")
   const [eventSeats, setEventSeats] = useState<string>("")
   const [eventLink, setEventLink] = useState<string>("")
-  const [eventPhoto, setEventPhoto] = useState<string>("")
   const [eventDateStart, setEventDateStart] = useState<string>("")
   const [eventDateFin, setEventDateFin] = useState<string>("")
   const [file, setFile] = useState<File>()
+  const [confirm, setConfirm] = useState<boolean>(false)
 
   function addEvent() {
-    const event: Event = {
+    const eventNew: Event = {
       title: eventTitle,
       address: eventDirection,
       description: eventDescription,
@@ -52,7 +50,7 @@ const CreateEvent = () => {
       startDate: eventDateStart,
       endDate: eventDateFin
     }
-    if (eventStore.getEvent.title === event.title) {
+    if (eventStore.getEvent.title === eventNew.title) {
       toast.info('Ya existe este evento', {
         position: 'bottom-center',
         autoClose: 500,
@@ -80,8 +78,9 @@ const CreateEvent = () => {
             draggable: true,
             progress: undefined,
             theme: 'light'
-          }) : eventStore.addRequestEvent('Bolea', event, file!!)
+          }) : eventStore.addRequestEvent('Bolea', eventNew, file!!)
       } else {
+        eventNew.reservePrice = 0
         checkIfEmpty()
         eventTitle === '' || eventDirection === '' || eventDescription === ''
           || eventOrganization === ''
@@ -97,7 +96,7 @@ const CreateEvent = () => {
             draggable: true,
             progress: undefined,
             theme: 'light'
-          }) : eventStore.addRequestEvent('Bolea', event, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
+          }) : eventStore.addRequestEvent('Bolea', eventNew, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
       }
     }
   }
@@ -109,6 +108,7 @@ const CreateEvent = () => {
       return "Evento gratuito."
     }
   }
+
   function checkIfEmpty() {
     eventTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
     eventDirection === "" ? setEmptyDirection(true) : setEmptyDirection(false)
@@ -119,9 +119,8 @@ const CreateEvent = () => {
     eventLink === '' ? setEmptyLink(true) : setEmptyLink(false)
     eventDateStart === '' ? setEmptyStartdate(true) : setEmptyStartdate(false)
     eventDateFin === '' ? setEmptyFinDate(true) : setEmptyFinDate(false)
-
-
   }
+
   const [emptyTitle, setEmptyTitle] = useState(false)
   const [emptyDescription, setEmptyDescription] = useState(false)
   const [emptyDirection, setEmptyDirection] = useState(false)
@@ -133,8 +132,24 @@ const CreateEvent = () => {
   const [emptyFinDate, setEmptyFinDate] = useState(false)
 
   return (
-
     <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12    h-screen overflow-y-auto border-2 rounded-md bg-white">
+      {confirm ? (
+        <div>
+          <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <div className="fixed inset-0 w-screen h-screen">
+              <div className=" flex justify-center mt-10 ">
+                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                  <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                  <div className="flex justify-center m-auto mt-5 mb-3">
+                    <button className="btnStandard w-14 h-10 mr-5 " onClick={() => eventStore.setModalCreate(false)}>SI</button>
+                    <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : <></>}
       <div className="h-20 w-full flex bg-indigo-800 rounded-t-md ">
         <div className="w-full flex flex-row gap-8 p-2 justify-between">
           <img src={logoEtno} alt="logo_Etno"></img>
@@ -144,84 +159,83 @@ const CreateEvent = () => {
       <div className="w-full flex flex-1 flex-col mt-5 pl-3">
         <div className="flex flex-col  p-1 relative">
           <input autoFocus placeholder=" " type="text" name="eventTitle" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
-                        : ''
-                        }`} onChange={(value) => {
-            setEventTitle(value.currentTarget.value)
-            setEmptyTitle(false)
-          }} onKeyUp={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (inputRefDir.current != null) {
-                inputRefDir.current.focus()
+            : ''
+            }`} onChange={(value) => {
+              setEventTitle(value.currentTarget.value)
+              setEmptyTitle(false)
+            }} onKeyUp={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (inputRefDir.current != null) {
+                  inputRefDir.current.focus()
+                }
               }
-            }
-          }}></input>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatInput"}>Título</label>
         </div>
         <div className="flex flex-col mt-3 p-1 relative ">
           <input ref={inputRefDir} placeholder=" " type="text" name="eventDirection1" id="2" className={`inputCamp peer ${emptyDirection ? 'border-red-600'
-                        : ''
-                        }`} onChange={(value) => {
-            setEventDirection(value.currentTarget.value)
-            setEmptyDirection(false)
-          }} onKeyUp={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (txtAreaRef.current != null) {
-                txtAreaRef.current.focus()
+            : ''
+            }`} onChange={(value) => {
+              setEventDirection(value.currentTarget.value)
+              setEmptyDirection(false)
+            }} onKeyUp={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (txtAreaRef.current != null) {
+                  txtAreaRef.current.focus()
+                }
               }
-            }
-          }}></input>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatInput"}>Dirección</label>
         </div>
         <div className="flex flex-col mt-3 p-1 relative">
           <textarea ref={txtAreaRef} placeholder=" " name="eventDescription" rows={3} className={`inputCamp peer ${emptyDescription ? 'border-red-600'
-                        : ''
-                        }`} onChange={(value) => {
-            setEventDescription(value.currentTarget.value)
-            setEmptyDescription(false)
-          }} onKeyDown={(e) => {
-            if (e.code === "NumpadEnter") {
-              if (inputRefOrg.current != null) {
-                inputRefOrg.current.focus()
+            : ''
+            }`} onChange={(value) => {
+              setEventDescription(value.currentTarget.value)
+              setEmptyDescription(false)
+            }} onKeyDown={(e) => {
+              if (e.code === "NumpadEnter") {
+                if (inputRefOrg.current != null) {
+                  inputRefOrg.current.focus()
+                }
               }
-            }
-          }}></textarea>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatTxtArea"}>Descripción</label>
         </div>
         <div className="flex flex-col mt-3 p-1 relative">
           <input ref={inputRefOrg} placeholder=" " type="text" name="eventOrganization" className={`inputCamp peer ${emptyOrganization ? 'border-red-600'
-                        : ''
-                        }`} onChange={(value) => {
-            setEventOrganization(value.currentTarget.value)
-            setEmptyOrganization(false)
-          }} onKeyDown={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (inputRefPric.current != null) {
-                inputRefPric.current.focus()
+            : ''
+            }`} onChange={(value) => {
+              setEventOrganization(value.currentTarget.value)
+              setEmptyOrganization(false)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (inputRefPric.current != null) {
+                  inputRefPric.current.focus()
+                }
               }
-            }
-          }}></input>
+            }}></input>
           <label className={"labelFloatTxtArea"}>Organización</label>
         </div>
         <div className="flex flex-col p-1 mt-5 relative">
-
           <input ref={inputRefSeat} type="text" name="eventSeats" placeholder="0" onInput={(e) => (
             e.currentTarget.value = e.currentTarget.value.replace(/^[^1-9]/, ""),
-            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")
+            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, ""),
+            e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')
           )} className={`inputCamp peer p-2 mt-1 md:w-1/4 w-1/2 ${emptySeats ? 'border-red-600'
-          : ''
-          }`} onChange={(value) => {
-            setEventSeats(value.currentTarget.value)
-            setEmptySeats(false)
-          }} onKeyDown={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (inputRefLink.current != null) {
-                inputRefLink.current.focus()
+            : ''
+            }`} onChange={(value) => {
+              setEventSeats(value.currentTarget.value)
+              setEmptySeats(false)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (inputRefLink.current != null) {
+                  inputRefLink.current.focus()
+                }
               }
-            }
-          }} />
+            }} />
           <label className={"labelFloatDate"}>Aforo</label>
         </div>
-
         <div className="flex flex-row p-1 mt-5 relative ">
           <label className="relative inline-flex items-center mr-5 cursor-pointer w-14">
             <input type="checkbox" value="" className="sr-only peer" onChange={(e) => {
@@ -232,7 +246,6 @@ const CreateEvent = () => {
           </label>
           <span className="ml-3 text-xl font-medium text-gray-900 dark:text-gray-300">{freeOrNot(subscription)}</span>
         </div>
-
         <div className="flex flex-col mt-5 p-1">
           <div className="relative flex flex-row rounded-md">
             <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -254,27 +267,26 @@ const CreateEvent = () => {
             <label className={"labelFloatDate"}>Precio de reserva </label>
           </div>
         </div>
-
         <div className="flex flex-col mt-3 relative p-1">
           <input ref={inputRefLink} placeholder=" " type="text" name="eventUrl" className={`inputCamp peer ${emptyLink ? 'border-red-600'
-                        : ''
-                        }`} onChange={(value) => {
-            setEventLink(value.currentTarget.value)
-            setEmptyLink(false)
-          }} onKeyDown={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (inputRefDS.current != null) {
-                inputRefDS.current.focus()
+            : ''
+            }`} onChange={(value) => {
+              setEventLink(value.currentTarget.value)
+              setEmptyLink(false)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (inputRefDS.current != null) {
+                  inputRefDS.current.focus()
+                }
               }
-            }
-          }}></input>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatInput"}>Pagina Web</label>
         </div>
         <div className="w-full flex flex-1 flex-col ">
           <div className="text-left p-1 ">
             <div className={`photoBoard ${emptyFile ? 'border-red-600'
-                        : ''
-                        }`}>
+              : ''
+              }`}>
               <div className='absolute left-3'>
                 Foto {file?.name}
               </div>
@@ -295,42 +307,40 @@ const CreateEvent = () => {
         </div>
         <div className="flex flex-col p-1 relative mt-5">
           <input ref={inputRefDS} type="date" name="eventStart" className={`inputCamp peer w-40 ${emptyStartdate ? 'border-red-600'
-                        : ''
-                        }`} onChange={(value) => {
-            setEventDateStart(value.currentTarget.value)
-            setEmptyStartdate(false)
-          }} onKeyDown={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (inputRefDF.current != null) {
-                inputRefDF.current.focus()
+            : ''
+            }`} onChange={(value) => {
+              setEventDateStart(value.currentTarget.value)
+              setEmptyStartdate(false)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (inputRefDF.current != null) {
+                  inputRefDF.current.focus()
+                }
               }
-            }
-          }} />
+            }} />
           <label className={"labelFloatDate"}>Fecha de Inicio</label>
         </div>
         <div className="flex flex-col p-1 relative mt-5">
-          <input ref={inputRefDF} type="date" name="eventFinish" className={`inputCamp peer w-40 ${emptyFinDate? 'border-red-600'
-                        : ''
-                        }`} onChange={(value) => {
-            setEventDateFin(value.currentTarget.value)
-            setEmptyFinDate(false)
-          }} onKeyDown={(e) => {
-            if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-              if (btnRef.current != null) {
-                btnRef.current.focus()
+          <input ref={inputRefDF} type="date" name="eventFinish" className={`inputCamp peer w-40 ${emptyFinDate ? 'border-red-600'
+            : ''
+            }`} onChange={(value) => {
+              setEventDateFin(value.currentTarget.value)
+              setEmptyFinDate(false)
+            }} onKeyDown={(e) => {
+              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                if (btnRef.current != null) {
+                  btnRef.current.focus()
+                }
               }
-            }
-          }} />
+            }} />
           <label className={"labelFloatDate"}>Fecha de Final</label>
         </div>
       </div>
       <div className="flex m-auto justify-center p-3">
         <button ref={btnRef} name="eventBtnSave" className="btnStandard mr-10" onClick={addEvent}>Publicar</button>
-        <button name="eventBtnCancel" className="btnStandard" onClick={() => eventStore.setModalCreate(false)}>Cancelar</button>
+        <button name="eventBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
       </div>
     </div>
-
-
   )
 }
-export default CreateEvent
+export default observer(CreateEvent)

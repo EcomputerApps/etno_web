@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite"
-import { useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { toast, ToastContainer } from "react-toastify"
+import { useRef, useState } from "react"
+import { toast} from "react-toastify"
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import { News } from "../../../../models/section/Section"
@@ -10,8 +9,7 @@ import NewsStore from "../../../../viewmodels/news/NewsStore"
 const newsStore = NewsStore.getNewsStore()
 
 const EditNews = () => {
-  const navigate = useNavigate()
-  const [news, setNews] = useState(newsStore.getNews)
+   const [news] = useState(newsStore.getNews)
 
   const inputRefTit = useRef<HTMLInputElement>(null)
   const inputRefDate = useRef<HTMLInputElement>(null)
@@ -24,26 +22,9 @@ const EditNews = () => {
   const [newsDate, setNewsDate] = useState<string>(news.publicationDate!!)
   const [newsDescription, setNewsDescription] = useState<string>(news.description!!)
   const [file, setFile] = useState<File>()
-
-
-  const arrayServiceTypes = [{
-    "id": "checkOne",
-    "value": "General",
-    "title": "General",
-  }, {
-    "id": "checkTwo",
-    "value": "Tecnología",
-    "title": "Tecnología",
-  },
-  {
-    "id": "checkThree",
-    "value": "Salud",
-    "title": "Salud",
-  }
-  ]
+  const [confirm, setConfirm] = useState(false)
 
   function updateNews() {
-
     if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === '') {
       chekIfEmpty()
       toast.error('Rellene los campos', {
@@ -79,11 +60,27 @@ const EditNews = () => {
   const [emptyDate, setEmptyDate] = useState(false)
   const [emptyDescption, setEmptyDescription] = useState(false)
 
-
   return (
     <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 md:h-screen border-2 rounded-md bg-white">
+      {confirm ? (
+        <div>
+          <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <div className="fixed inset-0 w-screen h-screen">
+              <div className=" flex justify-center mt-10 ">
+                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                  <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                  <div className="flex justify-center m-auto mt-5 mb-3">
+                    <button className="btnStandard w-14 h-10 mr-5 " onClick={() => newsStore.setModalEdit(false)}>SI</button>
+                    <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : <></>}
       <div>
-        <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
+                <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
             <img src={logoEtno} alt="logo_Etno"></img>
             <p className='flex  text-white lg:text-3xl text-2xl p-3'>NOTICIAS</p>
@@ -92,7 +89,7 @@ const EditNews = () => {
         <div className="w-full flex flex-1 flex-col mt-8 pl-3">
           <div className="flex flex-col p-1 relative">
             <div className="flex  flex-wrap pt-2">
-              {arrayServiceTypes.map((chkBtn, index) => (
+              {newsStore.getNewsTypes.map((chkBtn, index) => (
                 <div key={index} className='flex lg:w-1/6 w-1/3'>
                   <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" defaultChecked={news.category === chkBtn.title} value={chkBtn.value} onChange={(e) => {
                     setNewsCategory(e.currentTarget.value)
@@ -110,7 +107,6 @@ const EditNews = () => {
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
-
             <input  autoFocus defaultValue={news.title} ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
               : ''
               }`} onChange={(value) => {
@@ -161,7 +157,6 @@ const EditNews = () => {
             <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>
-
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="text-left p-1 ">
             <div className={`photoBoard ${emptyFile ? 'border-red-600'
@@ -187,7 +182,7 @@ const EditNews = () => {
         </div>
         <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
           <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => updateNews()}>Actualizar</button>
-          <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => newsStore.setModalEdit(false)}>Cancelar</button>
+          <button name="pharmacyBtnCancel" className="btnStandard" onClick={() =>setConfirm(true)}>Cancelar</button>
         </div>
       </div>
 

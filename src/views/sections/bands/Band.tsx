@@ -22,14 +22,15 @@ const Band = () => {
   useEffect(() => {
     bandStore.getRequestBand('Bolea', pageNumber, 5)
   }, [pageNumber])
+
   useEffect(() => {
     bandStore.getAllBandRequest("Bolea")
   }, [])
 
-
   const incrementPage = () => {
     setPageNumber(pageNumber + 1)
   }
+
   const decrementPage = () => {
     setPageNumber(pageNumber - 1)
   }

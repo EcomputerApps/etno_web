@@ -10,6 +10,7 @@ import markerIcon from "../../../../assets/marker.svg"
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import DatePicker, { Value } from 'react-multi-date-picker';
+import { observer } from 'mobx-react-lite';
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
@@ -68,17 +69,6 @@ const CreatePharmacy = () => {
         long === 0 || lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
     }
 
-    const [emptyType, setEmptyType] = useState(false)
-    const [emptyName, setEmptyName] = useState(false)
-    const [emptyFile, setEmptyFile] = useState(false)
-    const [emptyWebUrl, setEmptyWebUrl] = useState(false)
-    const [emptyTel, setEmptyTel] = useState(false)
-    const [emptyDescption, setEmptyDescription] = useState(false)
-    const [emptyScheMorningOne, setEmptyScheMorningOne] = useState(false)
-    const [emptyScheEveningOne, setEmptyScheEveningOne] = useState(false)
-    const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState(false)
-    const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState(false)
-    const [emptyLongLat, setEmptyLongLat] = useState(false)
 
     const [file, setFile] = useState<File>()
     const [datePanel, setDatePanel] = useState(true)
@@ -110,11 +100,22 @@ const CreatePharmacy = () => {
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
 
+    const [emptyType, setEmptyType] = useState<boolean>(false)
+    const [emptyName, setEmptyName] = useState<boolean>(false)
+    const [emptyFile, setEmptyFile] = useState<boolean>(false)
+    const [emptyWebUrl, setEmptyWebUrl] = useState<boolean>(false)
+    const [emptyTel, setEmptyTel] = useState<boolean>(false)
+    const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
+    const [emptyScheMorningOne, setEmptyScheMorningOne] = useState<boolean>(false)
+    const [emptyScheEveningOne, setEmptyScheEveningOne] = useState<boolean>(false)
+    const [emptyScheMorningTwo, setEmptyScheMorningTwo] = useState<boolean>(false)
+    const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState<boolean>(false)
+    const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
     const [lat, setLat] = useState(0)
     const [long, setLong] = useState(0)
     const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
-
-    const [pharmType, setPharmType] = useState("")
+    const [pharmType, setPharmType] = useState<string>("")
     const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>("Lunes-Viernes")
     const [pharmacyName, setPharmacyName] = useState<string>("")
     const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>("")
@@ -138,6 +139,7 @@ const CreatePharmacy = () => {
                 " " + pharmacyShcedulEvenOne + "-" + pharmacyShcedulEvenTwo)
         }
     }
+
     function fillDates(dates: string): Date[] {
         var arrayDate = new Array()
         if (dates !== undefined) {
@@ -160,15 +162,13 @@ const CreatePharmacy = () => {
             })
         })
         return arrayDeFechas
-
     }
 
     function addPharmacy() {
-        if (fillDates(dutyDates?.toString()!!).length !=1) {
+        if (fillDates(dutyDates?.toString()!!).length != 1) {
             setPharmPeriod(0)
             setPharmFrequency(0)
-        } 
-       
+        }
         const pharmacy: Pharmacy = {
             type: pharmType,
             name: pharmacyName,
@@ -182,7 +182,6 @@ const CreatePharmacy = () => {
             durationDays: pharmPeriod,
             frequencyInDays: pharmFrequency,
             dates: fillPharmacyDates(fillDates(dutyDates?.toString()!!))
-
         }
         if (pharmacyStore.getPharmacy.name === pharmacy.name) {
             toast.info('Ya existe esta farmacia', {
@@ -197,38 +196,36 @@ const CreatePharmacy = () => {
             })
         } else {
             chekIfEmpty()
-            if(pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
+            if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
                 pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
                 (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === "" ||
-                long === 0 || lat === 0 || file === undefined){
-                    toast.error('Rellene los campos', {
-                        position: 'bottom-center',
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: false,
-                        pauseOnHover: false,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light"
-                    })
-                }else{
-                    if(pharmType === "Normal"){
-                        pharmacy.startDate = undefined
-                        pharmacy.dates = undefined
-                        pharmacy.durationDays = 0
-                        pharmacy.frequencyInDays = 0
-                    }
-                    console.log(pharmacy)
-                    pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias') 
+                long === 0 || lat === 0 || file === undefined) {
+                toast.error('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                })
+            } else {
+                if (pharmType === "Normal") {
+                    pharmacy.startDate = undefined
+                    pharmacy.dates = undefined
+                    pharmacy.durationDays = 0
+                    pharmacy.frequencyInDays = 0
                 }
-                  
-                 
-                
-               
+                console.log(pharmacy)
+                pharmacyStore.addRequestPharmacy('Bolea', pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
+            }
         }
     }
+
     const datePickerRef = useRef<any>();
     const [shouldCloseCalendar, setShouldCloseCalendar] = useState(false)
+
     function chekDatesCount() {
         if (fillDates(dutyDates?.toString()!!).length !== 1 || dutyDates?.toString() === "") {
             setPharmPeriod(0)
@@ -236,8 +233,33 @@ const CreatePharmacy = () => {
         }
         datePickerRef.current.closeCalendar()
     }
+
+    const selectorOptions = [
+        { value: 'Lunes-Viernes', label: 'De lunes a viernes.' },
+        { value: 'Lunes-Sabado', label: 'De lunes a sabado.' },
+        { value: 'Lunes-Domingo', label: 'Todos los dias.' },
+        { value: 'Otro', label: 'Otro horrario' }
+    ]
+
     return (
         <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12  h-screen overflow-y-auto border-2 rounded-md bg-white">
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => pharmacyStore.setModalCreate(false)}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : <></>}
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>
@@ -285,14 +307,14 @@ const CreatePharmacy = () => {
                     <div className="flex pt-2  p-1  relative  ">
                         <div className='mt-1 peer'>
                             <DatePicker
-                                 locale={greorgian_es}
-                                 disabled={pharmType === "Normal"}
-                                 value={dutyDates}
-                                 onChange={setDutyDates}
-                                 weekStartDayIndex={1}
-                                 ref={datePickerRef}
-                                 onOpen={() => setShouldCloseCalendar(false)}
-                                 onClose={() => shouldCloseCalendar}
+                                locale={greorgian_es}
+                                disabled={pharmType === "Normal"}
+                                value={dutyDates}
+                                onChange={setDutyDates}
+                                weekStartDayIndex={1}
+                                ref={datePickerRef}
+                                onOpen={() => setShouldCloseCalendar(false)}
+                                onClose={() => shouldCloseCalendar}
                                 style={{
                                     height: "40px",
                                     borderRadius: "6px",
@@ -304,7 +326,7 @@ const CreatePharmacy = () => {
                                     padding: "3px 10px"
                                 }}
                                 multiple>
-                               <button
+                                <button
                                     style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
                                     onClick={() => setDutyDates(new Date())}
                                 >
@@ -335,10 +357,9 @@ const CreatePharmacy = () => {
                             }} />
                         <label className={"labelFloatDate"}>Frecuencia</label>
                     </div>
-
                     <div className="flex pt-2  p-1  relative ">
                         <input type="number" ref={inputPeriod} min={0} className="inputCamp  w-20 px-2 mt-1 h-10 disabled:bg-gray-200 disabled:border-gray-300 disabled:text-gray-200"
-                              disabled={fillDates(dutyDates?.toString()!!).length > 1}
+                            disabled={fillDates(dutyDates?.toString()!!).length > 1}
                             onChange={(e) => {
                                 setPharmPeriod(e.currentTarget.valueAsNumber)
                             }}
@@ -350,7 +371,7 @@ const CreatePharmacy = () => {
                                 }
                             }} />
                         <label className={"labelFloatDate"}>Repeticiones</label>
-                                 </div>
+                    </div>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-5 pl-3">
@@ -366,7 +387,7 @@ const CreatePharmacy = () => {
                                     inputWebUrl.current.focus()
                                 }
                             }
-                        }} />
+                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
                     <label className={"labelFloatInput"}>Nombre</label>
                 </div>
             </div>
@@ -383,7 +404,7 @@ const CreatePharmacy = () => {
                                     inputTel.current.focus()
                                 }
                             }
-                        }} />
+                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
                     <label className={"labelFloatInput"}>Pagina Web</label>
                 </div>
             </div>
@@ -427,12 +448,12 @@ const CreatePharmacy = () => {
                             }} />
                     <label className={"labelFloatInput"}>Teléfono</label>
                 </div>
-
             </div>
+            {/*Horario------------------------------------------------------------------------------*/}
             <div className="w-full flex flex-1 flex-col pl-3 mt-5">
                 <div className="flex flex-col p-1 mt-1 relative">
                     <div className="flex flex-col border-2 rounded-md">
-                        <select ref={inputScheSelect} className="inputCamp p-0" defaultValue="Lunes-Viernes" onChange={(e) => {
+                        <select ref={inputScheSelect} className="inputCamp p-0 peer" defaultValue="Lunes-Viernes" onChange={(e) => {
                             setPharmacyShcedulSelector(e.target.value)
                         }} onKeyDown={(e) => {
                             if ((e.code === "NumpadEnter")) {
@@ -443,18 +464,16 @@ const CreatePharmacy = () => {
                                 }
                             }
                         }}>
-                            <option className="peer" value="Lunes-Viernes">De lunes a viernes.</option>
-                            <option value="Lunes-Sabado">De lunes a sabado.</option>
-                            <option value="Lunes-Domingo">Todos los dias.</option>
-                            <option value="Otro">Otro horrario.</option>
+                            {selectorOptions.map((option, index) => (
+                                <option key={index} label={option.label} value={option.value}>{option.label}</option>
+                            ))}
                         </select>
                         <label className={"labelFloatDate"}>Horario</label>
-
                         <div className="p-3 flex flex-row" >
                             <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
                                 <div className="relative p-2 flex lg:flex-row flex-col">
                                     <input ref={inputScheMornOne} placeholder=" " name="pharmacyShedulesMorning" type="time"
-                                        className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheMorningOne ? 'border-red-600'
+                                        className={`inputCamp peer lg:w-1/2 p-1 mr-2 ${emptyScheMorningOne ? 'border-red-600'
                                             : ''
                                             }`}
                                         onKeyDown={(e) => {
@@ -468,7 +487,7 @@ const CreatePharmacy = () => {
                                             setEmptyScheMorningOne(false)
                                         }} />
                                     <input ref={inputScheMornTwo} placeholder=" " name="pharmacyShedulesMorning" type="time"
-                                        className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheMorningTwo ? 'border-red-600'
+                                        className={`inputCamp peer lg:w-1/2 p-1 mr-2 ${emptyScheMorningTwo ? 'border-red-600'
                                             : ''
                                             }`}
                                         onKeyDown={(e) => {
@@ -484,24 +503,23 @@ const CreatePharmacy = () => {
                                     <label className={"labelFloatInput"}>Mañana</label>
                                 </div>
                             </div>
-
                             <div hidden={pharmacyShcedulSelector === "Otro"} className="w-full">
                                 <div className="relative p-2 flex lg:flex-row flex-col">
                                     <input maxLength={100} ref={inputScheEvenOne} placeholder=" " name="pharmacyShedulesEvening" type="time"
-                                        className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheEveningOne ? 'border-red-600'
+                                        className={`inputCamp peer lg:w-1/2 p-1 mr-2 ${emptyScheEveningOne ? 'border-red-600'
                                             : ''
                                             }`} onKeyDown={(e) => {
                                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                                     if (inputScheEvenTwo.current != null) {
                                                         inputScheEvenTwo.current.focus()
-                                                    } 
+                                                    }
                                                 }
                                             }} onChange={(e) => {
                                                 setPharmacyShcedulEvenOne(e.target.value)
                                                 setEmptyScheEveningOne(false)
                                             }} />
                                     <input maxLength={100} ref={inputScheEvenTwo} placeholder=" " name="pharmacyShedulesEvening" type="time"
-                                        className={`inputCamp peer w-1/2 p-1 mr-2 ${emptyScheEveningTwo ? 'border-red-600'
+                                        className={`inputCamp peer lg:w-1/2 p-1 mr-2 ${emptyScheEveningTwo ? 'border-red-600'
                                             : ''
                                             }`} onKeyDown={(e) => {
                                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -547,7 +565,7 @@ const CreatePharmacy = () => {
                         }} onChange={(e) => {
                             setPharmacyDescption(e.target.value)
                             setEmptyDescription(false)
-                        }} />
+                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}  />
                     <label className={"labelFloatTxtArea"}>Descripción</label>
                 </div>
             </div>
@@ -601,9 +619,9 @@ const CreatePharmacy = () => {
             </div>
             <div className="flex m-auto justify-center p-3">
                 <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={addPharmacy} onFocus={() => handleScheduleInput()}>Publicar</button>
-                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => pharmacyStore.setModalCreate(false)}>Cancelar</button>
+                <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
             </div>
         </div>
     )
 }
-export default CreatePharmacy
+export default observer(CreatePharmacy)

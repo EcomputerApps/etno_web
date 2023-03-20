@@ -10,8 +10,9 @@ import CreateService from "./create/CreateService"
 const serviceStore = ServiceStore.getServiceStore()
 
 const Service = () => {
+
   const [pageNumber, setPageNumber] = useState(0)
- 
+
   useEffect(() => {
     serviceStore.getRequestService('Bolea', pageNumber, 5)
   }, [pageNumber])
@@ -22,6 +23,7 @@ const Service = () => {
   const decrementPage = () => {
     setPageNumber(pageNumber - 1)
   }
+
   return (
     <div className="w-full h-full  relative">
       <div className="flex flex-col gap-4">

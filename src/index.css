@@ -9,7 +9,7 @@
    disabled:bg-gray-500
 }
 .inputCamp{
-  @apply autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] border-2 rounded-md p-2  focus:outline-none focus:border-indigo-800   bg-transparent
+  @apply autofill:shadow-[inset_0_0_0px_30px_rgb(255,255,255)] border-2 rounded-md p-2  focus:outline-none focus:border-indigo-800   bg-transparent 
 }
 
 .labelFloatInput {
@@ -35,7 +35,7 @@
 }
 
 .tableCamp {
-  @apply w-full h-20 overflow-hidden flex items-center justify-center min-w-max
+  @apply px-6 py-4 max-w-prose overflow-auto text-center  
 }
 
 @tailwind utilities;
