@@ -16,12 +16,14 @@ class SurveyStore {
 
     modalCreateSurvey: boolean = false
     modalEditSurvey: boolean = false
+    modalResults: boolean = false
     survey: Survey = {}
 
 
     constructor() {
         makeAutoObservable(this, {
             survey: observable,
+            modalResults: observable,
             modalCreateSurvey: observable,
             modalEditSurvey: observable,
             updateSurvey: action,
@@ -29,14 +31,23 @@ class SurveyStore {
             setEditSurvey: action,
             getSurvey: computed,
             getCreateSurvey: computed,
-            getEditSurvey: computed
+            getEditSurvey: computed,
+            setModalResult: action,
+            getModalRresult: computed
         })
     }
+    
     updateSurvey(survey: Survey) {
         this.survey = survey
     }
     get getSurvey() {
         return this.survey
+    }
+    setModalResult(mode: boolean){
+        this.modalResults = mode
+    }
+    get getModalRresult(){
+        return this.modalResults
     }
     setCreateSurvey(mode: boolean) {
         this.modalCreateSurvey = mode

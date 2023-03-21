@@ -68,7 +68,7 @@ class ServiceStore {
             service: observable,
             updateService: action,
             getService: computed,
-            getRequestService: action,
+            getPaginatedServiceRequest: action,
             addRequestService: action,
             deleteService: action,
             updatePaginatedService: action,
@@ -113,8 +113,8 @@ class ServiceStore {
         return this.service
     }
 
-    async getRequestService(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/services?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedServiceRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/services/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
 
         })

@@ -3,6 +3,8 @@ import { useState } from "react"
 import { Service } from "../../../models/section/Section"
 import ServiceStore from "../../../viewmodels/service/ServiceStore"
 import EditService from "./create/EditService"
+import serviceRed from "../../../assets/menu/serviceRed.svg"
+
 const serviceStore = ServiceStore.getServiceStore()
 
 interface PropTable {
@@ -32,7 +34,14 @@ const TableService = (prop: PropTable) => {
 
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg ">
-            {serviceStore.getModalEdit ? (
+            {serviceStore.getPaginatedService.content?.length === 0 ? (
+                <div className="flex flex-row m-1">
+                    <img src={serviceRed} alt="BIG" />
+                    <label className="text-xl my-auto ml-5 font-medium">No hay Servicios</label>
+                </div>
+            ) : (
+                <div>
+ {serviceStore.getModalEdit ? (
                 <div>
                     <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                         <div className="fixed inset-0 w-screen h-screen">
@@ -106,6 +115,9 @@ const TableService = (prop: PropTable) => {
                     </div>
                 </div>
             ) : <></>}
+                </div>
+            )}
+           
         </div>
     )
 }
