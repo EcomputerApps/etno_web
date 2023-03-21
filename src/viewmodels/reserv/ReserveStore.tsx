@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from "mobx"
 import { toast } from "react-toastify"
-import { Hall, HallList, PaginatedPlace, PaginatedReserve, Place, PlaceList, Reserve, ReserveUser, ReservList } from "../../models/section/Section"
+import { Hall, HallList, PaginatedPlace, PaginatedReserve, Place, PlaceList, Reserve, ReserveUser, ReserveList } from "../../models/section/Section"
 import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
@@ -26,21 +26,22 @@ class ReserveStore {
     //Modals
     reserve: Reserve = {}
     place: Place = {}
-    reserveList: ReservList = {}
+    allReserves: ReserveList = {}
     placeList: PlaceList = {}
     paginatedReserve: PaginatedReserve = {}
     paginatedPlace: PaginatedPlace = {}
     hallList: HallList = {}
-    reserveUser : ReserveUser = {}
+    reserveUser: ReserveUser = {}
 
     constructor() {
         makeObservable(this, {
+            allReserves: observable,
             modalClientInfo: observable,
-            reserveUser : observable,
+            reserveUser: observable,
             modalEdit: observable,
             modalCreate: observable,
             modalCalendar: observable,
-            modalPlaces:observable,
+            modalPlaces: observable,
             modalAddHalls: observable,
             modalCreatePlaces: observable,
             paginatedReserve: observable,
@@ -62,7 +63,7 @@ class ReserveStore {
             updatePaginatedReserve: action,
             updatePaginatedPlaces: action,
             updateHallList: action,
-            updatePlaceList: action,
+            updateAllPlaces: action,
             getModalClientInfo: computed,
             getModalCreate: computed,
             getModalCalendar: computed,
@@ -76,10 +77,10 @@ class ReserveStore {
             getModalEdit: computed,
             getPlace: computed,
             getModalEditHalls: computed,
-            getPlaceList : computed,
-            getModalPlaceList : computed,
+            getAllPlaces: computed,
+            getModalPlaceList: computed,
             getReserveUser: computed
-           
+
         })
     }
     setModalEditHalls(mode: boolean) {
@@ -130,10 +131,10 @@ class ReserveStore {
     get getModalCreate() {
         return this.modalCreate
     }
-    updateReserveUser( reserveUser: ReserveUser){
+    updateReserveUser(reserveUser: ReserveUser) {
         this.reserveUser = reserveUser
     }
-    get getReserveUser(){
+    get getReserveUser() {
         return this.reserveUser
     }
     //----------------------------------------------------------------------------
@@ -166,10 +167,10 @@ class ReserveStore {
     get getPaginatedPlaces() {
         return this.paginatedPlace
     }
-    updatePlaceList(places: Place[]) {
+    updateAllPlaces(places: Place[]) {
         this.placeList.places = places
     }
-    get getPlaceList() {
+    get getAllPlaces() {
         return this.placeList
     }
     updatePlace(place: Place) {
@@ -181,10 +182,10 @@ class ReserveStore {
     //--------------Place---------------------------//
     //--------------Reserve 4 Calendar-------------//
     udpateAllReserves(reserve: Reserve[]) {
-        this.reserveList.reserves = reserve
+        this.allReserves.reserves = reserve
     }
     get getAllReserves() {
-        return this.reserveList
+        return this.allReserves
     }
     updateReserve(reserve: Reserve) {
         this.reserve = reserve
@@ -195,14 +196,15 @@ class ReserveStore {
     //--------------Reserve 4 Calendar-------------//
     //----------------------------------------------------------------------------------------------------------------------------
 
-    async getRequestPlaces() {
-        const response = await fetch(`http://${this.serverIp}:8080/places`, {
+    async getRequestPlaces(username : string) {
+        const response = await fetch(`http://${this.serverIp}:8080/places?username=${username}`, {
             method: 'GET',
         })
         const place = await response.json()
 
-        this.updatePlaceList(place)
+        this.updateAllPlaces(place)
     }
+
     async deletePlace(username: string, idPlace: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/place?username=${username}&idPlace=${idPlace}`, {
             method: 'DELETE',
@@ -276,8 +278,8 @@ class ReserveStore {
             })
         }
     }
-    async getRequestPagiantedPlaces(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/places?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedPlacesRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/places/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const pagPlaces = await response.json()
@@ -336,22 +338,22 @@ class ReserveStore {
 
         this.updateHallList(hall)
     }
-    //TEMPORAL METHOD++
-    async getRequestReserves() {
-        const response = await fetch(`http://${this.serverIp}:8080/reserves`, {
+
+    async getAllReserevesRequest(username: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/reserves?username=${username}`, {
             method: 'GET',
         })
         const reserves = await response.json()
 
         this.udpateAllReserves(reserves)
     }
+
     async confirmReserve(username: string, idReserve: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/confirm/reserve?username=${username}&idReserve=${idReserve}`, {
             method: 'PUT',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-
         })
 
         if (response.ok) {
@@ -461,8 +463,8 @@ class ReserveStore {
             })
         }
     }
-    async getRequestPagiantedReserves(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/reserves?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedReserveRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/reserves/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const reserves = await response.json()

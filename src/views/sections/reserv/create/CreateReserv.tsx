@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import ReserveStore from "../../../../viewmodels/reserv/ReserveStore"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import logoEtno from '../../../../assets/logo_etno.png'
 import { Calendar } from "react-multi-date-picker"
 import DatePanel from "react-multi-date-picker/plugins/date_panel"
@@ -16,7 +16,21 @@ const reserveStore = ReserveStore.getReserveStore()
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 var reservTime = new Array<ReserveSchedule>()
+
 const CreateReserve = () => {
+    useEffect(() => {
+        reserveStore.getAllReserevesRequest("Bolea")
+    }, [])
+
+    function checkIfExist(name: string) {
+        var flag: boolean = false
+        reserveStore.getAllReserves.reserves?.map((item) => {
+            if (item.name === name) {
+                flag = true
+            }
+        })
+        return flag
+    }
 
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const inputEmail = useRef<HTMLInputElement>(null)
@@ -59,21 +73,33 @@ const CreateReserve = () => {
             reserveUsers: reservUser,
             isReserved: isReserved
         }
-        checkIfEmpty()
-        reservName === "" || reservDescription === "" || reservEmail === "" || reservPhone === "" || reservPhone === "" ||
-            reservPlace?.name === "Elige Lugar" || reservPlace === undefined || reservHall?.name === "Elige la sala" || reservHall?.name === undefined || reservDate?.toString() === undefined ||
-            reservDate?.toString() === "" || reservTime.length === 0 ?
-            toast.error('Rellene los campos', {
+        if (checkIfExist(newReserv.name!!)) {
+            toast.info('Ya existe esta reserva', {
                 position: 'bottom-center',
-                autoClose: 1000,
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-            }) : reserveStore.addRequestReserve('Bolea', newReserv, reservHall?.idHall!!, reservPlace?.idPlace!!); sideBarStore.updateSection('Reservas'); hoverSectionStore.setName('Reservas');
-        console.log(newReserv)
+            })
+        } else {
+            checkIfEmpty()
+            reservName === "" || reservDescription === "" || reservEmail === "" || reservPhone === "" || reservPhone === "" ||
+                reservPlace?.name === "Elige Lugar" || reservPlace === undefined || reservHall?.name === "Elige la sala" || reservHall?.name === undefined || reservDate?.toString() === undefined ||
+                reservDate?.toString() === "" || reservTime.length === 0 ?
+                toast.error('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                }) : reserveStore.addRequestReserve('Bolea', newReserv, reservHall?.idHall!!, reservPlace?.idPlace!!); sideBarStore.updateSection('Reservas'); hoverSectionStore.setName('Reservas');
+        }
     }
 
     function checkIfEmpty() {
@@ -86,7 +112,6 @@ const CreateReserve = () => {
         reservDate === undefined || reservDate?.toString() === "" ? setEmptyDate(true) : setEmptyDate(false)
         reservTime.length === 0 && reservDate !== undefined ? setEmptyTime(true) : setEmptyTime(false)
     }
-
 
     //Essential for spanish language in calendar
     const greorgian_es = {
@@ -135,6 +160,7 @@ const CreateReserve = () => {
         { hora: "21:00-22:00" },
 
     ]
+
     const lugares = new Array<Place>()
 
     lugares.push({
@@ -146,7 +172,7 @@ const CreateReserve = () => {
         halls: [],
     })
 
-    reserveStore.getPlaceList.places?.map((item, index) => {
+    reserveStore.getAllPlaces.places?.map((item, index) => {
         lugares.push(item)
     })
 

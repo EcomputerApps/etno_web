@@ -14,7 +14,7 @@ const Advert = () => {
     const [pageNumber, setPageNumber] = useState(0)
   
     useEffect(() => {
-        adverStore.getRequestAdvert('Bolea', pageNumber, 5)
+        adverStore.getPaginatedAdvertRequest('Bolea', pageNumber, 5)
     }, [pageNumber])
 
     const incrementPage = () => {

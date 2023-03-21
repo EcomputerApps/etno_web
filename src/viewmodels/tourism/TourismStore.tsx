@@ -1,6 +1,6 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
-import { Tourism, PaginatedTourism, TourismType } from "../../models/section/Section";
+import { Tourism, PaginatedTourism, TourismType, TourismList } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -31,12 +31,14 @@ class TourismStore {
 
     //Observables =>
     paginatedTourism: PaginatedTourism = {}
+    allTourism: TourismList = {}
     tourism: Tourism = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
 
     constructor() {
         makeObservable(this, {
+            allTourism: observable,
             tourismTypes: observable,
             modalEdit: observable,
             modalCreate: observable,
@@ -46,7 +48,8 @@ class TourismStore {
             paginatedTourism: observable,
             tourism: observable,
             addRequestTourism: action,
-            getRequestTourism: action,
+            getAllTourismRequest: action,
+            getPaginatedTourismRequest:action,
             deleteTourism: action,
             updateTourismList: action,
             updatePaginatedTourism: action,
@@ -54,8 +57,17 @@ class TourismStore {
             getPaginatedTourism: computed,
             getTourism: computed,
             updateTourismTypes: action,
-            getTourismTypes: computed
+            getTourismTypes: computed,
+            updateAllTourism: action,
+            getAllTourism: computed
+
         })
+    }
+    updateAllTourism(tourism: Tourism[]) {
+        this.allTourism.tourism = tourism
+    }
+    get getAllTourism() {
+        return this.allTourism
     }
     updateTourismTypes(tourismType: TourismType[]) {
         this.tourismTypes = tourismType
@@ -179,12 +191,20 @@ class TourismStore {
         }
     }
 
-    async getRequestTourism(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/tourism/?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedTourismRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/tourism/paginated/?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const tourism = await response.json()
         this.updatePaginatedTourism(tourism)
+    }
+
+    async getAllTourismRequest(locality: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/tourism?username=${locality}`, {
+            method: 'GET',
+        })
+        const tourism = await response.json()
+        this.updateAllTourism(tourism)
     }
 
     async deleteTourism(username: string, title: string) {

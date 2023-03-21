@@ -20,7 +20,7 @@ const Band = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    bandStore.getRequestBand('Bolea', pageNumber, 5)
+    bandStore.getPaginatedBandrequest('Bolea', pageNumber, 5)
   }, [pageNumber])
 
   useEffect(() => {
@@ -42,15 +42,16 @@ const Band = () => {
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Bandos</h2>
           <div className="lg:ml-auto flex ml-1">
             {bandStore.getPaginatedBands.content! && (
-              <button className="btnStandard  mr-3">
+              <div hidden={bandStore.getPaginatedBands.content.length === 0}>
                 <CSVLink
                   data={bandStore.getPaginatedBands.content!}
                   filename={'bandos.csv'}
                   enclosingCharacter={` `}
+                  className="btnStandard  mr-3"
                   target="_blank"
                   headers={headers} >Exportar a excel
                 </CSVLink>
-              </button>)}
+              </div>)}
             <button onClick={() => bandStore.setModalCreate(true)} type="button" className="btnStandard">
               <img src={Pencil} alt="Create" />
               Crear

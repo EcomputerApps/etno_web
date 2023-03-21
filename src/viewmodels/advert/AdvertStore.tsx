@@ -1,6 +1,6 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
-import { Ad, PaginatedAdvert } from "../../models/section/Section";
+import { Ad, AdList, PaginatedAdvert } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -17,6 +17,7 @@ class AdvertStore {
 
     //Observables =>
     paginatedAdvert: PaginatedAdvert = {}
+    allAdverts: AdList ={}
     isSuccess: boolean = false
     advert: Ad = {}
     modalCreate: boolean = false
@@ -24,6 +25,7 @@ class AdvertStore {
 
     constructor() {
         makeObservable(this, {
+            allAdverts: observable,
             modalEdit: observable,
             modalCreate: observable,
             setModalCreate: action,
@@ -38,12 +40,21 @@ class AdvertStore {
             updateAdvert: action,
             updateAdvertList: action,
             deleteAdvert: action,
-            getRequestAdvert: action,
+            getPaginatedAdvertRequest: action,
             editAdvert: action,
             addRequestAdvert: action,
             getPaginatedAdverts: computed,
-            getAdvert: computed
+            getAdvert: computed,
+            updateAllAdverts: action,
+            getAllAdverts: computed
+
         })
+    }
+    updateAllAdverts(adverts: Ad[]){
+        this.allAdverts.adverts = adverts
+    }
+    get getAllAdverts(){
+        return this.allAdverts
     }
     setModalEdit(mode: boolean) {
         this.modalEdit = mode
@@ -158,12 +169,20 @@ class AdvertStore {
         }
     }
 
-    async getRequestAdvert(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/ads?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedAdvertRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/ads/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const adverts = await response.json()
         this.updatePaginatedAdverts(adverts)
+    }
+
+    async getAllAdvertRequest(locality: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/ads?username=${locality}`, {
+            method: 'GET'
+        })
+        const adverts = await response.json()
+        this.updateAllAdverts(adverts)
     }
 
     async deleteAdvert(username: string, title: string) {

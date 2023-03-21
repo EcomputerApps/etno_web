@@ -1,5 +1,5 @@
 import logoEtno from '../../../../assets/logo_etno.png'
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import NecrologueStore from '../../../../viewmodels/necrologue/NecrologueStore'
@@ -15,25 +15,41 @@ const necroStore = NecrologueStore.getNecrologueStore()
 
 const EditNecrologue = () => {
 
+  useEffect(() => {
+    necroStore.getAllNecrologuesRequest("Bolea")
+  }, [])
+
+  function checkIfExist(name: string) {
+    var flag: boolean = false
+    if (name !== necroNameTemp) {
+      necroStore.getAllNecrologues.necrologues?.map((item) => {
+        if (item.name === name) {
+          flag = true
+        }
+      })
+    }
+    return flag
+  }
+
   const [necro] = useState<Necrologue>(necroStore.getNecro)
   const inputRef = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
   const [necroName, setNecroName] = useState<string>(necro.name!!)
+  const [necroNameTemp] = useState<string>(necro.name!!)
   const [necroDate, setNecroDate] = useState<string>(necro.deathDate!!)
   const [necroDescription, setNecroDescription] = useState<string>(necro.description!!)
   const [file, setFile] = useState<File>()
   const [emptyName, setEmptyName] = useState<boolean>(false)
   const [emptyDate, setEmptyDate] = useState<boolean>(false)
   const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
-  const[confirm, setConfirm] = useState<boolean>(false)
+  const [confirm, setConfirm] = useState<boolean>(false)
 
 
   function updateNecrologue(necroId: string) {
-    chekIfEmpty()
-    if (necroName === "" || necroDate === "" || necroDescription === "") {
-      toast.error('Rellene todos los campos', {
+    if (checkIfExist(necroName)) {
+      toast.info('Ya existe este necrólogo', {
         position: 'bottom-center',
         autoClose: 1000,
         hideProgressBar: false,
@@ -44,25 +60,39 @@ const EditNecrologue = () => {
         theme: "light"
       })
     } else {
-      const newNecro: Necrologue = {
-        name: necroName,
-        deathDate: necroDate,
-        description: necroDescription,
-        imageUrl: necro.imageUrl
+      chekIfEmpty()
+      if (necroName === "" || necroDate === "" || necroDescription === "") {
+        toast.error('Rellene todos los campos', {
+          position: 'bottom-center',
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light"
+        })
+      } else {
+        const newNecro: Necrologue = {
+          name: necroName,
+          deathDate: necroDate,
+          description: necroDescription,
+          imageUrl: necro.imageUrl
+        }
+        necroStore.editNecro('Bolea', necroId, newNecro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
       }
-      necroStore.editNecro('Bolea', necroId, newNecro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
     }
   }
+
   function chekIfEmpty() {
     necroName === "" ? setEmptyName(true) : setEmptyName(false)
     necroDate === "" ? setEmptyDate(true) : setEmptyDate(false)
     necroDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-
   }
 
   return (
     <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 lg:h-screen border-2 rounded-md bg-white">
-       {confirm ? (
+      {confirm ? (
         <div>
           <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
             <div className="fixed inset-0 w-screen h-screen">
@@ -99,7 +129,7 @@ const EditNecrologue = () => {
                     inputRef.current.focus()
                   }
                 }
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className={"labelFloatInput"}>Nombre</label>
           </div>
         </div>
@@ -134,8 +164,8 @@ const EditNecrologue = () => {
                     btnRef.current.focus()
                   }
                 }
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
-              <label className={"labelFloatTxtArea"}>Descripción</label>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
+            <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">

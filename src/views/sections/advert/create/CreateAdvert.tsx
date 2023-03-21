@@ -32,7 +32,7 @@ const CreateAdvert = () => {
 
 
     useEffect(() => {
-        advertStore.getRequestAdvert('Bolea', 0, 5)
+        advertStore.getAllAdvertRequest('Bolea')
     }, [])
 
     function addAd() {
@@ -41,7 +41,7 @@ const CreateAdvert = () => {
             description: advertDescription,
             webUrl: advertLink
         }
-        if (advertStore.getAdvert.title === ad.title) {
+        if (checkIfExist(ad.title!!)) {
             toast.info('Ya existe este anuncio', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -73,6 +73,16 @@ const CreateAdvert = () => {
         advertTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
         advertDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
         file === undefined ? setEmptyFile(true) : setEmptyFile(false)
+    }
+
+    function checkIfExist(title: string) {
+        var flag: boolean = false
+        advertStore.getAllAdverts.adverts?.map((item) => {
+            if (item.title === title) {
+                flag = true
+            }
+        })
+        return flag
     }
 
     return (
@@ -114,7 +124,7 @@ const CreateAdvert = () => {
                                         txtAreaRef.current.focus()
                                     }
                                 }
-                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatInput"}>Título</label>
                     </div>
                 </div>
@@ -132,7 +142,7 @@ const CreateAdvert = () => {
                                             inputRef.current.focus()
                                         }
                                     }
-                                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatTxtArea"}>Descripcíon</label>
                     </div>
                 </div>
@@ -173,7 +183,7 @@ const CreateAdvert = () => {
                                         btnRef.current.focus()
                                     }
                                 }
-                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatInput"}>Enlace</label>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Survey } from "../../../models/section/Section"
 import SurveyStore from "../../../viewmodels/survey/SurveyStore"
 import EditSurvey from "./create/EditSurvey"
-
+import surveyRed from "../../../assets/menu/surveyRed.svg"
 const surveyStore = SurveyStore.getSurveyStore()
 
 const TableSurvey = () => {
@@ -133,9 +133,10 @@ const TableSurvey = () => {
                         </div>
                     </div>
                 </div>
-            ) : <div className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white ">
-                <label>No hay encuestas activas</label>
-            </div>}
+            ) : (<div className="flex flex-row m-1">
+                <img src={surveyRed} alt="BIG" />
+                <label className="text-xl my-auto ml-5 font-medium">No hay Encuestas</label>
+            </div>)}
         </div>
     )
 }

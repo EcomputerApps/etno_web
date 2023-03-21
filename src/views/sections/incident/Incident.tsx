@@ -12,7 +12,7 @@ const Incident = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    incidentStore.getRequestIncident('Bolea', pageNumber, 6)
+    incidentStore.getPaginatedIncidentsRequest('Bolea', pageNumber, 6)
   }, [pageNumber])
 
   const incrementPage = () => {
@@ -37,15 +37,16 @@ const Incident = () => {
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Incident</h2>
           <div className="lg:ml-auto flex ml-1">
             {incidentStore.getPaginatedIncident.content! && (
-              <button className="btnStandard">
+              <div hidden={incidentStore.getPaginatedIncident.content.length === 0}>
                 <CSVLink
                   data={incidentStore.getPaginatedIncident.content!}
                   filename={'incidents.csv'}
                   enclosingCharacter={` `}
+                  className={"btnStandard"}
                   target="_blank"
-                  headers={headers} >Exportar a excel
+                  headers={headers}>Exportar a excel
                 </CSVLink>
-              </button>)}
+              </div>)}
           </div>
         </div>
         <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-1">

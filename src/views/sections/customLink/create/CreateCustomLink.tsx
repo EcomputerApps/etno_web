@@ -3,7 +3,7 @@ import logoEtno from '../../../../assets/logo_etno.png';
 import CustomLinkStore from "../../../../viewmodels/customLink/CustomLinkStore";
 import { CustomLink } from "../../../../models/section/Section";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 
@@ -12,12 +12,35 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const customLinkStore = CustomLinkStore.getCustomLinkStore()
 
 const CreateCustomLink = () => {
+
+    useEffect(() => {
+        customLinkStore.getAllCustomLinksRequest("Bolea")
+    }, [])
+
+    function checkIfExist(name: string) {
+        var flag: boolean = false
+        customLinkStore.getAllCustomLinks.customLinks?.map((item) => {
+            if (item.name === name) {
+                flag = true
+            }
+        })
+        return flag
+    }
+
+    function chekIfEmpty() {
+        cLinkName === "" ? setEmptyName(true) : setEmptyName(false)
+        cLinkUrl === "" ? setEmptyUrl(true) : setEmptyUrl(false)
+
+    }
+    const [emptyName, setEmptyName] = useState<boolean>(false)
+    const [emptyUrl, setEmptyUrl] = useState<boolean>(false)
     const [cLinkName, setCLinkName] = useState<string>("")
     const [cLinkUrl, setCLinkUrl] = useState<string>("")
     const [cLinkIncon, setcLinkIcon] = useState<string>("")
     const [confirm, setConfirm] = useState<boolean>(false)
 
     function addLink() {
+        chekIfEmpty()
         if (cLinkName === "" || cLinkUrl === "") {
             toast.error('Rellene todos los campos', {
                 position: 'bottom-center',
@@ -36,9 +59,23 @@ const CreateCustomLink = () => {
                 webUrl: cLinkUrl,
                 iconName: cLinkIncon
             }
-            customLinkStore.addRequestCustomLink('Bolea', newCustomLink); sideBarStore.updateSection('Enlaces Personalizados'); hoverSectionStore.setName('Enlaces Personalizados')
+            if (checkIfExist(newCustomLink.name!!)) {
+                toast.info('Ya existe este enlace', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                })
+            } else {
+                customLinkStore.addRequestCustomLink('Bolea', newCustomLink); sideBarStore.updateSection('Enlaces Personalizados'); hoverSectionStore.setName('Enlaces Personalizados')
+            }
         }
     }
+
 
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2 w-3/4 lg:h-screen border-2 rounded-md bg-white">
@@ -70,15 +107,25 @@ const CreateCustomLink = () => {
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
                             <input autoFocus placeholder=" " name="bandType" id="test" type="text"
-                                className="inputCamp peer" onChange={(e) => setCLinkName(e.currentTarget.value)}
-                                onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                                className={`inputCamp peer ${emptyName ? 'border-red-600'
+                                    : ''
+                                    }`} onChange={(e) => {
+                                        setCLinkName(e.currentTarget.value)
+                                        setEmptyName(false)
+                                    }}
+                                onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                             <label className={"labelFloatInput"}>Titulo</label>
                         </div>
                     </div>
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
-                            <input placeholder=" " name="bandType" id="test" type="text" className="inputCamp peer" onChange={(e) => setCLinkUrl(e.currentTarget.value)}
-                            onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                            <input placeholder=" " name="bandType" id="test" type="text" className={`inputCamp peer ${emptyUrl ? 'border-red-600'
+                                : ''
+                                }`} onChange={(e) => {
+                                    setCLinkUrl(e.currentTarget.value)
+                                    setEmptyUrl(false)
+                                }}
+                                onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                             <label className={"labelFloatInput"}>Pagina Web</label>
                         </div>
                     </div>

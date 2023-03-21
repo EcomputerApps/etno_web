@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png';
 import { CustomLink } from '../../../../models/section/Section';
@@ -12,15 +12,40 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const customLinkStore = CustomLinkStore.getCustomLinkStore()
 
 const EditCustomLink = () => {
+
+    useEffect(() => {
+        customLinkStore.getAllCustomLinksRequest("Bolea")
+    }, [])
+
+    function checkIfExist(name: string) {
+        var flag: boolean = false
+        if (name !== cLinkNameTemp) {
+            customLinkStore.getAllCustomLinks.customLinks?.map((item) => {
+                if (item.name === name) {
+                    flag = true
+                }
+            })
+        }
+        return flag
+    }
+
+    function chekIfEmpty() {
+        cLinkName === "" ? setEmptyName(true) : setEmptyName(false)
+        cLinkUrl === "" ? setEmptyUrl(true) : setEmptyUrl(false)
+    }
+
+    const [emptyName, setEmptyName] = useState<boolean>(false)
+    const [emptyUrl, setEmptyUrl] = useState<boolean>(false)
     const [customLink] = useState<CustomLink>(customLinkStore.getCustomlLink)
     const [cLinkName, setCLinkName] = useState<string>(customLink.name!!)
+    const [cLinkNameTemp] = useState<string>(customLink.name!!)
     const [cLinkUrl, setCLinkUrl] = useState<string>(customLink.webUrl!!)
     const [cLinkIncon, setcLinkIcon] = useState<string>(customLink.iconName!!)
     const [confirm, setConfirm] = useState<boolean>(false)
 
     function updateCustomLink(customLinkId: string) {
-        if (cLinkName === "" || cLinkUrl === "") {
-            toast.error('Rellene los campos', {
+        if (checkIfExist(cLinkName)) {
+            toast.info('Ya existe este enlace', {
                 position: 'bottom-center',
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -31,13 +56,27 @@ const EditCustomLink = () => {
                 theme: "light"
             })
         } else {
-            const newCustomLink: CustomLink = {
-                name: cLinkName,
-                webUrl: cLinkUrl,
-                iconName: cLinkIncon
+            chekIfEmpty()
+            if (cLinkName === "" || cLinkUrl === "") {
+                toast.error('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                })
+            } else {
+                const newCustomLink: CustomLink = {
+                    name: cLinkName,
+                    webUrl: cLinkUrl,
+                    iconName: cLinkIncon
+                }
+                customLinkStore.editCustomLink('Bolea', customLinkId, newCustomLink)
+                sideBarStore.updateSection('Enlaces Personalizados'); hoverSectionStore.setName('Enlaces Personalizados')
             }
-            customLinkStore.editCustomLink('Bolea', customLinkId, newCustomLink)
-            sideBarStore.updateSection('Enlaces Personalizados'); hoverSectionStore.setName('Enlaces Personalizados')
         }
     }
 
@@ -71,16 +110,26 @@ const EditCustomLink = () => {
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
                             <input autoFocus placeholder=" " defaultValue={customLink.name} name="bandType" id="test" type="text"
-                                className="inputCamp peer" onChange={(e) => setCLinkName(e.currentTarget.value)}
-                                onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                                className={`inputCamp peer ${emptyName ? 'border-red-600'
+                                    : ''
+                                    }`} onChange={(e) => {
+                                        setCLinkName(e.currentTarget.value)
+                                        setEmptyName(false)
+                                    }}
+                                onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                             <label className={"labelFloatInput"}>Titulo</label>
                         </div>
                     </div>
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
-                            <input placeholder=" " name="bandType" defaultValue={customLink.webUrl} id="test" type="text" className="inputCamp peer"
-                                onChange={(e) => setCLinkUrl(e.currentTarget.value)}
-                                onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                            <input placeholder=" " name="bandType" defaultValue={customLink.webUrl} id="test" type="text" className={`inputCamp peer ${emptyUrl ? 'border-red-600'
+                                : ''
+                                }`}
+                                onChange={(e) => {
+                                    setCLinkUrl(e.currentTarget.value)
+                                    setEmptyUrl(false)
+                                }}
+                                onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                             <label className={"labelFloatInput"}>Pagina Web</label>
                         </div>
                     </div>

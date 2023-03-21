@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
@@ -14,6 +14,20 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const sponsorStore = SposnsorStore.getSponsorStore()
 
 const CreateSponsor = () => {
+
+  useEffect(() => {
+    sponsorStore.getAllSponsorsRequest("Bolea")
+  }, [])
+
+  function checkIfExist(title: string) {
+    var flag: boolean = false
+    sponsorStore.getAllSponsors.sponsors?.map((item) => {
+      if (item.title === title) {
+        flag = true
+      }
+    })
+    return flag
+  }
 
   const inputRef = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
@@ -36,7 +50,7 @@ const CreateSponsor = () => {
       description: sponsorDescription,
       phone: sponsorTel
     }
-    if (sponsorStore.getSponsor.title === sponsor.title) {
+    if (checkIfExist(sponsor.title!!)) {
       toast.info('Ya existe este patrocinador', {
         position: 'bottom-center',
         autoClose: 1000,

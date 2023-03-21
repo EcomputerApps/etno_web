@@ -41,7 +41,8 @@ class PharmacyStore {
             pharmacy: observable,
             updatePharmacy: action,
             getPharmacy: computed,
-            getRequestPharmacy: action,
+            getPaginatedPharmacyrequest: action,
+            getRequestPharmacyOnDuty:action,
             addRequestPharmacy: action,
             deletePharmacy: action,
             updatePaginatedPharmacy: action,
@@ -102,8 +103,8 @@ class PharmacyStore {
     }
 
 
-    async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedPharmacyrequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/pharmacies/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const pharmacy = await response.json()

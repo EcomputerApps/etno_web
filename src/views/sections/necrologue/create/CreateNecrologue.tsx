@@ -1,5 +1,5 @@
 import logoEtno from '../../../../assets/logo_etno.png'
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import NecrologueStore from '../../../../viewmodels/necrologue/NecrologueStore'
@@ -13,6 +13,20 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const necroStore = NecrologueStore.getNecrologueStore()
 
 const CreateNecrologue = () => {
+
+  useEffect(() => {
+    necroStore.getAllNecrologuesRequest("Bolea")
+  }, [])
+
+  function checkIfExist(name: string) {
+    var flag: boolean = false
+    necroStore.getAllNecrologues.necrologues?.map((item) => {
+      if (item.name === name) {
+        flag = true
+      }
+    })
+    return flag
+  }
 
   const inputRef = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
@@ -34,8 +48,8 @@ const CreateNecrologue = () => {
       deathDate: necroDate,
       description: necroDescription,
     }
-    if (necroStore.getNecro.name === necro.name) {
-      toast.error('Ya existe este servicio', {
+    if (checkIfExist(necro.name!!)) {
+      toast.info('Ya existe este necrólogo', {
         position: 'bottom-center',
         autoClose: 1000,
         hideProgressBar: false,
@@ -107,7 +121,7 @@ const CreateNecrologue = () => {
                     inputRef.current.focus()
                   }
                 }
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className={"labelFloatInput"}>Nombre</label>
           </div>
         </div>
@@ -141,8 +155,8 @@ const CreateNecrologue = () => {
                     btnRef.current.focus()
                   }
                 }
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
-              <label className={"labelFloatTxtArea"}>Descripción</label>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
+            <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">

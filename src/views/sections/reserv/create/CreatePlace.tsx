@@ -22,6 +22,16 @@ interface Marker {
 reserveStore.updateHallList([])
 const CreatePlace = () => {
 
+    function checkIfExist(name: string) {
+        var flag: boolean = false
+        reserveStore.getAllPlaces.places?.map((item) => {
+            if (item.name === name) {
+                flag = true
+            }
+        })
+        return flag
+    }
+
     const [file, setFile] = useState<File>()
     const [lat, setLat] = useState<number>(0)
     const [long, setLong] = useState<number>(0)
@@ -30,7 +40,8 @@ const CreatePlace = () => {
     const [emptyName, setEmptyName] = useState<boolean>(false)
     const [emptyFile, setEmptyFile] = useState<boolean>(false)
     const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
-    const[confirm, setConfirm] = useState<boolean>(false)
+    const [confirm, setConfirm] = useState<boolean>(false)
+    const [placeName, setPalceName] = useState<string>("")
 
 
     const defaultProps = {
@@ -41,7 +52,8 @@ const CreatePlace = () => {
         zoom: 11
     }
 
-    const [placeName, setPalceName] = useState<string>("")
+
+
     function addPlace() {
         const newPlace: Place = {
             name: placeName,
@@ -49,25 +61,39 @@ const CreatePlace = () => {
             longitude: long,
             halls: reserveStore.getHallList
         }
-
-        chekIfEmpty()
-        if (placeName === "" || lat === 0 || long === 0 || file === undefined || reserveStore.getHallList?.length === 0 || reserveStore.getHallList!![0].name === "") {
-            toast.error('Rellene los campos', {
+        if (checkIfExist(newPlace.name!!)) {
+            toast.info('Ya existe este lugar', {
                 position: 'bottom-center',
-                autoClose: 1000,
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
                 draggable: true,
                 progress: undefined,
-                theme: "light"
+                theme: 'light'
             })
         } else {
-            reserveStore.addRequestPlace("Bolea", newPlace, file!!);
-            reserveStore.updateHallList([])
-            sideBarStore.updateSection('Reservas');
-            hoverSectionStore.setName('Reservas')
+            chekIfEmpty()
+            if (placeName === "" || lat === 0 || long === 0 || file === undefined || reserveStore.getHallList?.length === 0 || reserveStore.getHallList!![0].name === "") {
+                toast.error('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                })
+            } else {
+                reserveStore.addRequestPlace("Bolea", newPlace, file!!);
+                reserveStore.updateHallList([])
+                sideBarStore.updateSection('Reservas');
+                hoverSectionStore.setName('Reservas')
+            }
         }
+
+
     }
 
     function goBack() {
@@ -84,23 +110,23 @@ const CreatePlace = () => {
 
     return (
         <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 border-2 rounded-md bg-white overflow-y-auto  h-screen">
-             {confirm ? (
-        <div>
-          <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
-            <div className="fixed inset-0 w-screen h-screen">
-              <div className=" flex justify-center mt-10 ">
-                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
-                  <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
-                  <div className="flex justify-center m-auto mt-5 mb-3">
-                    <button className="btnStandard w-14 h-10 mr-5 " onClick={() => goBack()}>SI</button>
-                    <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
-                  </div>
+            {confirm ? (
+                <div>
+                    <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className="fixed inset-0 w-screen h-screen">
+                            <div className=" flex justify-center mt-10 ">
+                                <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
+                                    <label className="text-2xl text-center mt-5">¿Seguro que quiere abandonar la pagina?</label>
+                                    <div className="flex justify-center m-auto mt-5 mb-3">
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => goBack()}>SI</button>
+                                        <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : <></>}
+            ) : <></>}
             <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
                 <div className="w-full flex flex-row p-2 justify-between">
                     <img src={logoEtno} alt="logo_Etno"></img>

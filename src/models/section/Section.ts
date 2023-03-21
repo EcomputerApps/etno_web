@@ -66,6 +66,10 @@ interface PaginatedEvent {
     pageNum?: number
 }
 
+interface EventList{
+    events?: Event[]
+}
+
 interface Reserve {
     idReserve?: string,
     username?: string,
@@ -109,9 +113,6 @@ interface ReserveSchedule {
     date?: string
 }
 
-interface ReservList {
-    reserves?: Reserve[]
-}
 
 interface PlaceList {
     places?: Place[]
@@ -128,6 +129,9 @@ interface Hall {
     username?: string,
     name?: string,
 
+}
+interface ReserveList{
+    reserves?: Reserve[]
 }
 
 
@@ -158,6 +162,10 @@ interface PaginatedAdvert {
     pageNum?: number
 }
 
+interface AdList {
+    adverts?: Ad[]
+}
+
 interface Tourism {
     idTourism?: string,
     type?: string,
@@ -179,6 +187,10 @@ interface TourismType {
     id?: string,
     value?: string,
     title?: string
+}
+
+interface TourismList{
+    tourism?: Tourism[]
 }
 
 interface Band {
@@ -230,6 +242,7 @@ interface PaginatedPharmacy {
 interface PharmacyOnDuty {
     content?: Pharmacy[]
 }
+
 interface PharmacyDutyDate {
     idPharmacyDate?: string,
     username?: string,
@@ -278,6 +291,10 @@ interface PaginatedSponsor {
     pageNum?: number
 }
 
+interface SponsorList{
+    sponsors?: Sponsor[]
+}
+
 interface Necrologue {
     idDeath?: string,
     username?: string,
@@ -292,6 +309,9 @@ interface PaginatedNecro {
     totalPages?: number,
     totalElements?: number,
     pageNum?: number
+}
+interface NecrologueList{
+    necrologues?: Necrologue[]
 }
 
 interface News {
@@ -313,6 +333,9 @@ interface NewsType {
     id?: string,
     value?: string,
     title?: string
+}
+interface NewsList{
+    news?: News[]
 }
 
 interface Incident {
@@ -340,6 +363,11 @@ interface Link {
     title?: string,
     url?: string
 }
+
+interface LinkList{
+    links?: Link[]
+}
+
 interface PaginatedLink {
     content?: Link[],
     totalPages?: number,
@@ -354,9 +382,6 @@ interface PaginatedImages {
     pageNum?: number
 }
 
-interface EventList {
-    list: Event[]
-}
 
 interface Survey {
     idQuiz?: string,
@@ -392,6 +417,7 @@ interface CustomLink {
     webUrl?: string,
     iconName?: string
 }
+
 interface PaginatedCustomLink {
     content?: CustomLink[],
     totalPages?: number,
@@ -399,16 +425,21 @@ interface PaginatedCustomLink {
     pageNum?: number
 }
 
+interface CustomLinkList{
+    customLinks?: CustomLink[]
+}
+
 export type {
-    EventList, Event, Ad, Tourism, Band, BandList,
+    EventList, Event, Ad, AdList, Tourism, Band, BandList,
     Pharmacy, Service, News, Incident, Link,
     Necrologue, Sponsor, PaginatedEvent, PaginatedAdvert,
     PaginatedNews, PaginatedTourism, PaginatedBand,
     PaginatedPharmacy, PaginatedService, PaginatedSponsor,
     PaginatedNecro, PaginatedIncident, PaginatedLink,
     Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserve,
-    ReservList, PaginatedReserve, Place, Hall, PaginatedPlace,
+     PaginatedReserve, Place, Hall, PaginatedPlace,
     HallList, ReserveUser, ReserveSchedule, PlaceList, Survey,
     PaginatedSurveys, CustomLink, PaginatedCustomLink, ServiceType,
-    DateTime, SubscriptionUser, NewsType, TourismType
+    DateTime, SubscriptionUser, NewsType, TourismType, NewsList, ReserveList, TourismList,
+    NecrologueList,SponsorList, LinkList,CustomLinkList
 }

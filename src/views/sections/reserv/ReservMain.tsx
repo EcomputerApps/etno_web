@@ -28,11 +28,11 @@ const Reserve = () => {
     const [pageNumber, setPageNumber] = useState(0)
 
     useEffect(() => {
-        reserveStore.getRequestPagiantedReserves("Bolea", pageNumber, 5)
+        reserveStore.getPaginatedReserveRequest("Bolea", pageNumber, 5)
     }, [])
 
     useEffect(() => {
-        reserveStore.getRequestPlaces()
+        reserveStore.getRequestPlaces("Bolea")
     }, [])
 
     const incrementPage = () => {
@@ -50,14 +50,16 @@ const Reserve = () => {
                     <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl  sm:tracking-tight">Reservas</h2>
                     <div className="lg:ml-auto flex ml-1">
                         {reserveStore.getPaginatedReserve.content! && (
-                            <CSVLink
-                                data={reserveStore.getPaginatedReserve.content!}
-                                filename={'reserves.csv'}
-                                enclosingCharacter={` `}
-                                target="_blank"
-                                className={"btnStandard mr-3 h-12"}
-                                headers={headers} >Exportar reservas a excel
-                            </CSVLink>
+                            <div hidden={reserveStore.getPaginatedReserve.content.length === 0}>
+                                <CSVLink
+                                    data={reserveStore.getPaginatedReserve.content!}
+                                    filename={'reserves.csv'}
+                                    enclosingCharacter={` `}
+                                    target="_blank"
+                                    className={"btnStandard mr-3 h-12"}
+                                    headers={headers} >Exportar reservas a excel
+                                </CSVLink>
+                            </div>
                         )}
                         <button type="button"
                             className="btnStandard mr-3 h-12"

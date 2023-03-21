@@ -21,6 +21,19 @@ interface Marker {
 }
 
 const EditPlace = () => {
+
+    function checkIfExist(name: string) {
+        var flag: boolean = false
+        if (name !== placeNameTemp) {
+            reserveStore.getAllPlaces.places?.map((item) => {
+                if (item.name === name) {
+                    flag = true
+                }
+            })
+        }
+        return flag
+    }
+
     //+Google stuff
     const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
     const [emptyLongLat, setEmptyLongLat] = useState(false)
@@ -38,6 +51,7 @@ const EditPlace = () => {
 
     //+Palce camps getters/setters
     const [placeName, setPalceName] = useState<string>(place.name!!)
+    const [placeNameTemp] = useState<string>(place.name!!)
     const [lat, setLat] = useState(Number(place.latitude!!))
     const [long, setLong] = useState(Number(place.longitude!!))
     const [file, setFile] = useState<File>()
@@ -50,9 +64,8 @@ const EditPlace = () => {
     const [emptyName, setEmptyName] = useState(false)
     //+Update values of Place selected
     function updatePlace(placeId: string) {
-        chekIfEmpty()
-        if (placeName === "") {
-            toast.error('Rellene los campos', {
+        if (checkIfExist(placeName)) {
+            toast.info('Ya existe este lugar', {
                 position: 'bottom-center',
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -63,17 +76,32 @@ const EditPlace = () => {
                 theme: "light"
             })
         } else {
-            const newPlace: Place = {
-                name: placeName,
-                latitude: lat,
-                longitude: long,
-                halls: reserveStore.getHallList
+            chekIfEmpty()
+            if (placeName === "") {
+                toast.error('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                })
+            } else {
+                const newPlace: Place = {
+                    name: placeName,
+                    latitude: lat,
+                    longitude: long,
+                    halls: reserveStore.getHallList
+                }
+                reserveStore.editPlace('Bolea', placeId, newPlace, file!!)
+                reserveStore.updateHallList([]);
+                sideBarStore.updateSection('Reservas');
+                hoverSectionStore.setName('Reservas')
             }
-            reserveStore.editPlace('Bolea', placeId, newPlace, file!!)
-            reserveStore.updateHallList([]);
-            sideBarStore.updateSection('Reservas');
-            hoverSectionStore.setName('Reservas')
         }
+
     }
     //-Update values of Place selected
     function goBack() {

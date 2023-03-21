@@ -20,7 +20,7 @@ const LinkPage = () => {
     const [delId, setDelId] = useState<string>("")
 
     useEffect(() => {
-        linkStore.getRequestLink('Bolea', pageNumber, 12)
+        linkStore.getPaginatedLinkRequest('Bolea', pageNumber, 12)
     }, [pageNumber])
 
     function deleteConfirmation(link: Link) {

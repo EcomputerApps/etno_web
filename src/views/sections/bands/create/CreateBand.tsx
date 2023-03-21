@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import "../../../../index.css"
 import BandStore from '../../../../viewmodels/band/BandsStore';
 import { Band } from "../../../../models/section/Section"
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
@@ -18,9 +18,20 @@ const CreateBand = () => {
   useEffect(() => {
     bandStore.getAllBandRequest("Bolea")
   }, [])
+  
+  function checkIfExist(title: string) {
+    var flag: boolean = false
+    bandStore.getAllBands.bandos?.map((item) => {
+      if (item.title === title) {
+        flag = true
+      }
+    })
+    return flag 
+  }
+
 
   function chekIfEmpty() {
-    bandType === "" ? setEmptyType(true) : setEmptyType(false)
+    bandTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
     bandDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
     file === undefined ? setEmptyFile(true) : setEmptyFile(false)
   }
@@ -29,25 +40,21 @@ const CreateBand = () => {
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
-  const [emptyType, setEmptyType] = useState<boolean>(false)
+  const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
   const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
   const [emptyFile, setEmptyFile] = useState<boolean>(false)
-   const [bandType, setBandType] = useState<string>("")
+  const [bandTitle, setBandTitle] = useState<string>("")
   const [bandDescription, setBandDescription] = useState<string>("")
   const [file, setFile] = useState<File>()
-  const [flag, setFlag] = useState<boolean>(false)
   const [confirm, setConfirm] = useState<boolean>(false)
 
   function addBand() {
+
     const bando: Band = {
-      title: bandType,
+      title: bandTitle,
       description: bandDescription,
     }
-    bandStore.getAllBands.bandos?.map((item) => {
-      if (item.title === bando.title)
-        setFlag(true)
-    })
-    if (flag) {
+    if (checkIfExist(bando.title!!)) {
       toast.info('Ya existe este bando', {
         position: 'bottom-center',
         autoClose: 1000,
@@ -60,7 +67,7 @@ const CreateBand = () => {
       })
     } else {
       chekIfEmpty()
-      bandType === "" || bandDescription === "" || file === undefined ?
+      bandTitle === "" || bandDescription === "" || file === undefined ?
         toast.error('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 1000,
@@ -73,7 +80,7 @@ const CreateBand = () => {
         }) : bandStore.addRequestBand('Bolea', bando, file!!); sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
     }
   }
-
+ 
   return (
     <div className="flex flex-col lg:m-auto lg:w-1/2  w-11/12 lg:h-screen border-2 rounded-md bg-white">
       {confirm ? (
@@ -104,18 +111,18 @@ const CreateBand = () => {
           <div className=" flex flex-col p-1 mt-5  relative">
             <input autoFocus placeholder=" "
               name="bandType" type="text" required={true}
-              className={`inputCamp peer ${emptyType ? 'border-red-600'
+              className={`inputCamp peer ${emptyTitle ? 'border-red-600'
                 : ''
                 }`} onChange={(value) => {
-                  setBandType(value.currentTarget.value)
-                  setEmptyType(false)
+                  setBandTitle(value.currentTarget.value)
+                  setEmptyTitle(false)
                 }} onKeyUp={(e) => {
                   if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                     if (txtAreaRef.current != null) {
                       txtAreaRef.current.focus()
                     }
                   }
-                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className="labelFloatInput">Asunto</label>
           </div>
         </div>
@@ -134,7 +141,7 @@ const CreateBand = () => {
                     inputRef.current.focus()
                   }
                 }
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className={"labelFloatTxtArea"}>Descripcíon</label>
           </div>
         </div>

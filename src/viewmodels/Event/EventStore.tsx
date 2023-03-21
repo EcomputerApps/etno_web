@@ -1,6 +1,6 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
-import { Event, PaginatedEvent } from "../../models/section/Section";
+import { Event, EventList, PaginatedEvent } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -18,12 +18,14 @@ class EventStore {
     //Observables =>
     paginatedEvent: PaginatedEvent = {}
     event: Event = {}
+    allEvents: EventList = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
     modalSubs: boolean = false
 
     constructor() {
         makeObservable(this, {
+            allEvents: observable,
             modalEdit: observable,
             modalCreate: observable,
             modalSubs: observable,
@@ -33,7 +35,8 @@ class EventStore {
             getModalCreate: computed,
             paginatedEvent: observable,
             event: observable,
-            getRequestEvents: action,
+            getAllEventsRequest: action,
+            getPaginatedEventsRequest:action,
             updatePaginatedEvents: action,
             updateEventList: action,
             editEvent: action,
@@ -41,8 +44,16 @@ class EventStore {
             deleteEvent: action,
             getPaginatedEvents: computed,
             getEvent: computed,
-            getModalSubs: computed
+            getModalSubs: computed,
+            updateAllEvents: action,
+            getAllEvents: computed
         })
+    }
+    updateAllEvents(events: Event[]){
+        this.allEvents.events= events
+    }
+    get getAllEvents(){
+        return this.allEvents
     }
     setModalSubs(mode: boolean) {
         this.modalSubs = mode
@@ -144,12 +155,19 @@ class EventStore {
         }
     }
 
-    async getRequestEvents(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/events?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedEventsRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/events/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const events = await response.json()
         this.updatePaginatedEvents(events)
+    }
+    async getAllEventsRequest(locality: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/events?username=${locality}`, {
+            method: 'GET'
+        })
+        const events = await response.json()
+        this.updateAllEvents(events)
     }
 
     updatePaginatedEvents(paginatedEvents: PaginatedEvent) {

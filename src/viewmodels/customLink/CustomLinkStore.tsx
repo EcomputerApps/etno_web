@@ -1,7 +1,7 @@
 import { action, computed, makeAutoObservable, observable } from "mobx"
 import { observer } from "mobx-react-lite"
 import { toast } from "react-toastify"
-import { CustomLink,  PaginatedCustomLink } from "../../models/section/Section"
+import { CustomLink, CustomLinkList, PaginatedCustomLink } from "../../models/section/Section"
 
 
 class CustomLinkStore {
@@ -18,40 +18,52 @@ class CustomLinkStore {
     modalCreateLink: boolean = false
     modalEditLink: boolean = false
     customLink: CustomLink = {}
-    paginatedCustomLink :PaginatedCustomLink = {}
+    allCustomLinks: CustomLinkList = {}
+    paginatedCustomLink: PaginatedCustomLink = {}
 
     constructor() {
         makeAutoObservable(this, {
+            allCustomLinks: observable,
             customLink: observable,
-            paginatedCustomLink : observable,
+            paginatedCustomLink: observable,
             modalCreateLink: observable,
             modalEditLink: observable,
             updateCustomLinkList: action,
             updateCustomLink: action,
-            updatePaginatedCustomLink : action,
+            getAllCustomLinksRequest:action,
+            getPaginatedCLinkRequest:action,
+            updatePaginatedCustomLink: action,
             setCreateLinkModal: action,
             setEditLinkModal: action,
             getCustomlLink: computed,
             getCreateLinkModal: computed,
             getEditLinkModal: computed,
-            getPaginatedCustomLink : computed
-            
+            getPaginatedCustomLink: computed,
+            updateAllCustomLinks: action,
+            getAllCustomLinks: computed
+
         })
+    }
+    updateAllCustomLinks(customLinks: CustomLink[]) {
+        this.allCustomLinks.customLinks = customLinks
+    }
+    get getAllCustomLinks() {
+        return this.allCustomLinks
     }
     updateCustomLinkList(link: CustomLink[]) {
         this.paginatedCustomLink.content = link
     }
-    
-    updateCustomLink(customLink : CustomLink){
+
+    updateCustomLink(customLink: CustomLink) {
         this.customLink = customLink
     }
     get getCustomlLink() {
         return this.customLink
     }
-    updatePaginatedCustomLink(pagLink : PaginatedCustomLink ){
+    updatePaginatedCustomLink(pagLink: PaginatedCustomLink) {
         this.paginatedCustomLink = pagLink
     }
-    get getPaginatedCustomLink(){
+    get getPaginatedCustomLink() {
         return this.paginatedCustomLink
     }
     setCreateLinkModal(mode: boolean) {
@@ -106,13 +118,22 @@ class CustomLinkStore {
             })
         }
     }
-    async getRequestCustomLink(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/custom_links?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedCLinkRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/custom_links/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const link = await response.json()
-        this.updatePaginatedCustomLink(link) 
+        this.updatePaginatedCustomLink(link)
     }
+
+    async getAllCustomLinksRequest(locality: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/custom_links?username=${locality}`, {
+            method: 'GET',
+        })
+        const link = await response.json()
+        this.updateAllCustomLinks(link)
+    }
+
     async deleteCustomLink(username: string, idCustomLink: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/remove/custom_link?username=${username}&idCustomLink=${idCustomLink}`, {
             method: 'DELETE',

@@ -7,6 +7,7 @@ import CreatePlace from "./create/CreatePlace";
 import { Place } from "../../../models/section/Section";
 import { useEffect, useState } from "react";
 import EditPlace from "./create/EditPlace";
+import { CSVLink } from 'react-csv';
 
 const reserveStore = ReserveStore.getReserveStore()
 interface PropTable {
@@ -16,6 +17,15 @@ interface PropTable {
 }
 
 const ReservPlaceList = (prop: PropTable) => {
+
+    const headersPlaces = [
+        { label: 'Nombre', key: 'name' }
+       
+    ]
+    const headersHalls = [
+        { label: 'Nombre', key: 'name' }
+
+    ]
 
     const [confirm, setConfirm] = useState(false)
     const [deltitle, setDelTitle] = useState<string>("")
@@ -29,7 +39,7 @@ const ReservPlaceList = (prop: PropTable) => {
         setPageNumber(pageNumber - 1)
     }
     useEffect(() => {
-        reserveStore.getRequestPagiantedPlaces("Bolea", pageNumber, 5)
+        reserveStore.getPaginatedPlacesRequest("Bolea", pageNumber, 5)
     }, [pageNumber])
 
     function savePlace(place: Place) {
@@ -103,10 +113,23 @@ const ReservPlaceList = (prop: PropTable) => {
                                 <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                                     {placeMap.name}
                                 </th>
-                                <td className="tableCamp">
-                                    {placeMap.halls?.map((item, index) => (
-                                        <label key={index}>{item.name}</label>
-                                    ))}
+                                <td className="tableCamp flex flex-col">
+                                <div className=" flex flex-2 justify-center w-full">
+                                        <CSVLink
+                                            data={placeMap.halls}
+                                            filename={'halls.csv'}
+                                            enclosingCharacter={` `}
+                                            className={"btnStandard mr-3 h-5"}
+                                            target="_blank"
+                                            headers={headersHalls} >Exportar salas
+                                        </CSVLink>
+                                    </div>
+                                    <div className=" flex flex-1 flex-col overflow-y-auto">
+                                        {placeMap.halls?.map((item, index) => (
+                                            <label key={index}>{item.name}</label>
+                                        ))}
+                                    </div>
+                                    
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="h-20 flex items-center justify-center">
@@ -141,8 +164,20 @@ const ReservPlaceList = (prop: PropTable) => {
                     <img src={arrowLeft} alt="backward" />
                     Anterior
                 </button>
-                <div>
+                <div className=" flex lg:flex-row flex-col ">
                     <button name="bandBtnCancel" className="btnStandard mr-3" onClick={() => reserveStore.setModalCreatePlaces(true)}>Crear lugar</button>
+                    {reserveStore.getPaginatedPlaces.content! && (
+                        <div hidden={reserveStore.getPaginatedPlaces.content.length === 0}>
+                            <CSVLink
+                                data={reserveStore.getPaginatedPlaces.content!}
+                                filename={'places.csv'}
+                                enclosingCharacter={` `}
+                                target="_blank"
+                                className={"btnStandard mr-3 h-12"}
+                                headers={headersPlaces} >Exportar lugares a excel
+                            </CSVLink>
+                        </div>
+                    )}
                     <button name="bandBtnCancel" className="btnStandard " onClick={() => reserveStore.setModalPlaceList(false)}>Volver  </button>
                 </div>
                 <button onClick={incrementPage} disabled={pageNumber === reserveStore.getPaginatedPlaces.totalPages!! - 1 || reserveStore.getPaginatedPlaces.content?.length === 0}
