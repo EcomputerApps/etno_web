@@ -14,7 +14,7 @@ const newsStore = NewsStore.getNewsStore()
 
 const EditNews = () => {
   useEffect(() => {
-    newsStore.getAllNewsRequest("Bolea")
+    newsStore.getAllNewsRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
 
   function checkIfExist(title: string) {

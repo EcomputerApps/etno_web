@@ -5,7 +5,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class AdvertStore {
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static advertStore: AdvertStore
 
     static getAdvertStore() {
@@ -89,7 +89,7 @@ class AdvertStore {
     }
 
     async addRequestAdvert(locality: string, ad: Ad, file: File) {
-        await imageStore.addImageAPI('Bolea', 'anuncio', 'anuncio', file!!)
+        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
         ad.imageUrl = imageStore.getImage.link
 
         const response = await fetch(`http://${this.serverIp}:8080/users/add/ad?username=${locality}`, {
@@ -104,7 +104,7 @@ class AdvertStore {
             this.advert = ad
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
-                autoClose: 500,
+                autoClose: 300,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -118,7 +118,7 @@ class AdvertStore {
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
-                autoClose: 1000,
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -131,8 +131,8 @@ class AdvertStore {
 
     async editAdvert(locality: string, advertId: string, advert: Ad, file: File) {
         if (file !== undefined) {
-            await imageStore.addImageAPI('Bolea', 'anuncio', 'anuncio', file!!)
-            advert.imageUrl = imageStore.getImage.link
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
+            advert.imageUrl =  imageStore.getImage.link
         }
         const response = await fetch(`http://${this.serverIp}:8080/users/update/ad?username=${locality}&adId=${advertId}`, {
             method: 'PUT',
@@ -154,7 +154,7 @@ class AdvertStore {
             })
             setTimeout(function () {
                 window.location.reload();
-            }, 1500);
+            }, 1000);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'bottom-center',

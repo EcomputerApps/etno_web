@@ -30,6 +30,7 @@ const TableTourism = (prop: PropTable) => {
     }
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+
             {tourismStore.getPaginatedTourism.content?.length === 0 ? (
                 <div className="flex flex-row m-1">
                     <img src={tourismRed} alt="BIG" />
@@ -71,7 +72,7 @@ const TableTourism = (prop: PropTable) => {
                                         </div>
                                     </td>
                                     <td className="tableCamp">
-                                    <div className="overflow-y-auto max-h-20">
+                                        <div className="overflow-y-auto max-h-20">
                                             {tourism.description}
                                         </div>
                                     </td>

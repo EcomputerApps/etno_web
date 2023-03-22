@@ -16,7 +16,7 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const EditEvent = () => {
   useEffect(() => {
-    eventStore.getAllEventsRequest("Bolea")
+    eventStore.getAllEventsRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
 
   function checkIfExist(title: string) {
@@ -142,7 +142,7 @@ const EditEvent = () => {
               startDate: eventDateStart,
               endDate: eventDateFin
             }
-            eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
             sideBarStore.updateSection('Eventos')
             hoverSectionStore.setName('Eventos')
           }

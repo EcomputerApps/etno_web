@@ -15,7 +15,7 @@ const serviceStore = ServiceStore.getServiceStore()
 
 const CreateService = () => {
     useEffect(() => {
-        serviceStore.getAllServicesRequest("Bolea")
+        serviceStore.getAllServicesRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
 
     function checkIfExist(owner: string) {

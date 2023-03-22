@@ -15,7 +15,7 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const CreateNews = () => {
   useEffect(() => {
-    newsStore.getAllNewsRequest("Bolea")
+    newsStore.getAllNewsRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
 
   function checkIfExist(title: string) {

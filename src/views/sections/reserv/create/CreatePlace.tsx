@@ -73,10 +73,6 @@ const CreatePlace = () => {
                 theme: 'light'
             })
         } else {
-            reserveStore.addRequestPlace(localStorage.getItem('user_etno_locality')!, newPlace, file!!);
-            reserveStore.updateHallList([])
-            sideBarStore.updateSection('Reservas');
-            hoverSectionStore.setName('Reservas')
             chekIfEmpty()
             if (placeName === "" || lat === 0 || long === 0 || file === undefined || reserveStore.getHallList?.length === 0 || reserveStore.getHallList!![0].name === "") {
                 toast.error('Rellene los campos', {

@@ -2,9 +2,10 @@ import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import { Event } from '../../../models/section/Section'
 import EventStore from "../../../viewmodels/Event/EventStore"
-import EditEvent from './create/EditEvent'
+
 import SubscribersList from './create/SubscribersList'
 import eventRed from "../../../assets/menu/eventRed.svg"
+import EditEvent from './create/EditEvent'
 
 const eventStore = EventStore.getEventStore()
 

@@ -97,7 +97,7 @@ const EditPharmacy = () => {
     const [pharmacyShcedulEvenOne, setPharmacyShcedulEvenOne] = useState<string>(timeCutter(pharmacy.schedule!!)!![4])
     const [pharmacyShcedulEvenTwo, setPharmacyShcedulEvenTwo] = useState<string>(timeCutter(pharmacy.schedule!!)!![5])
     const [pharmacyShcedulExtra, setPharmacyShcedulExtra] = useState<string>("")
-    const [pharmacyDescription, setPharmacyDescription] = useState<string>(pharmacy.description!!)
+    const [pharmacyDirection, setPharmacyDirection] = useState<string>(pharmacy.direction!!)
     const [pharmacySchedule, setPharmacySchedule] = useState<string>(pharmacy.schedule!!)
     const [pharmPeriod, setPharmPeriod] = useState<number>(pharmacy.durationDays!!)
     const [pharmFrequency, setPharmFrequency] = useState<number>(pharmacy.frequencyInDays!!)
@@ -157,7 +157,7 @@ const EditPharmacy = () => {
         pharmacyName === "" ? setEmptyName(true) : setEmptyName(false)
         pharmacyWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
         pharmacyTel === "" ? setEmptyTel(true) : setEmptyTel(false)
-        pharmacyDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+        pharmacyDirection === "" ? setEmptyDescription(true) : setEmptyDescription(false)
     }
 
     const greorgian_es = {
@@ -258,7 +258,7 @@ const EditPharmacy = () => {
         } else {
             chekIfEmpty()
             if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
+                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDirection === "" ||
                 (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === ""
             ) {
                 toast.info('Rellene los campos', {
@@ -278,7 +278,7 @@ const EditPharmacy = () => {
                     link: pharmacyWebUrl,
                     phone: pharmacyTel,
                     schedule: pharmacySchedule,
-                    description: pharmacyDescription,
+                    direction: pharmacyDirection,
                     longitude: String(long),
                     latitude: String(lat),
                     startDate: fillDates(dutyDates?.toString()!!)[0],
@@ -622,7 +622,7 @@ const EditPharmacy = () => {
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <textarea defaultValue={pharmacyDescription} ref={txtAreaRef} placeholder=" " name="pharmacyDescription" maxLength={495} rows={3}
+                    <textarea defaultValue={pharmacyDirection} ref={txtAreaRef} placeholder=" " name="pharmacyDescription" maxLength={495} rows={3}
                         className={`inputCamp peer ${emptyDescption ? 'border-red-600'
                             : ''
                             }`} onKeyDown={(e) => {
@@ -632,7 +632,7 @@ const EditPharmacy = () => {
                                     }
                                 }
                             }} onChange={(e) => {
-                                setPharmacyDescription(e.target.value)
+                                setPharmacyDirection(e.target.value)
                                 setEmptyDescription(false)
                             }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                     <label className={"labelFloatTxtArea"}>Descripción</label>

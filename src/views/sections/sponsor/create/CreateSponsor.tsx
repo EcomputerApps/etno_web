@@ -16,7 +16,7 @@ const sponsorStore = SposnsorStore.getSponsorStore()
 const CreateSponsor = () => {
 
   useEffect(() => {
-    sponsorStore.getAllSponsorsRequest("Bolea")
+    sponsorStore.getAllSponsorsRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
 
   function checkIfExist(title: string) {

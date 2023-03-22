@@ -136,7 +136,7 @@ class NecrologueStore {
         }
     }
     async addRequestNecro(username: string, necrologue: Necrologue, file: File) {
-        await imageStore.addImageAPI('Bolea', 'muerte', 'muerte', file)
+        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'muerte', 'muerte', file)
         necrologue.imageUrl = imageStore.getImage.link
         const response = await fetch(`http://${this.serverIp}:8080/users/add/death?username=${username}`, {
             method: 'POST',
@@ -176,7 +176,7 @@ class NecrologueStore {
     }
     async editNecro(locality: string, necroId: string, necro: Necrologue, file: File) {
         if (file !== undefined) {
-            await imageStore.addImageAPI('Bolea', 'muerte', 'muerte', file!!)
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'muerte', 'muerte', file!!)
             necro.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`http://${this.serverIp}:8080/users/update/death?username=${locality}&deathId=${necroId}`, {

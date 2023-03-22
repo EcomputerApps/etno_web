@@ -19,7 +19,7 @@ var reservTime = new Array<ReserveSchedule>()
 
 const CreateReserve = () => {
     useEffect(() => {
-        reserveStore.getAllReserevesRequest("Bolea")
+        reserveStore.getAllReserevesRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
 
     function checkIfExist(name: string) {

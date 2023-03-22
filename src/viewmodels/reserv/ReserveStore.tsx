@@ -241,7 +241,7 @@ class ReserveStore {
     }
     async editPlace(locality: string, palceId: string, place: Place, file: File) {
         if (file !== undefined) {
-            await imageStore.addImageAPI("Bolea", "lugar", "lugar", file!!)
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "lugar", "lugar", file!!)
             place.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`http://${this.serverIp}:8080/users/update/place?username=${locality}&placeId=${palceId}`, {
@@ -287,7 +287,7 @@ class ReserveStore {
     }
     async addRequestPlace(username: string, place: Place, file: File) {
         if (file !== undefined) {
-            await imageStore.addImageAPI("Bolea", "lugar", "lugar", file!!)
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "lugar", "lugar", file!!)
             place.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`http://${this.serverIp}:8080/users/add/place?username=${username}`,

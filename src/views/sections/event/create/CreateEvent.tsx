@@ -15,7 +15,7 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const CreateEvent = () => {
   useEffect(() => {
-    eventStore.getAllEventsRequest("Bolea")
+    eventStore.getAllEventsRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
 
   function checkIfExist(title: string) {

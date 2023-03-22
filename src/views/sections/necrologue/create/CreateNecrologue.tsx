@@ -15,7 +15,7 @@ const necroStore = NecrologueStore.getNecrologueStore()
 const CreateNecrologue = () => {
 
   useEffect(() => {
-    necroStore.getAllNecrologuesRequest("Bolea")
+    necroStore.getAllNecrologuesRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
 
   function checkIfExist(name: string) {

@@ -6,7 +6,7 @@ const imageStore = ImageStore.getImageStore()
 
 class EventStore {
     static eventStore: EventStore
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
 
     static getEventStore() {
         if (this.eventStore === undefined) {
@@ -75,7 +75,7 @@ class EventStore {
     }
 
     async addRequestEvent(locality: string, event: Event, file: File) {
-        await imageStore.addImageAPI('Bolea', 'evento', 'evento', file!!)
+        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'evento', 'evento', file!!)
         event.imageUrl = imageStore.getImage.link
         const response = await fetch(`http://${this.serverIp}:8080/users/add/event?username=${locality}`, {
             method: 'POST',
@@ -116,7 +116,7 @@ class EventStore {
 
     async editEvent(locality: string, eventId: string, event: Event, file: File) {
         if (file !== undefined) {
-            await imageStore.addImageAPI('Bolea', 'anuncio', 'anuncio', file!!)
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
             event.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`http://${this.serverIp}:8080/users/update/event?username=${locality}&eventId=${eventId}`, {

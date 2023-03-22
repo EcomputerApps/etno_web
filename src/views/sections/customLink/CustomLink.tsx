@@ -41,7 +41,7 @@ const CustomLinkPage = () => {
         setDelId(link.idCustomLink!!)
     }
     const deleteCustomLink = async (idLink: string) => {
-        await customLinkStore.deleteCustomLink('Bolea', idLink)
+        await customLinkStore.deleteCustomLink(localStorage.getItem('user_etno_locality')!, idLink)
         setConfirm(false)
     }
 

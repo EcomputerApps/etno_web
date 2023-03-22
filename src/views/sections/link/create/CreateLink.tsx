@@ -13,7 +13,7 @@ const linkStore = LinkStore.getLinkStore()
 const CreateLink = () => {
 
     useEffect(() => {
-        linkStore.getAllLinksRequest("Bolea")
+        linkStore.getAllLinksRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
 
     function checkIfExist(title: string) {

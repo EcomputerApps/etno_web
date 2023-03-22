@@ -14,7 +14,7 @@ const customLinkStore = CustomLinkStore.getCustomLinkStore()
 const CreateCustomLink = () => {
 
     useEffect(() => {
-        customLinkStore.getAllCustomLinksRequest("Bolea")
+        customLinkStore.getAllCustomLinksRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
 
     function checkIfExist(name: string) {
@@ -72,7 +72,7 @@ const CreateCustomLink = () => {
                     theme: "light"
                 })
             } else {
-                customLinkStore.addRequestCustomLink('Bolea', newCustomLink); sideBarStore.updateSection('Enlaces Personalizados'); hoverSectionStore.setName('Enlaces Personalizados')
+                customLinkStore.addRequestCustomLink(localStorage.getItem('user_etno_locality')!, newCustomLink); sideBarStore.updateSection('Enlaces Personalizados'); hoverSectionStore.setName('Enlaces Personalizados')
             }
         }
     }

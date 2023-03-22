@@ -81,7 +81,7 @@ const TablePharmacy = (prop: PropTable) => {
                                     </td>
                                     <td className=" tableCamp">
                                     <div className="overflow-y-auto max-h-20">
-                                        {pharmMap.description}
+                                        {pharmMap.direction}
                                         </div>
                                     </td>
                                     <td className="tableCamp">
