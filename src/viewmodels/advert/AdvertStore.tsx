@@ -104,7 +104,7 @@ class AdvertStore {
             this.advert = ad
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
-                autoClose: 500,
+                autoClose: 300,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -118,7 +118,7 @@ class AdvertStore {
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
-                autoClose: 1000,
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -132,7 +132,7 @@ class AdvertStore {
     async editAdvert(locality: string, advertId: string, advert: Ad, file: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
-            advert.imageUrl = imageStore.getImage.link
+            advert.imageUrl =  imageStore.getImage.link
         }
         const response = await fetch(`http://${this.serverIp}:8080/users/update/ad?username=${locality}&adId=${advertId}`, {
             method: 'PUT',
@@ -154,7 +154,7 @@ class AdvertStore {
             })
             setTimeout(function () {
                 window.location.reload();
-            }, 1500);
+            }, 1000);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'bottom-center',

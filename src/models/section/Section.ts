@@ -222,7 +222,7 @@ interface Pharmacy {
     imageUrl?: string,
     phone?: string,
     schedule?: string,
-    description?: string,
+    direction?: string,
     longitude?: string,
     latitude?: string,
     startDate?: Date,

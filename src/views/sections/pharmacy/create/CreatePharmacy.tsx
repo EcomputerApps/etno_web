@@ -75,7 +75,7 @@ const CreatePharmacy = () => {
         file === undefined ? setEmptyFile(true) : setEmptyFile(false)
         pharmacyWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
         pharmacyTel === "" ? setEmptyTel(true) : setEmptyTel(false)
-        pharmacyDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+        pharmacyDirection === "" ? setEmptyDescription(true) : setEmptyDescription(false)
         pharmacyShcedulMorningOne === "" ? setEmptyScheMorningOne(true) : setEmptyScheMorningOne(false)
         pharmacyShcedulEvenOne === "" ? setEmptyScheEveningOne(true) : setEmptyScheEveningOne(false)
         pharmacyShcedulMorningTwo === "" ? setEmptyScheMorningTwo(true) : setEmptyScheMorningTwo(false)
@@ -139,7 +139,7 @@ const CreatePharmacy = () => {
     const [pharmacyShcedulMorningTwo, setPharmacyShcedulMorningTwo] = useState<string>("")
     const [pharmacyShcedulEvenTwo, setPharmacyShcedulEvenTwo] = useState<string>("")
     const [pharmacyShcedulExtra, setPharmacyShcedulExtra] = useState<string>("")
-    const [pharmacyDescription, setPharmacyDescption] = useState<string>("")
+    const [pharmacyDirection, setPharmacyDirection] = useState<string>("")
     const [pharmacySchedule, setPharmacySchedule] = useState<string>("")
     const [dutyDates, setDutyDates] = useState<Value>()
     const [pharmPeriod, setPharmPeriod] = useState<number>(0)
@@ -189,7 +189,7 @@ const CreatePharmacy = () => {
             link: pharmacyWebUrl,
             phone: pharmacyTel,
             schedule: pharmacySchedule,
-            description: pharmacyDescription,
+            direction: pharmacyDirection,
             longitude: String(long),
             latitude: String(lat),
             startDate: fillDates(dutyDates?.toString()!!)[0],
@@ -211,7 +211,7 @@ const CreatePharmacy = () => {
         } else {
             chekIfEmpty()
             if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
+                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDirection === "" ||
                 (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === "" ||
                 long === 0 || lat === 0 || file === undefined) {
                 toast.error('Rellene los campos', {
@@ -577,7 +577,7 @@ const CreatePharmacy = () => {
                                 }
                             }
                         }} onChange={(e) => {
-                            setPharmacyDescption(e.target.value)
+                            setPharmacyDirection(e.target.value)
                             setEmptyDescription(false)
                         }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}  />
                     <label className={"labelFloatTxtArea"}>Descripción</label>
