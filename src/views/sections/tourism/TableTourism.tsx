@@ -62,10 +62,14 @@ const TableTourism = (prop: PropTable) => {
                                         {tourism.type}
                                     </th>
                                     <td className="tableCamp">
-                                        {tourism.title}
+                                        <div className="overflow-y-auto max-h-20">
+                                            {tourism.title}
+                                        </div>
                                     </td>
-                                    <td className="px-6 py-4 text-center">
-                                        {tourism.description}
+                                    <td className="tableCamp">
+                                    <div className="overflow-y-auto max-h-20">
+                                            {tourism.description}
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="h-20 flex items-center justify-center">

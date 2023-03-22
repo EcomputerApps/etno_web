@@ -70,11 +70,15 @@ const TableBand = (prop: PropTable) => {
                             {bandStore.getPaginatedBands.content?.map((bandMap, index) => (
                                 bandStore.getPaginatedBands.content!!.length > 0 &&
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <th scope="row" className="tableCampl text-center font-medium text-gray-900 whitespace-nowrap dark:text-white    ">
+                                    <th scope="row" className="tableCampl text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div className="overflow-y-auto max-h-20">
                                         {bandMap.title}
+                                        </div>
                                     </th>
                                     <td className="tableCampl text-center">
+                                    <div className="overflow-y-auto max-h-20">
                                         {bandMap.description}
+                                        </div>
                                     </td>
                                     <td className="tableCampl text-center">
                                         {bandMap.issuedDate}

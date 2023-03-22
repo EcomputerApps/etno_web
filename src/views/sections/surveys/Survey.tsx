@@ -20,13 +20,13 @@ const Survey = () => {
             <div className="flex flex-col gap-4">
                 <div className="flex flex-row">
                     <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Encuestas</h2>
-                    <div className="lg:ml-auto flex ml-1">
+                    <div className="mainButtonsDiv">
                         <button type="button" className="btnStandard mr-3" onClick={() => surveyStore.setModalResult(true)}>
                             <label className="lg:text-base text-xs">Resultados</label>
                         </button>
-                        <button type="button" className="btnStandard" onClick={() => surveyStore.setCreateSurvey(true)}>
+                        <button type="button" className="btnStandard " onClick={() => surveyStore.setCreateSurvey(true)}>
                             <img src={Pencil} alt="Create" />
-                            <label className="lg:text-base text-xs">Crear</label>
+                            <label className="lg:text-base text-xs ">Crear</label>
                         </button>
                     </div>
                 </div>

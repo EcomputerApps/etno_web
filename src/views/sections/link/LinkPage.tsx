@@ -9,6 +9,7 @@ import {ToastContainer } from "react-toastify"
 import { Link } from "../../../models/section/Section"
 import CreateLink from "./create/CreateLink"
 import EditLink from "./create/EditLink"
+import linkRed from "../../../assets/menu/linkRed.svg"
 
 const linkStore = LinkStore.getLinkStore()
 
@@ -80,7 +81,13 @@ const LinkPage = () => {
                     </div>
                 ) : <></>}
             </div>
-            <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-4">
+            {linkStore.getPaginatedLink.content?.length === 0 ? (
+                <div className="flex flex-row p-2 mt-2 rounded-md shadow-md">
+                    <img src={linkRed} alt="BIG" />
+                    <label className="text-xl my-auto ml-4 mt-3.5 font-medium">No hay Enlaces</label>
+                </div>
+            ) : (
+                <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-4 mb-1">
                 <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
                         <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
@@ -88,7 +95,8 @@ const LinkPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-1 overflow-y-auto lg:overflow-hidden w-full h-3/4  ">
+            )}
+             <div className="flex flex-1 overflow-y-auto lg:overflow-hidden w-full h-3/4  ">
                 <div className={"w-full grid lg:grid-cols-4 lg:grid-rows-3 grid-cols-1"}>
                     {linkStore.paginatedLink.content?.map((linkMap, index) => (
                         linkStore.paginatedLink.content!!.length > 0 &&

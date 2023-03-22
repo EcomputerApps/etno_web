@@ -60,7 +60,7 @@ const EditNews = () => {
     } else {
       chekIfEmpty()
       if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === '') {
-               toast.error('Rellene los campos', {
+        toast.error('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 500,
           hideProgressBar: false,
@@ -146,7 +146,6 @@ const EditNews = () => {
             <input autoFocus defaultValue={news.title} ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
               : ''
               }`} onChange={(value) => {
-                console.log(value.currentTarget.value)
                 setNewsTitle(value.currentTarget.value)
                 setEmptyTitle(false)
               }} onKeyUp={(e) => {

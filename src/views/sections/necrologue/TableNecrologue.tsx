@@ -69,13 +69,17 @@ const TableNecrologue = (prop: PropTable) => {
                                 necrologueStore.getPaginatedNecro.content!!.length > 0 &&
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center ">
-                                        {newNecro.name}
+                                        <div className="overflow-y-auto max-h-20">
+                                            {newNecro.name}
+                                        </div>
                                     </th>
                                     <td className="tableCamp">
                                         {newNecro.deathDate}
                                     </td>
                                     <td className="tableCamp">
-                                        {newNecro.description}
+                                        <div className="overflow-y-auto max-h-20">
+                                            {newNecro.description}
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 flex items-center justify-center ">
                                         <div className="h-20 flex items-center justify-center">

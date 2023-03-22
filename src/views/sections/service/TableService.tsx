@@ -72,16 +72,23 @@ const TableService = (prop: PropTable) => {
                                 {service.category}
                             </th>
                             <td className="tableCamp ">
+                                <div className="overflow-y-auto max-h-20">
                                 {service.owner}
+                                </div>
                             </td>
                             <td className="tableCamp ">
+
                                 {service.number}
                             </td>
                             <td className="tableCamp ">
+                            <div className="overflow-y-auto max-h-20">
                                 {service.schedule}
+                                </div>
                             </td>
                             <td className="tableCamp">
+                            <div className="overflow-y-auto max-h-20">
                                 {service.description}
+                                </div>
                             </td>
                             <td className="tableCamp ">
                                 <a className=" text-blue-500 hover:text-blue-600" href={service.urlWeb}>{service.urlWeb}</a>

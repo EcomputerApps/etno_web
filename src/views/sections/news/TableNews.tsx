@@ -73,13 +73,17 @@ const TableNews = (prop: PropTable) => {
                                         {news.category}
                                     </th>
                                     <td className="tableCamp">
-                                        {news.title}
+                                        <div className="overflow-y-auto max-h-20">
+                                            {news.title}
+                                        </div>
                                     </td>
                                     <td className="tableCamp">
                                         {news.publicationDate}
                                     </td>
                                     <td className="tableCamp">
-                                        {news.description}
+                                        <div className="overflow-y-auto max-h-20">
+                                            {news.description}
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 flex items-center justify-center ">
                                         <div className="h-20 flex items-center justify-center">

@@ -66,7 +66,7 @@ interface PaginatedEvent {
     pageNum?: number
 }
 
-interface EventList{
+interface EventList {
     events?: Event[]
 }
 
@@ -130,7 +130,7 @@ interface Hall {
     name?: string,
 
 }
-interface ReserveList{
+interface ReserveList {
     reserves?: Reserve[]
 }
 
@@ -189,7 +189,7 @@ interface TourismType {
     title?: string
 }
 
-interface TourismList{
+interface TourismList {
     tourism?: Tourism[]
 }
 
@@ -291,7 +291,7 @@ interface PaginatedSponsor {
     pageNum?: number
 }
 
-interface SponsorList{
+interface SponsorList {
     sponsors?: Sponsor[]
 }
 
@@ -310,7 +310,7 @@ interface PaginatedNecro {
     totalElements?: number,
     pageNum?: number
 }
-interface NecrologueList{
+interface NecrologueList {
     necrologues?: Necrologue[]
 }
 
@@ -334,7 +334,7 @@ interface NewsType {
     value?: string,
     title?: string
 }
-interface NewsList{
+interface NewsList {
     news?: News[]
 }
 
@@ -364,7 +364,7 @@ interface Link {
     url?: string
 }
 
-interface LinkList{
+interface LinkList {
     links?: Link[]
 }
 
@@ -398,6 +398,27 @@ interface Survey {
     isActive?: boolean,
     datePicker?: DateTime | Date;
 }
+interface QuizResult {
+    idQuizResult?: string,
+    username?: string,
+    question?: string,
+    answerOne?: string,
+    resultOne?: number,
+    answerTwo?: string,
+    resultTwo?: number,
+    answerThree?: string,
+    resultThree?: number,
+    answerFour?: string,
+    resultFour?: number,
+}
+
+interface PaginatedQuizResult{
+    content?: QuizResult[],
+    totalPages?: number,
+    totalElements?: number,
+    pageNum?: number
+}
+
 interface DateTime {
     value?: number,
     dateOnly?: boolean,
@@ -425,7 +446,7 @@ interface PaginatedCustomLink {
     pageNum?: number
 }
 
-interface CustomLinkList{
+interface CustomLinkList {
     customLinks?: CustomLink[]
 }
 
@@ -437,9 +458,9 @@ export type {
     PaginatedPharmacy, PaginatedService, PaginatedSponsor,
     PaginatedNecro, PaginatedIncident, PaginatedLink,
     Image, PharmacyOnDuty, PaginatedImages, PharmacyDutyDate, Reserve,
-     PaginatedReserve, Place, Hall, PaginatedPlace,
+    PaginatedReserve, Place, Hall, PaginatedPlace,
     HallList, ReserveUser, ReserveSchedule, PlaceList, Survey,
     PaginatedSurveys, CustomLink, PaginatedCustomLink, ServiceType,
     DateTime, SubscriptionUser, NewsType, TourismType, NewsList, ReserveList, TourismList,
-    NecrologueList,SponsorList, LinkList,CustomLinkList
+    NecrologueList, SponsorList, LinkList, CustomLinkList, QuizResult, PaginatedQuizResult
 }

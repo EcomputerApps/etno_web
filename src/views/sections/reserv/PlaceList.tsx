@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import ReserveStore from "../../../viewmodels/reserv/ReserveStore";
-import logoEtno from '../../../../src/assets/logo_etno.png'
+import logoEtno from '../../../../src/assets/logo_etno.png' 
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import CreatePlace from "./create/CreatePlace";
@@ -111,9 +111,12 @@ const ReservPlaceList = (prop: PropTable) => {
                             lugares.length > 0 &&
                             <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" >
                                 <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                <div className="overflow-y-auto max-h-20">
                                     {placeMap.name}
+                                    </div>
                                 </th>
                                 <td className="tableCamp flex flex-col">
+                                <div className="overflow-y-auto max-h-20">
                                 <div className=" flex flex-2 justify-center w-full">
                                         <CSVLink
                                             data={placeMap.halls}
@@ -129,7 +132,7 @@ const ReservPlaceList = (prop: PropTable) => {
                                             <label key={index}>{item.name}</label>
                                         ))}
                                     </div>
-                                    
+                                    </div>
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="h-20 flex items-center justify-center">

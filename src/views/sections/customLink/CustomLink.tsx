@@ -8,6 +8,7 @@ import CustomLinkStore from "../../../viewmodels/customLink/CustomLinkStore"
 import { ToastContainer } from "react-toastify"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
+import customLinkGold from "../../../assets/menu/customLinkGold.svg"
 
 const customLinkStore = CustomLinkStore.getCustomLinkStore()
 
@@ -48,7 +49,7 @@ const CustomLinkPage = () => {
         <div className="w-full h-full min-w-5/6 relative flex flex-col">
             <div className="flex flex-row">
                 <h2 className="lg:text-2xl text-xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces Personalizados</h2>
-                <div className="lg:ml-auto flex ml-1 ">
+                <div className="mainButtonsDiv">
                     <button type="button" className="btnStandard" onClick={() => customLinkStore.setCreateLinkModal(true)}>
                         <img src={Pencil} alt="Create" />
                         Crear
@@ -77,14 +78,22 @@ const CustomLinkPage = () => {
                     </div>
                 </div>
             ) : <></>}
-            <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-4">
-                <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
-                        <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
+            {customLinkStore.getPaginatedCustomLink.content?.length === 0 ? (
+                <div className="flex flex-row p-2 mt-2 rounded-md shadow-md">
+                    <img src={customLinkGold} alt="BIG" />
+                    <label className="text-xl my-auto ml-4 mt-3.5 font-medium">No hay Enlaces Personalizados</label>
+                </div>
+            ) : (
+                <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-4 mb-1">
+                    <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
+                            <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
+
             <div className="flex flex-1 overflow-y-auto lg:overflow-hidden w-full h-3/4">
                 <div className="w-full grid lg:grid-cols-4 lg:grid-rows-3  grid-cols-1">
                     {customLinkStore.getPaginatedCustomLink.content?.map((item, index) => (
@@ -94,7 +103,7 @@ const CustomLinkPage = () => {
                             <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center flex-col">{item.name}</div>
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 
                             hover:font-medium justify-center   text-xl overflow-hidden bg-gray-200 flex-col"><a href={item.webUrl}>{item.webUrl}</a></div>
-                            <div className="h-1/3  p-2 text-center overflow-hidden  flex items-center bg-gray-200 justify-center flex-row">
+                            <div className="h-1/3  p-2 text-center overflow-hidden  flex items-center bg-gray-100 justify-center flex-row">
                                 <button className="btnStandard mr-5 h-8 lg:h-10" onClick={() => saveLink(item)}>Editar</button>
                                 <button className="btnStandard h-8 lg:h-10" onClick={() => deleteConfirmation(item)}>Borrar</button>
                             </div>

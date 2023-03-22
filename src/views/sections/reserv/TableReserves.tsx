@@ -85,37 +85,47 @@ const TableReserves = (prop: PropTable) => {
                                 reserveStore.getPaginatedReserve.content!!.length > 0 &&
                                 <tr onClick={() => console.log(reservMap.name)} key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" className="tableCamp">
-                                        {reservMap.name}
+                                        <div className="overflow-y-auto max-h-20">
+                                            {reservMap.name}
+                                        </div>
                                     </th>
                                     <td className="tableCamp" >
-                                        {reservMap.place?.name}
-                                    </td>
-                                    <td className="tableCamp">
-                                        {reservMap.hall}
-                                    </td>
-                                    <td className="tableCamp" >
-                                        <div className=" flex flex-col overflow-y-auto">
-                                            {fillDates(reservMap.date!!).map((item, index) => (
-                                                <label>{moment(item).format("dd, DD MMMM")}</label>
-                                            ))}
+                                        <div className="overflow-y-auto max-h-20">
+                                            {reservMap.place?.name}
                                         </div>
                                     </td>
                                     <td className="tableCamp">
-                                        <div className="flex flex-col">
+                                        <div className="overflow-y-auto max-h-20">
+                                            {reservMap.hall}
+                                        </div>
+                                    </td>
+                                    <td className="tableCamp" >
+                                        <div className="overflow-y-auto max-h-20">
                                             <div className=" flex flex-col overflow-y-auto">
-                                                {reservMap.reserveSchedules?.map((item, index) => (
-                                                    <label key={index}>{item.date}</label>
+                                                {fillDates(reservMap.date!!).map((item, index) => (
+                                                    <label>{moment(item).format("dd, DD MMMM")}</label>
                                                 ))}
                                             </div>
-                                            <div className=" flex justify-center w-full">
-                                                <CSVLink
-                                                    data={reservMap.reserveSchedules}
-                                                    filename={'reserves.csv'}
-                                                    enclosingCharacter={` `}
-                                                    className={"btnStandard mr-3 h-5"}
-                                                    target="_blank"
-                                                    headers={hourHeader} >Exportar horario
-                                                </CSVLink>
+                                        </div>
+                                    </td>
+                                    <td className="tableCamp">
+                                        <div className="overflow-y-auto max-h-20">
+                                            <div className="flex flex-col">
+                                                <div className=" flex justify-center w-full">
+                                                    <CSVLink
+                                                        data={reservMap.reserveSchedules}
+                                                        filename={'reserves.csv'}
+                                                        enclosingCharacter={` `}
+                                                        className={"btnStandard w-3/5 h-9"}
+                                                        target="_blank"
+                                                        headers={hourHeader} >Exportar horario
+                                                    </CSVLink>
+                                                </div>
+                                                <div className=" flex flex-col overflow-y-auto">
+                                                    {reservMap.reserveSchedules?.map((item, index) => (
+                                                        <label key={index}>{item.date}</label>
+                                                    ))}
+                                                </div>
                                             </div>
                                         </div>
                                     </td>

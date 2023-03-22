@@ -67,13 +67,19 @@ const TablePharmacy = (prop: PropTable) => {
                                         {pharmMap.type}
                                     </th>
                                     <td className="tableCamp">
+                                        <div className="overflow-y-auto max-h-20">
                                         {pharmMap.name}
+                                        </div>
                                     </td>
                                     <td className="tableCamp">
+                                    <div className="overflow-y-auto max-h-20">
                                         {pharmMap.schedule}
+                                        </div>
                                     </td>
                                     <td className=" tableCamp">
+                                    <div className="overflow-y-auto max-h-20">
                                         {pharmMap.description}
+                                        </div>
                                     </td>
                                     <td className="tableCamp">
                                         {pharmMap.phone}

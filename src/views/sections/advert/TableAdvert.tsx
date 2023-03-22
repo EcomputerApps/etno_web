@@ -66,13 +66,19 @@ const TableAdvert = (prop: PropTable) => {
                             advertStore.getPaginatedAdverts.content!!.length > 0 &&
                             <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
                                 <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {advert.title}
+                                    <div className="overflow-y-auto max-h-20">
+                                        {advert.title}
+                                    </div>
                                 </th>
                                 <td className="tableCamp">
-                                    {advert.description}
+                                    <div className="overflow-y-auto max-h-20">
+                                        {advert.description}
+                                    </div>
                                 </td>
                                 <td className="tableCamp">
-                                    < a className=" text-blue-500 hover:text-blue-600" href={advert.webUrl}>{advert.webUrl}</a>
+                                    <div className="overflow-y-auto max-h-20">
+                                        < a className=" text-blue-500 hover:text-blue-600" href={advert.webUrl}>{advert.webUrl}</a>
+                                    </div>
                                 </td>
                                 <td className="tableCamp">
                                     <div className="h-20 flex items-center justify-center">

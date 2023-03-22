@@ -26,7 +26,7 @@ const Tourism = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Turismo</h2>
-          <div className="lg:ml-auto flex ml-1">
+          <div className="mainButtonsDiv">
             <button onClick={() => tourisStore.setModalCreate(true)} type="button" className="btnStandard">
               <img src={Pencil} alt="Create"/>
               Crear
