@@ -137,15 +137,15 @@ class BandStore {
         this.updateAllBandList(band)
     }
 
-    async deleteBand(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/bando?username=${username}&title=${title}`, {
+    async deleteBand(username: string, idBando: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/bando?username=${username}&idBando=${idBando}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
             }
         })
         if (response.ok) {
-            const newPaginatedBands = this.paginatedBand.content!!.filter((item) => item.title !== title)
+            const newPaginatedBands = this.paginatedBand.content!!.filter((item) => item.idBando !== idBando)
             this.updateBandList(newPaginatedBands)
             this.updateBand({})
             toast.success('Se ha borrado exitosamente', {

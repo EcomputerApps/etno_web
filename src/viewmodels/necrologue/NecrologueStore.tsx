@@ -101,15 +101,15 @@ class NecrologueStore {
         this.updateAllNecrologues(necrologue)
     }
 
-    async deleteNecrologue(username: string, name: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/death?username=${username}&name=${name}`, {
+    async deleteNecrologue(username: string, idDeath: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/death?username=${username}&idDeath=${idDeath}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
         if (response.ok) {
-            const newPaginatedNecro = this.paginatedNecro.content!!.filter((item) => item.name !== name)
+            const newPaginatedNecro = this.paginatedNecro.content!!.filter((item) => item.idDeath !== idDeath)
             this.updateNecrologueList(newPaginatedNecro)
             this.updateNecro({})
             toast.success('Se ha borrado exitosamente', {

@@ -207,8 +207,8 @@ class TourismStore {
         this.updateAllTourism(tourism)
     }
 
-    async deleteTourism(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/tourism?username=${username}&title=${title}`, {
+    async deleteTourism(username: string, idTourism: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/tourism?username=${username}&idTourism=${idTourism}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -216,7 +216,7 @@ class TourismStore {
         })
 
         if (response.ok) {
-            const newPaginatedTourism = this.paginatedTourism.content!!.filter((item) => item.title !== title)
+            const newPaginatedTourism = this.paginatedTourism.content!!.filter((item) => item.idTourism !== idTourism)
             this.updateTourismList(newPaginatedTourism)
             this.updateTourism({})
             toast.success('Se ha eliminado exitosamente', {

@@ -4,6 +4,7 @@ import "../../../index.css"
 import EditTourism from "./create/EditTourism"
 import { useState } from "react"
 import tourismRed from "../../../assets/menu/tourismRed.svg"
+import { Tourism } from "../../../models/section/Section"
 
 const tourismStore = TourismStore.getTourismStore()
 
@@ -16,12 +17,15 @@ interface PropTable {
 const TableTourism = (prop: PropTable) => {
     const [confirm, setConfirm] = useState(false)
     const [delTitle, setDelTitle] = useState<string>("")
-    function deleteConfirmation(title: string) {
+    const [delId, setDelId] = useState<string>("")
+
+    function deleteConfirmation(tourism: Tourism) {
         setConfirm(true)
-        setDelTitle(title)
+        setDelTitle(tourism.title!!)
+        setDelId(tourism.idTourism!!)
     }
-    const deleteTourism = async (event: string) => {
-        await tourismStore.deleteTourism('Bolea', event)
+    const deleteTourism = async (idTourism: string) => {
+        await tourismStore.deleteTourism('Bolea', idTourism)
         setConfirm(false)
     }
     return (
@@ -77,7 +81,7 @@ const TableTourism = (prop: PropTable) => {
                                                 tourismStore.updateTourism(tourism)
                                                 tourismStore.setModalEdit(true)
                                             }}>Editar</a>
-                                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(tourism.title!!)}>Eliminar</a>
+                                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(tourism)}>Eliminar</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -92,7 +96,7 @@ const TableTourism = (prop: PropTable) => {
                                         <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
                                             <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {delTitle}?</label>
                                             <div className="flex justify-center m-auto mt-5 mb-3">
-                                                <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteTourism(delTitle)}>SI</button>
+                                                <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteTourism(delId)}>SI</button>
                                                 <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
                                             </div>
                                         </div>
@@ -103,7 +107,6 @@ const TableTourism = (prop: PropTable) => {
                     ) : <></>}
                 </div>
             )}
-
         </div>
     )
 }

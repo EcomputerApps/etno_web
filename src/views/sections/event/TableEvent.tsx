@@ -17,13 +17,16 @@ interface PropTable {
 const TableEvent = (prop: PropTable) => {
 
     const [delTitle, setDelTitle] = useState<string>("")
+    const [delId, setDelId] = useState<string>("")
     const [confirm, setConfirm] = useState<boolean>(false)
-    function deleteConfirmation(title: string) {
+
+    function deleteConfirmation(event: Event) {
         setConfirm(true)
-        setDelTitle(title)
+        setDelTitle(event.title!!)
+        setDelId(event.idEvent!!)
     }
-    const deleteEvent = async (event: string) => {
-        await eventStore.deleteEvent('Bolea', event)
+    const deleteEvent = async (idEvetn: string) => {
+        await eventStore.deleteEvent('Bolea', idEvetn)
         setConfirm(false)
     }
     function showParticipants(event: Event) {
@@ -126,7 +129,7 @@ const TableEvent = (prop: PropTable) => {
                                                     eventStore.updateEvent(eventMap)
                                                     eventStore.setModalEdit(true)
                                                 }}>Editar</a>
-                                                <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline" onClick={() => deleteConfirmation(eventMap.title!!)}>Eliminar</a>
+                                                <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline" onClick={() => deleteConfirmation(eventMap)}>Eliminar</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -142,7 +145,7 @@ const TableEvent = (prop: PropTable) => {
                                         <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
                                             <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {delTitle}?</label>
                                             <div className="flex justify-center m-auto mt-5 mb-3">
-                                                <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteEvent(delTitle)}>SI</button>
+                                                <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteEvent(delId)}>SI</button>
                                                 <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
                                             </div>
                                         </div>

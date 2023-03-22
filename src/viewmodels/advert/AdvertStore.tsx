@@ -185,8 +185,8 @@ class AdvertStore {
         this.updateAllAdverts(adverts)
     }
 
-    async deleteAdvert(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/ad?username=${username}&title=${title}`, {
+    async deleteAdvert(username: string, idAdvert: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/ad?username=${username}&idAd=${idAdvert}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -194,7 +194,7 @@ class AdvertStore {
         })
 
         if (response.ok) {
-            const paginatedAdverts = this.paginatedAdvert.content!!.filter((item) => item.title !== title)
+            const paginatedAdverts = this.paginatedAdvert.content!!.filter((item) => item.idAd !== idAdvert)
             this.updateAdvertList(paginatedAdverts)
             this.updateAdvert({})
             toast.success('Se ha borrado exitosamente', {

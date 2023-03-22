@@ -216,8 +216,8 @@ class NewsStore{
         this.updateAllNews(news)
     }
     
-    async deleteNews(username: string, title : string){
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/news?username=${username}&title=${title}`,{
+    async deleteNews(username: string, idNews : string){
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/news?username=${username}&idNews=${idNews}`,{
             method : 'DELETE',
             headers : {
                 'Access-Control-Allow-Origin':'*'
@@ -225,7 +225,7 @@ class NewsStore{
         })
 
         if(response.ok){
-            const newPaginatedNews = this.paginatedNews.content!!.filter((item)=>item.title !== title)
+            const newPaginatedNews = this.paginatedNews.content!!.filter((item)=>item.idNew !== idNews)
             this.updateNewsList(newPaginatedNews)
             this.updateNews({})
             toast.success('Se ha borrado exitosamente', {

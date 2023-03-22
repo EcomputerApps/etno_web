@@ -17,14 +17,16 @@ interface PropTable {
 const TableAdvert = (prop: PropTable) => {
     const [confirm, setConfirm] = useState(false)
     const [delTitle, setDelTitle] = useState<string>("")
+    const [delId, setDelId] = useState<string>("")
 
-    function deleteConfirmation(title: string) {
+    function deleteConfirmation(ad: Ad) {
         setConfirm(true)
-        setDelTitle(title)
+        setDelTitle(ad.title!!)
+        setDelId(ad.idAd!!)
     }
 
-    const deleteAdvert = async (advert: string) => {
-        await advertStore.deleteAdvert("Bolea", advert)
+    const deleteAdvert = async (idAd: string) => {
+        await advertStore.deleteAdvert("Bolea", idAd)
         setConfirm(false)
     }
     function saveNews(advert: Ad) {
@@ -83,7 +85,7 @@ const TableAdvert = (prop: PropTable) => {
                                 <td className="tableCamp">
                                     <div className="h-20 flex items-center justify-center">
                                         <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveNews(advert)}>Editar</a>
-                                        <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(advert.title!!)}>Eliminar</a>
+                                        <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(advert)}>Eliminar</a>
                                     </div>
                                 </td>
                             </tr>
@@ -98,7 +100,7 @@ const TableAdvert = (prop: PropTable) => {
                                     <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
                                         <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {delTitle}?</label>
                                         <div className="flex justify-center m-auto mt-5 mb-3">
-                                            <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteAdvert(delTitle)}>SI</button>
+                                            <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteAdvert(delId)}>SI</button>
                                             <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
                                         </div>
                                     </div>

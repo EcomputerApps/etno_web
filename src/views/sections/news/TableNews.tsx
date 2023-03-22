@@ -18,13 +18,15 @@ const TableNews = (prop: PropTable) => {
 
     const [confirm, setConfirm] = useState(false)
     const [delTitle, setDelTitle] = useState<string>("")
+    const [delId, setDelId] = useState<string>("")
 
-    function deleteConfirmation(title: string) {
+    function deleteConfirmation(news: News) {
         setConfirm(true)
-        setDelTitle(title)
+        setDelTitle(news.title!!)
+        setDelId(news.idNew!!)
     }
-    const deleteNews = async (news: string) => {
-        await newsStore.deleteNews("Bolea", news)
+    const deleteNews = async (idNews: string) => {
+        await newsStore.deleteNews("Bolea", idNews)
         setConfirm(false)
     }
 
@@ -88,7 +90,7 @@ const TableNews = (prop: PropTable) => {
                                     <td className="px-6 py-4 flex items-center justify-center ">
                                         <div className="h-20 flex items-center justify-center">
                                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => saveNews(news)}>Editar</a>
-                                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(news.title!!)}>Eliminar</a>
+                                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(news)}>Eliminar</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -103,7 +105,7 @@ const TableNews = (prop: PropTable) => {
                                         <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
                                             <label className="text-2xl text-center mt-5 overflow-hidden">¿Seguro quiere eliminar {delTitle}?</label>
                                             <div className="flex justify-center m-auto mt-5 mb-3">
-                                                <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteNews(delTitle)}>SI</button>
+                                                <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteNews(delId)}>SI</button>
                                                 <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
                                             </div>
                                         </div>

@@ -16,14 +16,16 @@ interface PropTable {
 const TableService = (prop: PropTable) => {
     const [confirm, setConfirm] = useState(false)
     const [delOwner, setDelOwner] = useState<string>("")
+    const [delId, setDelId] = useState<string>("")
 
-    function deleteConfirmation(Owner: string) {
+    function deleteConfirmation(service: Service) {
         setConfirm(true)
-        setDelOwner(Owner)
+        setDelOwner(service.owner!!)
+        setDelId(service.idService!!)
     }
 
-    const deleteService = async (owner: string) => {
-        await serviceStore.deleteService('Bolea', owner)
+    const deleteService = async (idService: string) => {
+        await serviceStore.deleteService('Bolea', idService)
         setConfirm(false)
     }
 
@@ -98,7 +100,7 @@ const TableService = (prop: PropTable) => {
                                     <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => {
                                         saveService(service)
                                     }}>Editar</a>
-                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(service.owner!!)}>Eliminar</a>
+                                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(service)}>Eliminar</a>
                                 </div>
                             </td>
                         </tr>
@@ -113,7 +115,7 @@ const TableService = (prop: PropTable) => {
                                 <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
                                     <label className="text-2xl text-center mt-5 overflow-hidden">¿Seguro quiere eliminar {delOwner}?</label>
                                     <div className="flex justify-center m-auto mt-5 mb-3">
-                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteService(delOwner)}>SI</button>
+                                        <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteService(delId)}>SI</button>
                                         <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
                                     </div>
                                 </div>

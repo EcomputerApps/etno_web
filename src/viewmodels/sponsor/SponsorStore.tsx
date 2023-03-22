@@ -99,15 +99,15 @@ class SposnsorStore {
         this.updateAllSponsors(sponsor)
     }
 
-    async deleteSponsor(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/sponsor?username=${username}&title=${title}`, {
+    async deleteSponsor(username: string, idSponsor: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/sponsor?username=${username}&idSponsor=${idSponsor}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
         if (response.ok) {
-            const newSponsors = this.paginatedSponsor.content!.filter((item) => item.title !== title)
+            const newSponsors = this.paginatedSponsor.content!.filter((item) => item.idSponsor !== idSponsor)
             this.updateSponsorList(newSponsors)
             this.updateSponsor({})
             toast.success('Se ha borrado exitosamente', {

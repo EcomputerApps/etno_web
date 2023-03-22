@@ -187,8 +187,8 @@ class EventStore {
         return this.event
     }
 
-    async deleteEvent(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/event?username=${username}&title=${title}`, {
+    async deleteEvent(username: string, idEvent: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/event?username=${username}&idEvent=${idEvent}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -196,7 +196,7 @@ class EventStore {
         })
 
         if (response.ok) {
-            const newPaginatedEvents = this.paginatedEvent.content!!.filter((item) => item.title !== title)
+            const newPaginatedEvents = this.paginatedEvent.content!!.filter((item) => item.idEvent !== idEvent)
             this.updateEventList(newPaginatedEvents)
             this.updateEvent({})
             toast.success('Se ha eliminado exitosamente', {

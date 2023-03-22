@@ -121,15 +121,15 @@ class ServiceStore {
         const service = await response.json()
         this.updatePaginatedService(service)
     }
-    async deleteService(username: string, owner: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/service?username=${username}&owner=${owner}`, {
+    async deleteService(username: string, idService: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/service?username=${username}&idService=${idService}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
         if (response.ok) {
-            const newPaginatedService = this.paginatedService.content!!.filter((item) => item.owner !== owner)
+            const newPaginatedService = this.paginatedService.content!!.filter((item) => item.idService !== idService)
             this.updateServiceList(newPaginatedService)
             this.updateService({})
             toast.success('Se ha borrado exitosamente', {

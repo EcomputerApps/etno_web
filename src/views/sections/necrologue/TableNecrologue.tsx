@@ -17,14 +17,16 @@ const TableNecrologue = (prop: PropTable) => {
 
     const [confirm, setConfirm] = useState(false)
     const [delName, setDelName] = useState<string>("")
+    const [delId, setDelId] = useState<string>("")
 
-    function deleteConfirmation(Name: string) {
+    function deleteConfirmation(necro: Necrologue) {
         setConfirm(true)
-        setDelName(Name)
+        setDelName(necro.name!!)
+        setDelId(necro.idDeath!!)
     }
 
-    const deleteNecro = async (necro: string) => {
-        await necrologueStore.deleteNecrologue('Bolea', necro)
+    const deleteNecro = async (idNecro: string) => {
+        await necrologueStore.deleteNecrologue('Bolea', idNecro)
         setConfirm(false)
     }
     function saveNecro(necro: Necrologue) {
@@ -86,7 +88,7 @@ const TableNecrologue = (prop: PropTable) => {
                                             <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => {
                                                 saveNecro(newNecro)
                                             }}>Editar</a>
-                                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(newNecro.name!!)}>Eliminar</a>
+                                            <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(newNecro)}>Eliminar</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -101,7 +103,7 @@ const TableNecrologue = (prop: PropTable) => {
                                         <div className="flex flex-col bg-white lg:w-1/4 w-1/2 h-1/2 rounded-md border-2">
                                             <label className="text-2xl text-center mt-5">¿Seguro quiere eliminar {delName}?</label>
                                             <div className="flex justify-center m-auto mt-5 mb-3">
-                                                <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteNecro(delName)}>SI</button>
+                                                <button className="btnStandard w-14 h-10 mr-5 " onClick={() => deleteNecro(delId)}>SI</button>
                                                 <button className="btnStandard w-14 h-10" onClick={() => setConfirm(false)}>NO</button>
                                             </div>
                                         </div>
