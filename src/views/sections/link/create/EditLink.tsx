@@ -36,7 +36,7 @@ const EditLink = () => {
                 title: linkTitle,
                 url: linkUrl
             }
-            linkStore.editLink('Bolea', linkId, newLink)
+            linkStore.editLink(localStorage.getItem('user_etno_locality')!, linkId, newLink)
             sideBarStore.updateSection('Enlaces'); hoverSectionStore.setName('Enlaces')
         }
     }

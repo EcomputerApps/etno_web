@@ -45,7 +45,7 @@ const EditNews = () => {
         publicationDate: newsDate,
         imageUrl: news.imageUrl
       } 
-           newsStore.editNews('Bolea', news.idNew!!, news_, file!!)
+           newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_, file!!)
     }
   }
 

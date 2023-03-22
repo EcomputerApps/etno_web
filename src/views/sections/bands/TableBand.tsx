@@ -20,7 +20,7 @@ const TableBand = (prop: PropTable) => {
     const [delTitle, setDelTitle] = useState<string>("")
 
     const deleteBand = async (band: string) => {
-        await bandStore.deleteBand('Bolea', band)
+        await bandStore.deleteBand(localStorage.getItem('user_etno_locality')!, band)
         setConfirm(false)
     }
 

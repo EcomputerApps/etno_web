@@ -20,7 +20,7 @@ const TableTourism = (prop: PropTable) => {
         setDelTitle(title)
     }
     const deleteTourism = async (event: string) => {
-        await tourismStore.deleteTourism('Bolea', event)
+        await tourismStore.deleteTourism(localStorage.getItem('user_etno_locality')!, event)
         setConfirm(false)
     }
     return (

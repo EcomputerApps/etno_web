@@ -14,7 +14,7 @@ const Advert = () => {
     const [pageNumber, setPageNumber] = useState(0)
   
     useEffect(() => {
-        adverStore.getRequestAdvert('Bolea', pageNumber, 5)
+        adverStore.getRequestAdvert(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
     }, [pageNumber])
 
     const incrementPage = () => {

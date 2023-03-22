@@ -21,7 +21,7 @@ const TableService = (prop: PropTable) => {
     }
 
     const deleteService = async (owner: string) => {
-        await serviceStore.deleteService('Bolea', owner)
+        await serviceStore.deleteService(localStorage.getItem('user_etno_locality')!, owner)
         setConfirm(false)
     }
 

@@ -12,7 +12,7 @@ const Incident = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    incidentStore.getRequestIncident('Bolea', pageNumber, 6)
+    incidentStore.getRequestIncident(localStorage.getItem('user_etno_locality')!, pageNumber, 6)
   }, [pageNumber])
 
   const incrementPage = () => {

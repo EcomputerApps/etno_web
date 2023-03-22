@@ -60,7 +60,7 @@ const CreateSponsor = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) : sponsorStore.addRequestSponsor('Bolea', sponsor, file!!); sideBarStore.updateSection('Patrocinadores'); hoverSectionStore.setName('Patrocinadores')
+        }) : sponsorStore.addRequestSponsor(localStorage.getItem('user_etno_locality')!, sponsor, file!!); sideBarStore.updateSection('Patrocinadores'); hoverSectionStore.setName('Patrocinadores')
     }
   }
 

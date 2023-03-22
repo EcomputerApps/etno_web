@@ -26,7 +26,7 @@ const Event = () => {
    const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    eventStore.getRequestEvents('Bolea', pageNumber, 5)
+    eventStore.getRequestEvents(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
   }, [pageNumber])
 
   const incrementPage = () => {

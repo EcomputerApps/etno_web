@@ -20,7 +20,7 @@ const LinkPage = () => {
     const [delId, setDelId] = useState<string>("")
 
     useEffect(() => {
-        linkStore.getRequestLink('Bolea', pageNumber, 12)
+        linkStore.getRequestLink(localStorage.getItem('user_etno_locality')!, pageNumber, 12)
     }, [pageNumber])
 
     function deleteConfirmation(link: Link) {
@@ -30,7 +30,7 @@ const LinkPage = () => {
     }
 
     const deleteLink = async (idLink: string) => {
-        await linkStore.deleteLink('Bolea', idLink)
+        await linkStore.deleteLink(localStorage.getItem('user_etno_locality')!, idLink)
         setConfirm(false)
     }
 

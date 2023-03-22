@@ -16,7 +16,7 @@ const bandStore = BandStore.getBandStore()
 const CreateBand = () => {
 
   useEffect(() => {
-    bandStore.getAllBandRequest("Bolea")
+    bandStore.getAllBandRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
 
   function chekIfEmpty() {
@@ -70,7 +70,7 @@ const CreateBand = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) : bandStore.addRequestBand('Bolea', bando, file!!); sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
+        }) : bandStore.addRequestBand(localStorage.getItem('user_etno_locality')!, bando, file!!); sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
     }
   }
 

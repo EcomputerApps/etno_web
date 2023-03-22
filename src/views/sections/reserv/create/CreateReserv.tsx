@@ -72,7 +72,7 @@ const CreateReserve = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-            }) : reserveStore.addRequestReserve('Bolea', newReserv, reservHall?.idHall!!, reservPlace?.idPlace!!); sideBarStore.updateSection('Reservas'); hoverSectionStore.setName('Reservas');
+            }) : reserveStore.addRequestReserve(localStorage.getItem('user_etno_locality')!, newReserv, reservHall?.idHall!!, reservPlace?.idPlace!!); sideBarStore.updateSection('Reservas'); hoverSectionStore.setName('Reservas');
         console.log(newReserv)
     }
 

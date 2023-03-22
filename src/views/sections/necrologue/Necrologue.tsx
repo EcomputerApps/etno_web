@@ -14,7 +14,7 @@ const Necrologue = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    necrologueStore.getRequestNecrologue('Bolea', pageNumber, 5)
+    necrologueStore.getRequestNecrologue(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
   }, [pageNumber])
 
   const incrementPage = () => {

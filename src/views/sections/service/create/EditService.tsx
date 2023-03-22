@@ -86,7 +86,7 @@ const EditService = () => {
                 schedule: serviceSchedule,
                 imageUrl: service.imageUrl
             }
-            serviceStore.editService('Bolea', serviceId, newService, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
+            serviceStore.editService(localStorage.getItem('user_etno_locality')!, serviceId, newService, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
         }
     }
 

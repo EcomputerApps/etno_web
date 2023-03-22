@@ -14,7 +14,7 @@ const News = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    newsStore.getRequestNews('Bolea', pageNumber, 5)
+    newsStore.getRequestNews(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
   }, [pageNumber])
 
   const incrementPage = () => {

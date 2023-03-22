@@ -28,7 +28,7 @@ const Reserve = () => {
     const [pageNumber, setPageNumber] = useState(0)
 
     useEffect(() => {
-        reserveStore.getRequestPagiantedReserves("Bolea", pageNumber, 5)
+        reserveStore.getRequestPagiantedReserves(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
     }, [])
 
     useEffect(() => {

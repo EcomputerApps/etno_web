@@ -82,7 +82,7 @@ const CreateTourism = () => {
           draggable: true,
           progress: undefined,
           theme: 'light'
-        }) : tourismStore.addRequestTourism('Bolea', tourism, file!!); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
+        }) : tourismStore.addRequestTourism(localStorage.getItem('user_etno_locality')!, tourism, file!!); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
     }
   }
 

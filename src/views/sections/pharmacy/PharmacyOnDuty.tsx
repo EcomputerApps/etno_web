@@ -12,7 +12,7 @@ const PharmacyOnDutyCalendar = () => {
     var events = new Array()
 
     useEffect(() => {
-        pharmacyStore.getRequestPharmacyOnDuty("Bolea")
+        pharmacyStore.getRequestPharmacyOnDuty(localStorage.getItem('user_etno_locality')!)
 
     }, [])
 

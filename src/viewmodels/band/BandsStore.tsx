@@ -7,7 +7,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class BandStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static bandStore: BandStore
 
     static getBandStore() {
@@ -210,6 +210,5 @@ class BandStore {
             })
         }
     }
-
 }
 export default BandStore

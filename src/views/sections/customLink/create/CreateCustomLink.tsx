@@ -36,7 +36,7 @@ const CreateCustomLink = () => {
                 webUrl: cLinkUrl,
                 iconName: cLinkIncon
             }
-            customLinkStore.addRequestCustomLink('Bolea', newCustomLink); sideBarStore.updateSection('Enlaces Personalizados'); hoverSectionStore.setName('Enlaces Personalizados')
+            customLinkStore.addRequestCustomLink(localStorage.getItem('user_etno_locality')!, newCustomLink); sideBarStore.updateSection('Enlaces Personalizados'); hoverSectionStore.setName('Enlaces Personalizados')
         }
     }
 

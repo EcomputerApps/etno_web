@@ -65,7 +65,7 @@ const CreateNews = () => {
           theme: "light"
         })
       } else {
-        newsStore.addRequestNews('Bolea', news, file!!)
+        newsStore.addRequestNews(localStorage.getItem('user_etno_locality')!, news, file!!)
       }
     }
   }

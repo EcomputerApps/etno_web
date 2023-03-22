@@ -32,7 +32,7 @@ const CreateAdvert = () => {
 
 
     useEffect(() => {
-        advertStore.getRequestAdvert('Bolea', 0, 5)
+        advertStore.getRequestAdvert(localStorage.getItem('user_etno_locality')!, 0, 5)
     }, [])
 
     function addAd() {

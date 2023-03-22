@@ -69,7 +69,7 @@ const EditPlace = () => {
                 longitude: long,
                 halls: reserveStore.getHallList
             }
-            reserveStore.editPlace('Bolea', placeId, newPlace, file!!)
+            reserveStore.editPlace(localStorage.getItem('user_etno_locality')!, placeId, newPlace, file!!)
             reserveStore.updateHallList([]);
             sideBarStore.updateSection('Reservas');
             hoverSectionStore.setName('Reservas')

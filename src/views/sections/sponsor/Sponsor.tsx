@@ -15,7 +15,7 @@ const Sponsor = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    sponsorStore.getRequestSponsor('Bolea', pageNumber, 5)
+    sponsorStore.getRequestSponsor(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
   }, [pageNumber])
 
   const incrementPage = () => {

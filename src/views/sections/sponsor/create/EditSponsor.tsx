@@ -48,7 +48,7 @@ const EditSponsor = () => {
                 description: sponsorDescription,
                 phone: sponsorTel,
             }
-            sponsorStore.editSponsor('Bolea', sponsorId, newSponsor, file!!)
+            sponsorStore.editSponsor(localStorage.getItem('user_etno_locality')!, sponsorId, newSponsor, file!!)
             sideBarStore.updateSection('Patrocinadores')
             hoverSectionStore.setName('Patrocinadores')
         }

@@ -20,11 +20,11 @@ const Band = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    bandStore.getRequestBand('Bolea', pageNumber, 5)
+    bandStore.getRequestBand(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
   }, [pageNumber])
 
   useEffect(() => {
-    bandStore.getAllBandRequest("Bolea")
+    bandStore.getAllBandRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
 
   const incrementPage = () => {

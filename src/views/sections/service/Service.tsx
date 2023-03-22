@@ -14,7 +14,7 @@ const Service = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    serviceStore.getRequestService('Bolea', pageNumber, 5)
+    serviceStore.getRequestService(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
   }, [pageNumber])
 
   const incrementPage = () => {

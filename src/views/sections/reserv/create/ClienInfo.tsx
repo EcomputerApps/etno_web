@@ -4,10 +4,10 @@ import ReserveStore from "../../../../viewmodels/reserv/ReserveStore"
 const reserveStore = ReserveStore.getReserveStore()
 const ClientInfo = () => {
   function confirmReserve(idReserve: string) {
-    reserveStore.confirmReserve("Bolea", idReserve)
+    reserveStore.confirmReserve(localStorage.getItem('user_etno_locality')!, idReserve)
   }
   const deleteReserva = async (reserve: string) => {
-    await reserveStore.deleteReserve("Bolea", reserve)
+    await reserveStore.deleteReserve(localStorage.getItem('user_etno_locality')!, reserve)
     reserveStore.setModalClientInfo(false)
   }
   const [reserve] = useState<Reserve>(reserveStore.getReserve)

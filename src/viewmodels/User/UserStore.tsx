@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { UserLogin } from "../../models/user/UserLogin";
 
 class UserStore {
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static userStore: UserStore
 
     static getUserStore(){

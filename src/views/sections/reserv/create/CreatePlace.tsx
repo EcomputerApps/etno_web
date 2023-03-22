@@ -63,7 +63,7 @@ const CreatePlace = () => {
                 theme: "light"
             })
         } else {
-            reserveStore.addRequestPlace("Bolea", newPlace, file!!);
+            reserveStore.addRequestPlace(localStorage.getItem('user_etno_locality')!, newPlace, file!!);
             reserveStore.updateHallList([])
             sideBarStore.updateSection('Reservas');
             hoverSectionStore.setName('Reservas')

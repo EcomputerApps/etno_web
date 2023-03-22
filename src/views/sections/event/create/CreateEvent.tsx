@@ -78,7 +78,7 @@ const CreateEvent = () => {
             draggable: true,
             progress: undefined,
             theme: 'light'
-          }) : eventStore.addRequestEvent('Bolea', eventNew, file!!)
+          }) : eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!)
       } else {
         eventNew.reservePrice = 0
         checkIfEmpty()
@@ -96,7 +96,7 @@ const CreateEvent = () => {
             draggable: true,
             progress: undefined,
             theme: 'light'
-          }) : eventStore.addRequestEvent('Bolea', eventNew, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
+          }) : eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
       }
     }
   }

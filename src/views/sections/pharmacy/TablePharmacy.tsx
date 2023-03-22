@@ -18,7 +18,7 @@ const TablePharmacy = (prop: PropTable) => {
     }
 
     const deletePharmacy = async (pharmacy: string) => {
-        await pharmacyStore.deletePharmacy('Bolea', pharmacy)
+        await pharmacyStore.deletePharmacy(localStorage.getItem('user_etno_locality')!, pharmacy)
         setConfirm(false)
     }
     function savePharm(pharm: Pharmacy) {

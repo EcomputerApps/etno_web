@@ -13,7 +13,7 @@ const AddHalls = () => {
     const [hallList, setHallList] = useState<Array<Hall>>()
     function addHallToList() {
         const hall: Hall = {
-            username: "Bolea",
+            username: localStorage.getItem('user_etno_locality')!,
             name: hallName
         }
         chekIfEmpty()

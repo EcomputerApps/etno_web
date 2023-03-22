@@ -17,7 +17,7 @@ const Pharmacy = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    pharmacyStore.getRequestPharmacy('Bolea', pageNumber, 5)
+    pharmacyStore.getRequestPharmacy(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
   }, [pageNumber])
 
   const incrementPage = () => {

@@ -43,7 +43,7 @@ const EditAdvert = () => {
                 description: advertDescription,
                 webUrl: advertLink
             }
-            advertStore.editAdvert('Bolea', advert.idAd!!, advert_, file!!)
+            advertStore.editAdvert(localStorage.getItem('user_etno_locality')!, advert.idAd!!, advert_, file!!)
             sideBarStore.updateSection('Anuncios') 
             hoverSectionStore.setName('Anuncios')
         }

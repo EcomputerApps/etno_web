@@ -19,7 +19,7 @@ const TableSurvey = () => {
     }
 
     const deleteSurvey = async (surveyId: string) => {
-        await surveyStore.deleteSurvey('Bolea', surveyId)
+        await surveyStore.deleteSurvey(localStorage.getItem('user_etno_locality')!, surveyId)
         setConfirm(false)
     }
 

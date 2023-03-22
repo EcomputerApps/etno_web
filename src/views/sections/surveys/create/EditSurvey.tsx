@@ -82,7 +82,7 @@ const EditSurvey = () => {
                 isActive: true,
                 datePicker: new Date(finalDate + " " + finalTime)
             }
-            surveyStore.editSurvey('Bolea', surveyId, newSurvey)
+            surveyStore.editSurvey(localStorage.getItem('user_etno_locality')!, surveyId, newSurvey)
             sideBarStore.updateSection('Encuestas'); hoverSectionStore.setName('Encuestas')
         }
     }

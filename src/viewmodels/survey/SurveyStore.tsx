@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import { Survey } from "../../models/section/Section"
 
 class SurveyStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static surveyStore: SurveyStore
 
     static getSurveyStore() {

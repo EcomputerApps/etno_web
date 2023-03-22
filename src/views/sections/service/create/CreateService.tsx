@@ -109,7 +109,7 @@ const CreateService = () => {
                     draggable: true,
                     progress: undefined,
                     theme: "light"
-                }) : serviceStore.addRequestService('Bolea', service, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
+                }) : serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
         }
 
     }

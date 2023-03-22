@@ -21,7 +21,7 @@ const TableEvent = (prop: PropTable) => {
         setDelTitle(title)
     }
     const deleteEvent = async (event: string) => {
-        await eventStore.deleteEvent('Bolea', event)
+        await eventStore.deleteEvent(localStorage.getItem('user_etno_locality')!, event)
         setConfirm(false)
     }
     function showParticipants(event: Event) {

@@ -29,7 +29,7 @@ const ReservPlaceList = (prop: PropTable) => {
         setPageNumber(pageNumber - 1)
     }
     useEffect(() => {
-        reserveStore.getRequestPagiantedPlaces("Bolea", pageNumber, 5)
+        reserveStore.getRequestPagiantedPlaces(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
     }, [pageNumber])
 
     function savePlace(place: Place) {
@@ -44,7 +44,7 @@ const ReservPlaceList = (prop: PropTable) => {
     }
 
     const deletePlace = async (idPlace: string) => {
-        await reserveStore.deletePlace('Bolea', idPlace)
+        await reserveStore.deletePlace(localStorage.getItem('user_etno_locality')!, idPlace)
         setConfirm(false)
     }
 

@@ -19,7 +19,7 @@ const CustomLinkPage = () => {
     const [delId, setDelId] = useState<string>("")
 
     useEffect(() => {
-        customLinkStore.getRequestCustomLink('Bolea', pageNumber, 12)
+        customLinkStore.getRequestCustomLink(localStorage.getItem('user_etno_locality')!, pageNumber, 12)
     }, [pageNumber])
 
     const incrementPage = () => {

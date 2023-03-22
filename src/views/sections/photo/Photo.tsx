@@ -13,7 +13,7 @@ const Photo = () => {
     const [pageNumber, setPageNumber] = useState(0)
 
     useEffect(() => {
-        imageStore.getRequestImages('Bolea', pageNumber, 6)
+        imageStore.getRequestImages(localStorage.getItem('user_etno_locality')!, pageNumber, 6)
     }, [pageNumber])
 
 

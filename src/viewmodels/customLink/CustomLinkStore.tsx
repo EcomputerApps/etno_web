@@ -5,7 +5,7 @@ import { CustomLink,  PaginatedCustomLink } from "../../models/section/Section"
 
 
 class CustomLinkStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static customLinkStore: CustomLinkStore
 
     static getCustomLinkStore() {

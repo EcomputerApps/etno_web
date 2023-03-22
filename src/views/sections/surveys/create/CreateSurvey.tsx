@@ -51,7 +51,7 @@ const CreateSurvey = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-            }) : surveyStore.addRequestSurvey("Bolea", newSurvey)
+            }) : surveyStore.addRequestSurvey(localStorage.getItem('user_etno_locality')!, newSurvey)
     }
 
     function minimumReplies() {

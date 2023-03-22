@@ -22,7 +22,7 @@ const TableNews = (prop: PropTable) => {
         setDelTitle(title)
     }
     const deleteNews = async (news: string) => {
-        await newsStore.deleteNews("Bolea", news)
+        await newsStore.deleteNews(localStorage.getItem('user_etno_locality')!, news)
         setConfirm(false)
     }
 

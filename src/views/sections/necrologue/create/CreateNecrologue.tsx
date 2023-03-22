@@ -57,7 +57,7 @@ const CreateNecrologue = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) : necroStore.addRequestNecro('Bolea', necro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
+        }) : necroStore.addRequestNecro(localStorage.getItem('user_etno_locality')!, necro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
     }
   }
 

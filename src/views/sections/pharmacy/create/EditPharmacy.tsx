@@ -202,7 +202,7 @@ const EditPharmacy = () => {
         var arrayDeFechas = new Array()
         datos.map((item, index) => {
             arrayDeFechas.push({
-                username: "Bolea",
+                username: localStorage.getItem('user_etno_locality')!,
                 namePharmacy: pharmacyName,
                 date: item
             })
@@ -262,7 +262,7 @@ const EditPharmacy = () => {
                 pharmacy_.durationDays = 0
                 pharmacy_.frequencyInDays = 0
             } console.log(pharmacy_)
-            pharmacyStore.editPharmacy('Bolea', pharmaciId, pharmacy_, file!!)
+            pharmacyStore.editPharmacy(localStorage.getItem('user_etno_locality')!, pharmaciId, pharmacy_, file!!)
             sideBarStore.updateSection('Farmacias')
             hoverSectionStore.setName('Farmacias')
         }

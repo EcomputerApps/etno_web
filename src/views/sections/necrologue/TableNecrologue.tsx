@@ -22,7 +22,7 @@ const TableNecrologue = (prop: PropTable) => {
     }
 
     const deleteNecro = async (necro: string) => {
-        await necrologueStore.deleteNecrologue('Bolea', necro)
+        await necrologueStore.deleteNecrologue(localStorage.getItem('user_etno_locality')!, necro)
         setConfirm(false)
     }
     function saveNecro(necro: Necrologue) {

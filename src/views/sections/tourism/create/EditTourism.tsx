@@ -74,7 +74,7 @@ const EditTourism = () => {
         longitude: tourismLong,
         latitude: tourismLat
       }
-      tourismStore.editTourism('Bolea', tourism.idTourism!!, tourism_, file!!)
+      tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, file!!)
       sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
     }
   }

@@ -50,7 +50,7 @@ const EditNecrologue = () => {
         description: necroDescription,
         imageUrl: necro.imageUrl
       }
-      necroStore.editNecro('Bolea', necroId, newNecro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
+      necroStore.editNecro(localStorage.getItem('user_etno_locality')!, necroId, newNecro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
     }
   }
   function chekIfEmpty() {

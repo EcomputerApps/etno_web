@@ -48,7 +48,7 @@ const CreateLink = () => {
                     theme: "light"
                 })
             } else {
-                linkStore.addRequestLink('Bolea', link); sideBarStore.updateSection('Enlaces'); hoverSectionStore.setName('Enlaces')
+                linkStore.addRequestLink(localStorage.getItem('user_etno_locality')!, link); sideBarStore.updateSection('Enlaces'); hoverSectionStore.setName('Enlaces')
             }
         }
     }

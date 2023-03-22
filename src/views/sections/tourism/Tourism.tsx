@@ -13,7 +13,7 @@ const Tourism = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    tourisStore.getRequestTourism('Bolea', pageNumber, 5)
+    tourisStore.getRequestTourism(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
   }, [pageNumber])
   const incrementPage = () => {
     setPageNumber(pageNumber + 1)

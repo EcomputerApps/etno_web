@@ -72,7 +72,7 @@ const EditEvent = () => {
           startDate: eventDateStart,
           endDate: eventDateFin
         }
-        eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+        eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
         sideBarStore.updateSection('Eventos')
         hoverSectionStore.setName('Eventos')
       }
@@ -107,7 +107,7 @@ const EditEvent = () => {
           endDate: eventDateFin
         }
 
-        eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+        eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
         sideBarStore.updateSection('Eventos')
         hoverSectionStore.setName('Eventos')
       }

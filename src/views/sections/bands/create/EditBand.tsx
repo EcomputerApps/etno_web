@@ -45,7 +45,7 @@ const EditBand = () => {
         title: bandType,
         description: bandDescription,
       }
-      bandStore.editBand('Bolea', bandId, bando, file!!)
+      bandStore.editBand(localStorage.getItem('user_etno_locality')!, bandId, bando, file!!)
       sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
     }
   }
