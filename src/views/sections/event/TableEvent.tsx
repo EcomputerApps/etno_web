@@ -26,7 +26,7 @@ const TableEvent = (prop: PropTable) => {
         setDelId(event.idEvent!!)
     }
     const deleteEvent = async (idEvent: string) => {
-        await eventStore.deleteEvent(localStorage.getItem('user_etno_locality')!, idEvetn)
+        await eventStore.deleteEvent(localStorage.getItem('user_etno_locality')!, idEvent)
         setConfirm(false)
     }
     function showParticipants(event: Event) {
