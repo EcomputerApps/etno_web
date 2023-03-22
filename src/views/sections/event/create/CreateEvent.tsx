@@ -90,9 +90,9 @@ const CreateEvent = () => {
         eventTitle === '' || eventDirection === '' || eventDescription === ''
           || eventOrganization === '' || eventPrice === ''
           || eventSeats === '' || eventLink === '' || eventDateStart === ''
-          || eventDateFin === '' || file === undefined ?
+          || eventDateFin === '' || file === undefined || eventDateStart.localeCompare(eventDateFin) === 1  ?
 
-          toast.error('Rellene los campos vacíos', {
+          toast.error('Rellene los campos correcto', {
             position: 'bottom-center',
             autoClose: 500,
             hideProgressBar: false,

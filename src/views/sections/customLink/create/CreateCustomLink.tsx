@@ -59,7 +59,6 @@ const CreateCustomLink = () => {
                 webUrl: cLinkUrl,
                 iconName: cLinkIncon
             }
-            customLinkStore.addRequestCustomLink(localStorage.getItem('user_etno_locality')!, newCustomLink); sideBarStore.updateSection('Enlaces Personalizados'); hoverSectionStore.setName('Enlaces Personalizados')
             if (checkIfExist(newCustomLink.name!!)) {
                 toast.info('Ya existe este enlace', {
                     position: 'bottom-center',

@@ -45,7 +45,7 @@ class LinkStore {
             setLinkString: action,
             setId: action,
             getAllLinksRequest: action,
-            getPaginatedLinkRequest:action,
+            getPaginatedLinkRequest: action,
             addRequestLink: action,
             updateLinkList: action,
             updatePaginatedLink: action,
@@ -169,7 +169,6 @@ class LinkStore {
             body: JSON.stringify(link)
         })
         if (response.ok) {
-            this.paginatedLink.content?.push(link)
             this.link = link
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',

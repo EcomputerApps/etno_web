@@ -79,15 +79,12 @@ class CustomLinkStore {
         return this.modalEditLink
     }
     async addRequestCustomLink(username: string, cutomLink: CustomLink) {
-
         const response = await fetch(`http://${this.serverIp}:8080/users/add/custom_link?username=${username}`,
             {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
-                    'Access-Control-Allow-Origin': '*'
-
-                },
+                                },
                 body: JSON.stringify(cutomLink)
             })
         if (response.ok) {
@@ -147,7 +144,7 @@ class CustomLinkStore {
             this.updateCustomLink({})
             toast.success('Se ha borrado exitosamente', {
                 position: 'bottom-center',
-                autoClose: 1000,
+                autoClose: 300,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
@@ -155,10 +152,11 @@ class CustomLinkStore {
                 progress: undefined,
                 theme: "light"
             })
+            
         } else {
             toast.error('No se ha podido borrar', {
                 position: 'bottom-center',
-                autoClose: 1000,
+                autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
