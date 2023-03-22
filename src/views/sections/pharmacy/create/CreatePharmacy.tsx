@@ -111,7 +111,7 @@ const CreatePharmacy = () => {
     const inputScheExtra = useRef<HTMLInputElement>(null)
     const inputLong = useRef<HTMLInputElement>(null)
     const inputLat = useRef<HTMLInputElement>(null)
-    const txtAreaRef = useRef<HTMLTextAreaElement>(null)
+    const txtAreaRef = useRef<HTMLInputElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
 
     const [emptyType, setEmptyType] = useState<boolean>(false)
@@ -568,7 +568,7 @@ const CreatePharmacy = () => {
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <textarea ref={txtAreaRef} placeholder=" " name="pharmacyDescription" maxLength={495} rows={3} className={`inputCamp peer  ${emptyDescption ? 'border-red-600'
+                    <input ref={txtAreaRef} placeholder=" " name="pharmacyDescription"  className={`inputCamp peer  ${emptyDescption ? 'border-red-600'
                         : ''
                         }`} onKeyDown={(e) => {
                             if ((e.code === "NumpadEnter")) {
@@ -580,7 +580,7 @@ const CreatePharmacy = () => {
                             setPharmacyDirection(e.target.value)
                             setEmptyDescription(false)
                         }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}  />
-                    <label className={"labelFloatTxtArea"}>Descripción</label>
+                    <label className={"labelFloatTxtArea"}>Direccion</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
