@@ -73,12 +73,10 @@ const EditAdvert = () => {
                     webUrl: advertLink
                 }
                 advertStore.editAdvert(localStorage.getItem('user_etno_locality')!, advert.idAd!!, advert_, file!!)
-                sideBarStore.updateSection('Anuncios') 
+                sideBarStore.updateSection('Anuncios')
                 hoverSectionStore.setName('Anuncios')
             }
-        
         }
-
     }
 
     function checkIfEmpty() {

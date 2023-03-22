@@ -109,8 +109,8 @@ const SurveyResults = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {testObject?.map((quizResultMap, index) => (
-                            testObject.length > 0 &&
+                        {surveyStore.getPaginatedQuizResults.content?.map((quizResultMap, index) => (
+                            surveyStore.getPaginatedQuizResults.content!!.length > 0 &&
                             <tr key={index} className="bg-white border-b  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-center max-w-min overflow-hidden">
                                 <th scope="row" className="h-20 text-gray-900  dark:text-white cursor-pointer" onClick={() => saveResults(quizResultMap)}>
                                     <div className="overflow-y-auto max-h-20">
@@ -147,9 +147,9 @@ const SurveyResults = () => {
                     <img src={arrowLeft} alt="backward" />
                     Anterior
                 </button>
-                {testObject && (
+                {surveyStore.getPaginatedQuizResults.content! && (
                     <CSVLink
-                        data={testObject}
+                        data={surveyStore.getPaginatedQuizResults.content!}
                         filename={'QuizResults.csv'}
                         enclosingCharacter={` `}
                         target="_blank"
@@ -167,5 +167,4 @@ const SurveyResults = () => {
         </div>
     )
 }
-
 export default observer(SurveyResults)
