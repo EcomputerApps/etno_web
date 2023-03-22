@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { toast } from "react-toastify";
-import { PaginatedService, Service, ServiceType } from "../../models/section/Section";
+import { PaginatedService, Service, ServiceList, ServiceType } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -53,11 +53,13 @@ class ServiceStore {
     //Observables =>
     paginatedService: PaginatedService = {}
     service: Service = {}
+    allService: ServiceList = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
 
     constructor() {
         makeObservable(this, {
+            allService: observable,
             serviceTypes: observable,
             modalEdit: observable,
             modalCreate: observable,
@@ -73,9 +75,19 @@ class ServiceStore {
             deleteService: action,
             updatePaginatedService: action,
             updateServiceList: action,
-            getPaginatedService: computed
+            getPaginatedService: computed,
+            getAllServices: computed,
+            updateAllServices: action,
+            updateServiceTypes: action,
+            getServiceType: computed
 
         })
+    }
+    updateAllServices(service: Service[]) {
+        this.allService.services = service
+    }
+    get getAllServices() {
+        return this.allService
     }
     updateServiceTypes(newServiceTypes: ServiceType[]) {
         this.serviceTypes = newServiceTypes
@@ -120,6 +132,15 @@ class ServiceStore {
         })
         const service = await response.json()
         this.updatePaginatedService(service)
+    }
+
+    async getAllServicesRequest(locality: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/services?username=${locality}`, {
+            method: 'GET',
+
+        })
+        const service = await response.json()
+        this.updateAllServices(service)
     }
     async deleteService(username: string, idService: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/service?username=${username}&idService=${idService}`, {

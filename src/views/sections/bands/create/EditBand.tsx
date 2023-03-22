@@ -42,7 +42,6 @@ const EditBand = () => {
   const [confirm, setConfirm] = useState<boolean>(false)
 
   function updateBand(bandId: string) {
-
     if (checkIfExist(bandTitle)) {
       toast.info('Ya existe este bando', {
         position: 'bottom-center',
