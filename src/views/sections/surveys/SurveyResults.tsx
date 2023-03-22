@@ -9,7 +9,7 @@ import { QuizResult } from "../../../models/section/Section";
 import { useEffect, useState } from "react";
 
 const surveyStore = SurveyStore.getSurveyStore()
-const headerPage = ["Pregunta", "Pregunta 1", "Pregunta 2", "Pregunta 3", "Pregunta 4"]
+const headerPage = ["Pregunta", "Respuesta 1", "Respuesta 2", "Respuesta 3", "Respuesta 4"]
 const SurveyResults = () => {
     const [pageNumber, setPageNumber] = useState(0)
 
@@ -147,16 +147,18 @@ const SurveyResults = () => {
                     <img src={arrowLeft} alt="backward" />
                     Anterior
                 </button>
-                {surveyStore.getPaginatedQuizResults.content! && (
-                    <CSVLink
-                        data={surveyStore.getPaginatedQuizResults.content!}
-                        filename={'QuizResults.csv'}
-                        enclosingCharacter={` `}
-                        target="_blank"
-                        className={"btnStandard mr-3 h-12"}
-                        headers={headers} >Exportar a excel
-                    </CSVLink>
-                )}
+                <div hidden={surveyStore.getPaginatedQuizResults.content!!.length === 0}>
+                    {surveyStore.getPaginatedQuizResults.content! && (
+                        <CSVLink
+                            data={surveyStore.getPaginatedQuizResults.content!}
+                            filename={'QuizResults.csv'}
+                            enclosingCharacter={` `}
+                            target="_blank"
+                            className={"btnStandard mr-3 h-12"}
+                            headers={headers} >Exportar a excel
+                        </CSVLink>
+                    )}
+                </div>
                 <button className="btnStandard mr-3" onClick={() => surveyStore.setModalResult(false)}>Volver</button>
                 <button onClick={incrementPage} disabled={pageNumber === surveyStore.getPaginatedQuizResults.totalPages!! - 1 || surveyStore.getPaginatedQuizResults.content?.length === 0}
                     className="btnStandard">
