@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png';
 import add_Photo from '../../../../assets/menu/add_photo.svg';
@@ -13,6 +13,21 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const serviceStore = ServiceStore.getServiceStore()
 
 const EditService = () => {
+    useEffect(() => {
+        serviceStore.getAllServicesRequest("Bolea")
+    }, [])
+
+    function checkIfExist(owner: string) {
+        var flag: boolean = false
+        if (owner !== serviceNameTemp) {
+            serviceStore.getAllServices.services?.map((item) => {
+                if (item.owner === owner) {
+                    flag = true
+                }
+            })
+        }
+        return flag
+    }
 
     const [service] = useState(serviceStore.getService)
     const inputWebUrl = useRef<HTMLInputElement>(null)
@@ -27,6 +42,7 @@ const EditService = () => {
     const btnRef = useRef<HTMLButtonElement>(null)
     const [serviceType, setServiceType] = useState<string>(service.category!!)
     const [serviceName, setServiceName] = useState<string>(service.owner!!)
+    const [serviceNameTemp] = useState<string>(service.owner!!)
     const [serviceWebUrl, setServiceWebUrl] = useState<string>(service.urlWeb!!)
     const [serviceDescription, setServiceDescription] = useState<string>(service.description!!)
     const [serviceTel, setServiceTel] = useState<string>(service.number!!)
@@ -62,11 +78,8 @@ const EditService = () => {
     }
 
     function editService(serviceId: string) {
-        if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
-            serviceWebUrl === "" || serviceTel === "" || serviceSchedule === ""
-        ) {
-            chekIfEmpty()
-            toast.info('Rellene los campos', {
+        if (checkIfExist(serviceName)) {
+            toast.info('Ya existe este servicio', {
                 position: 'bottom-center',
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -77,16 +90,33 @@ const EditService = () => {
                 theme: "light"
             })
         } else {
-            const newService: Service = {
-                category: serviceType,
-                owner: serviceName,
-                description: serviceDescription,
-                urlWeb: serviceWebUrl,
-                number: serviceTel,
-                schedule: serviceSchedule,
-                imageUrl: service.imageUrl
+            chekIfEmpty()
+            if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
+                serviceWebUrl === "" || serviceTel === "" || serviceSchedule === ""
+            ) {
+
+                toast.info('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                })
+            } else {
+                const newService: Service = {
+                    category: serviceType,
+                    owner: serviceName,
+                    description: serviceDescription,
+                    urlWeb: serviceWebUrl,
+                    number: serviceTel,
+                    schedule: serviceSchedule,
+                    imageUrl: service.imageUrl
+                }
+                serviceStore.editService('Bolea', serviceId, newService, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
             }
-            serviceStore.editService('Bolea', serviceId, newService, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
         }
     }
 

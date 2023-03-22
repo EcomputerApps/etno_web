@@ -262,6 +262,10 @@ interface Service {
     imageUrl?: string
 }
 
+interface ServiceList {
+    services?: Service[]
+}
+
 interface PaginatedService {
     content?: Service[],
     totalPages?: number,
@@ -382,7 +386,6 @@ interface PaginatedImages {
     pageNum?: number
 }
 
-
 interface Survey {
     idQuiz?: string,
     username?: string,
@@ -412,7 +415,7 @@ interface QuizResult {
     resultFour?: number,
 }
 
-interface PaginatedQuizResult{
+interface PaginatedQuizResult {
     content?: QuizResult[],
     totalPages?: number,
     totalElements?: number,
@@ -462,5 +465,6 @@ export type {
     HallList, ReserveUser, ReserveSchedule, PlaceList, Survey,
     PaginatedSurveys, CustomLink, PaginatedCustomLink, ServiceType,
     DateTime, SubscriptionUser, NewsType, TourismType, NewsList, ReserveList, TourismList,
-    NecrologueList, SponsorList, LinkList, CustomLinkList, QuizResult, PaginatedQuizResult
+    NecrologueList, SponsorList, LinkList, CustomLinkList, QuizResult, PaginatedQuizResult,
+    ServiceList
 }

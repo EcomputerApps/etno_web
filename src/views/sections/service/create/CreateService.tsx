@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png';
 import add_Photo from '../../../../assets/menu/add_photo.svg';
@@ -14,6 +14,19 @@ const serviceStore = ServiceStore.getServiceStore()
 
 
 const CreateService = () => {
+    useEffect(() => {
+        serviceStore.getAllServicesRequest("Bolea")
+    }, [])
+
+    function checkIfExist(owner: string) {
+        var flag: boolean = false
+        serviceStore.getAllServices.services?.map((item) => {
+            if (item.owner === owner) {
+                flag = true
+            }
+        })
+        return flag
+    }
 
     const inputWebUrl = useRef<HTMLInputElement>(null)
     const inputTel = useRef<HTMLInputElement>(null)
@@ -83,7 +96,7 @@ const CreateService = () => {
             number: serviceTel,
             schedule: serviceSchedule,
         }
-        if (serviceStore.getService.owner === service.owner) {
+        if (checkIfExist(service.owner!!)) {
             toast.info('Ya existe este servicio', {
                 position: 'bottom-center',
                 autoClose: 1000,
@@ -184,7 +197,7 @@ const CreateService = () => {
                                         txtAreaRef.current.focus()
                                     }
                                 }
-                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatInput"}>Nombre</label>
                     </div>
                 </div>
@@ -201,7 +214,7 @@ const CreateService = () => {
                                         inputWebUrl.current.focus()
                                     }
                                 }
-                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatTxtArea"}>Descripción</label>
                     </div>
                 </div>
@@ -218,7 +231,7 @@ const CreateService = () => {
                                         inputTel.current.focus()
                                     }
                                 }
-                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatInput"}>Pagina Web</label>
                     </div>
                 </div>

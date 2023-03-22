@@ -29,7 +29,6 @@ const CreateBand = () => {
     return flag 
   }
 
-
   function chekIfEmpty() {
     bandTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
     bandDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
