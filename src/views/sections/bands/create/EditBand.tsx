@@ -15,7 +15,7 @@ const bandStore = BandStore.getBandStore()
 
 const EditBand = () => {
   useEffect(() => {
-    bandStore.getAllBandRequest("Bolea")
+    bandStore.getAllBandRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
   function checkIfExist(title: string) {
     var flag: boolean = false

@@ -6,7 +6,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class NewsStore{
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static newsStore : NewsStore
 
     static getNewsStore(){
@@ -116,7 +116,7 @@ class NewsStore{
      }
 
     async addRequestNews(locality: String, news: News, file: File){
-        await imageStore.addImageAPI('Bolea', 'noticia', 'noticia', file!!)
+        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'noticia', 'noticia', file!!)
         news.imageUrl = imageStore.getImage.link
 
         const response = await fetch(`http://${this.serverIp}:8080/users/add/news?username=${locality}`, {
@@ -160,7 +160,7 @@ class NewsStore{
 }
     async editNews(locality: string, newsId: string, news: News, file: File){
         if (file !== undefined){
-            await imageStore.addImageAPI('Bolea', 'noticia', 'noticia', file!!)
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'noticia', 'noticia', file!!)
             news.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`http://${this.serverIp}:8080/users/update/news?username=${locality}&newsId=${newsId}`, {

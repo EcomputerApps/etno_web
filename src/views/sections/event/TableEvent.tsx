@@ -2,9 +2,10 @@ import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import { Event } from '../../../models/section/Section'
 import EventStore from "../../../viewmodels/Event/EventStore"
-import EditEvent from './create/EditEvent'
+
 import SubscribersList from './create/SubscribersList'
 import eventRed from "../../../assets/menu/eventRed.svg"
+import EditEvent from './create/EditEvent'
 
 const eventStore = EventStore.getEventStore()
 
@@ -26,7 +27,7 @@ const TableEvent = (prop: PropTable) => {
         setDelId(event.idEvent!!)
     }
     const deleteEvent = async (idEvent: string) => {
-        await eventStore.deleteEvent(localStorage.getItem('user_etno_locality')!, idEvetn)
+        await eventStore.deleteEvent(localStorage.getItem('user_etno_locality')!, idEvent)
         setConfirm(false)
     }
     function showParticipants(event: Event) {

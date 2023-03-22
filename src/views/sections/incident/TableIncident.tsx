@@ -65,7 +65,7 @@ const TableIncident = (prop: PropTable) => {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-            }) : incidentStore.solveSilution("Bolea", incidentId, incidentSolution)
+            }) : incidentStore.solveSilution(localStorage.getItem('user_etno_locality')!, incidentId, incidentSolution)
     }
 
     function goBack() {

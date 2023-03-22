@@ -14,7 +14,7 @@ const SurveyResults = () => {
     const [pageNumber, setPageNumber] = useState(0)
 
     useEffect(() => {
-        surveyStore.getPaginatedResultsRequest('Bolea', pageNumber, 5)
+        surveyStore.getPaginatedResultsRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
     }, [pageNumber])
 
     const incrementPage = () => {

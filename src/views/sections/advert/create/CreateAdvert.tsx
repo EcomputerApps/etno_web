@@ -33,7 +33,7 @@ const CreateAdvert = () => {
 
     useEffect(() => {
         advertStore.getPaginatedAdvertRequest(localStorage.getItem('user_etno_locality')!, 0, 5)
-        advertStore.getAllAdvertRequest('Bolea')
+        advertStore.getAllAdvertRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
 
     function addAd() {
@@ -65,7 +65,7 @@ const CreateAdvert = () => {
                     draggable: true,
                     progress: undefined,
                     theme: "light"
-                }) : advertStore.addRequestAdvert('Bolea', ad, file!!); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
+                }) : advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad, file!!); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
         }
     }
 

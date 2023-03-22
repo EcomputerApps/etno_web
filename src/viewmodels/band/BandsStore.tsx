@@ -7,7 +7,7 @@ import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class BandStore {
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static bandStore: BandStore
 
     static getBandStore() {
@@ -84,7 +84,7 @@ class BandStore {
 
     async editBand(locality: string, bandId: string, band: Band, file: File) {
         if (file !== undefined) {
-            await imageStore.addImageAPI("Bolea", "bando", "bando", file!!)
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "bando", "bando", file!!)
             band.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`http://${this.serverIp}:8080/users/update/bando?username=${locality}&bandoId=${bandId}`, {
@@ -172,7 +172,7 @@ class BandStore {
         }
     }
     async addRequestBand(username: string, bando: Band, file: File) {
-        await imageStore.addImageAPI('Bolea', 'bando', 'bando', file)
+        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'bando', 'bando', file)
         bando.imageUrl = imageStore.getImage.link
         const response = await fetch(`http://${this.serverIp}:8080/users/add/bando?username=${username}`, {
             method: 'POST',

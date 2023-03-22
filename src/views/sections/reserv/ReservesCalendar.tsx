@@ -7,7 +7,7 @@ const reserveStore = ReserveStore.getReserveStore()
 
 const ReservesCalendar = () => {
     useEffect(() => {
-        reserveStore.getAllReserevesRequest("Bolea")
+        reserveStore.getAllReserevesRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
     //Calendar parts
     const events = new Array()

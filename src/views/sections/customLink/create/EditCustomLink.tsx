@@ -14,7 +14,7 @@ const customLinkStore = CustomLinkStore.getCustomLinkStore()
 const EditCustomLink = () => {
 
     useEffect(() => {
-        customLinkStore.getAllCustomLinksRequest("Bolea")
+        customLinkStore.getAllCustomLinksRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
 
     function checkIfExist(name: string) {

@@ -14,7 +14,7 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const EditAdvert = () => {
 
     useEffect(() => {
-        advertStore.getAllAdvertRequest("Bolea")
+        advertStore.getAllAdvertRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
 
     function checkIfExist(title: string) {

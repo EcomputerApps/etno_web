@@ -23,7 +23,7 @@ interface Marker {
 
 const EditTourism = () => {
   useEffect(() => {
-    tourismStore.getAllTourismRequest("Bolea")
+    tourismStore.getAllTourismRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
 
   function checkIfExist(title: string) {

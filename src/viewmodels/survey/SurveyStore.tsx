@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import { QuizResult, PaginatedQuizResult, Survey } from "../../models/section/Section"
 
 class SurveyStore {
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static surveyStore: SurveyStore
 
     static getSurveyStore() {

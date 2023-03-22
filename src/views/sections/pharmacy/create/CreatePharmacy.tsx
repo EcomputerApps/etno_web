@@ -25,7 +25,7 @@ const pharmacyStore = PharmacyStore.getPharmacyStore()
 const CreatePharmacy = () => {
     
     useEffect(() => {
-        pharmacyStore.getRequestPharmacyOnDuty("Bolea")
+        pharmacyStore.getRequestPharmacyOnDuty(localStorage.getItem('user_etno_locality')!)
       }, [])
     
       function checkIfExist(name: string) {
