@@ -1,11 +1,11 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
-import { Necrologue, PaginatedNecro } from "../../models/section/Section";
+import { Necrologue, NecrologueList, PaginatedNecro } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
 
-class NecrologueStore{
+class NecrologueStore {
     serverIp: string = "192.168.241.51"
     static necrologueStore: NecrologueStore
 
@@ -19,11 +19,13 @@ class NecrologueStore{
     //Observables =>
     paginatedNecro: PaginatedNecro = {}
     necro: Necrologue = {}
+    allNecrologues: NecrologueList = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
 
     constructor() {
         makeObservable(this, {
+            allNecrologues: observable,
             modalEdit: observable,
             modalCreate: observable,
             setModalCreate: action,
@@ -33,15 +35,24 @@ class NecrologueStore{
             necro: observable,
             updateNecro: action,
             getNecro: computed,
-            getRequestNecrologue: action,
+            getAllNecrologuesRequest: action,
+            getPaginatedNecroRequest: action,
             addRequestNecro: action,
             updateNecrologueList: action,
             updatePaginatedNecro: action,
             deleteNecrologue: action,
-            getPaginatedNecro: computed
+            getPaginatedNecro: computed,
+            updateAllNecrologues: action,
+            getAllNecrologues: computed
 
         })
-    
+
+    }
+   updateAllNecrologues(necro: Necrologue[]) {
+        this.allNecrologues.necrologues = necro
+    }
+    get getAllNecrologues() {
+        return this.allNecrologues
     }
     setModalEdit(mode: boolean) {
         this.modalEdit = mode
@@ -72,23 +83,33 @@ class NecrologueStore{
         return this.necro
     }
 
-    async getRequestNecrologue(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/deaths?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedNecroRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/deaths/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
 
         })
         const necrologue = await response.json()
         this.updatePaginatedNecro(necrologue)
     }
-    async deleteNecrologue(username: string, name: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/death?username=${username}&name=${name}`, {
+
+    async getAllNecrologuesRequest(locality: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/deaths?username=${locality}`, {
+            method: 'GET',
+
+        })
+        const necrologue = await response.json()
+        this.updateAllNecrologues(necrologue)
+    }
+
+    async deleteNecrologue(username: string, idDeath: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/death?username=${username}&idDeath=${idDeath}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
         if (response.ok) {
-            const newPaginatedNecro = this.paginatedNecro.content!!.filter((item) => item.name !== name)
+            const newPaginatedNecro = this.paginatedNecro.content!!.filter((item) => item.idDeath !== idDeath)
             this.updateNecrologueList(newPaginatedNecro)
             this.updateNecro({})
             toast.success('Se ha borrado exitosamente', {
@@ -137,9 +158,9 @@ class NecrologueStore{
                 progress: undefined,
                 theme: "light"
             })
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.reload();
-             }, 1500);
+            }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
@@ -153,8 +174,8 @@ class NecrologueStore{
             })
         }
     }
-    async editNecro(locality: string, necroId: string, necro: Necrologue, file: File){
-        if (file !== undefined){
+    async editNecro(locality: string, necroId: string, necro: Necrologue, file: File) {
+        if (file !== undefined) {
             await imageStore.addImageAPI('Bolea', 'muerte', 'muerte', file!!)
             necro.imageUrl = imageStore.getImage.link
         }
@@ -166,7 +187,7 @@ class NecrologueStore{
             }
         })
 
-        if(response.ok) {
+        if (response.ok) {
             toast.success('Se ha actualizado exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -176,10 +197,10 @@ class NecrologueStore{
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
-          setTimeout(function(){
-            window.location.reload();
-         }, 1500);
+            })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'bottom-center',
@@ -190,7 +211,7 @@ class NecrologueStore{
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          }) 
+            })
         }
     }
 }

@@ -41,7 +41,8 @@ class PharmacyStore {
             pharmacy: observable,
             updatePharmacy: action,
             getPharmacy: computed,
-            getRequestPharmacy: action,
+            getPaginatedPharmacyrequest: action,
+            getRequestPharmacyOnDuty:action,
             addRequestPharmacy: action,
             deletePharmacy: action,
             updatePaginatedPharmacy: action,
@@ -102,8 +103,8 @@ class PharmacyStore {
     }
 
 
-    async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedPharmacyrequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/pharmacies/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const pharmacy = await response.json()
@@ -117,15 +118,15 @@ class PharmacyStore {
         this.updatePOD(pharmacy)
     }
 
-    async deletePharmacy(username: string, name: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/pharmacy?username=${username}&name=${name}`, {
+    async deletePharmacy(username: string, idPharmacy: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/pharmacy?username=${username}&idPharmacy=${idPharmacy}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
         if (response.ok) {
-            const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.name !== name)
+            const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.idPharmacy !== idPharmacy)
             this.updatePharmacyList(newPaginedPharmacy)
             this.updatePOD(newPaginedPharmacy)
             this.updatePharmacy({})

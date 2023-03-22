@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import logoEtno from '../../../../assets/logo_etno.png';
 import LinkStore from '../../../../viewmodels/link/LinkStore';
 import { Link } from '../../../../models/section/Section';
@@ -12,16 +12,34 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const linkStore = LinkStore.getLinkStore()
 
 const EditLink = () => {
+
+    useEffect(() => {
+        linkStore.getAllLinksRequest("Bolea")
+    }, [])
+
+    function checkIfExist(title: string) {
+        var flag: boolean = false
+        if (title !== linkTitleTemp) {
+            linkStore.getAllLinks.links?.map((item) => {
+                if (item.title === title) {
+                    flag = true
+                }
+            })
+        }
+        return flag
+    }
+
     const [link] = useState<Link>(linkStore.getLink)
     const inputRef = useRef<HTMLInputElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
     const [linkTitle, setLinkTitle] = useState<string>(link.title!!)
+    const [linkTitleTemp] = useState<string>(link.title!!)
     const [linkUrl, setLinkUrl] = useState<string>(link.url!!)
     const [confirm, setConfirm] = useState<boolean>(false)
 
     function updateLink(linkId: string) {
-        if (linkTitle === "" || linkUrl === "") {
-            toast.error('Rellene los campos', {
+        if (checkIfExist(linkTitle)) {
+            toast.info('Ya existe este enlace', {
                 position: 'bottom-center',
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -32,14 +50,35 @@ const EditLink = () => {
                 theme: "light"
             })
         } else {
-            const newLink: Link = {
-                title: linkTitle,
-                url: linkUrl
+            chekIfEmpty()
+            if (linkTitle === "" || linkUrl === "") {
+                toast.error('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                })
+            } else {
+                const newLink: Link = {
+                    title: linkTitle,
+                    url: linkUrl
+                }
+                linkStore.editLink(localStorage.getItem('user_etno_locality')!, linkId, newLink)
+                sideBarStore.updateSection('Enlaces'); hoverSectionStore.setName('Enlaces')
             }
-            linkStore.editLink(localStorage.getItem('user_etno_locality')!, linkId, newLink)
-            sideBarStore.updateSection('Enlaces'); hoverSectionStore.setName('Enlaces')
         }
     }
+
+    function chekIfEmpty() {
+        linkTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
+        linkUrl === "" ? setEmptyUrl(true) : setEmptyUrl(false)
+    }
+    const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
+    const [emptyUrl, setEmptyUrl] = useState<boolean>(false)
 
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 lg:h-screen border-2 rounded-md bg-white">
@@ -70,7 +109,9 @@ const EditLink = () => {
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className=" flex flex-col p-1 mt-5  relative">
                         <input autoFocus placeholder=" " defaultValue={link.title} id="test" type="text"
-                            className="inputCamp peer" onChange={(e) => setLinkTitle(e.currentTarget.value)}
+                            className={`inputCamp peer ${emptyTitle ? 'border-red-600'
+                                : ''
+                                }`} onChange={(e) => setLinkTitle(e.currentTarget.value)}
                             onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (inputRef.current != null) {
@@ -84,7 +125,9 @@ const EditLink = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className=" flex flex-col p-1 mt-5  relative">
-                        <input ref={inputRef} placeholder=" " defaultValue={link.url} id="test" type="text" className="inputCamp peer" onChange={(e) => setLinkUrl(e.currentTarget.value)}
+                        <input ref={inputRef} placeholder=" " defaultValue={link.url} id="test" type="text" className={`inputCamp peer ${emptyUrl ? 'border-red-600'
+                            : ''
+                            }`} onChange={(e) => setLinkUrl(e.currentTarget.value)}
                             onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                     if (btnRef.current != null) {

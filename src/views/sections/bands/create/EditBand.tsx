@@ -1,10 +1,10 @@
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "../../../../index.css"
 import BandStore from '../../../../viewmodels/band/BandsStore';
 import { Band } from "../../../../models/section/Section"
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
@@ -14,23 +14,37 @@ const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const bandStore = BandStore.getBandStore()
 
 const EditBand = () => {
+  useEffect(() => {
+    bandStore.getAllBandRequest("Bolea")
+  }, [])
+  function checkIfExist(title: string) {
+    var flag: boolean = false
+    if (title !== bandTitleTemp) {
+      bandStore.getAllBands.bandos?.map((item) => {
+        if (item.title === title) {
+          flag = true
+        }
+      })
+    }
+    return flag
+  }
 
   const inputRef = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
-  
   const [band] = useState<Band>(bandStore.getBand)
-  const [bandType, setBandType] = useState<string>(band.title!!)
+  const [bandTitle, setBandTitle] = useState<string>(band.title!!)
+  const [bandTitleTemp] = useState<string>(band.title!!)
   const [bandDescription, setBandDescription] = useState<string>(band.description!!)
   const [file, setFile] = useState<File>()
   const [emptyType, setEmptyType] = useState<boolean>(false)
   const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
-  const[confirm, setConfirm] = useState<boolean>(false)
+  const [confirm, setConfirm] = useState<boolean>(false)
 
   function updateBand(bandId: string) {
-    chekIfEmpty()
-    if (bandType === "" || bandDescription === "") {
-      toast.error('Rellene los campos', {
+
+    if (checkIfExist(bandTitle)) {
+      toast.info('Ya existe este bando', {
         position: 'bottom-center',
         autoClose: 1000,
         hideProgressBar: false,
@@ -41,23 +55,38 @@ const EditBand = () => {
         theme: "light"
       })
     } else {
-      const bando: Band = {
-        title: bandType,
-        description: bandDescription,
-      }
-      bandStore.editBand(localStorage.getItem('user_etno_locality')!, bandId, bando, file!!)
+      chekIfEmpty()
+      if (bandTitle === "" || bandDescription === "") {
+        toast.error('Rellene los campos', {
+          position: 'bottom-center',
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light"
+        })
+      } else {
+        const bando: Band = {
+          title: bandTitle,
+          description: bandDescription,
+        }
+        bandStore.editBand(localStorage.getItem('user_etno_locality')!, bandId, bando, file!!)
       sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
+      }
+      
     }
   }
 
   function chekIfEmpty() {
-    bandType === "" ? setEmptyType(true) : setEmptyType(false)
+    bandTitle === "" ? setEmptyType(true) : setEmptyType(false)
     bandDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
   }
 
   return (
     <div className="flex flex-col md:m-auto lg:w-1/2  w-11/12 md:h-screen border-2 rounded-md bg-white">
-       {confirm ? (
+      {confirm ? (
         <div>
           <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
             <div className="fixed inset-0 w-screen h-screen">
@@ -88,7 +117,7 @@ const EditBand = () => {
               className={`inputCamp peer ${emptyType ? 'border-red-600'
                 : ''
                 }`} onChange={(value) => {
-                  setBandType(value.currentTarget.value)
+                  setBandTitle(value.currentTarget.value)
                   setEmptyType(false)
                 }} onKeyUp={(e) => {
                   if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
@@ -96,7 +125,7 @@ const EditBand = () => {
                       txtAreaRef.current.focus()
                     }
                   }
-                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className="labelFloatInput">Asunto</label>
           </div>
         </div>
@@ -115,7 +144,7 @@ const EditBand = () => {
                     inputRef.current.focus()
                   }
                 }
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className={"labelFloatTxtArea"}>Descripcíon</label>
           </div>
         </div>

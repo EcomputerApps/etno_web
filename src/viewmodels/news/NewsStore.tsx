@@ -1,7 +1,7 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import { toast } from "react-toastify";
-import { News, NewsType, PaginatedNews } from "../../models/section/Section";
+import { News, NewsList, NewsType, PaginatedNews } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -38,12 +38,14 @@ class NewsStore{
 
        //Observables =>
        paginatedNews : PaginatedNews = {}
+       newsList: NewsList = {}
        news: News = {}
        modalCreate: boolean = false
        modalEdit: boolean = false
       
     constructor(){
         makeObservable(this, {
+            newsList: observable,
             newsTypes: observable,
             modalEdit: observable,
             modalCreate: observable,
@@ -53,7 +55,8 @@ class NewsStore{
             setModalEdit: action,
             paginatedNews : observable,
             news: observable,
-            getRequestNews : action,
+            getAllNewsRequest : action,
+            getPaginatedNewsRequest:action,
             getNews: computed,
             addRequestNews: action,
             editNews: action,
@@ -63,9 +66,17 @@ class NewsStore{
             updateNews: action,
             getPaginatedNews: computed,
             updateNewsTypes: action,
-            getNewsTypes: computed
+            getNewsTypes: computed,
+            updateAllNews: action,
+            getAllNews:computed
         })
     
+    }
+    updateAllNews(news : News[]){
+        this.newsList.news = news
+    }
+    get getAllNews(){
+        return this.newsList
     }
     updateNewsTypes(newsTypes : NewsType[]){
         this.newsTypes = newsTypes
@@ -188,17 +199,25 @@ class NewsStore{
         }
     }
   
-    async getRequestNews( locality : string, pageNum: number, elementSize: number){
-        const response = await fetch(`http://${this.serverIp}:8080/news?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
+    async getPaginatedNewsRequest( locality : string, pageNum: number, elementSize: number){
+        const response = await fetch(`http://${this.serverIp}:8080/news/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
             method: 'GET',
            
         })
         const news = await response.json()
         this.updatePaginatedNews(news)
     }
+    async getAllNewsRequest( locality : string){
+        const response = await fetch(`http://${this.serverIp}:8080/news?username=${locality}`,{
+            method: 'GET',
+           
+        })
+        const news = await response.json()
+        this.updateAllNews(news)
+    }
     
-    async deleteNews(username: string, title : string){
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/news?username=${username}&title=${title}`,{
+    async deleteNews(username: string, idNews : string){
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/news?username=${username}&idNews=${idNews}`,{
             method : 'DELETE',
             headers : {
                 'Access-Control-Allow-Origin':'*'
@@ -206,7 +225,7 @@ class NewsStore{
         })
 
         if(response.ok){
-            const newPaginatedNews = this.paginatedNews.content!!.filter((item)=>item.title !== title)
+            const newPaginatedNews = this.paginatedNews.content!!.filter((item)=>item.idNew !== idNews)
             this.updateNewsList(newPaginatedNews)
             this.updateNews({})
             toast.success('Se ha borrado exitosamente', {

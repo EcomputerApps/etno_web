@@ -7,7 +7,7 @@ const reserveStore = ReserveStore.getReserveStore()
 
 const ReservesCalendar = () => {
     useEffect(() => {
-        reserveStore.getRequestReserves()
+        reserveStore.getAllReserevesRequest("Bolea")
     }, [])
     //Calendar parts
     const events = new Array()

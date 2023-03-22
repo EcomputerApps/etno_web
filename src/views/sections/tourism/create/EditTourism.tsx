@@ -5,7 +5,7 @@ import "../../../../index.css"
 import GoogleMapReact from 'google-map-react';
 import markerIcon from "../../../../assets/marker.svg"
 import TourismStore from "../../../../viewmodels/tourism/TourismStore"
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Tourism } from "../../../../models/section/Section";
 import { observer } from "mobx-react-lite";
 import SideBarStore from "../../../../viewmodels/sidebar/SideBarStore";
@@ -22,6 +22,22 @@ interface Marker {
 }
 
 const EditTourism = () => {
+  useEffect(() => {
+    tourismStore.getAllTourismRequest("Bolea")
+  }, [])
+
+  function checkIfExist(title: string) {
+    var flag: boolean = false
+    if (title !== tourismTitleTemp) {
+      tourismStore.getAllTourism.tourism?.map((item) => {
+        if (item.title === title) {
+          flag = true
+        }
+      })
+    }
+    return flag
+  }
+
   const defaultProps = {
     center: {
       lat: 42.13775899999999,
@@ -42,6 +58,7 @@ const EditTourism = () => {
   const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
   const [tourismType, setTourismType] = useState<string>(tourism.type!!)
   const [tourismTitle, setTourismTitle] = useState<string>(tourism.title!!)
+  const [tourismTitleTemp] = useState<string>(tourism.title!!)
   const [tourismDescription, setTourismDescription] = useState<string>(tourism.description!!)
   const [tourismLong, setTourismLong] = useState<string>(tourism.longitude!!)
   const [tourismLat, setTourismLat] = useState<string>(tourism.latitude!!)
@@ -54,28 +71,41 @@ const EditTourism = () => {
   const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
 
   function updateTourism() {
-    checkIfEmpty()
-    if (tourismType === '' || tourismTitle === '' || tourismDescription === '' || tourismLong === '' || tourismLat === '' || emptyFile) {
-      toast.info('Rellene los campos', {
-        position: 'top-center',
-        autoClose: 500,
+    if (checkIfExist(tourismTitle)) {
+      toast.info('Ya existe este turismo', {
+        position: 'bottom-center',
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: false,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-        theme: 'light'
+        theme: "light"
       })
     } else {
-      const tourism_: Tourism = {
-        type: tourismType,
-        title: tourismTitle,
-        description: tourismDescription,
-        longitude: tourismLong,
-        latitude: tourismLat
+      checkIfEmpty()
+      if (tourismType === '' || tourismTitle === '' || tourismDescription === '' || tourismLong === '' || tourismLat === '' || emptyFile) {
+        toast.info('Rellene los campos', {
+          position: 'top-center',
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light'
+        })
+      } else {
+        const tourism_: Tourism = {
+          type: tourismType,
+          title: tourismTitle,
+          description: tourismDescription,
+          longitude: tourismLong,
+          latitude: tourismLat
+        }
+        tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, file!!)
+        sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
       }
-      tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, file!!)
-      sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
     }
   }
 
@@ -86,7 +116,6 @@ const EditTourism = () => {
     file === undefined ? setEmptyFile(true) : setEmptyFile(false)
     lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
     long === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
-
   }
 
   return (

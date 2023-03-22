@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { Incident, PaginatedIncident } from "../../models/section/Section";
 
 class IncidentStore {
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static incidentStore: IncidentStore
 
     static getIncidentStore() {
@@ -22,7 +22,7 @@ class IncidentStore {
             paginatedIncident: observable,
             description: observable,
             updateDescription: action,
-            getRequestIncident: action,
+            getPaginatedIncidentsRequest: action,
             deleteIncident: action,
             updateIncidentList: action,
             updatePaginatedIncident: action,
@@ -46,8 +46,8 @@ class IncidentStore {
     get getPaginatedIncident() {
         return this.paginatedIncident
     }
-    async getRequestIncident(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/incidents?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedIncidentsRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/incidents/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const incident = await response.json()

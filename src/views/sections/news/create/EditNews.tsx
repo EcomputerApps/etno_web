@@ -1,15 +1,34 @@
 import { observer } from "mobx-react-lite"
-import { useRef, useState } from "react"
-import { toast} from "react-toastify"
+import { useEffect, useRef, useState } from "react"
+import { toast } from "react-toastify"
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import { News } from "../../../../models/section/Section"
 import NewsStore from "../../../../viewmodels/news/NewsStore"
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 const newsStore = NewsStore.getNewsStore()
 
 const EditNews = () => {
-   const [news] = useState(newsStore.getNews)
+  useEffect(() => {
+    newsStore.getAllNewsRequest("Bolea")
+  }, [])
+
+  function checkIfExist(title: string) {
+    var flag: boolean = false
+    if (title !== newsTitleTemp) {
+      newsStore.getAllNews.news?.map((item) => {
+        if (item.title === title) {
+          flag = true
+        }
+      })
+    }
+    return flag
+  }
+
 
   const inputRefTit = useRef<HTMLInputElement>(null)
   const inputRefDate = useRef<HTMLInputElement>(null)
@@ -17,19 +36,20 @@ const EditNews = () => {
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
 
+  const [news] = useState(newsStore.getNews)
   const [newsCategory, setNewsCategory] = useState<string>(news.category!!)
   const [newsTitle, setNewsTitle] = useState<string>(news.title!!)
+  const [newsTitleTemp] = useState<string>(news.title!!)
   const [newsDate, setNewsDate] = useState<string>(news.publicationDate!!)
   const [newsDescription, setNewsDescription] = useState<string>(news.description!!)
   const [file, setFile] = useState<File>()
   const [confirm, setConfirm] = useState(false)
 
   function updateNews() {
-    if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === '') {
-      chekIfEmpty()
-      toast.error('Rellene los campos', {
+    if (checkIfExist(newsTitle)) {
+      toast.info('Ya existe esta noticia', {
         position: 'bottom-center',
-        autoClose: 500,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: false,
         pauseOnHover: false,
@@ -46,6 +66,30 @@ const EditNews = () => {
         imageUrl: news.imageUrl
       } 
            newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_, file!!)
+      chekIfEmpty()
+      if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === '') {
+        toast.error('Rellene los campos', {
+          position: 'bottom-center',
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light"
+        })
+      } else {
+        const news_: News = {
+          category: newsCategory,
+          title: newsTitle,
+          description: newsDescription,
+          publicationDate: newsDate,
+          imageUrl: news.imageUrl
+        }
+        newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_, file!!)
+        sideBarStore.updateSection('Noticias')
+        hoverSectionStore.setName('Noticias')
+      }
     }
   }
 
@@ -80,7 +124,7 @@ const EditNews = () => {
         </div>
       ) : <></>}
       <div>
-                <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
+        <div className="h-20 w-full flex  bg-indigo-800 rounded-t-md ">
           <div className="w-full flex flex-row p-2 justify-between">
             <img src={logoEtno} alt="logo_Etno"></img>
             <p className='flex  text-white lg:text-3xl text-2xl p-3'>NOTICIAS</p>
@@ -107,10 +151,9 @@ const EditNews = () => {
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
-            <input  autoFocus defaultValue={news.title} ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
+            <input autoFocus defaultValue={news.title} ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
               : ''
               }`} onChange={(value) => {
-                console.log(value.currentTarget.value)
                 setNewsTitle(value.currentTarget.value)
                 setEmptyTitle(false)
               }} onKeyUp={(e) => {
@@ -119,7 +162,7 @@ const EditNews = () => {
                     inputRefDate.current.focus()
                   }
                 }
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className={"labelFloatInput"}>Titulo</label>
           </div>
         </div>
@@ -153,7 +196,7 @@ const EditNews = () => {
                     inputRefLink.current.focus()
                   }
                 }
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>
@@ -182,10 +225,9 @@ const EditNews = () => {
         </div>
         <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
           <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => updateNews()}>Actualizar</button>
-          <button name="pharmacyBtnCancel" className="btnStandard" onClick={() =>setConfirm(true)}>Cancelar</button>
+          <button name="pharmacyBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
         </div>
       </div>
-
     </div>
   )
 }

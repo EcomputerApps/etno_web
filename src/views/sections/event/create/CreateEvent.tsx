@@ -1,5 +1,5 @@
 import logoEtno from '../../../../assets/logo_etno.png'
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
@@ -14,6 +14,19 @@ const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const CreateEvent = () => {
+  useEffect(() => {
+    eventStore.getAllEventsRequest("Bolea")
+  }, [])
+
+  function checkIfExist(title: string) {
+    var flag: boolean = false
+    eventStore.getAllEvents.events?.map((item) => {
+      if (item.title === title) {
+        flag = true
+      }
+    })
+    return flag
+  }
   const inputRefDir = useRef<HTMLInputElement>(null)
   const inputRefOrg = useRef<HTMLInputElement>(null)
   const inputRefPric = useRef<HTMLInputElement>(null)
@@ -28,7 +41,7 @@ const CreateEvent = () => {
   const [eventDirection, setEventDirection] = useState<string>("")
   const [eventDescription, setEventDescription] = useState<string>("")
   const [eventOrganization, setEventOrganization] = useState<string>("")
-  const [subscription, setSubscription] = useState(false)
+  const [subscription, setSubscription] = useState<boolean>(false)
   const [eventPrice, setEventPrice] = useState<string>("")
   const [eventSeats, setEventSeats] = useState<string>("")
   const [eventLink, setEventLink] = useState<string>("")
@@ -36,6 +49,16 @@ const CreateEvent = () => {
   const [eventDateFin, setEventDateFin] = useState<string>("")
   const [file, setFile] = useState<File>()
   const [confirm, setConfirm] = useState<boolean>(false)
+  const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
+  const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
+  const [emptyDirection, setEmptyDirection] = useState<boolean>(false)
+  const [emptyFile, setEmptyFile] = useState<boolean>(false)
+  const [emptyOrganization, setEmptyOrganization] = useState<boolean>(false)
+  const [emptySeats, setEmptySeats] = useState<boolean>(false)
+  const [emptyLink, setEmptyLink] = useState<boolean>(false)
+  const [emptyStartdate, setEmptyStartdate] = useState<boolean>(false)
+  const [emptyFinDate, setEmptyFinDate] = useState<boolean>(false)
+  const [dateFail, setDateFail] = useState<boolean>(false)
 
   function addEvent() {
     const eventNew: Event = {
@@ -50,7 +73,7 @@ const CreateEvent = () => {
       startDate: eventDateStart,
       endDate: eventDateFin
     }
-    if (eventStore.getEvent.title === eventNew.title) {
+    if (checkIfExist(eventNew.title!!)) {
       toast.info('Ya existe este evento', {
         position: 'bottom-center',
         autoClose: 500,
@@ -85,10 +108,10 @@ const CreateEvent = () => {
         eventTitle === '' || eventDirection === '' || eventDescription === ''
           || eventOrganization === ''
           || eventSeats === '' || eventLink === '' || eventDateStart === ''
-          || eventDateFin === '' || file === undefined ?
+          || eventDateFin === '' || file === undefined || eventDateStart.localeCompare(eventDateFin) === 1 ?
 
-          toast.info('Rellene los campos vacíos', {
-            position: 'top-center',
+          toast.error('Rellene los campos correcto', {
+            position: 'bottom-center',
             autoClose: 500,
             hideProgressBar: false,
             closeOnClick: false,
@@ -117,19 +140,10 @@ const CreateEvent = () => {
     eventOrganization === "" ? setEmptyOrganization(true) : setEmptyOrganization(false)
     eventSeats === '' ? setEmptySeats(true) : setEmptySeats(false)
     eventLink === '' ? setEmptyLink(true) : setEmptyLink(false)
-    eventDateStart === '' ? setEmptyStartdate(true) : setEmptyStartdate(false)
-    eventDateFin === '' ? setEmptyFinDate(true) : setEmptyFinDate(false)
+    eventDateStart === '' || eventDateStart.localeCompare(eventDateFin) === 1 ? setEmptyStartdate(true) : setEmptyStartdate(false)
+    eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1 ? setEmptyFinDate(true) : setEmptyFinDate(false)
+    eventDateStart.localeCompare(eventDateFin) === 1 ? setDateFail(true) : setDateFail(false)
   }
-
-  const [emptyTitle, setEmptyTitle] = useState(false)
-  const [emptyDescription, setEmptyDescription] = useState(false)
-  const [emptyDirection, setEmptyDirection] = useState(false)
-  const [emptyFile, setEmptyFile] = useState(false)
-  const [emptyOrganization, setEmptyOrganization] = useState(false)
-  const [emptySeats, setEmptySeats] = useState(false)
-  const [emptyLink, setEmptyLink] = useState(false)
-  const [emptyStartdate, setEmptyStartdate] = useState(false)
-  const [emptyFinDate, setEmptyFinDate] = useState(false)
 
   return (
     <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12    h-screen overflow-y-auto border-2 rounded-md bg-white">
@@ -222,7 +236,7 @@ const CreateEvent = () => {
             e.currentTarget.value = e.currentTarget.value.replace(/^[^1-9]/, ""),
             e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, ""),
             e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')
-          )} className={`inputCamp peer p-2 mt-1 md:w-1/4 w-1/2 ${emptySeats ? 'border-red-600'
+          )} minLength={1} maxLength={5} className={`inputCamp peer  p-2 mt-1 md:w-1/4 w-1/2 ${emptySeats ? 'border-red-600'
             : ''
             }`} onChange={(value) => {
               setEventSeats(value.currentTarget.value)
@@ -251,7 +265,7 @@ const CreateEvent = () => {
             <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <span className="text-gray-500 sm:text-sm mt-1">€</span>
             </div>
-            <CurrencyInput ref={inputRefPric} disabled={!subscription} name="eventPrice" className="pl-7 mt-1 p-2 md:w-1/4 w-1/2 inputCamp peer disabled:bg-gray-200  "
+            <CurrencyInput ref={inputRefPric} disabled={!subscription} name="eventPrice" className="pl-7 mt-1 p-2 md:w-1/4 w-1/2 inputCamp peer disabled:bg-gray-200 disabled:text-gray-200  "
               placeholder="0,00" decimalsLimit={2} onValueChange={(value, name) => console.log(value, name)}
               onInput={(e) => (e.currentTarget.value = e.currentTarget.value.replace(/^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/, ""),
                 e.currentTarget.value = e.currentTarget.value.replace(/[^-,0-9]/, ""))} onChange={(value) => {
@@ -305,12 +319,13 @@ const CreateEvent = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col p-1 relative mt-5">
+        <div className="flex flex-row p-1 relative mt-5 ">
           <input ref={inputRefDS} type="date" name="eventStart" className={`inputCamp peer w-40 ${emptyStartdate ? 'border-red-600'
             : ''
             }`} onChange={(value) => {
               setEventDateStart(value.currentTarget.value)
               setEmptyStartdate(false)
+              setDateFail(false)
             }} onKeyDown={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                 if (inputRefDF.current != null) {
@@ -319,13 +334,15 @@ const CreateEvent = () => {
               }
             }} />
           <label className={"labelFloatDate"}>Fecha de Inicio</label>
+          {dateFail ? <label className='ml-3 font-medium text-xl text-red-600 m-auto'>Fechas</label> : ""}
         </div>
-        <div className="flex flex-col p-1 relative mt-5">
+        <div className="flex flex-row p-1 relative mt-5">
           <input ref={inputRefDF} type="date" name="eventFinish" className={`inputCamp peer w-40 ${emptyFinDate ? 'border-red-600'
             : ''
             }`} onChange={(value) => {
               setEventDateFin(value.currentTarget.value)
               setEmptyFinDate(false)
+              setDateFail(false)
             }} onKeyDown={(e) => {
               if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                 if (btnRef.current != null) {
@@ -334,6 +351,7 @@ const CreateEvent = () => {
               }
             }} />
           <label className={"labelFloatDate"}>Fecha de Final</label>
+          {dateFail ? <label className='ml-3 font-medium text-xl text-red-600 m-auto'>incorrectas</label> : ""}
         </div>
       </div>
       <div className="flex m-auto justify-center p-3">

@@ -1,18 +1,19 @@
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
 import IncidentStore from "../../../viewmodels/incident/IncidentStore"
-import Search from "../../../assets/menu/search.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import TableIncident from "./TableIncident"
 import { CSVLink } from 'react-csv';
+import incidentRed from "../../../assets/menu/incidentRed.svg"
+
 const incidentStore = IncidentStore.getIncidentStore()
 
 const Incident = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    incidentStore.getRequestIncident(localStorage.getItem('user_etno_locality')!, pageNumber, 6)
+    incidentStore.getPaginatedIncidentsRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 6)
   }, [pageNumber])
 
   const incrementPage = () => {
@@ -34,32 +35,39 @@ const Incident = () => {
     <div className="w-full h-full min-w-max relative flex flex-col">
       <div className="flex flex-col gap-3">
         <div className="flex flex-row">
-          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Incident</h2>
-          <div className="lg:ml-auto flex ml-1">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Incidencia</h2>
+          <div className="mainButtonsDiv">
             {incidentStore.getPaginatedIncident.content! && (
-              <button className="btnStandard">
+              <div hidden={incidentStore.getPaginatedIncident.content.length === 0}>
                 <CSVLink
                   data={incidentStore.getPaginatedIncident.content!}
                   filename={'incidents.csv'}
                   enclosingCharacter={` `}
+                  className={"btnStandard"}
                   target="_blank"
-                  headers={headers} >Exportar a excel
+                  headers={headers}>Exportar a excel
                 </CSVLink>
-              </button>)}
+              </div>)}
           </div>
         </div>
-        <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-1">
-          <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
-              <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
+        {incidentStore.getPaginatedIncident.content?.length === 0 ? (
+          <div className="flex flex-row p-2 mt-2 rounded-md shadow-md">
+            <img src={incidentRed} alt="BIG" />
+            <label className="text-xl my-auto ml-4 mt-3.5 font-medium">No hay Incidencias</label>
+          </div>
+        ) : (
+          <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-1">
+            <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
+                <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="overflow-y-auto flex-1">
         <div className="">
-
           <TableIncident currentPage={pageNumber} />
         </div>
       </div>

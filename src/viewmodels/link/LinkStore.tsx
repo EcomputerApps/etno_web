@@ -1,6 +1,6 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
-import { Link, PaginatedLink } from "../../models/section/Section";
+import { Link, LinkList, PaginatedLink } from "../../models/section/Section";
 import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
@@ -19,6 +19,7 @@ class LinkStore {
     //Observable =>
     paginatedLink: PaginatedLink = {}
     link: Link = {}
+    allLinks: LinkList = {}
     title: string = ""
     id: string = ""
     linkString: string = ""
@@ -27,6 +28,7 @@ class LinkStore {
 
     constructor() {
         makeObservable(this, {
+            allLinks: observable,
             modalEdit: observable,
             modalCreate: observable,
             setModalCreate: action,
@@ -42,15 +44,24 @@ class LinkStore {
             setTitle: action,
             setLinkString: action,
             setId: action,
-            getRequestLink: action,
+            getAllLinksRequest: action,
+            getPaginatedLinkRequest:action,
             addRequestLink: action,
             updateLinkList: action,
             updatePaginatedLink: action,
             getPaginatedLink: computed,
             getTitle: computed,
             getId: computed,
-            getLinkString: computed
+            getLinkString: computed,
+            updateAllLinks: action,
+            getAllLinks: computed
         })
+    }
+    updateAllLinks(links: Link[]) {
+        this.allLinks.links = links
+    }
+    get getAllLinks() {
+        return this.allLinks
     }
     setModalEdit(mode: boolean) {
         this.modalEdit = mode
@@ -98,13 +109,22 @@ class LinkStore {
     get getLink() {
         return this.link
     }
-    async getRequestLink(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/links?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedLinkRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/links/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const link = await response.json()
         this.updatePaginatedLink(link)
     }
+
+    async getAllLinksRequest(locality: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/links?username=${locality}`, {
+            method: 'GET',
+        })
+        const link = await response.json()
+        this.updateAllLinks(link)
+    }
+
     async deleteLink(username: string, idLink: string) {
         const response = await fetch(`http://${this.serverIp}:8080/users/delete/link?username=${username}&idLink=${idLink}`, {
             method: 'DELETE',

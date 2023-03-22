@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import logoEtno from '../../../../assets/logo_etno.png';
 import LinkStore from '../../../../viewmodels/link/LinkStore';
 import { Link } from '../../../../models/section/Section';
@@ -12,13 +12,37 @@ const linkStore = LinkStore.getLinkStore()
 
 const CreateLink = () => {
 
+    useEffect(() => {
+        linkStore.getAllLinksRequest("Bolea")
+    }, [])
+
+    function checkIfExist(title: string) {
+        var flag: boolean = false
+        linkStore.getAllLinks.links?.map((item) => {
+            if (item.title === title) {
+                flag = true
+            }
+        })
+        return flag
+    }
+
+    function chekIfEmpty() {
+        linkTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
+        linkUrl === "" ? setEmptyUrl(true) : setEmptyUrl(false)
+
+    }
+
+
     const inputRef = useRef<HTMLInputElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
     const [linkTitle, setLinkTitle] = useState<string>("")
     const [linkUrl, setLinkUrl] = useState<string>("")
     const [confirm, setConfirm] = useState<boolean>(false)
+    const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
+    const [emptyUrl, setEmptyUrl] = useState<boolean>(false)
 
     function addLink() {
+        chekIfEmpty()
         if (linkTitle === "" || linkUrl === "") {
             toast.info('Rellene todos los campos', {
                 position: 'bottom-center',
@@ -36,7 +60,7 @@ const CreateLink = () => {
                 title: linkTitle,
                 url: linkUrl
             }
-            if (linkStore.getLink.title === link.title) {
+            if (checkIfExist(link.title!!)) {
                 toast.info('Ya existe este enlace', {
                     position: 'bottom-center',
                     autoClose: 1000,
@@ -83,7 +107,12 @@ const CreateLink = () => {
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
                             <input autoFocus placeholder=" " name="bandType" id="test" type="text"
-                                className="inputCamp peer" onChange={(e) => setLinkTitle(e.currentTarget.value)}
+                                className={`inputCamp peer ${emptyTitle ? 'border-red-600'
+                                    : ''
+                                    }`} onChange={(e) => {
+                                        setLinkTitle(e.currentTarget.value)
+                                        setEmptyTitle(false)
+                                    }}
                                 onKeyDown={(e) => {
                                     if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                         if (inputRef.current != null) {
@@ -97,7 +126,11 @@ const CreateLink = () => {
                     </div>
                     <div className="w-full flex flex-1 flex-col pl-3">
                         <div className=" flex flex-col p-1 mt-5  relative">
-                            <input ref={inputRef} placeholder=" " name="bandType" id="test" type="text" className="inputCamp peer" onChange={(e) => setLinkUrl(e.currentTarget.value)}
+                            <input ref={inputRef} placeholder=" " name="bandType" id="test" type="text" className={`inputCamp peer ${emptyUrl ? 'border-red-600'
+                                : ''
+                                }`} onChange={(e) => {setLinkUrl(e.currentTarget.value)
+                                    setEmptyUrl(false)
+                                }}
                                 onKeyDown={(e) => {
                                     if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
                                         if (btnRef.current != null) {

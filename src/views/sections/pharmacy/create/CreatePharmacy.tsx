@@ -1,5 +1,5 @@
 import logoEtno from '../../../../assets/logo_etno.png'
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import { Pharmacy } from '../../../../models/section/Section';
@@ -23,6 +23,20 @@ interface Marker {
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
 const CreatePharmacy = () => {
+    
+    useEffect(() => {
+        pharmacyStore.getRequestPharmacyOnDuty("Bolea")
+      }, [])
+    
+      function checkIfExist(name: string) {
+        var flag: boolean = false
+        pharmacyStore.getPOD.content?.map((item) => {
+          if (item.name === name) {
+            flag = true
+          }
+        })
+        return flag
+      }
     const greorgian_es = {
         name: "greorgian_es",
         months: [
@@ -183,7 +197,7 @@ const CreatePharmacy = () => {
             frequencyInDays: pharmFrequency,
             dates: fillPharmacyDates(fillDates(dutyDates?.toString()!!))
         }
-        if (pharmacyStore.getPharmacy.name === pharmacy.name) {
+        if (checkIfExist(pharmacy.name!!)) {
             toast.info('Ya existe esta farmacia', {
                 position: 'bottom-center',
                 autoClose: 1000,

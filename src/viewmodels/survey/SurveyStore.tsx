@@ -1,7 +1,7 @@
 import { computeHeadingLevel } from "@testing-library/react"
 import { action, computed, makeAutoObservable, observable } from "mobx"
 import { toast } from "react-toastify"
-import { Survey } from "../../models/section/Section"
+import { QuizResult, PaginatedQuizResult, Survey } from "../../models/section/Section"
 
 class SurveyStore {
     serverIp: string = "192.168.137.1"
@@ -14,14 +14,23 @@ class SurveyStore {
         return this.surveyStore
     }
 
+
     modalCreateSurvey: boolean = false
     modalEditSurvey: boolean = false
+    modalResults: boolean = false
+    modalDetails: boolean = false
     survey: Survey = {}
+    quizResult: QuizResult = {}
+    paginatedQuizResults: PaginatedQuizResult = {}
 
 
     constructor() {
         makeAutoObservable(this, {
+            modalDetails: observable,
+            quizResult: observable,
+            paginatedQuizResults: observable,
             survey: observable,
+            modalResults: observable,
             modalCreateSurvey: observable,
             modalEditSurvey: observable,
             updateSurvey: action,
@@ -29,14 +38,53 @@ class SurveyStore {
             setEditSurvey: action,
             getSurvey: computed,
             getCreateSurvey: computed,
-            getEditSurvey: computed
+            getEditSurvey: computed,
+            setModalResult: action,
+            getModalRresult: computed,
+            setModalDetails: action,
+            getModalDetails: computed,
+            getPaginatedQuizResults: computed,
+            updatePaginatedQuizResults: action,
+            updateQuizResult: action,
+            updateQuizResults: action,
+            getQuizResult: computed
+
+
         })
     }
+    setModalDetails(mode: boolean) {
+        this.modalDetails = mode
+    }
+    get getModalDetails() {
+        return this.modalDetails
+    }
+    updateQuizResult(quizResult: QuizResult) {
+        this.quizResult = quizResult
+    }
+    get getQuizResult() {
+        return this.quizResult
+    }
+    updateQuizResults(quizResult: QuizResult[]) {
+        this.paginatedQuizResults.content = quizResult
+    }
+    updatePaginatedQuizResults(quizResult: PaginatedQuizResult) {
+        this.paginatedQuizResults = quizResult
+    }
+    get getPaginatedQuizResults() {
+        return this.paginatedQuizResults
+    }
+
     updateSurvey(survey: Survey) {
         this.survey = survey
     }
     get getSurvey() {
         return this.survey
+    }
+    setModalResult(mode: boolean) {
+        this.modalResults = mode
+    }
+    get getModalRresult() {
+        return this.modalResults
     }
     setCreateSurvey(mode: boolean) {
         this.modalCreateSurvey = mode
@@ -89,6 +137,13 @@ class SurveyStore {
                 theme: "light"
             })
         }
+    }
+    async getPaginatedResultsRequest(username: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/quiz_results/paginated?username=${username}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+            method: 'GET'
+        })
+        const results = await response.json()
+        this.updatePaginatedQuizResults(results)
     }
     async getRequestSurvey() {
         const response = await fetch(`http://${this.serverIp}:8080/quizzes`, {
@@ -150,9 +205,9 @@ class SurveyStore {
                 progress: undefined,
                 theme: "light"
             })
-            setTimeout(function(){
+            setTimeout(function () {
                 window.location.reload();
-             }, 500);
+            }, 500);
         } else {
             toast.error('No se ha podido eliminar', {
                 position: 'bottom-center',
@@ -166,6 +221,4 @@ class SurveyStore {
             })
         }
     }
-
-
 } export default SurveyStore

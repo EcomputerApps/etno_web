@@ -32,7 +32,7 @@ class BandStore {
             updateBand: action,
             getBand: computed,
             addRequestBand: action,
-            getRequestBand: action,
+            getPaginatedBandrequest: action,
             setModalCreate: action,
             setModalEdit: action,
             deleteBand: action,
@@ -121,8 +121,8 @@ class BandStore {
             })
         }
     }
-    async getRequestBand(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/bandos?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedBandrequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/bandos/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const band = await response.json()
@@ -133,19 +133,19 @@ class BandStore {
             method: 'GET',
 
         })
-
         const band = await response.json()
         this.updateAllBandList(band)
     }
-    async deleteBand(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/bando?username=${username}&title=${title}`, {
+
+    async deleteBand(username: string, idBando: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/bando?username=${username}&idBando=${idBando}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
             }
         })
         if (response.ok) {
-            const newPaginatedBands = this.paginatedBand.content!!.filter((item) => item.title !== title)
+            const newPaginatedBands = this.paginatedBand.content!!.filter((item) => item.idBando !== idBando)
             this.updateBandList(newPaginatedBands)
             this.updateBand({})
             toast.success('Se ha borrado exitosamente', {

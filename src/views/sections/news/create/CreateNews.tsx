@@ -1,17 +1,33 @@
 import logoEtno from '../../../../assets/logo_etno.png'
 import { useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
-
 import NewsStore from '../../../../viewmodels/news/NewsStore'
 import { News } from '../../../../models/section/Section'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast} from 'react-toastify'
 import { observer } from 'mobx-react-lite'
+import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
+import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 
 const newsStore = NewsStore.getNewsStore()
+const sideBarStore = SideBarStore.getSideBarStore()
+const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const CreateNews = () => {
+  useEffect(() => {
+    newsStore.getAllNewsRequest("Bolea")
+  }, [])
+
+  function checkIfExist(title: string) {
+    var flag: boolean = false
+    newsStore.getAllNews.news?.map((item) => {
+      if (item.title === title) {
+        flag = true
+      }
+    })
+    return flag 
+  }
+
 
   const inputRefTit = useRef<HTMLInputElement>(null)
   const inputRefDate = useRef<HTMLInputElement>(null)
@@ -40,7 +56,7 @@ const CreateNews = () => {
       description: newsDescription,
       publicationDate: newsDate
     }
-    if (newsStore.getNews.title === news.title) {
+    if (checkIfExist(news.title!!)) {
       toast.info('Ya existe esta noticia', {
         position: 'bottom-center',
         autoClose: 1000,
@@ -66,6 +82,8 @@ const CreateNews = () => {
         })
       } else {
         newsStore.addRequestNews(localStorage.getItem('user_etno_locality')!, news, file!!)
+        sideBarStore.updateSection('Noticias')
+         hoverSectionStore.setName('Noticias')
       }
     }
   }
@@ -130,7 +148,7 @@ const CreateNews = () => {
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
-            <input ref={inputRefTit} placeholder=" " name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
+            <input ref={inputRefTit} placeholder=" " autoFocus name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
               : ''
               }`} onChange={(value) => {
                 setNewsTitle(value.currentTarget.value)

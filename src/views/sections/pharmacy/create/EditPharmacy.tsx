@@ -1,5 +1,5 @@
 import logoEtno from '../../../../assets/logo_etno.png'
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import { toast } from 'react-toastify';
@@ -22,6 +22,24 @@ interface Marker {
 }
 
 const EditPharmacy = () => {
+
+    useEffect(() => {
+        pharmacyStore.getRequestPharmacyOnDuty(localStorage.getItem('user_etno_locality')!)
+    }, [])
+
+    function checkIfExist(name: string) {
+        var flag: boolean = false
+        if (name !== pharmacyNameTemp) {
+            pharmacyStore.getPOD.content?.map((item) => {
+                if (item.name === name) {
+                    flag = true
+                }
+            })
+        }
+        return flag
+    }
+
+
     const datePickerRef = useRef<any>();
     const [datePanel, setDatePanel] = useState(true)
     const [dateGuardia, setDateGuardia] = useState({
@@ -71,6 +89,7 @@ const EditPharmacy = () => {
     const [pharmType, setPharmType] = useState<string>(pharmacy.type!!)
     const [pharmacyShcedulSelector, setPharmacyShcedulSelector] = useState<string>(timeCutter(pharmacy.schedule!!).length === 6 ? timeCutter(pharmacy.schedule!!)!![0] + "-" + timeCutter(pharmacy.schedule!!)!![1] : "Otro")
     const [pharmacyName, setPharmacyName] = useState<string>(pharmacy.name!!)
+    const [pharmacyNameTemp] = useState<string>(pharmacy.name!!)
     const [pharmacyWebUrl, setPharmacyWebUrl] = useState<string>(pharmacy.link!!)
     const [pharmacyTel, setPharmacyTel] = useState<string>(pharmacy.phone!!)
     const [pharmacyShcedulMorningOne, setPharmacyShcedulMorningOne] = useState<string>(timeCutter(pharmacy.schedule!!)!![2])
@@ -225,48 +244,60 @@ const EditPharmacy = () => {
             setPharmPeriod(0)
             setPharmFrequency(0)
         }
-        chekIfEmpty()
-        if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-            pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
-            (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === ""
-        ) {
-            toast.info('Rellene los campos', {
-                position: 'top-center',
-                autoClose: 500,
+        if (checkIfExist(pharmacyName)) {
+            toast.info('Ya existe esta farmacia', {
+                position: 'bottom-center',
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: false,
                 draggable: true,
                 progress: undefined,
-                theme: 'light'
+                theme: "light"
             })
         } else {
-            const pharmacy_: Pharmacy = {
-                type: pharmType,
-                name: pharmacyName,
-                link: pharmacyWebUrl,
-                phone: pharmacyTel,
-                schedule: pharmacySchedule,
-                description: pharmacyDescription,
-                longitude: String(long),
-                latitude: String(lat),
-                startDate: fillDates(dutyDates?.toString()!!)[0],
-                durationDays: pharmPeriod,
-                frequencyInDays: pharmFrequency,
-                dates: fillPharmacyDates(fillDates(dutyDates?.toString()!!))
+            chekIfEmpty()
+            if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
+                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDescription === "" ||
+                (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === ""
+            ) {
+                toast.info('Rellene los campos', {
+                    position: 'top-center',
+                    autoClose: 500,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light'
+                })
+            } else {
+                const pharmacy_: Pharmacy = {
+                    type: pharmType,
+                    name: pharmacyName,
+                    link: pharmacyWebUrl,
+                    phone: pharmacyTel,
+                    schedule: pharmacySchedule,
+                    description: pharmacyDescription,
+                    longitude: String(long),
+                    latitude: String(lat),
+                    startDate: fillDates(dutyDates?.toString()!!)[0],
+                    durationDays: pharmPeriod,
+                    frequencyInDays: pharmFrequency,
+                    dates: fillPharmacyDates(fillDates(dutyDates?.toString()!!))
 
+                }
+                if (pharmType === "Normal") {
+                    pharmacy_.startDate = undefined
+                    pharmacy_.dates = undefined
+                    pharmacy_.durationDays = 0
+                    pharmacy_.frequencyInDays = 0
+                } console.log(pharmacy_)
+                pharmacyStore.editPharmacy(localStorage.getItem('user_etno_locality')!, pharmaciId, pharmacy_, file!!)
+                sideBarStore.updateSection('Farmacias')
+                hoverSectionStore.setName('Farmacias')
             }
-            if (pharmType === "Normal") {
-                pharmacy_.startDate = undefined
-                pharmacy_.dates = undefined
-                pharmacy_.durationDays = 0
-                pharmacy_.frequencyInDays = 0
-            } console.log(pharmacy_)
-            pharmacyStore.editPharmacy(localStorage.getItem('user_etno_locality')!, pharmaciId, pharmacy_, file!!)
-            sideBarStore.updateSection('Farmacias')
-            hoverSectionStore.setName('Farmacias')
         }
-
     }
 
     function chekDatesCount() {
@@ -469,7 +500,7 @@ const EditPharmacy = () => {
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
                     <input defaultValue={pharmacyTel} ref={inputTel} placeholder=" " name="pharmacyTel" type="text" onInput={(e) =>
-                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} minLength={9} className={`inputCamp peer w-1/4 ${emptyName ? 'border-red-600'
+                        e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, "")} maxLength={9} minLength={9} className={`inputCamp peer w-1/4 ${emptyTel ? 'border-red-600'
                             : ''
                             }`} onKeyUp={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {

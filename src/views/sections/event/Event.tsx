@@ -26,7 +26,7 @@ const Event = () => {
    const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    eventStore.getRequestEvents(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
+    eventStore.getPaginatedEventsRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
   }, [pageNumber])
 
   const incrementPage = () => {
@@ -41,17 +41,18 @@ const Event = () => {
       <div className=" flex flex-col gap-4">
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Eventos</h2>
-          <div className="lg:ml-auto flex ml-1">
+          <div className="mainButtonsDiv">
              {eventStore.getPaginatedEvents.content! && (
-              <button className="btnStandard mr-3">
+              <div hidden={eventStore.getPaginatedEvents.content.length === 0}>
                 <CSVLink
                   data={eventStore.getPaginatedEvents.content!}
                   filename={'events.csv'}
                   enclosingCharacter={` `}
+                  className="btnStandard mr-3"
                   target="_blank"
                   headers={headers} >Exportar a excel
                 </CSVLink>
-              </button>)}
+              </div>)}
               <button onClick={() => eventStore.setModalCreate(true)} type="button" className="btnStandard ">
               <img src={Pencil} alt="Create" />
               Crear

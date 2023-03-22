@@ -68,7 +68,7 @@ class ServiceStore {
             service: observable,
             updateService: action,
             getService: computed,
-            getRequestService: action,
+            getPaginatedServiceRequest: action,
             addRequestService: action,
             deleteService: action,
             updatePaginatedService: action,
@@ -113,23 +113,23 @@ class ServiceStore {
         return this.service
     }
 
-    async getRequestService(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/services?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedServiceRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`http://${this.serverIp}:8080/services/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
 
         })
         const service = await response.json()
         this.updatePaginatedService(service)
     }
-    async deleteService(username: string, owner: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/service?username=${username}&owner=${owner}`, {
+    async deleteService(username: string, idService: string) {
+        const response = await fetch(`http://${this.serverIp}:8080/users/delete/service?username=${username}&idService=${idService}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
         if (response.ok) {
-            const newPaginatedService = this.paginatedService.content!!.filter((item) => item.owner !== owner)
+            const newPaginatedService = this.paginatedService.content!!.filter((item) => item.idService !== idService)
             this.updateServiceList(newPaginatedService)
             this.updateService({})
             toast.success('Se ha borrado exitosamente', {

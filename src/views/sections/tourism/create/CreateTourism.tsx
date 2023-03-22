@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
@@ -22,6 +22,19 @@ interface Marker {
 }
 
 const CreateTourism = () => {
+  useEffect(() => {
+    tourismStore.getAllTourismRequest("Bolea")
+  }, [])
+  
+  function checkIfExist(title: string) {
+    var flag: boolean = false
+    tourismStore.getAllTourism.tourism?.map((item) => {
+      if (item.title === title) {
+        flag = true
+      }
+    })
+    return flag 
+  }
 
   const defaultProps = {
     center: {
@@ -59,7 +72,7 @@ const CreateTourism = () => {
       longitude: String(long),
       latitude: String(lat)
     }
-    if (tourismStore.getTourism.title === tourism.title) {
+    if (checkIfExist(tourism.title!!)) {
       toast.info('Ya existe este turismo', {
         position: 'bottom-center',
         autoClose: 500,
@@ -147,7 +160,7 @@ const CreateTourism = () => {
         </div>
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="flex flex-col p-1 relative">
-            <input ref={inputTitle} placeholder=" " name="tourismTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
+            <input ref={inputTitle} placeholder=" " autoFocus name="tourismTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
               : ''
               }`} onKeyUp={(e) => {
                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {

@@ -5,6 +5,7 @@ import error from "../../../assets/menu/error.svg"
 import IncidentStore from "../../../viewmodels/incident/IncidentStore"
 import { toast, ToastContainer } from "react-toastify"
 
+
 const incidentStore = IncidentStore.getIncidentStore()
 interface PropTable {
     list?: any,
@@ -16,7 +17,7 @@ const TableIncident = (prop: PropTable) => {
     const [emptySolution, setEmptySolution] = useState(false)
 
     function chekIfEmpty() {
-        incidentSolution === "" ||  incidentSolution === null ? setEmptySolution(true) : setEmptySolution(false)
+        incidentSolution === "" || incidentSolution === null ? setEmptySolution(true) : setEmptySolution(false)
     }
 
     function showDescription(description: string, id: string,
@@ -54,9 +55,20 @@ const TableIncident = (prop: PropTable) => {
             progress: undefined,
             theme: "light"
         }) : incidentStore.solveSilution(localStorage.getItem('user_etno_locality')!, incidentId, incidentSolution)
+        incidentSolution === "" || incidentSolution === null ?
+            toast.error('Rellene el campo de solution', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            }) : incidentStore.solveSilution("Bolea", incidentId, incidentSolution)
     }
 
-    function goBack(){
+    function goBack() {
         setModal(false)
         setEmptySolution(false)
     }
@@ -71,8 +83,8 @@ const TableIncident = (prop: PropTable) => {
                                     <button className="  text-blue-600  font-medium place-self-end bg-white rounded-full w-7 h-7 border-dark-purple border-2 mb-1 " onClick={() => goBack()}>X</button>
                                     <div className="w-full min-h-full max-h-full rounded-md flex flex-wrap bg-gray-100 ">
                                         <p className="font-bold text-xl uppercase underline p-3 w-full text-center underline-offset-4 ">Descripción detallada</p>
-                                        <div className="flex flex-wrap md:h-40 h-1/2 max-h-40 overflow-y-scroll border-t-2 border-b-2 p-2 w-full " > 
-                                       {incidentStore.getDescription}
+                                        <div className="flex flex-wrap md:h-40 h-1/2 max-h-40 overflow-y-scroll border-t-2 border-b-2 p-2 w-full " >
+                                            {incidentStore.getDescription}
                                         </div>
                                         <div className="w-full flex flex-col ">
                                             <label className="text-xl pl-3">Solucion</label>

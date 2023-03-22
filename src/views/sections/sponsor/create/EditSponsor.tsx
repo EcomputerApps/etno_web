@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
@@ -14,12 +14,29 @@ const sponsorStore = SposnsorStore.getSponsorStore()
 
 const EditSponsor = () => {
 
+    useEffect(() => {
+        sponsorStore.getAllSponsorsRequest("Bolea")
+    }, [])
+
+    function checkIfExist(title: string) {
+        var flag: boolean = false
+        if (title !== sponsorTitleTemp) {
+            sponsorStore.getAllSponsors.sponsors?.map((item) => {
+                if (item.title === title) {
+                    flag = true
+                }
+            })
+        }
+        return flag
+    }
+
     const [sponsor] = useState(sponsorStore.getSponsor)
     const inputRef = useRef<HTMLInputElement>(null)
     const txtAreaRef = useRef<HTMLTextAreaElement>(null)
     const btnRef = useRef<HTMLButtonElement>(null)
 
     const [sponsorTitle, setSponsorTitle] = useState<string>(sponsor.title!!)
+    const [sponsorTitleTemp] = useState<string>(sponsor.title!!)
     const [sponsorDescription, setSponsorDescription] = useState<string>(sponsor.description!!)
     const [sponsorTel, setSponsorTel] = useState<string>(sponsor.phone!!)
     const [file, setFile] = useState<File>()
@@ -29,10 +46,8 @@ const EditSponsor = () => {
     const [confirm, setConfirm] = useState<boolean>(false)
 
     function updateSponsor(sponsorId: string) {
-        chekIfEmpty()
-        if (sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" || sponsorTel.length < 9
-        ) {
-            toast.error('Rellene los campos', {
+        if (checkIfExist(sponsorTitle)) {
+            toast.info('Ya existe este patrocinador', {
                 position: 'bottom-center',
                 autoClose: 1000,
                 hideProgressBar: false,
@@ -43,14 +58,29 @@ const EditSponsor = () => {
                 theme: "light"
             })
         } else {
-            const newSponsor: Sponsor = {
-                title: sponsorTitle,
-                description: sponsorDescription,
-                phone: sponsorTel,
+            chekIfEmpty()
+            if (sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" || sponsorTel.length < 9
+            ) {
+                toast.error('Rellene los campos', {
+                    position: 'bottom-center',
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light"
+                })
+            } else {
+                const newSponsor: Sponsor = {
+                    title: sponsorTitle,
+                    description: sponsorDescription,
+                    phone: sponsorTel,
+                }
+                sponsorStore.editSponsor(localStorage.getItem('user_etno_locality')!, sponsorId, newSponsor, file!!)
+                sideBarStore.updateSection('Patrocinadores')
+                hoverSectionStore.setName('Patrocinadores')
             }
-            sponsorStore.editSponsor(localStorage.getItem('user_etno_locality')!, sponsorId, newSponsor, file!!)
-            sideBarStore.updateSection('Patrocinadores')
-            hoverSectionStore.setName('Patrocinadores')
         }
     }
 
@@ -100,7 +130,7 @@ const EditSponsor = () => {
                                         txtAreaRef.current.focus()
                                     }
                                 }
-                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatInput"}>Título</label>
                     </div>
                 </div>
@@ -118,7 +148,7 @@ const EditSponsor = () => {
                                             inputRef.current.focus()
                                         }
                                     }
-                                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                                }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                         <label className={"labelFloatTxtArea"}>Descripción</label>
                     </div>
                 </div>

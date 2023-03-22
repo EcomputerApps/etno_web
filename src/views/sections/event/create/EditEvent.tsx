@@ -1,5 +1,5 @@
 import logoEtno from '../../../../assets/logo_etno.png';
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 import add_Photo from '../../../../assets/menu/add_photo.svg';
 import "../../../../index.css"
@@ -15,6 +15,21 @@ const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
 const EditEvent = () => {
+  useEffect(() => {
+    eventStore.getAllEventsRequest("Bolea")
+  }, [])
+
+  function checkIfExist(title: string) {
+    var flag: boolean = false
+    if (title !== eventTitleTemp) {
+      eventStore.getAllEvents.events?.map((item) => {
+        if (item.title === title) {
+          flag = true
+        }
+      })
+    }
+    return flag
+  }
 
   const inputRefDir = useRef<HTMLInputElement>(null)
   const inputRefOrg = useRef<HTMLInputElement>(null)
@@ -28,6 +43,7 @@ const EditEvent = () => {
 
   const [event] = useState<Event>(eventStore.getEvent)
   const [eventTitle, setEventTitle] = useState<string>(event.title!!)
+  const [eventTitleTemp] = useState<string>(event.title!!)
   const [eventDirection, setEventDirection] = useState<string>(event.address!!)
   const [eventDescription, setEventDescription] = useState<string>(event.description!!)
   const [eventOrganization, setEventOrganization] = useState<string>(event.organization!!)
@@ -35,11 +51,19 @@ const EditEvent = () => {
   const [eventPrice, setEventPrice] = useState<string>(String(event.reservePrice!!))
   const [eventSeats, setEventSeats] = useState<string>(String(event.seats!!))
   const [eventLink, setEventLink] = useState<string>(event.link!!)
-  const [eventPhoto, setEventPhoto] = useState<string>("")
   const [eventDateStart, setEventDateStart] = useState<string>(event.startDate!!)
   const [eventDateFin, setEventDateFin] = useState<string>(event.endDate!!)
   const [file, setFile] = useState<File>()
-  const[confirm, setConfirm] = useState<boolean>(false)
+  const [confirm, setConfirm] = useState<boolean>(false)
+  const [dateFail, setDateFail] = useState<boolean>(false)
+  const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
+  const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
+  const [emptyDirection, setEmptyDirection] = useState<boolean>(false)
+  const [emptyOrganization, setEmptyOrganization] = useState<boolean>(false)
+  const [emptySeats, setEmptySeats] = useState<boolean>(false)
+  const [emptyLink, setEmptyLink] = useState<boolean>(false)
+  const [emptyStartdate, setEmptyStartdate] = useState<boolean>(false)
+  const [emptyFinDate, setEmptyFinDate] = useState<boolean>(false)
 
   function updateEvent() {
     if (subscription) {
@@ -76,45 +100,99 @@ const EditEvent = () => {
         sideBarStore.updateSection('Eventos')
         hoverSectionStore.setName('Eventos')
       }
+    if (checkIfExist(eventTitle)) {
+      toast.info('Ya existe este evento', {
+        position: 'bottom-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light"
+      })
     } else {
-      checkIfEmpty()
-      if (eventTitle === '' || eventDirection === '' || eventDescription === ''
-        || eventOrganization === ''
-        || eventSeats === '' || eventLink === '' || eventDateStart === ''
-        || eventDateFin === '') {
-        toast.info('Rellene los campos', {
-          position: 'top-center',
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
-      } else {
-        const event_: Event = {
-          title: eventTitle,
-          address: eventDirection,
-          description: eventDescription,
-          organization: eventOrganization,
-          hasSubscription: subscription,
-          reservePrice: Number(eventPrice),
-          capacity: Number(eventSeats),
-          seats: Number(eventSeats),
-          link: eventLink,
-          startDate: eventDateStart,
-          endDate: eventDateFin
+      if (subscription) {
+        checkIfEmpty()
+        if (eventTitle === '' || eventDirection === '' || eventDescription === ''
+          || eventOrganization === '' || eventPrice === ''
+          || eventSeats === '' || eventLink === '' || eventDateStart === ''
+          || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1) {
+          toast.error('Rellene los campos correcto', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light'
+          })
+        } else {
+          const event_: Event = {
+            title: eventTitle,
+            address: eventDirection,
+            description: eventDescription,
+            organization: eventOrganization,
+            hasSubscription: subscription,
+            reservePrice: Number(eventPrice),
+            capacity: Number(eventSeats),
+            seats: Number(eventSeats),
+            link: eventLink,
+            startDate: eventDateStart,
+            endDate: eventDateFin
+          }
+          eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+          sideBarStore.updateSection('Eventos')
+          hoverSectionStore.setName('Eventos')
         }
+      } else {
+        checkIfEmpty()
+        if (eventTitle === '' || eventDirection === '' || eventDescription === ''
+          || eventOrganization === ''
+          || eventSeats === '' || eventLink === '' || eventDateStart === ''
+          || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1) {
+          toast.error('Rellene los campos correcto', {
+            position: 'bottom-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'light'
+          })
+        } else {
+          const event_: Event = {
+            title: eventTitle,
+            address: eventDirection,
+            description: eventDescription,
+            organization: eventOrganization,
+            hasSubscription: subscription,
+            reservePrice: Number(eventPrice),
+            capacity: Number(eventSeats),
+            seats: Number(eventSeats),
+            link: eventLink,
+            startDate: eventDateStart,
+            endDate: eventDateFin
+          }
 
+<<<<<<< HEAD
         eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
         sideBarStore.updateSection('Eventos')
         hoverSectionStore.setName('Eventos')
+=======
+          eventStore.editEvent('Bolea', event.idEvent!!, event_, file!!)
+          sideBarStore.updateSection('Eventos')
+          hoverSectionStore.setName('Eventos')
+        }
+>>>>>>> a5ac1c1fd76025664d2f7cdaf0d233f6898b4c4b
       }
+
     }
 
-
   }
+
   const freeOrNot = (payType: boolean) => {
     if (payType) {
       return "Evento de pago."
@@ -138,21 +216,15 @@ const EditEvent = () => {
     eventOrganization === "" ? setEmptyOrganization(true) : setEmptyOrganization(false)
     eventSeats === '' ? setEmptySeats(true) : setEmptySeats(false)
     eventLink === '' ? setEmptyLink(true) : setEmptyLink(false)
+    eventDateStart === '' || eventDateStart.localeCompare(eventDateFin) === 1 ? setEmptyStartdate(true) : setEmptyStartdate(false)
+    eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1 ? setEmptyFinDate(true) : setEmptyFinDate(false)
+    eventDateStart.localeCompare(eventDateFin) === 1 ? setDateFail(true) : setDateFail(false)
   }
 
-  const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
-  const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
-  const [emptyDirection, setEmptyDirection] = useState<boolean>(false)
-  const [emptyFile, setEmptyFile] = useState<boolean>(false)
-  const [emptyOrganization, setEmptyOrganization] = useState<boolean>(false)
-  const [emptySeats, setEmptySeats] = useState<boolean>(false)
-  const [emptyLink, setEmptyLink] = useState<boolean>(false)
-  const [emptyStartdate, setEmptyStartdate] = useState<boolean>(false)
-  const [emptyFinDate, setEmptyFinDate] = useState<boolean>(false)
 
   return (
     <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12  h-screen overflow-y-auto border-2 rounded-md bg-white">
-       {confirm ? (
+      {confirm ? (
         <div>
           <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
             <div className="fixed inset-0 w-screen h-screen">
@@ -188,7 +260,7 @@ const EditEvent = () => {
                   inputRefDir.current.focus()
                 }
               }
-            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatInput"}>Título</label>
         </div>
         <div className="flex flex-col mt-3 p-1 relative ">
@@ -203,7 +275,7 @@ const EditEvent = () => {
                   txtAreaRef.current.focus()
                 }
               }
-            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatInput"}>Dirección</label>
         </div>
         <div className="flex flex-col mt-3 p-1 relative">
@@ -218,7 +290,7 @@ const EditEvent = () => {
                   inputRefOrg.current.focus()
                 }
               }
-            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatTxtArea"}>Descripción</label>
         </div>
         <div className="flex flex-col mt-3 p-1 relative">
@@ -233,7 +305,7 @@ const EditEvent = () => {
                   inputRefPric.current.focus()
                 }
               }
-            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatTxtArea"}>Organización</label>
         </div>
         <div className="flex flex-row p-1 mt-5 relative ">
@@ -296,7 +368,7 @@ const EditEvent = () => {
                   inputRefDS.current.focus()
                 }
               }
-            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+            }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatInput"}>Pagina Web</label>
         </div>
         <div className="w-full flex flex-1 flex-col ">
@@ -319,7 +391,7 @@ const EditEvent = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col p-1 relative mt-5">
+        <div className="flex flex-row p-1 relative mt-5">
           <input defaultValue={eventDateStart} ref={inputRefDS} type="date" name="eventStart" className={`inputCamp peer w-40 ${emptyStartdate ? 'border-red-600'
             : ''
             }`} onChange={(value) => {
@@ -333,8 +405,9 @@ const EditEvent = () => {
               }
             }} />
           <label className={"labelFloatDate"}>Fecha de Inicio</label>
+          {dateFail ? <label className='ml-3 font-medium text-xl text-red-600 m-auto'>Fechas</label> : ""}
         </div>
-        <div className="flex flex-col p-1 relative mt-5">
+        <div className="flex flex-row p-1 relative mt-5">
           <input defaultValue={eventDateFin} ref={inputRefDF} type="date" name="eventFinish" className={`inputCamp peer w-40 ${emptyFinDate ? 'border-red-600'
             : ''
             }`} onChange={(value) => {
@@ -348,6 +421,7 @@ const EditEvent = () => {
               }
             }} />
           <label className={"labelFloatDate"}>Fecha de Final</label>
+          {dateFail ? <label className='ml-3 font-medium text-xl text-red-600 m-auto'>incorrectas</label> : ""}
         </div>
       </div>
       <div className="flex m-auto justify-center p-3">
