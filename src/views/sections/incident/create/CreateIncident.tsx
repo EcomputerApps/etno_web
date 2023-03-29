@@ -10,7 +10,8 @@ const CreateIncident = () => {
         {
             accept: { "image/png": [".png"], "image/jpeg": [".jpeg", ".jpg"], "image/gif": [".gif"] },
             maxFiles: 1, maxSize: 10485760, noClick: true
-        })
+        }
+    )
 
     return (
         <div className="flex flex-col md:m-auto w-full md:w-1/2 border-2" >
