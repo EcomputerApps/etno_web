@@ -1,6 +1,7 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { PaginatedSponsor, Sponsor, SponsorList } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
@@ -84,7 +85,7 @@ class SposnsorStore {
         return this.sponsor
     }
     async getPaginatedSponsorRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/sponsors/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/sponsors/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const sponsor = await response.json()
@@ -92,7 +93,7 @@ class SposnsorStore {
     }
 
     async getAllSponsorsRequest(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/sponsors?username=${locality}`, {
+        const response = await fetch(`${urlBase}/sponsors?username=${locality}`, {
             method: 'GET'
         })
         const sponsor = await response.json()
@@ -100,7 +101,7 @@ class SposnsorStore {
     }
 
     async deleteSponsor(username: string, idSponsor: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/sponsor?username=${username}&idSponsor=${idSponsor}`, {
+        const response = await fetch(`${urlBase}/users/delete/sponsor?username=${username}&idSponsor=${idSponsor}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -136,7 +137,7 @@ class SposnsorStore {
     async addRequestSponsor(username: string, sponsor: Sponsor, file: File) {
         await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'patrocinador', 'patrocinador', file)
         sponsor.urlImage = imageStore.getImage.link
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/sponsor?username=${username}`, {
+        const response = await fetch(`${urlBase}/users/add/sponsor?username=${username}`, {
             method: 'POST',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -177,7 +178,7 @@ class SposnsorStore {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'patrocinador', 'patrocinador', file!!)
             sponsor.urlImage = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/sponsor?username=${locality}&sponsorId=${sponsorId}`, {
+        const response = await fetch(`${urlBase}/users/update/sponsor?username=${locality}&sponsorId=${sponsorId}`, {
             method: 'PUT',
             body: JSON.stringify(sponsor),
             headers: {

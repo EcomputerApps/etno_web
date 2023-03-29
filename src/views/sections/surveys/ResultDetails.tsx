@@ -1,10 +1,11 @@
 import { observer } from "mobx-react-lite"
 import SurveyStore from "../../../viewmodels/survey/SurveyStore"
 import logoEtno from '../../../../src/assets/logo_etno.png'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const surveyStore = SurveyStore.getSurveyStore()
 const ResultDetails = () => {
+    
     const [result] = useState(surveyStore.getQuizResult)
     return (
         <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 h-fit overflow-y-auto border-2 rounded-md bg-white">

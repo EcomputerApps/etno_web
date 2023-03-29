@@ -244,18 +244,6 @@ const EditPharmacy = () => {
             setPharmPeriod(0)
             setPharmFrequency(0)
         }
-        if (checkIfExist(pharmacyName)) {
-            toast.info('Ya existe esta farmacia', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
             chekIfEmpty()
             if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
                 pharmacyTel === "" || pharmacySchedule === "" || pharmacyDirection === "" ||
@@ -296,7 +284,7 @@ const EditPharmacy = () => {
                 pharmacyStore.editPharmacy(localStorage.getItem('user_etno_locality')!, pharmaciId, pharmacy_, file!!)
                 sideBarStore.updateSection('Farmacias')
                 hoverSectionStore.setName('Farmacias')
-            }
+            
         }
     }
 

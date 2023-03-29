@@ -1,6 +1,7 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Incident, PaginatedIncident } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 
 class IncidentStore {
     serverIp: string = "192.168.241.51"
@@ -47,14 +48,14 @@ class IncidentStore {
         return this.paginatedIncident
     }
     async getPaginatedIncidentsRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/incidents/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/incidents/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const incident = await response.json()
         this.updatePaginatedIncident(incident)
     }
     async deleteIncident(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/incident?username=${username}&title=${title}`, {
+        const response = await fetch(`${urlBase}/incident?username=${username}&title=${title}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -64,7 +65,7 @@ class IncidentStore {
         this.updateIncidentList(newPaginatedIncidentList)
     }
     async solveSilution(locality: string, incidentId: string, solution:string) {
-              const response = await fetch(`http://${this.serverIp}:8080/users/solve/incidence?username=${locality}&incidentId=${incidentId}&solution=${solution}`,{
+              const response = await fetch(`${urlBase}/users/solve/incidence?username=${locality}&incidentId=${incidentId}&solution=${solution}`,{
             method: 'PUT',
        
             headers: {

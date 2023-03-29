@@ -1,6 +1,7 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Pharmacy, PaginatedPharmacy, PharmacyOnDuty } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -104,14 +105,14 @@ class PharmacyStore {
 
 
     async getPaginatedPharmacyrequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/pharmacies/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/pharmacies/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const pharmacy = await response.json()
         this.updatePaginatedPharmacy(pharmacy)
     }
     async getRequestPharmacyOnDuty(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}`, {
+        const response = await fetch(`${urlBase}/pharmacies?username=${locality}`, {
             method: 'GET'
         })
         const pharmacy = await response.json()
@@ -119,7 +120,7 @@ class PharmacyStore {
     }
 
     async deletePharmacy(username: string, idPharmacy: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/pharmacy?username=${username}&idPharmacy=${idPharmacy}`, {
+        const response = await fetch(`${urlBase}/users/delete/pharmacy?username=${username}&idPharmacy=${idPharmacy}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -160,7 +161,7 @@ class PharmacyStore {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'farmacia', 'farmacia', file)
             pharmacy.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/pharmacy?username=${locality}&pharmacyId=${pharmacyId}`, {
+        const response = await fetch(`${urlBase}/users/update/pharmacy?username=${locality}&pharmacyId=${pharmacyId}`, {
             method: 'PUT',
             body: JSON.stringify(pharmacy),
             headers: {
@@ -198,7 +199,7 @@ class PharmacyStore {
     async addRequestPharmacy(username: string, pharmacy: Pharmacy, file: File) {
         await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'farmacia', 'farmacia', file)
         pharmacy.imageUrl = imageStore.getImage.link
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/pharmacy?username=${username}`, {
+        const response = await fetch(`${urlBase}/users/add/pharmacy?username=${username}`, {
             method: 'POST',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"

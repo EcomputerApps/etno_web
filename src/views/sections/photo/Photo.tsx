@@ -42,7 +42,7 @@ const Photo = () => {
                     </div>
                 ) : <></>}
             </div>
-            {imageStore.getPaginatedImages.content?.length === 0 ? (
+            {imageStore.getPaginatedImages.totalElements === 0 ? (
                 <div className="flex flex-row p-2 mt-5 rounded-md shadow-md">
                     <img src={photosRed} alt="BIG" />
                     <label className="text-xl my-auto ml-4 mt-3.5 font-medium">No hay Fotos</label>
@@ -80,7 +80,7 @@ const Photo = () => {
                 </button>
                 <button
                     className="btnStandard"
-                    onClick={incrementPage} disabled={pageNumber === imageStore.getPaginatedImages.totalPages!! - 1 || imageStore.getPaginatedImages.content?.length === 0}>
+                    onClick={incrementPage} disabled={pageNumber === imageStore.getPaginatedImages.totalPages!! - 1 || imageStore.getPaginatedImages.totalElements === 0}>
                     Siguiente
                     <img src={arrowRight} alt="forward" />
                 </button>

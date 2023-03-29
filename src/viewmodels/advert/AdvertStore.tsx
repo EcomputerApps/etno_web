@@ -1,11 +1,12 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Ad, AdList, PaginatedAdvert } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class AdvertStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = `${urlBase}`
     static advertStore: AdvertStore
 
     static getAdvertStore() {
@@ -92,7 +93,7 @@ class AdvertStore {
         await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
         ad.imageUrl = imageStore.getImage.link
 
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/ad?username=${locality}`, {
+        const response = await fetch(`${urlBase}/users/add/ad?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(ad),
             headers: {
@@ -134,7 +135,7 @@ class AdvertStore {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
             advert.imageUrl =  imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/ad?username=${locality}&adId=${advertId}`, {
+        const response = await fetch(`${urlBase}/users/update/ad?username=${locality}&adId=${advertId}`, {
             method: 'PUT',
             body: JSON.stringify(advert),
             headers: {
@@ -170,7 +171,7 @@ class AdvertStore {
     }
 
     async getPaginatedAdvertRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/ads/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/ads/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const adverts = await response.json()
@@ -178,7 +179,7 @@ class AdvertStore {
     }
 
     async getAllAdvertRequest(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/ads?username=${locality}`, {
+        const response = await fetch(`${urlBase}/ads?username=${locality}`, {
             method: 'GET'
         })
         const adverts = await response.json()
@@ -186,7 +187,7 @@ class AdvertStore {
     }
 
     async deleteAdvert(username: string, idAdvert: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/ad?username=${username}&idAd=${idAdvert}`, {
+        const response = await fetch(`${urlBase}/users/delete/ad?username=${username}&idAd=${idAdvert}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',

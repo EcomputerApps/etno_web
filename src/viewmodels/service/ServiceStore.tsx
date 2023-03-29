@@ -1,6 +1,7 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { toast } from "react-toastify";
 import { PaginatedService, Service, ServiceList, ServiceType } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -17,37 +18,16 @@ class ServiceStore {
 
     serviceTypes: Array<ServiceType> = [{
         "idServiceType": "checkOne",
-        "value": "Restaurante",
-        "title": "Restaurante",
+        "value": "Servicio",
+        "title": "Servicio",
     }, {
         "idServiceType": "checkTwo",
-        "value": "Alojamiento",
-        "title": "Alojamiento",
+        "value": "Salud",
+        "title": "Salud",
     }, {
         "idServiceType": "checkThree",
-        "value": "Casa Rural",
-        "title": "Casa Rural",
-    }, {
-        "idServiceType": "checkFour",
-        "value": "Piscina",
-        "title": "Piscina",
-    }, {
-        "idServiceType": "checkFive",
-        "value": "Iglesia",
-        "title": "Iglesia",
-    }, {
-        "idServiceType": "checkSix",
-        "value": "Productos",
-        "title": "Productos",
-    }, {
-        "idServiceType": "checkSeven",
-        "value": "Bar",
-        "title": "Bar",
-    },
-    {
-        "idServiceType": "checkEight",
-        "value": "Ninguno",
-        "title": "Ninguno",
+        "value": "Ocio",
+        "title": "Ocio",
     }]
 
     //Observables =>
@@ -126,7 +106,7 @@ class ServiceStore {
     }
 
     async getPaginatedServiceRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/services/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/services/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
 
         })
@@ -135,7 +115,7 @@ class ServiceStore {
     }
 
     async getAllServicesRequest(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/services?username=${locality}`, {
+        const response = await fetch(`${urlBase}/services?username=${locality}`, {
             method: 'GET',
 
         })
@@ -143,7 +123,7 @@ class ServiceStore {
         this.updateAllServices(service)
     }
     async deleteService(username: string, idService: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/service?username=${username}&idService=${idService}`, {
+        const response = await fetch(`${urlBase}/users/delete/service?username=${username}&idService=${idService}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -179,7 +159,7 @@ class ServiceStore {
     async addRequestService(username: string, service: Service, file: File) {
         await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file)
         service.imageUrl = imageStore.getImage.link
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/service?username=${username}`, {
+        const response = await fetch(`${urlBase}/users/add/service?username=${username}`, {
             method: 'POST',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -220,7 +200,7 @@ class ServiceStore {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file!!)
             service.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/service?username=${locality}&serviceId=${serviceID}`, {
+        const response = await fetch(`${urlBase}/users/update/service?username=${locality}&serviceId=${serviceID}`, {
             method: 'PUT',
             body: JSON.stringify(service),
             headers: {

@@ -8,12 +8,33 @@ import EventStore from '../../../../viewmodels/Event/EventStore';
 import { toast } from 'react-toastify';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+import markerIcon from "../../../../assets/marker.svg"
 import { observer } from 'mobx-react-lite';
+import GoogleMapReact from 'google-map-react';
 const eventStore = EventStore.getEventStore()
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
+interface Marker {
+  lat: number,
+  lng: number,
+  text: string
+}
+
 const CreateEvent = () => {
+  const [lat, setLat] = useState<number>(0)
+  const [long, setLong] = useState<number>(0)
+  const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
+  const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
+
+  const defaultProps = {
+    center: {
+      lat: 42.13775899999999,
+      lng: -0.40838200000000713
+    },
+    zoom: 11
+  };
+
   useEffect(() => {
     eventStore.getAllEventsRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
@@ -71,26 +92,17 @@ const CreateEvent = () => {
       capacity: Number(eventSeats),
       link: eventLink,
       startDate: eventDateStart,
-      endDate: eventDateFin
+      endDate: eventDateFin,
+      lat: lat,
+      long: long
     }
-    if (checkIfExist(eventNew.title!!)) {
-      toast.info('Ya existe este evento', {
-        position: 'bottom-center',
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: 'light'
-      })
-    } else {
+    
       if (subscription) {
         checkIfEmpty()
         eventTitle === '' || eventDirection === '' || eventDescription === ''
           || eventOrganization === '' || eventPrice === ''
           || eventSeats === '' || eventLink === '' || eventDateStart === ''
-          || eventDateFin === '' || file === undefined || eventDateStart.localeCompare(eventDateFin) === 1  ?
+          || eventDateFin === '' || file === undefined || eventDateStart.localeCompare(eventDateFin) === 1 ?
 
           toast.error('Rellene los campos correcto', {
             position: 'bottom-center',
@@ -121,7 +133,7 @@ const CreateEvent = () => {
             theme: 'light'
           }) : eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
       }
-    }
+  
   }
 
   const freeOrNot = (payType: boolean) => {
@@ -295,6 +307,24 @@ const CreateEvent = () => {
               }
             }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatInput"}>Pagina Web</label>
+        </div>
+        <div style={{ height: '50vh', width: '100%' }}>
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
+            defaultCenter={defaultProps.center}
+            defaultZoom={defaultProps.zoom}
+            onClick={(e) => {
+              setLat(e.lat)
+              setLong(e.lng)
+              setEmptyLongLat(false)
+            }}
+          >
+            <AnyReactComponent
+              lat={lat}
+              lng={long}
+              text={markerIcon}
+            />
+          </GoogleMapReact>
         </div>
         <div className="w-full flex flex-1 flex-col ">
           <div className="text-left p-1 ">

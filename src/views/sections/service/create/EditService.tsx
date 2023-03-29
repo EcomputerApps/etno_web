@@ -78,23 +78,10 @@ const EditService = () => {
     }
 
     function editService(serviceId: string) {
-        if (checkIfExist(serviceName)) {
-            toast.info('Ya existe este servicio', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
             chekIfEmpty()
             if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
                 serviceWebUrl === "" || serviceTel === "" || serviceSchedule === ""
             ) {
-
                 toast.info('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
@@ -117,7 +104,6 @@ const EditService = () => {
                 }
                 serviceStore.editService(localStorage.getItem('user_etno_locality')!, serviceId, newService, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
             }
-        }
     }
 
     function chekIfEmpty() {

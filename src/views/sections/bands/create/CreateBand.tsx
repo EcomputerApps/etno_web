@@ -53,18 +53,6 @@ const CreateBand = () => {
       title: bandTitle,
       description: bandDescription,
     }
-    if (checkIfExist(bando.title!!)) {
-      toast.info('Ya existe este bando', {
-        position: 'bottom-center',
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
       chekIfEmpty()
       bandTitle === "" || bandDescription === "" || file === undefined ?
         toast.error('Rellene los campos', {
@@ -77,7 +65,6 @@ const CreateBand = () => {
           progress: undefined,
           theme: "light"
         }) : bandStore.addRequestBand(localStorage.getItem('user_etno_locality')!, bando, file!!); sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
-    }
   }
  
   return (

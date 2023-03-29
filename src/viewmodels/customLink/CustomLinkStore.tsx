@@ -2,6 +2,7 @@ import { action, computed, makeAutoObservable, observable } from "mobx"
 import { observer } from "mobx-react-lite"
 import { toast } from "react-toastify"
 import { CustomLink, CustomLinkList, PaginatedCustomLink } from "../../models/section/Section"
+import { urlBase } from "../../utils/global"
 
 
 class CustomLinkStore {
@@ -79,7 +80,7 @@ class CustomLinkStore {
         return this.modalEditLink
     }
     async addRequestCustomLink(username: string, cutomLink: CustomLink) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/custom_link?username=${username}`,
+        const response = await fetch(`${urlBase}/users/add/custom_link?username=${username}`,
             {
                 method: 'POST',
                 headers: {
@@ -116,7 +117,7 @@ class CustomLinkStore {
         }
     }
     async getPaginatedCLinkRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/custom_links/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/custom_links/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const link = await response.json()
@@ -124,7 +125,7 @@ class CustomLinkStore {
     }
 
     async getAllCustomLinksRequest(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/custom_links?username=${locality}`, {
+        const response = await fetch(`${urlBase}/custom_links?username=${locality}`, {
             method: 'GET',
         })
         const link = await response.json()
@@ -132,7 +133,7 @@ class CustomLinkStore {
     }
 
     async deleteCustomLink(username: string, idCustomLink: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/remove/custom_link?username=${username}&idCustomLink=${idCustomLink}`, {
+        const response = await fetch(`${urlBase}/users/remove/custom_link?username=${username}&idCustomLink=${idCustomLink}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -169,7 +170,7 @@ class CustomLinkStore {
     }
     async editCustomLink(locality: string, customLinkId: string, customLink: CustomLink) {
 
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/custom_link?username=${locality}&idCustomLink=${customLinkId}`, {
+        const response = await fetch(`${urlBase}/users/update/custom_link?username=${locality}&idCustomLink=${customLinkId}`, {
             method: 'PUT',
             body: JSON.stringify(customLink),
             headers: {

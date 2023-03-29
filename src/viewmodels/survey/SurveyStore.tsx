@@ -2,9 +2,10 @@ import { computeHeadingLevel } from "@testing-library/react"
 import { action, computed, makeAutoObservable, observable } from "mobx"
 import { toast } from "react-toastify"
 import { QuizResult, PaginatedQuizResult, Survey } from "../../models/section/Section"
+import { urlBase } from "../../utils/global"
 
 class SurveyStore {
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static surveyStore: SurveyStore
 
     static getSurveyStore() {
@@ -100,7 +101,7 @@ class SurveyStore {
     }
     async addRequestSurvey(username: string, survey: Survey) {
 
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/quiz?username=${username}`,
+        const response = await fetch(`${urlBase}/users/add/quiz?username=${username}`,
             {
                 method: 'POST',
                 headers: {
@@ -139,21 +140,22 @@ class SurveyStore {
         }
     }
     async getPaginatedResultsRequest(username: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/quiz_results/paginated?username=${username}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/quiz_results/paginated?username=${username}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const results = await response.json()
+        console.log(results)
         this.updatePaginatedQuizResults(results)
     }
     async getRequestSurvey() {
-        const response = await fetch(`http://${this.serverIp}:8080/quizzes`, {
+        const response = await fetch(`${urlBase}/quizzes`, {
             method: 'GET'
         })
         const newSurvey = await response.json()
         this.updateSurvey(newSurvey[0])
     }
     async editSurvey(locality: string, surveyId: string, survey: Survey) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/quiz?username=${locality}&idQuiz=${surveyId}`, {
+        const response = await fetch(`${urlBase}/users/update/quiz?username=${locality}&idQuiz=${surveyId}`, {
             method: 'PUT',
             body: JSON.stringify(survey),
             headers: {
@@ -188,7 +190,7 @@ class SurveyStore {
         }
     }
     async deleteSurvey(username: string, idQuiz: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/remove/quiz?username=${username}&idQuiz=${idQuiz}`, {
+        const response = await fetch(`${urlBase}/users/remove/quiz?username=${username}&idQuiz=${idQuiz}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',

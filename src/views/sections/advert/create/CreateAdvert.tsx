@@ -42,18 +42,7 @@ const CreateAdvert = () => {
             description: advertDescription,
             webUrl: advertLink
         }
-        if (checkIfExist(ad.title!!)) {
-            toast.info('Ya existe este anuncio', {
-                position: 'bottom-center',
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
+        
             checkIfEmpty()
             advertTitle === '' || advertDescription === '' || advertLink === '' || file === undefined ?
                 toast.error('Rellene los campos', {
@@ -66,7 +55,6 @@ const CreateAdvert = () => {
                     progress: undefined,
                     theme: "light"
                 }) : advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad, file!!); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
-        }
     }
 
     function checkIfEmpty() {

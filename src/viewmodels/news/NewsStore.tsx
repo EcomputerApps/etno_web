@@ -2,11 +2,12 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import { toast } from "react-toastify";
 import { News, NewsList, NewsType, PaginatedNews } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class NewsStore{
-    serverIp: string = "192.168.241.51"
+    serverIp: string = "192.168.137.1"
     static newsStore : NewsStore
 
     static getNewsStore(){
@@ -119,7 +120,7 @@ class NewsStore{
         await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'noticia', 'noticia', file!!)
         news.imageUrl = imageStore.getImage.link
 
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/news?username=${locality}`, {
+        const response = await fetch(`${urlBase}/users/add/news?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(news),
             headers: {
@@ -163,7 +164,7 @@ class NewsStore{
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'noticia', 'noticia', file!!)
             news.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/news?username=${locality}&newsId=${newsId}`, {
+        const response = await fetch(`${urlBase}/users/update/news?username=${locality}&newsId=${newsId}`, {
             method: 'PUT',
             body: JSON.stringify(news),
             headers: {
@@ -200,7 +201,7 @@ class NewsStore{
     }
   
     async getPaginatedNewsRequest( locality : string, pageNum: number, elementSize: number){
-        const response = await fetch(`http://${this.serverIp}:8080/news/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
+        const response = await fetch(`${urlBase}/news/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
             method: 'GET',
            
         })
@@ -208,7 +209,7 @@ class NewsStore{
         this.updatePaginatedNews(news)
     }
     async getAllNewsRequest( locality : string){
-        const response = await fetch(`http://${this.serverIp}:8080/news?username=${locality}`,{
+        const response = await fetch(`${urlBase}/news?username=${locality}`,{
             method: 'GET',
            
         })
@@ -217,7 +218,7 @@ class NewsStore{
     }
     
     async deleteNews(username: string, idNews : string){
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/news?username=${username}&idNews=${idNews}`,{
+        const response = await fetch(`${urlBase}/users/delete/news?username=${username}&idNews=${idNews}`,{
             method : 'DELETE',
             headers : {
                 'Access-Control-Allow-Origin':'*'

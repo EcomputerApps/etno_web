@@ -100,8 +100,9 @@ const EditTourism = () => {
           type: tourismType,
           title: tourismTitle,
           description: tourismDescription,
-          longitude: tourismLong,
-          latitude: tourismLat
+          longitude: String(long),
+          latitude: String(lat),
+          imageUrl: tourism.imageUrl
         }
         tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, file!!)
         sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
@@ -113,7 +114,7 @@ const EditTourism = () => {
     tourismType === "" ? setEmptyType(true) : setEmptyType(false)
     tourismTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
     tourismDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-    file === undefined ? setEmptyFile(true) : setEmptyFile(false)
+    file === undefined && tourism.imageUrl === '' ? setEmptyFile(true) : setEmptyFile(false)
     lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
     long === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
   }

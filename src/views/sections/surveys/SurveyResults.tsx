@@ -110,7 +110,7 @@ const SurveyResults = () => {
                     </thead>
                     <tbody>
                         {surveyStore.getPaginatedQuizResults.content?.map((quizResultMap, index) => (
-                            surveyStore.getPaginatedQuizResults.content!!.length > 0 &&
+                            surveyStore.getPaginatedQuizResults.totalElements!! >  0 &&
                             <tr key={index} className="bg-white border-b  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-center max-w-min overflow-hidden">
                                 <th scope="row" className="h-20 text-gray-900  dark:text-white cursor-pointer" onClick={() => saveResults(quizResultMap)}>
                                     <div className="overflow-y-auto max-h-20">
@@ -147,7 +147,7 @@ const SurveyResults = () => {
                     <img src={arrowLeft} alt="backward" />
                     Anterior
                 </button>
-                <div hidden={surveyStore.getPaginatedQuizResults.content!!.length === 0}>
+                <div hidden={surveyStore.getPaginatedQuizResults.totalElements === 0}>
                     {surveyStore.getPaginatedQuizResults.content! && (
                         <CSVLink
                             data={surveyStore.getPaginatedQuizResults.content!}

@@ -197,18 +197,7 @@ const CreatePharmacy = () => {
             frequencyInDays: pharmFrequency,
             dates: fillPharmacyDates(fillDates(dutyDates?.toString()!!))
         }
-        if (checkIfExist(pharmacy.name!!)) {
-            toast.info('Ya existe esta farmacia', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
+        
             chekIfEmpty()
             if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
                 pharmacyTel === "" || pharmacySchedule === "" || pharmacyDirection === "" ||
@@ -234,7 +223,6 @@ const CreatePharmacy = () => {
                 console.log(pharmacy)
                 pharmacyStore.addRequestPharmacy(localStorage.getItem('user_etno_locality')!, pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
             }
-        }
     }
 
     const datePickerRef = useRef<any>();
@@ -286,7 +274,7 @@ const CreatePharmacy = () => {
                         : 'border-transparent'
                         }`}>
                         <div className='flex w-1/2 p-1'>
-                            <input type="radio" id="radioOne" value="Normal" className="sr-only peer " name="pharmTypeRadio" onChange={(e) => {
+                            <input onClick={() => setDutyDates('')} type="radio" id="radioOne" value="Normal" className="sr-only peer " name="pharmTypeRadio" onChange={(e) => {
                                 setPharmType(e.currentTarget.value)
                                 setDatePanel(true)
                                 setEmptyType(false)
@@ -318,7 +306,7 @@ const CreatePharmacy = () => {
                     </div>
                 </div>
                 <div className='flex flex-row'>
-                    <div className="flex pt-2  p-1  relative  ">
+                    <div className="flex pt-2  p-1 relative ">
                         <div className='mt-1 peer'>
                             <DatePicker
                                 locale={greorgian_es}
@@ -331,23 +319,25 @@ const CreatePharmacy = () => {
                                 onClose={() => shouldCloseCalendar}
                                 style={{
                                     height: "40px",
-                                    borderRadius: "6px",
-                                    borderBlockEndWidth: "2px",
-                                    borderBlockStartWidth: "2px",
-                                    borderBlockWidth: "2px",
-                                    borderBlockColor: "#E0E0E0",
+                                    background: pharmType === 'Normal' ? '#E5E7EB' : 'white',
                                     fontSize: "14px",
                                     padding: "3px 10px"
                                 }}
                                 multiple>
                                 <button
-                                    style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
+                                    style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px",width: "70px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
                                     onClick={() => setDutyDates(new Date())}
                                 >
                                     <label className='text-white cursor-pointer'>Hoy</label>
                                 </button>
                                 <button
-                                    style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
+                                    style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px", width: "70px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
+                                    onClick={() => setDutyDates('')}
+                                >
+                                    <label className='text-white cursor-pointer'>Eliminar</label>
+                                </button>
+                                <button
+                                    style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px", width: "70px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
                                     onClick={() => chekDatesCount()} onFocus={() => setShouldCloseCalendar(true)}
                                 >
                                     <label className='text-white cursor-pointer'>Cerrar</label>
@@ -357,8 +347,8 @@ const CreatePharmacy = () => {
                         <label className={"labelFloatDate"}>Dias de Guardia</label>
                     </div>
                     <div className="flex pt-2  p-1  relative ">
-                        <input type="number" ref={inputPeriod} min={0} className="inputCamp w-20 px-2 mt-1 h-10 disabled:bg-gray-200 disabled:border-gray-300 disabled:text-gray-200"
-                            disabled={fillDates(dutyDates?.toString()!!).length > 1}
+                        <input type="number" ref={inputPeriod} min={0} className="inputCamp w-20 px-2 mt-1 h-10 disabled:bg-gray-200  disabled:text-gray-200"
+                            disabled={fillDates(dutyDates?.toString()!!).length > 1 || pharmType === "Normal"}
                             onChange={(e) => {
                                 setPharmFrequency(e.currentTarget.valueAsNumber)
                             }}
@@ -372,8 +362,8 @@ const CreatePharmacy = () => {
                         <label className={"labelFloatDate"}>Frecuencia</label>
                     </div>
                     <div className="flex pt-2  p-1  relative ">
-                        <input type="number" ref={inputPeriod} min={0} className="inputCamp  w-20 px-2 mt-1 h-10 disabled:bg-gray-200 disabled:border-gray-300 disabled:text-gray-200"
-                            disabled={fillDates(dutyDates?.toString()!!).length > 1}
+                        <input type="number" ref={inputPeriod} min={0} className="inputCamp  w-20 px-2 mt-1 h-10 disabled:bg-gray-200  disabled:text-gray-200"
+                            disabled={fillDates(dutyDates?.toString()!!).length > 1 || pharmType === "Normal"}
                             onChange={(e) => {
                                 setPharmPeriod(e.currentTarget.valueAsNumber)
                             }}

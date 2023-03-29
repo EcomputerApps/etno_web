@@ -46,26 +46,6 @@ const EditNews = () => {
   const [confirm, setConfirm] = useState(false)
 
   function updateNews() {
-    if (checkIfExist(newsTitle)) {
-      toast.info('Ya existe esta noticia', {
-        position: 'bottom-center',
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
-      const news_: News = {
-        category: newsCategory,
-        title: newsTitle,
-        description: newsDescription,
-        publicationDate: newsDate,
-        imageUrl: news.imageUrl
-      } 
-           newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_, file!!)
       chekIfEmpty()
       if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === '') {
         toast.error('Rellene los campos', {
@@ -90,7 +70,6 @@ const EditNews = () => {
         sideBarStore.updateSection('Noticias')
         hoverSectionStore.setName('Noticias')
       }
-    }
   }
 
   function chekIfEmpty() {

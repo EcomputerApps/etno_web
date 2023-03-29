@@ -73,18 +73,7 @@ const CreateReserve = () => {
             reserveUsers: reservUser,
             isReserved: isReserved
         }
-        if (checkIfExist(newReserv.name!!)) {
-            toast.info('Ya existe esta reserva', {
-                position: 'bottom-center',
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
+        
             checkIfEmpty()
             reservName === "" || reservDescription === "" || reservEmail === "" || reservPhone === "" || reservPhone === "" ||
                 reservPlace?.name === "Elige Lugar" || reservPlace === undefined || reservHall?.name === "Elige la sala" || reservHall?.name === undefined || reservDate?.toString() === undefined ||
@@ -99,7 +88,6 @@ const CreateReserve = () => {
                     progress: undefined,
                     theme: "light"
                 }) : reserveStore.addRequestReserve(localStorage.getItem('user_etno_locality')!, newReserv, reservHall?.idHall!!, reservPlace?.idPlace!!); sideBarStore.updateSection('Reservas'); hoverSectionStore.setName('Reservas');
-        }
     }
 
     function checkIfEmpty() {
@@ -158,7 +146,6 @@ const CreateReserve = () => {
         { hora: "19:00-20:00" },
         { hora: "20:00-21:00" },
         { hora: "21:00-22:00" },
-
     ]
 
     const lugares = new Array<Place>()

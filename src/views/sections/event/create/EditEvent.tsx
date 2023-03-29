@@ -3,16 +3,24 @@ import { useEffect, useRef, useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 import add_Photo from '../../../../assets/menu/add_photo.svg';
 import "../../../../index.css"
+import markerIcon from "../../../../assets/marker.svg"
 import EventStore from '../../../../viewmodels/Event/EventStore';
 import { toast } from 'react-toastify';
 import { Event } from '../../../../models/section/Section';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import { observer } from 'mobx-react-lite';
+import GoogleMapReact from 'google-map-react';
 
 const eventStore = EventStore.getEventStore()
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
+
+interface Marker {
+  lat: number,
+  lng: number,
+  text: string
+}
 
 const EditEvent = () => {
   useEffect(() => {
@@ -65,53 +73,20 @@ const EditEvent = () => {
   const [emptyStartdate, setEmptyStartdate] = useState<boolean>(false)
   const [emptyFinDate, setEmptyFinDate] = useState<boolean>(false)
 
+  const [lat, setLat] = useState<number>(event.lat!!)
+  const [long, setLong] = useState<number>(event.long!!)
+  const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
+  const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
+
+  const defaultProps = {
+    center: {
+      lat: lat,
+      lng: long
+    },
+    zoom: 11
+  };
+
   function updateEvent() {
-    if (subscription) {
-      checkIfEmpty()
-      if (eventTitle === '' || eventDirection === '' || eventDescription === ''
-        || eventOrganization === '' || eventPrice === ''
-        || eventSeats === '' || eventLink === '' || eventDateStart === ''
-        || eventDateFin === '') {
-        toast.error('Rellene los campos', {
-          position: 'top-center',
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
-      } else {
-        const event_: Event = {
-          title: eventTitle,
-          address: eventDirection,
-          description: eventDescription,
-          organization: eventOrganization,
-          hasSubscription: subscription,
-          reservePrice: Number(eventPrice),
-          capacity: Number(eventSeats),
-          seats: Number(eventSeats),
-          link: eventLink,
-          startDate: eventDateStart,
-          endDate: eventDateFin
-        }
-        eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
-        sideBarStore.updateSection('Eventos')
-        hoverSectionStore.setName('Eventos')
-      }
-      if (checkIfExist(eventTitle)) {
-        toast.info('Ya existe este evento', {
-          position: 'bottom-center',
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light"
-        })
-      } else {
         if (subscription) {
           checkIfEmpty()
           if (eventTitle === '' || eventDirection === '' || eventDescription === ''
@@ -138,6 +113,9 @@ const EditEvent = () => {
               reservePrice: Number(eventPrice),
               capacity: Number(eventSeats),
               seats: Number(eventSeats),
+              imageUrl: event.imageUrl,
+              long: long,
+              lat: lat,
               link: eventLink,
               startDate: eventDateStart,
               endDate: eventDateFin
@@ -172,19 +150,18 @@ const EditEvent = () => {
               reservePrice: Number(eventPrice),
               capacity: Number(eventSeats),
               seats: Number(eventSeats),
+              imageUrl: event.imageUrl,
               link: eventLink,
+              long: long,
+              lat: lat,
               startDate: eventDateStart,
               endDate: eventDateFin
             }
-
             eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
             sideBarStore.updateSection('Eventos')
             hoverSectionStore.setName('Eventos')
           }
         }
-
-      }
-    }
   }
 
     const freeOrNot = (payType: boolean) => {
@@ -365,6 +342,23 @@ const EditEvent = () => {
               }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className={"labelFloatInput"}>Pagina Web</label>
           </div>
+          <div style={{ height: '50vh', width: '100%', padding: "2px" }}>
+                        <GoogleMapReact
+                            bootstrapURLKeys={{ key: "AIzaSyByVAayqkxKFNRi1QiNqua1jRCREORO7S0" }}
+                            defaultCenter={defaultProps.center}
+                            defaultZoom={defaultProps.zoom}
+                            onClick={(e) => {
+                                setLat(e.lat)
+                                setLong(e.lng)
+                            }}
+                        >
+                            <AnyReactComponent
+                                lat={lat}
+                                lng={long}
+                                text={markerIcon}
+                            />
+                        </GoogleMapReact>
+                    </div>
           <div className="w-full flex flex-1 flex-col ">
             <div className="text-left p-1 ">
               <div className={"photoBoard"}>

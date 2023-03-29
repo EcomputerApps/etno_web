@@ -1,6 +1,7 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Necrologue, NecrologueList, PaginatedNecro } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
@@ -84,7 +85,7 @@ class NecrologueStore {
     }
 
     async getPaginatedNecroRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/deaths/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/deaths/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
 
         })
@@ -93,7 +94,7 @@ class NecrologueStore {
     }
 
     async getAllNecrologuesRequest(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/deaths?username=${locality}`, {
+        const response = await fetch(`${urlBase}/deaths?username=${locality}`, {
             method: 'GET',
 
         })
@@ -102,7 +103,7 @@ class NecrologueStore {
     }
 
     async deleteNecrologue(username: string, idDeath: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/death?username=${username}&idDeath=${idDeath}`, {
+        const response = await fetch(`${urlBase}/users/delete/death?username=${username}&idDeath=${idDeath}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -138,7 +139,7 @@ class NecrologueStore {
     async addRequestNecro(username: string, necrologue: Necrologue, file: File) {
         await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'muerte', 'muerte', file)
         necrologue.imageUrl = imageStore.getImage.link
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/death?username=${username}`, {
+        const response = await fetch(`${urlBase}/users/add/death?username=${username}`, {
             method: 'POST',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -179,7 +180,7 @@ class NecrologueStore {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'muerte', 'muerte', file!!)
             necro.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/death?username=${locality}&deathId=${necroId}`, {
+        const response = await fetch(`${urlBase}/users/update/death?username=${locality}&deathId=${necroId}`, {
             method: 'PUT',
             body: JSON.stringify(necro),
             headers: {
@@ -215,5 +216,4 @@ class NecrologueStore {
         }
     }
 }
-
 export default NecrologueStore

@@ -1,6 +1,7 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Link, LinkList, PaginatedLink } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
@@ -110,7 +111,7 @@ class LinkStore {
         return this.link
     }
     async getPaginatedLinkRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/links/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/links/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const link = await response.json()
@@ -118,7 +119,7 @@ class LinkStore {
     }
 
     async getAllLinksRequest(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/links?username=${locality}`, {
+        const response = await fetch(`${urlBase}/links?username=${locality}`, {
             method: 'GET',
         })
         const link = await response.json()
@@ -126,7 +127,7 @@ class LinkStore {
     }
 
     async deleteLink(username: string, idLink: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/link?username=${username}&idLink=${idLink}`, {
+        const response = await fetch(`${urlBase}/users/delete/link?username=${username}&idLink=${idLink}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -161,7 +162,7 @@ class LinkStore {
 
     }
     async addRequestLink(username: string, link: Link) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/link?username=${username}`, {
+        const response = await fetch(`${urlBase}/users/add/link?username=${username}`, {
             method: 'POST',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -198,7 +199,7 @@ class LinkStore {
     }
     async editLink(locality: string, linkId: string, link: Link) {
 
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/link?username=${locality}&linkId=${linkId}`, {
+        const response = await fetch(`${urlBase}/users/update/link?username=${locality}&linkId=${linkId}`, {
             method: 'PUT',
             body: JSON.stringify(link),
             headers: {

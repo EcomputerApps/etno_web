@@ -1,6 +1,7 @@
 import { action, computed, makeObservable, observable } from "mobx"
 import { toast } from "react-toastify"
 import { Hall, HallList, PaginatedPlace, PaginatedReserve, Place, PlaceList, Reserve, ReserveUser, ReserveList } from "../../models/section/Section"
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
@@ -197,7 +198,7 @@ class ReserveStore {
     //----------------------------------------------------------------------------------------------------------------------------
 
     async getRequestPlaces(username : string) {
-        const response = await fetch(`http://${this.serverIp}:8080/places?username=${username}`, {
+        const response = await fetch(`${urlBase}/places?username=${username}`, {
             method: 'GET',
         })
         const place = await response.json()
@@ -206,7 +207,7 @@ class ReserveStore {
     }
 
     async deletePlace(username: string, idPlace: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/place?username=${username}&idPlace=${idPlace}`, {
+        const response = await fetch(`${urlBase}/users/delete/place?username=${username}&idPlace=${idPlace}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -244,7 +245,7 @@ class ReserveStore {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "lugar", "lugar", file!!)
             place.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/place?username=${locality}&placeId=${palceId}`, {
+        const response = await fetch(`${urlBase}/users/update/place?username=${locality}&placeId=${palceId}`, {
             method: 'PUT',
             body: JSON.stringify(place),
             headers: {
@@ -279,7 +280,7 @@ class ReserveStore {
         }
     }
     async getPaginatedPlacesRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/places/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/places/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const pagPlaces = await response.json()
@@ -290,7 +291,7 @@ class ReserveStore {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "lugar", "lugar", file!!)
             place.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/place?username=${username}`,
+        const response = await fetch(`${urlBase}/users/add/place?username=${username}`,
             {
                 method: 'POST',
                 headers: {
@@ -330,7 +331,7 @@ class ReserveStore {
     }
     //TEMPORAL METHOD++
     async getRequestHalls() {
-        const response = await fetch(`http://${this.serverIp}:8080/halls`, {
+        const response = await fetch(`${urlBase}/halls`, {
             method: 'GET',
         })
 
@@ -340,7 +341,7 @@ class ReserveStore {
     }
 
     async getAllReserevesRequest(username: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/reserves?username=${username}`, {
+        const response = await fetch(`${urlBase}/reserves?username=${username}`, {
             method: 'GET',
         })
         const reserves = await response.json()
@@ -349,7 +350,7 @@ class ReserveStore {
     }
 
     async confirmReserve(username: string, idReserve: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/confirm/reserve?username=${username}&idReserve=${idReserve}`, {
+        const response = await fetch(`${urlBase}/users/confirm/reserve?username=${username}&idReserve=${idReserve}`, {
             method: 'PUT',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -385,7 +386,7 @@ class ReserveStore {
 
     }
     async deleteReserve(username: string, idReserve: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/reserve?username=${username}&idReserve=${idReserve}`, {
+        const response = await fetch(`${urlBase}/users/delete/reserve?username=${username}&idReserve=${idReserve}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -425,7 +426,7 @@ class ReserveStore {
     }
     async addRequestReserve(username: string, reserve: Reserve, idHall: string, idPlace: string) {
 
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/reserve?username=${username}&idHall=${idHall}&idPlace=${idPlace}`,
+        const response = await fetch(`${urlBase}/users/add/reserve?username=${username}&idHall=${idHall}&idPlace=${idPlace}`,
             {
                 method: 'POST',
                 headers: {
@@ -464,7 +465,7 @@ class ReserveStore {
         }
     }
     async getPaginatedReserveRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/reserves/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/reserves/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const reserves = await response.json()

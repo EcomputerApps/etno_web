@@ -41,19 +41,7 @@ const EditAdvert = () => {
     const [advertLink, setAdvertLink] = useState<string>(advert.webUrl!!)
     const [file, setFile] = useState<File>()
 
-    function updateAdvert() {
-        if (checkIfExist(advertTitle)) {
-            toast.info('Ya existe este anuncio', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
+    function updateAdvert() { 
             checkIfEmpty()
             if (advertTitle === '' || advertDescription === '' || advertLink === '' || emptyFile) {
                 toast.info('Rellene los campos', {
@@ -76,7 +64,6 @@ const EditAdvert = () => {
                 sideBarStore.updateSection('Anuncios')
                 hoverSectionStore.setName('Anuncios')
             }
-        }
     }
 
     function checkIfEmpty() {

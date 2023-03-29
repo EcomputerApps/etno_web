@@ -40,7 +40,7 @@ const ClientInfo = () => {
           </div>
           <div className="flex flex-col">
             <label className="font-medium">Fecha de reserva</label>
-            <label className="border-2 rounded-md p-1">{reserve.reserveUsers!![0].date}</label>
+            <label className="border-2 rounded-md p-1">{`${reserve.reserveUsers!![0].date?.replace(',', ', ')}`}</label>
           </div>
           <div className="flex flex-col">
             <label className="font-medium"> Horario</label>

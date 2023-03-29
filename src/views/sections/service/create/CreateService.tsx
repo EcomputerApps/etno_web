@@ -96,18 +96,7 @@ const CreateService = () => {
             number: serviceTel,
             schedule: serviceSchedule,
         }
-        if (checkIfExist(service.owner!!)) {
-            toast.info('Ya existe este servicio', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
+       
             chekIfEmpty()
             serviceType === "" || serviceName === "" || serviceDescription === "" ||
                 serviceWebUrl === "" || serviceTel === "" || (serviceShcedulMorningOne === "" || serviceShcedulEvenOne === "" || serviceShcedulMorningTwo === "" || serviceShcedulEvenTwo === "") && serviceShcedulExtra === ""
@@ -123,8 +112,7 @@ const CreateService = () => {
                     progress: undefined,
                     theme: "light"
                 }) : serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
-        }
-
+    
     }
 
     const selectorOptions = [

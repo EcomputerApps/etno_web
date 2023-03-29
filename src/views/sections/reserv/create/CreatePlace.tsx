@@ -61,18 +61,7 @@ const CreatePlace = () => {
             longitude: long,
             halls: reserveStore.getHallList
         }
-        if (checkIfExist(newPlace.name!!)) {
-            toast.info('Ya existe este lugar', {
-                position: 'bottom-center',
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: 'light'
-            })
-        } else {
+      
             chekIfEmpty()
             if (placeName === "" || lat === 0 || long === 0 || file === undefined || reserveStore.getHallList?.length === 0 || reserveStore.getHallList!![0].name === "") {
                 toast.error('Rellene los campos', {
@@ -91,9 +80,6 @@ const CreatePlace = () => {
                 sideBarStore.updateSection('Reservas');
                 hoverSectionStore.setName('Reservas')
             }
-        }
-
-
     }
 
     function goBack() {

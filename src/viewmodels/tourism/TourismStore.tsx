@@ -1,6 +1,7 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Tourism, PaginatedTourism, TourismType, TourismList } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
@@ -113,7 +114,7 @@ class TourismStore {
 
         tourism.imageUrl = imageStore.getImage.link
 
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/tourism?username=${locality}`, {
+        const response = await fetch(`${urlBase}/users/add/tourism?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(tourism),
             headers: {
@@ -155,7 +156,7 @@ class TourismStore {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'turismo', 'turismo', file!!)
             tourism.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/tourism?username=${locality}&tourismId=${tourismId}`, {
+        const response = await fetch(`${urlBase}/users/update/tourism?username=${locality}&tourismId=${tourismId}`, {
             method: 'PUT',
             body: JSON.stringify(tourism),
             headers: {
@@ -192,7 +193,7 @@ class TourismStore {
     }
 
     async getPaginatedTourismRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/tourism/paginated/?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/tourism/paginated/?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const tourism = await response.json()
@@ -200,7 +201,7 @@ class TourismStore {
     }
 
     async getAllTourismRequest(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/tourism?username=${locality}`, {
+        const response = await fetch(`${urlBase}/tourism?username=${locality}`, {
             method: 'GET',
         })
         const tourism = await response.json()
@@ -208,7 +209,7 @@ class TourismStore {
     }
 
     async deleteTourism(username: string, idTourism: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/tourism?username=${username}&idTourism=${idTourism}`, {
+        const response = await fetch(`${urlBase}/users/delete/tourism?username=${username}&idTourism=${idTourism}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'

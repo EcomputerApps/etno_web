@@ -41,8 +41,8 @@ interface Event {
     endDate?: string,
     publicationDate?: string,
     time?: string,
-    lat?: string,
-    long?: string,
+    lat?: number,
+    long?: number,
     userSubscriptions?: SubscriptionUser[]
 }
 

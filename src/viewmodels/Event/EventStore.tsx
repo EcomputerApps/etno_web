@@ -1,12 +1,13 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Event, EventList, PaginatedEvent } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class EventStore {
     static eventStore: EventStore
-    serverIp: string = "192.168.241.51"
+
 
     static getEventStore() {
         if (this.eventStore === undefined) {
@@ -77,7 +78,7 @@ class EventStore {
     async addRequestEvent(locality: string, event: Event, file: File) {
         await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'evento', 'evento', file!!)
         event.imageUrl = imageStore.getImage.link
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/event?username=${locality}`, {
+        const response = await fetch(`${urlBase}/users/add/event?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(event),
             headers: {
@@ -116,10 +117,10 @@ class EventStore {
 
     async editEvent(locality: string, eventId: string, event: Event, file: File) {
         if (file !== undefined) {
-            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'evento', 'evento', file!!)
             event.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/event?username=${locality}&eventId=${eventId}`, {
+        const response = await fetch(`${urlBase}/users/update/event?username=${locality}&eventId=${eventId}`, {
             method: 'PUT',
             body: JSON.stringify(event),
             headers: {
@@ -156,14 +157,14 @@ class EventStore {
     }
 
     async getPaginatedEventsRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/events/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/events/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const events = await response.json()
         this.updatePaginatedEvents(events)
     }
     async getAllEventsRequest(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/events?username=${locality}`, {
+        const response = await fetch(`${urlBase}/events?username=${locality}`, {
             method: 'GET'
         })
         const events = await response.json()
@@ -188,7 +189,7 @@ class EventStore {
     }
 
     async deleteEvent(username: string, idEvent: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/event?username=${username}&idEvent=${idEvent}`, {
+        const response = await fetch(`${urlBase}/users/delete/event?username=${username}&idEvent=${idEvent}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'

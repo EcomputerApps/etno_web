@@ -56,18 +56,7 @@ const CreateNews = () => {
       description: newsDescription,
       publicationDate: newsDate
     }
-    if (checkIfExist(news.title!!)) {
-      toast.info('Ya existe esta noticia', {
-        position: 'bottom-center',
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
+    
       chekIfEmpty()
       if (newsCategory === '' || newsTitle === '' || newsDate === '' || file === undefined) {
         toast.error('Rellene los campos', {
@@ -85,7 +74,6 @@ const CreateNews = () => {
         sideBarStore.updateSection('Noticias')
          hoverSectionStore.setName('Noticias')
       }
-    }
   }
 
   function chekIfEmpty() {

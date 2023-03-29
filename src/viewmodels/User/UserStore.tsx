@@ -2,9 +2,10 @@ import { makeObservable, action, computed, observable } from "mobx";
 import { clearPersistedStore, makePersistable } from "mobx-persist-store";
 import { toast } from "react-toastify";
 import { UserLogin } from "../../models/user/UserLogin";
+import { urlBase } from "../../utils/global";
 
 class UserStore {
-    serverIp : string = "192.168.241.51"
+    serverIp : string = "192.168.137.1"
     static userStore: UserStore
 
     static getUserStore(){
@@ -35,7 +36,7 @@ class UserStore {
         })
     }
      async getUserLogin(username: string, password: string){
-        const request = await fetch(`http://${this.serverIp}:8080/login?username=${username}&password=${password}`, {
+        const request = await fetch(`${urlBase}/login?username=${username}&password=${password}`, {
             method: 'GET',
             'headers': {
                 'Access-Control-Allow-Origin': "*"

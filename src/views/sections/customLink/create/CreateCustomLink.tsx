@@ -30,8 +30,8 @@ const CreateCustomLink = () => {
     function chekIfEmpty() {
         cLinkName === "" ? setEmptyName(true) : setEmptyName(false)
         cLinkUrl === "" ? setEmptyUrl(true) : setEmptyUrl(false)
-
     }
+
     const [emptyName, setEmptyName] = useState<boolean>(false)
     const [emptyUrl, setEmptyUrl] = useState<boolean>(false)
     const [cLinkName, setCLinkName] = useState<string>("")
