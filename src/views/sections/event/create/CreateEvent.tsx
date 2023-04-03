@@ -11,6 +11,7 @@ import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import markerIcon from "../../../../assets/marker.svg"
 import { observer } from 'mobx-react-lite';
 import GoogleMapReact from 'google-map-react';
+import { resizeFile } from '../../../../utils/global';
 const eventStore = EventStore.getEventStore()
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
@@ -48,6 +49,7 @@ const CreateEvent = () => {
     })
     return flag
   }
+
   const inputRefDir = useRef<HTMLInputElement>(null)
   const inputRefOrg = useRef<HTMLInputElement>(null)
   const inputRefPric = useRef<HTMLInputElement>(null)
@@ -81,7 +83,7 @@ const CreateEvent = () => {
   const [emptyFinDate, setEmptyFinDate] = useState<boolean>(false)
   const [dateFail, setDateFail] = useState<boolean>(false)
 
-  function addEvent() {
+ async function addEvent() {
     const eventNew: Event = {
       title: eventTitle,
       address: eventDirection,
@@ -117,11 +119,11 @@ const CreateEvent = () => {
       } else {
         eventNew.reservePrice = 0
         checkIfEmpty()
-        eventTitle === '' || eventDirection === '' || eventDescription === ''
-          || eventOrganization === ''
-          || eventSeats === '' || eventLink === '' || eventDateStart === ''
-          || eventDateFin === '' || file === undefined || eventDateStart.localeCompare(eventDateFin) === 1 ?
-
+        
+        if (eventTitle === '' || eventDirection === '' || eventDescription === ''
+        || eventOrganization === ''
+        || eventSeats === '' || eventLink === '' || eventDateStart === ''
+        || eventDateFin === '' || file === undefined || eventDateStart.localeCompare(eventDateFin) === 1){
           toast.error('Rellene los campos correcto', {
             position: 'bottom-center',
             autoClose: 500,
@@ -131,7 +133,11 @@ const CreateEvent = () => {
             draggable: true,
             progress: undefined,
             theme: 'light'
-          }) : eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
+          }) 
+        } else { 
+          const imageFile = await resizeFile(file!!);
+          eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, imageFile); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
+          }
       }
   
   }

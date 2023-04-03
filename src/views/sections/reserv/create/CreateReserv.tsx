@@ -11,6 +11,7 @@ import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import type { Value } from "react-multi-date-picker"
 import { Reserve, Place, Hall, ReserveUser, ReserveSchedule } from "../../../../models/section/Section"
 import { toast } from "react-toastify"
+import { resizeFile } from "../../../../utils/global"
 
 const reserveStore = ReserveStore.getReserveStore()
 const sideBarStore = SideBarStore.getSideBarStore()
@@ -59,7 +60,7 @@ const CreateReserve = () => {
     const [emptyTime, setEmptyTime] = useState<boolean>(false)
     const [confirm, setConfirm] = useState<boolean>(false)
 
-    function addReserv() {
+   async function addReserv() {
         const newReserv: Reserve = {
             name: reservName,
             description: reservDescription,
@@ -75,9 +76,9 @@ const CreateReserve = () => {
         }
         
             checkIfEmpty()
-            reservName === "" || reservDescription === "" || reservEmail === "" || reservPhone === "" || reservPhone === "" ||
-                reservPlace?.name === "Elige Lugar" || reservPlace === undefined || reservHall?.name === "Elige la sala" || reservHall?.name === undefined || reservDate?.toString() === undefined ||
-                reservDate?.toString() === "" || reservTime.length === 0 ?
+            if (reservName === "" || reservDescription === "" || reservEmail === "" || reservPhone === "" || reservPhone === "" ||
+            reservPlace?.name === "Elige Lugar" || reservPlace === undefined || reservHall?.name === "Elige la sala" || reservHall?.name === undefined || reservDate?.toString() === undefined ||
+            reservDate?.toString() === "" || reservTime.length === 0){
                 toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
@@ -87,7 +88,11 @@ const CreateReserve = () => {
                     draggable: true,
                     progress: undefined,
                     theme: "light"
-                }) : reserveStore.addRequestReserve(localStorage.getItem('user_etno_locality')!, newReserv, reservHall?.idHall!!, reservPlace?.idPlace!!); sideBarStore.updateSection('Reservas'); hoverSectionStore.setName('Reservas');
+                })
+            } else {
+               
+                reserveStore.addRequestReserve(localStorage.getItem('user_etno_locality')!, newReserv, reservHall?.idHall!!, reservPlace?.idPlace!!); sideBarStore.updateSection('Reservas'); hoverSectionStore.setName('Reservas');
+            }
     }
 
     function checkIfEmpty() {

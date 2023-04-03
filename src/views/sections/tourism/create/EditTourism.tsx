@@ -10,6 +10,7 @@ import { Tourism } from "../../../../models/section/Section";
 import { observer } from "mobx-react-lite";
 import SideBarStore from "../../../../viewmodels/sidebar/SideBarStore";
 import HoverSectionStore from "../../../../viewmodels/hoverSection/HoverSectionStore";
+import { resizeFile } from "../../../../utils/global";
 
 const sideBarStore = SideBarStore.getSideBarStore()
 const tourismStore = TourismStore.getTourismStore()
@@ -70,7 +71,7 @@ const EditTourism = () => {
   const [emptyFile, setEmptyFile] = useState<boolean>(false)
   const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
 
-  function updateTourism() {
+  async function updateTourism() {
     if (checkIfExist(tourismTitle)) {
       toast.info('Ya existe este turismo', {
         position: 'bottom-center',
@@ -104,7 +105,8 @@ const EditTourism = () => {
           latitude: String(lat),
           imageUrl: tourism.imageUrl
         }
-        tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, file!!)
+        const imageFile = await resizeFile(file!!);
+        tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, imageFile)
         sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
       }
     }

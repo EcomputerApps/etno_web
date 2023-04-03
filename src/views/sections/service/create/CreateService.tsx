@@ -4,6 +4,7 @@ import logoEtno from '../../../../assets/logo_etno.png';
 import add_Photo from '../../../../assets/menu/add_photo.svg';
 import "../../../../index.css";
 import { Service } from '../../../../models/section/Section';
+import { resizeFile } from '../../../../utils/global';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import ServiceStore from '../../../../viewmodels/service/ServiceStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
@@ -87,7 +88,7 @@ const CreateService = () => {
 
     }
 
-    function addService() {
+   async function addService() {
         const service: Service = {
             category: serviceType,
             owner: serviceName,
@@ -98,10 +99,9 @@ const CreateService = () => {
         }
        
             chekIfEmpty()
-            serviceType === "" || serviceName === "" || serviceDescription === "" ||
-                serviceWebUrl === "" || serviceTel === "" || (serviceShcedulMorningOne === "" || serviceShcedulEvenOne === "" || serviceShcedulMorningTwo === "" || serviceShcedulEvenTwo === "") && serviceShcedulExtra === ""
-                || file === undefined
-                ?
+            if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
+            serviceWebUrl === "" || serviceTel === "" || (serviceShcedulMorningOne === "" || serviceShcedulEvenOne === "" || serviceShcedulMorningTwo === "" || serviceShcedulEvenTwo === "") && serviceShcedulExtra === ""
+            || file === undefined){
                 toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
@@ -111,8 +111,13 @@ const CreateService = () => {
                     draggable: true,
                     progress: undefined,
                     theme: "light"
-                }) : serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
-    
+                })
+            } else {
+                const imageFile = await resizeFile(file!!);
+                serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service, imageFile); 
+                sideBarStore.updateSection('Servicios'); 
+                hoverSectionStore.setName('Servicios')
+            }
     }
 
     const selectorOptions = [

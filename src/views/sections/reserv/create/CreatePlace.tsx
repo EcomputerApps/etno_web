@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import add_Photo from '../../../../assets/menu/add_photo.svg'
+import { resizeFile } from "../../../../utils/global";
 
 const reserveStore = ReserveStore.getReserveStore()
 const sideBarStore = SideBarStore.getSideBarStore()
@@ -54,7 +55,7 @@ const CreatePlace = () => {
 
 
 
-    function addPlace() {
+   async function addPlace() {
         const newPlace: Place = {
             name: placeName,
             latitude: lat,
@@ -75,7 +76,8 @@ const CreatePlace = () => {
                     theme: "light"
                 })
             } else {
-                reserveStore.addRequestPlace(localStorage.getItem('user_etno_locality')!, newPlace, file!!);
+                const imageFile = await resizeFile(file!!);
+                reserveStore.addRequestPlace(localStorage.getItem('user_etno_locality')!, newPlace, imageFile);
                 reserveStore.updateHallList([])
                 sideBarStore.updateSection('Reservas');
                 hoverSectionStore.setName('Reservas')

@@ -10,6 +10,7 @@ import { Pharmacy, PharmacyDutyDate } from '../../../../models/section/Section';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import DatePicker, { Value } from 'react-multi-date-picker';
+import { resizeFile } from '../../../../utils/global';
 
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
@@ -239,7 +240,7 @@ const EditPharmacy = () => {
         }
     }
 
-    function updatePharmacy(pharmaciId: string) {
+   async function updatePharmacy(pharmaciId: string) {
         if (fillDates(dutyDates?.toString()!!).length !== 1) {
             setPharmPeriod(0)
             setPharmFrequency(0)
@@ -280,11 +281,11 @@ const EditPharmacy = () => {
                     pharmacy_.dates = undefined
                     pharmacy_.durationDays = 0
                     pharmacy_.frequencyInDays = 0
-                } console.log(pharmacy_)
-                pharmacyStore.editPharmacy(localStorage.getItem('user_etno_locality')!, pharmaciId, pharmacy_, file!!)
+                }
+                const imageFile = await resizeFile(file!!);
+                pharmacyStore.editPharmacy(localStorage.getItem('user_etno_locality')!, pharmaciId, pharmacy_, imageFile)
                 sideBarStore.updateSection('Farmacias')
                 hoverSectionStore.setName('Farmacias')
-            
         }
     }
 

@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 import { observer } from 'mobx-react-lite'
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore'
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore'
+import { resizeFile } from '../../../../utils/global';
 
 const advertStore = AdvertStore.getAdvertStore()
 const sideBarStore = SideBarStore.getSideBarStore()
@@ -36,7 +37,7 @@ const CreateAdvert = () => {
         advertStore.getAllAdvertRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
 
-    function addAd() {
+   async function addAd() {
         const ad: Ad = {
             title: advertTitle,
             description: advertDescription,
@@ -44,7 +45,7 @@ const CreateAdvert = () => {
         }
         
             checkIfEmpty()
-            advertTitle === '' || advertDescription === '' || advertLink === '' || file === undefined ?
+           if (advertTitle === '' || advertDescription === '' || advertLink === '' || file === undefined) {
                 toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 500,
@@ -54,7 +55,11 @@ const CreateAdvert = () => {
                     draggable: true,
                     progress: undefined,
                     theme: "light"
-                }) : advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad, file!!); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
+                })
+             } else {
+                const imageFile = await resizeFile(file!!);
+                advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad, imageFile); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
+             }
     }
 
     function checkIfEmpty() {

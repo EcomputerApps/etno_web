@@ -11,6 +11,7 @@ import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionS
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import DatePicker, { Value } from 'react-multi-date-picker';
 import { observer } from 'mobx-react-lite';
+import { resizeFile } from '../../../../utils/global';
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
@@ -178,7 +179,7 @@ const CreatePharmacy = () => {
         return arrayDeFechas
     }
 
-    function addPharmacy() {
+   async function addPharmacy() {
         if (fillDates(dutyDates?.toString()!!).length != 1) {
             setPharmPeriod(0)
             setPharmFrequency(0)
@@ -220,8 +221,8 @@ const CreatePharmacy = () => {
                     pharmacy.durationDays = 0
                     pharmacy.frequencyInDays = 0
                 }
-                console.log(pharmacy)
-                pharmacyStore.addRequestPharmacy(localStorage.getItem('user_etno_locality')!, pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
+                const imageFile = await resizeFile(file!!);
+                pharmacyStore.addRequestPharmacy(localStorage.getItem('user_etno_locality')!, pharmacy, imageFile); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
             }
     }
 

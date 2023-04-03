@@ -5,6 +5,7 @@ import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import { Sponsor } from '../../../../models/section/Section';
+import { resizeFile } from '../../../../utils/global';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import SposnsorStore from '../../../../viewmodels/sponsor/SponsorStore';
@@ -44,7 +45,7 @@ const CreateSponsor = () => {
   const [confirm, setConfirm] = useState<boolean>(false)
 
 
-  function addSposor() {
+ async function addSposor() {
     const sponsor: Sponsor = {
       title: sponsorTitle,
       description: sponsorDescription,
@@ -63,8 +64,7 @@ const CreateSponsor = () => {
       })
     } else {
       chekIfEmpty()
-      sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" || file === undefined || sponsorTel.length < 9
-        ?
+      if (sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" || file === undefined || sponsorTel.length < 9){
         toast.error('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 1000,
@@ -74,7 +74,11 @@ const CreateSponsor = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) : sponsorStore.addRequestSponsor(localStorage.getItem('user_etno_locality')!, sponsor, file!!); sideBarStore.updateSection('Patrocinadores'); hoverSectionStore.setName('Patrocinadores')
+        }) 
+      } else {
+        const imageFile = await resizeFile(file!!);
+        sponsorStore.addRequestSponsor(localStorage.getItem('user_etno_locality')!, sponsor, imageFile); sideBarStore.updateSection('Patrocinadores'); hoverSectionStore.setName('Patrocinadores')
+      }
     }
   }
 

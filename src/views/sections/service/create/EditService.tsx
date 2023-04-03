@@ -4,6 +4,7 @@ import logoEtno from '../../../../assets/logo_etno.png';
 import add_Photo from '../../../../assets/menu/add_photo.svg';
 import "../../../../index.css";
 import { Service } from '../../../../models/section/Section';
+import { resizeFile } from '../../../../utils/global';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import ServiceStore from '../../../../viewmodels/service/ServiceStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
@@ -77,7 +78,7 @@ const EditService = () => {
         }
     }
 
-    function editService(serviceId: string) {
+   async function editService(serviceId: string) {
             chekIfEmpty()
             if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
                 serviceWebUrl === "" || serviceTel === "" || serviceSchedule === ""
@@ -102,7 +103,8 @@ const EditService = () => {
                     schedule: serviceSchedule,
                     imageUrl: service.imageUrl
                 }
-                serviceStore.editService(localStorage.getItem('user_etno_locality')!, serviceId, newService, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
+                const imageFile = await resizeFile(file!!);
+                serviceStore.editService(localStorage.getItem('user_etno_locality')!, serviceId, newService, imageFile); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
             }
     }
 

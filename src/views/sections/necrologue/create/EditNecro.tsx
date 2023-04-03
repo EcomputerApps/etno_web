@@ -8,6 +8,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import moment from 'moment'
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore'
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore'
+import { resizeFile } from '../../../../utils/global'
 
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
@@ -47,7 +48,7 @@ const EditNecrologue = () => {
   const [confirm, setConfirm] = useState<boolean>(false)
 
 
-  function updateNecrologue(necroId: string) {
+ async function updateNecrologue(necroId: string) {
     if (checkIfExist(necroName)) {
       toast.info('Ya existe este necrólogo', {
         position: 'bottom-center',
@@ -79,7 +80,8 @@ const EditNecrologue = () => {
           description: necroDescription,
           imageUrl: necro.imageUrl
         }
-        necroStore.editNecro(localStorage.getItem('user_etno_locality')!, necroId, newNecro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
+        const imageFile = await resizeFile(file!!);
+        necroStore.editNecro(localStorage.getItem('user_etno_locality')!, necroId, newNecro, imageFile); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
       }
     }
   }

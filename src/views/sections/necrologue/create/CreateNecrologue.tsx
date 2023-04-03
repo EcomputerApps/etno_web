@@ -7,6 +7,7 @@ import { Necrologue } from '../../../../models/section/Section'
 import { toast, ToastContainer } from 'react-toastify'
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore'
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore'
+import { resizeFile } from '../../../../utils/global'
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
@@ -42,7 +43,7 @@ const CreateNecrologue = () => {
   const [emptyFile, setEmptyFile] = useState<boolean>(false)
   const [confirm, setConfirm] = useState<boolean>(false)
 
-  function addNecrologue() {
+ async function addNecrologue() {
     const necro: Necrologue = {
       name: necroName,
       deathDate: necroDate,
@@ -61,7 +62,7 @@ const CreateNecrologue = () => {
       })
     } else {
       chekIfEmpty()
-      necroName === "" || necroDate === "" || necroDescription === "" || file === undefined ?
+      if (necroName === "" || necroDate === "" || necroDescription === "" || file === undefined) {
         toast.info('Rellene todos los campos', {
           position: 'bottom-center',
           autoClose: 1000,
@@ -71,7 +72,10 @@ const CreateNecrologue = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) : necroStore.addRequestNecro(localStorage.getItem('user_etno_locality')!, necro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
+        }) } else {
+        const imageFile = await resizeFile(file!!);
+        necroStore.addRequestNecro(localStorage.getItem('user_etno_locality')!, necro, imageFile); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
+        }
     }
   }
 

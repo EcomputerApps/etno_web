@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+import { resizeFile } from '../../../../utils/global';
 
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
@@ -47,14 +48,13 @@ const CreateBand = () => {
   const [file, setFile] = useState<File>()
   const [confirm, setConfirm] = useState<boolean>(false)
 
-  function addBand() {
-
+ async function addBand() {
     const bando: Band = {
       title: bandTitle,
       description: bandDescription,
     }
       chekIfEmpty()
-      bandTitle === "" || bandDescription === "" || file === undefined ?
+    if (bandTitle === "" || bandDescription === "" || file === undefined){
         toast.error('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 1000,
@@ -64,7 +64,12 @@ const CreateBand = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) : bandStore.addRequestBand(localStorage.getItem('user_etno_locality')!, bando, file!!); sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
+        }) 
+      } else {
+        const imageFile = await resizeFile(file!!);
+        bandStore.addRequestBand(localStorage.getItem('user_etno_locality')!, bando, imageFile);
+        sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
+      }
   }
  
   return (

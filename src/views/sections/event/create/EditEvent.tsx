@@ -11,6 +11,7 @@ import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionS
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import { observer } from 'mobx-react-lite';
 import GoogleMapReact from 'google-map-react';
+import { resizeFile } from '../../../../utils/global';
 
 const eventStore = EventStore.getEventStore()
 const sideBarStore = SideBarStore.getSideBarStore()
@@ -86,7 +87,7 @@ const EditEvent = () => {
     zoom: 11
   };
 
-  function updateEvent() {
+ async function updateEvent() {
         if (subscription) {
           checkIfEmpty()
           if (eventTitle === '' || eventDirection === '' || eventDescription === ''
@@ -120,7 +121,8 @@ const EditEvent = () => {
               startDate: eventDateStart,
               endDate: eventDateFin
             }
-            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
+            const imageFile = await resizeFile(file!!);
+            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, imageFile)
             sideBarStore.updateSection('Eventos')
             hoverSectionStore.setName('Eventos')
           }
@@ -157,7 +159,8 @@ const EditEvent = () => {
               startDate: eventDateStart,
               endDate: eventDateFin
             }
-            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
+            const imageFile = await resizeFile(file!!);
+            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, imageFile)
             sideBarStore.updateSection('Eventos')
             hoverSectionStore.setName('Eventos')
           }

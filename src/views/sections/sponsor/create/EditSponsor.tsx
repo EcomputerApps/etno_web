@@ -4,6 +4,7 @@ import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import "../../../../index.css"
 import { Sponsor } from '../../../../models/section/Section';
+import { resizeFile } from '../../../../utils/global';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
 import SposnsorStore from '../../../../viewmodels/sponsor/SponsorStore';
@@ -45,7 +46,7 @@ const EditSponsor = () => {
     const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
     const [confirm, setConfirm] = useState<boolean>(false)
 
-    function updateSponsor(sponsorId: string) {
+    async function updateSponsor(sponsorId: string) {
         if (checkIfExist(sponsorTitle)) {
             toast.info('Ya existe este patrocinador', {
                 position: 'bottom-center',
@@ -77,7 +78,8 @@ const EditSponsor = () => {
                     description: sponsorDescription,
                     phone: sponsorTel,
                 }
-                sponsorStore.editSponsor(localStorage.getItem('user_etno_locality')!, sponsorId, newSponsor, file!!)
+                const imageFile = await resizeFile(file!!);
+                sponsorStore.editSponsor(localStorage.getItem('user_etno_locality')!, sponsorId, newSponsor, imageFile)
                 sideBarStore.updateSection('Patrocinadores')
                 hoverSectionStore.setName('Patrocinadores')
             }

@@ -10,6 +10,7 @@ import markerIcon from "../../../../assets/marker.svg"
 import HoverSectionStore from "../../../../viewmodels/hoverSection/HoverSectionStore"
 import SideBarStore from "../../../../viewmodels/sidebar/SideBarStore"
 import { observer } from "mobx-react-lite"
+import { resizeFile } from "../../../../utils/global"
 
 const tourismStore = TourismStore.getTourismStore()
 const sideBarStore = SideBarStore.getSideBarStore()
@@ -64,7 +65,7 @@ const CreateTourism = () => {
   const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
   const [confirm, setConfirm] = useState<boolean>(false)
 
-  function addTourism() {
+ async function addTourism() {
     const tourism: Tourism = {
       type: tourismType,
       title: tourismTitle,
@@ -85,7 +86,7 @@ const CreateTourism = () => {
       })
     } else {
       checkIfEmpty()
-      tourismType === '' || tourism.title === '' || tourism.description === '' || long === 0 || lat === 0 || file === undefined ?
+     if (tourismType === '' || tourism.title === '' || tourism.description === '' || long === 0 || lat === 0 || file === undefined) {
         toast.error('Rellene los campos vacíos', {
           position: 'bottom-center',
           autoClose: 500,
@@ -95,7 +96,11 @@ const CreateTourism = () => {
           draggable: true,
           progress: undefined,
           theme: 'light'
-        }) : tourismStore.addRequestTourism(localStorage.getItem('user_etno_locality')!, tourism, file!!); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
+        })
+       } else {
+        const imageFile = await resizeFile(file!!);
+        tourismStore.addRequestTourism(localStorage.getItem('user_etno_locality')!, tourism, imageFile); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
+       }  
     }
   }
 

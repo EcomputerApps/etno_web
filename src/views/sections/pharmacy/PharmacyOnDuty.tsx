@@ -23,7 +23,6 @@ const PharmacyOnDutyCalendar = () => {
             defaultDate: new Date(),
             views: {
                 month: true,
-
             },
         }),
         []

@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { observer } from 'mobx-react-lite';
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+import { resizeFile } from '../../../../utils/global';
 
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
@@ -41,7 +42,7 @@ const EditBand = () => {
   const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
   const [confirm, setConfirm] = useState<boolean>(false)
 
-  function updateBand(bandId: string) {
+ async function updateBand(bandId: string) {
    
       chekIfEmpty()
       if (bandTitle === "" || bandDescription === "") {
@@ -60,7 +61,8 @@ const EditBand = () => {
           title: bandTitle,
           description: bandDescription,
         }
-        bandStore.editBand(localStorage.getItem('user_etno_locality')!, bandId, bando, file!!)
+        const imageFile = await resizeFile(file!!);
+        bandStore.editBand(localStorage.getItem('user_etno_locality')!, bandId, bando, imageFile)
       sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
       }
   }

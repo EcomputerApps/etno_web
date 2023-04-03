@@ -6,8 +6,10 @@ import NewsStore from '../../../../viewmodels/news/NewsStore'
 import { News } from '../../../../models/section/Section'
 import { toast} from 'react-toastify'
 import { observer } from 'mobx-react-lite'
+import Resizer from 'react-image-file-resizer'
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+import { resizeFile } from '../../../../utils/global'
 
 const newsStore = NewsStore.getNewsStore()
 const sideBarStore = SideBarStore.getSideBarStore()
@@ -28,7 +30,7 @@ const CreateNews = () => {
     return flag 
   }
 
-
+  
   const inputRefTit = useRef<HTMLInputElement>(null)
   const inputRefDate = useRef<HTMLInputElement>(null)
   const inputRefLink = useRef<HTMLInputElement>(null)
@@ -49,7 +51,7 @@ const CreateNews = () => {
 
 
 
-  function addNews(e: any) {
+async function addNews(e: any) {
     const news: News = {
       category: newsCategory,
       title: newsTitle,
@@ -70,7 +72,8 @@ const CreateNews = () => {
           theme: "light"
         })
       } else {
-        newsStore.addRequestNews(localStorage.getItem('user_etno_locality')!, news, file!!)
+        const imageFile = await resizeFile(file!!)
+        newsStore.addRequestNews(localStorage.getItem('user_etno_locality')!, news, imageFile)
         sideBarStore.updateSection('Noticias')
          hoverSectionStore.setName('Noticias')
       }

@@ -7,6 +7,7 @@ import { News } from "../../../../models/section/Section"
 import NewsStore from "../../../../viewmodels/news/NewsStore"
 import HoverSectionStore from '../../../../viewmodels/hoverSection/HoverSectionStore';
 import SideBarStore from '../../../../viewmodels/sidebar/SideBarStore';
+import { resizeFile } from "../../../../utils/global"
 
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
@@ -45,7 +46,7 @@ const EditNews = () => {
   const [file, setFile] = useState<File>()
   const [confirm, setConfirm] = useState(false)
 
-  function updateNews() {
+ async function updateNews() {
       chekIfEmpty()
       if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === '') {
         toast.error('Rellene los campos', {
@@ -66,7 +67,8 @@ const EditNews = () => {
           publicationDate: newsDate,
           imageUrl: news.imageUrl
         }
-        newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_, file!!)
+        const imageFile = await resizeFile(file!!)
+        newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_, imageFile)
         sideBarStore.updateSection('Noticias')
         hoverSectionStore.setName('Noticias')
       }

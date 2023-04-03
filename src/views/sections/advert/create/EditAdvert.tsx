@@ -3,6 +3,7 @@ import { toast } from "react-toastify"
 import logoEtno from '../../../../assets/logo_etno.png'
 import add_Photo from '../../../../assets/menu/add_photo.svg'
 import { Ad } from "../../../../models/section/Section"
+import { resizeFile } from "../../../../utils/global"
 import AdvertStore from "../../../../viewmodels/advert/AdvertStore"
 import HoverSectionStore from "../../../../viewmodels/hoverSection/HoverSectionStore"
 import SideBarStore from "../../../../viewmodels/sidebar/SideBarStore"
@@ -41,7 +42,7 @@ const EditAdvert = () => {
     const [advertLink, setAdvertLink] = useState<string>(advert.webUrl!!)
     const [file, setFile] = useState<File>()
 
-    function updateAdvert() { 
+   async function updateAdvert() {
             checkIfEmpty()
             if (advertTitle === '' || advertDescription === '' || advertLink === '' || emptyFile) {
                 toast.info('Rellene los campos', {
@@ -60,7 +61,8 @@ const EditAdvert = () => {
                     description: advertDescription,
                     webUrl: advertLink
                 }
-                advertStore.editAdvert(localStorage.getItem('user_etno_locality')!, advert.idAd!!, advert_, file!!)
+                const imageFile = await resizeFile(file!!)
+                advertStore.editAdvert(localStorage.getItem('user_etno_locality')!, advert.idAd!!, advert_, imageFile)
                 sideBarStore.updateSection('Anuncios')
                 hoverSectionStore.setName('Anuncios')
             }
