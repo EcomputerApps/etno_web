@@ -2,11 +2,13 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Band, BandList, PaginatedBand } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
+
 const imageStore = ImageStore.getImageStore()
 
 class BandStore {
-    serverIp: string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static bandStore: BandStore
 
     static getBandStore() {
@@ -17,24 +19,46 @@ class BandStore {
     }
     //Observables =>
     paginatedBand: PaginatedBand = {}
-    allBandList : BandList = {}
+    allBandList: BandList = {}
     band: Band = {}
+    modalCreate: boolean = false
+    modalEdit: boolean = false
 
     constructor() {
         makeObservable(this, {
             paginatedBand: observable,
             band: observable,
+            modalEdit: observable,
+            modalCreate: observable,
             updateBand: action,
             getBand: computed,
             addRequestBand: action,
-            getRequestBand: action,
+            getPaginatedBandrequest: action,
+            setModalCreate: action,
+            setModalEdit: action,
             deleteBand: action,
             updateBandList: action,
             updatePaginatedBand: action,
             updateAllBandList: action,
             getPaginatedBands: computed,
-            getAllBands : computed
+            getAllBands: computed,
+            getModalEdit: computed,
+            getModalCreate: computed
+
+
         })
+    }
+    setModalEdit(mode: boolean) {
+        this.modalEdit = mode
+    }
+    get getModalEdit() {
+        return this.modalEdit
+    }
+    setModalCreate(mode: boolean) {
+        this.modalCreate = mode
+    }
+    get getModalCreate() {
+        return this.modalCreate
     }
 
     updateBandList(bands: Band[]) {
@@ -61,10 +85,10 @@ class BandStore {
 
     async editBand(locality: string, bandId: string, band: Band, file: File) {
         if (file !== undefined) {
-            await imageStore.addImageAPI("Bolea", "bando", "bando", file!!)
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "bando", "bando", file!!)
             band.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/bando?username=${locality}&bandoId=${bandId}`, {
+        const response = await fetch(`${urlBase}/users/update/bando?username=${locality}&bandoId=${bandId}`, {
             method: 'PUT',
             body: JSON.stringify(band),
             headers: {
@@ -82,6 +106,9 @@ class BandStore {
                 progress: undefined,
                 theme: "light"
             })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
         } else {
             toast.error('No se ha actualizado', {
                 position: 'bottom-center',
@@ -95,36 +122,35 @@ class BandStore {
             })
         }
     }
-    async getRequestBand(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/bandos?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedBandrequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/bandos/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const band = await response.json()
         this.updatePaginatedBand(band)
     }
     async getAllBandRequest(locality: string) {
-        console.log("here")
-        const response = await fetch(`http://${this.serverIp}:8080/bandos?username=${locality}`, {
+             const response = await fetch(`${urlBase}/bandos?username=${locality}`, {
             method: 'GET',
-            
+
         })
-     
         const band = await response.json()
         this.updateAllBandList(band)
     }
-    async deleteBand(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/bando?username=${username}&title=${title}`, {
+
+    async deleteBand(username: string, idBando: string) {
+        const response = await fetch(`${urlBase}/users/delete/bando?username=${username}&idBando=${idBando}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
             }
         })
         if (response.ok) {
-            const newPaginatedBands = this.paginatedBand.content!!.filter((item) => item.title !== title)
+            const newPaginatedBands = this.paginatedBand.content!!.filter((item) => item.idBando !== idBando)
             this.updateBandList(newPaginatedBands)
             this.updateBand({})
             toast.success('Se ha borrado exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 100,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -135,7 +161,7 @@ class BandStore {
             })
         } else {
             toast.error('No se ha podido borrar', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -147,9 +173,9 @@ class BandStore {
         }
     }
     async addRequestBand(username: string, bando: Band, file: File) {
-        await imageStore.addImageAPI('Bolea', 'bando', 'bando', file)
+        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'bando', 'bando', file)
         bando.imageUrl = imageStore.getImage.link
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/bando?username=${username}`, {
+        const response = await fetch(`${urlBase}/users/add/bando?username=${username}`, {
             method: 'POST',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -169,6 +195,9 @@ class BandStore {
                 progress: undefined,
                 theme: "light"
             })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
@@ -182,6 +211,5 @@ class BandStore {
             })
         }
     }
-
 }
 export default BandStore

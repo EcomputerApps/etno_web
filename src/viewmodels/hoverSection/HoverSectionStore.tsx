@@ -1,4 +1,5 @@
 import { action, computed, makeObservable, observable } from "mobx";
+import { makePersistable } from "mobx-persist-store";
 
 
 class HoverSectionStore{
@@ -19,7 +20,11 @@ class HoverSectionStore{
             setName : action,
             getName: computed
         })
-        
+        makePersistable(this, {
+            name: 'hoverSectionStore',
+            properties: ['name'],
+            storage: window.localStorage
+        })
      }
 
      setName(name : string){

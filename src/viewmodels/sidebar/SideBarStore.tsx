@@ -1,4 +1,5 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { makePersistable } from "mobx-persist-store";
 import { PanelHandler } from "../../models/panel/Panel";
 
 class SideBarStore{
@@ -19,16 +20,19 @@ class SideBarStore{
         {title: 'Noticias', src: "new.svg"},
         {title: 'Anuncios', src: "advert.svg"},
         {title: 'Turismo', src: "tourism.svg"},
-        {title: 'Eventos', src: "event.svg", gap: true },
+        {title: 'Eventos', src: "event.svg" },
+        {title: 'Reservas', src: "reserv.svg"},
         {title: 'Bandos', src: "bando.svg"},
         {title: 'Farmacias', src: "pharmacy.svg"},
-        {title: 'Servicios', src: "service.svg", gap: true},
+        {title: 'Servicios', src: "service.svg"},
         {title: 'Patrocinadores', src: "sponsor.svg" },
         {title: 'Fallecimientos', src: "death.svg"},
-        {title: 'Enlaces', src: "link.svg", gap: true},
+        {title: 'Encuestas', src: "survey.svg"},
+        {title: 'Enlaces', src: "link.svg"},
+        {title: 'Enlaces Personalizados', src: "customLink.svg"},
         {title: 'Incidencias', src: "incident.svg"},
         {title: 'Fotos', src: "photos.svg"},
-        {title: 'Salir', src: "logout.svg", gap: true},
+        {title: 'Salir', src: "logout.svg"},
     ]}
 
     constructor(){
@@ -39,6 +43,7 @@ class SideBarStore{
             updateSection: action,
             getPanel: computed
         })
+       makePersistable(this,{ name: 'SideBarStore_v4', properties: ['panel'], storage: window.localStorage })
     }
 
     panelHandler(){

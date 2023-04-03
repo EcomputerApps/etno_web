@@ -1,5 +1,3 @@
-
-
 import { observer } from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom'
 import 'tailwindcss/tailwind.css'
@@ -16,16 +14,31 @@ import Necrologue from './sections/necrologue/Necrologue'
 import News from './sections/news/News'
 import Pharmacy from './sections/pharmacy/Pharmacy'
 import Photo from './sections/photo/Photo'
+import ReservMain from './sections/reserv/ReservMain'
 import Service from './sections/service/Service'
 import Sponsor from './sections/sponsor/Sponsor'
 import Tourism from './sections/tourism/Tourism'
+import UserStore from '../viewmodels/User/UserStore'
+import { useEffect } from 'react'
+import ReserveStore from '../viewmodels/reserv/ReserveStore'
+import Survey from './sections/surveys/Survey'
+import CustomLinkPage from './sections/customLink/CustomLink'
+
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
+const reserveStore = ReserveStore.getReserveStore()
+const userStore = UserStore.getUserStore()
 
 
 const Home = () => {
-
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (localStorage.getItem('token_user_etno') === null){
+      navigate('/')
+    }
+  }, [])
+
 
   function salida() {
     if (hoverSectionStore.getName === "Salir") {
@@ -33,29 +46,32 @@ const Home = () => {
       navigate("/logout")
     }
   }
-  
+
   function renderView(): JSX.Element | undefined {
     switch (sideBarStore.getPanel.section) {
       case 'Eventos': return <Event />
+      case 'Reservas': return <ReservMain />
       case 'Turismo': return <Tourism />
       case 'Bandos': return <Band />
       case 'Farmacias': return <Pharmacy />
       case 'Servicios': return <Service />
       case 'Patrocinadores': return <Sponsor />
-      case 'Noticias': return <News />  
+      case 'Noticias': return <News />
       case 'Anuncios': return <Advert />
       case 'Fallecimientos': return <Necrologue />
       case 'Incidencias': return <Incident />
       case 'Fotos': return <Photo />
       case 'Enlaces': return <LinkPage />
+      case 'Encuestas': return <Survey />
+      case 'Enlaces Personalizados': return <CustomLinkPage />
     }
   }
 
   return (
     <div className="flex">
       <div
-        className={` ${sideBarStore.getPanel.open ? "w-72" : "w-20 "
-          } bg-indigo-800 h-screen p-5  pt-8 relative duration-300`}
+        className={` ${sideBarStore.getPanel.open ? "w-72" : "w-24"
+          } bg-indigo-800 lg:h-screen h-full p-5  pt-8 relative duration-300 `}
       >
         <img
           src={arrowLogo}

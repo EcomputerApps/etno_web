@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
 import ImageSize from "../../../viewmodels/ImageSize"
-import Search from "../../../assets/menu/search.svg"
+import photosRed from "../../../assets/menu/photosRed.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import ImageStore from "../../../viewmodels/image/ImageStore"
@@ -11,20 +11,20 @@ const imageSize = ImageSize.getImageSize()
 const Photo = () => {
 
     const [pageNumber, setPageNumber] = useState(0)
+
     useEffect(() => {
-        imageStore.getRequestImages('Bolea', pageNumber, 6)
+        imageStore.getRequestImages(localStorage.getItem('user_etno_locality')!, pageNumber, 6)
     }, [pageNumber])
 
-
     const [showModal, setModal] = useState(false)
-    
-    
+
     const incrementPage = () => {
         setPageNumber(pageNumber + 1)
     }
     const decrementPage = () => {
         setPageNumber(pageNumber - 1)
     }
+
     return (
         <div className="flex relative flex-col h-full w-full ">
             <div className="flex ">
@@ -33,7 +33,7 @@ const Photo = () => {
             <div>
                 {showModal ? (
                     <div>
-                      <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+                        <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                             <div className="md:w-1/3 w-full flex flex-col px-2 overflow-auto ">
                                 <button className="  text-blue-600  font-medium place-self-end bg-white rounded-full w-7 h-7 border-dark-purple border-2 mb-1 " onClick={() => setModal(false)}>X</button>
                                 <img src={imageSize.getLink} className="rounded-md bg-white"></img>
@@ -42,33 +42,31 @@ const Photo = () => {
                     </div>
                 ) : <></>}
             </div>
-            <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-6">
-                <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
-                    <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
-                        <div className="flex md:w-1/3 w-full m-auto  p-1">
-                            <input
-                                type="text"
-                                name="photosSearch"
-                                className=" mr-3 block md:w-3/4 px-4 py-2 text-purple-700 w-full bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                            />
-                            <button onClick={() => {
-                            }}
-                                name="photosSearchBtn" className="btnStandard h-9">
-                                <img className="w-6 h-6" src={Search} alt="search" />
-                            </button>
+            {imageStore.getPaginatedImages.totalElements === 0 ? (
+                <div className="flex flex-row p-2 mt-5 rounded-md shadow-md">
+                    <img src={photosRed} alt="BIG" />
+                    <label className="text-xl my-auto ml-4 mt-3.5 font-medium">No hay Fotos</label>
+                </div>
+            ) : (
+                <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-7">
+                    <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
+                            <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
             <div className=" flex flex-1 w-full h-4/5 overflow-y-auto" >
-                <div className="flex    ">
+                <div className="flex ">
                     <div className="grid grid-cols-1 md:grid-rows-2 md:grid-cols-3 pt-2">
                         {imageStore.getPaginatedImages.content?.map((item, index) => (
-                            <div key={index} className="w-full  cursor-pointer rounded-md bg-indigo-100 border-2 border-indigo-300 hover:border-indigo-600  items-center justify-center flex-wrap  flex" >
-                                <img src={item.link}  onClick={(e) => {
+                            <div key={index} className="w-full  cursor-pointer rounded-md bg-indigo-100 border-2
+                             border-indigo-300 hover:border-indigo-600  items-center justify-center flex-wrap  flex" >
+                                <img src={item.link} onClick={(e) => {
                                     setModal(true)
                                     imageSize.setLink(e.currentTarget.src)
-                                }} className="block h-full w-full rounded-lg object-scale-down object-center"/>
+                                }} className="block h-full w-full rounded-lg object-scale-down object-center" />
                             </div>
                         ))}
                     </div>
@@ -82,14 +80,12 @@ const Photo = () => {
                 </button>
                 <button
                     className="btnStandard"
-                    onClick={incrementPage} disabled={pageNumber === imageStore.getPaginatedImages.totalPages!! - 1 || imageStore.getPaginatedImages.content?.length === 0}>
+                    onClick={incrementPage} disabled={pageNumber === imageStore.getPaginatedImages.totalPages!! - 1 || imageStore.getPaginatedImages.totalElements === 0}>
                     Siguiente
                     <img src={arrowRight} alt="forward" />
                 </button>
             </div>
         </div>
-
     )
-
 }
 export default observer(Photo)

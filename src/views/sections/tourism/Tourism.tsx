@@ -1,20 +1,19 @@
 import { observer } from "mobx-react-lite"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
 import Pencil from "../../../assets/menu/create.svg"
 import TourismStore from "../../../viewmodels/tourism/TourismStore"
 import TableTourism from "./TableTourism"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import { ToastContainer } from "react-toastify"
+import CreateTourism from "./create/CreateTourism"
 const tourisStore = TourismStore.getTourismStore()
 
 const Tourism = () => {
   const [pageNumber, setPageNumber] = useState(0)
-  const navigate = useNavigate()
 
   useEffect(() => {
-    tourisStore.getRequestTourism('Bolea', pageNumber, 5)
+    tourisStore.getPaginatedTourismRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
   }, [pageNumber])
   const incrementPage = () => {
     setPageNumber(pageNumber + 1)
@@ -22,18 +21,28 @@ const Tourism = () => {
   const decrementPage = () => {
     setPageNumber(pageNumber - 1)
   }
-
   return (
     <div className="w-full h-full  relative">
       <div className="flex flex-col gap-4">
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Turismo</h2>
-          <div className="ml-auto">
-            <button onClick={() => navigate("/addTourism")} type="button" className="btnStandard">
+          <div className="mainButtonsDiv">
+            <button onClick={() => tourisStore.setModalCreate(true)} type="button" className="btnStandard">
               <img src={Pencil} alt="Create"/>
               Crear
             </button>
           </div>
+          {tourisStore.getModalCreate ? (
+        <div>
+          <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
+            <div className="fixed inset-0 w-screen h-screen">
+              <div className="w-screen  flex justify-start">
+              <CreateTourism />
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : <></>}
         </div>
         <TableTourism currentPage={pageNumber} headerList={['tipo', 'Título', 'Descripción', 'Acciones']} />
       </div>
@@ -50,7 +59,7 @@ const Tourism = () => {
           <img src={arrowRight} alt="forward"/>
         </button>
       </div>
-      <ToastContainer/>
+      <ToastContainer style={{ margin: "50px" }} />
     </div>
   )
 }

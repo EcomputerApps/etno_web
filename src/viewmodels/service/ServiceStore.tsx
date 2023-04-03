@@ -1,11 +1,12 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { toast } from "react-toastify";
-import { PaginatedService, Service } from "../../models/section/Section";
+import { PaginatedService, Service, ServiceList, ServiceType } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class ServiceStore {
-    serverIp : string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static serviceStore: ServiceStore
 
     static getServiceStore() {
@@ -15,26 +16,79 @@ class ServiceStore {
         return this.serviceStore
     }
 
+    serviceTypes: Array<ServiceType> = [{
+        "idServiceType": "checkOne",
+        "value": "Servicio",
+        "title": "Servicio",
+    }, {
+        "idServiceType": "checkTwo",
+        "value": "Salud",
+        "title": "Salud",
+    }, {
+        "idServiceType": "checkThree",
+        "value": "Ocio",
+        "title": "Ocio",
+    }]
+
     //Observables =>
     paginatedService: PaginatedService = {}
     service: Service = {}
-
+    allService: ServiceList = {}
+    modalCreate: boolean = false
+    modalEdit: boolean = false
 
     constructor() {
         makeObservable(this, {
+            allService: observable,
+            serviceTypes: observable,
+            modalEdit: observable,
+            modalCreate: observable,
+            setModalCreate: action,
+            getModalEdit: computed,
+            getModalCreate: computed,
             paginatedService: observable,
             service: observable,
             updateService: action,
             getService: computed,
-            getRequestService: action,
+            getPaginatedServiceRequest: action,
             addRequestService: action,
             deleteService: action,
             updatePaginatedService: action,
             updateServiceList: action,
-            getPaginatedService: computed
+            getPaginatedService: computed,
+            getAllServices: computed,
+            updateAllServices: action,
+            updateServiceTypes: action,
+            getServiceType: computed
 
         })
     }
+    updateAllServices(service: Service[]) {
+        this.allService.services = service
+    }
+    get getAllServices() {
+        return this.allService
+    }
+    updateServiceTypes(newServiceTypes: ServiceType[]) {
+        this.serviceTypes = newServiceTypes
+    }
+    get getServiceType() {
+        return this.serviceTypes
+    }
+
+    setModalEdit(mode: boolean) {
+        this.modalEdit = mode
+    }
+    get getModalEdit() {
+        return this.modalEdit
+    }
+    setModalCreate(mode: boolean) {
+        this.modalCreate = mode
+    }
+    get getModalCreate() {
+        return this.modalCreate
+    }
+
     updateServiceList(services: Service[]) {
         this.paginatedService.content = services
     }
@@ -51,23 +105,32 @@ class ServiceStore {
         return this.service
     }
 
-    async getRequestService(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/services?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedServiceRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/services/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
 
         })
         const service = await response.json()
         this.updatePaginatedService(service)
     }
-    async deleteService(username: string, owner: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/service?username=${username}&owner=${owner}`, {
+
+    async getAllServicesRequest(locality: string) {
+        const response = await fetch(`${urlBase}/services?username=${locality}`, {
+            method: 'GET',
+
+        })
+        const service = await response.json()
+        this.updateAllServices(service)
+    }
+    async deleteService(username: string, idService: string) {
+        const response = await fetch(`${urlBase}/users/delete/service?username=${username}&idService=${idService}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
         if (response.ok) {
-            const newPaginatedService = this.paginatedService.content!!.filter((item) => item.owner !== owner)
+            const newPaginatedService = this.paginatedService.content!!.filter((item) => item.idService !== idService)
             this.updateServiceList(newPaginatedService)
             this.updateService({})
             toast.success('Se ha borrado exitosamente', {
@@ -94,9 +157,9 @@ class ServiceStore {
         }
     }
     async addRequestService(username: string, service: Service, file: File) {
-        await imageStore.addImageAPI('Bolea', 'servicio', 'servicio', file)
+        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file)
         service.imageUrl = imageStore.getImage.link
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/service?username=${username}`, {
+        const response = await fetch(`${urlBase}/users/add/service?username=${username}`, {
             method: 'POST',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -116,6 +179,9 @@ class ServiceStore {
                 progress: undefined,
                 theme: "light"
             })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
@@ -129,12 +195,12 @@ class ServiceStore {
             })
         }
     }
-    async editService(locality: string, serviceID: string, service: Service, file: File){
-        if (file !== undefined){
-            await imageStore.addImageAPI('Bolea', 'servicio', 'servicio', file!!)
+    async editService(locality: string, serviceID: string, service: Service, file: File) {
+        if (file !== undefined) {
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file!!)
             service.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/service?username=${locality}&serviceId=${serviceID}`, {
+        const response = await fetch(`${urlBase}/users/update/service?username=${locality}&serviceId=${serviceID}`, {
             method: 'PUT',
             body: JSON.stringify(service),
             headers: {
@@ -142,9 +208,9 @@ class ServiceStore {
             }
         })
 
-        if(response.ok) {
+        if (response.ok) {
             toast.success('Se ha actualizado exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -152,10 +218,13 @@ class ServiceStore {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          })
+            })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
         } else {
             toast.error('No se ha actualizado', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -163,7 +232,7 @@ class ServiceStore {
                 draggable: true,
                 progress: undefined,
                 theme: "light"
-          }) 
+            })
         }
     }
 }

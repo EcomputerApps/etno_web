@@ -1,8 +1,11 @@
 import { observer } from 'mobx-react-lite';
-import React, { useEffect } from 'react';
 import Router from './navigation/Router';
+import UserStore from './viewmodels/User/UserStore';
+const userStore = UserStore.getUserStore()
 
 function App() {
+ 
+
   return (
     <div className="App">
         <Router/>
@@ -10,4 +13,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);

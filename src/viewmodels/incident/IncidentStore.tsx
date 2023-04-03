@@ -1,8 +1,10 @@
 import { makeObservable, action, computed, observable } from "mobx";
+import { toast } from "react-toastify";
 import { Incident, PaginatedIncident } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 
 class IncidentStore {
-    serverIp : string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static incidentStore: IncidentStore
 
     static getIncidentStore() {
@@ -21,7 +23,7 @@ class IncidentStore {
             paginatedIncident: observable,
             description: observable,
             updateDescription: action,
-            getRequestIncident: action,
+            getPaginatedIncidentsRequest: action,
             deleteIncident: action,
             updateIncidentList: action,
             updatePaginatedIncident: action,
@@ -45,15 +47,15 @@ class IncidentStore {
     get getPaginatedIncident() {
         return this.paginatedIncident
     }
-    async getRequestIncident(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/incident?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedIncidentsRequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/incidents/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const incident = await response.json()
-        this.updateIncidentList(incident)
+        this.updatePaginatedIncident(incident)
     }
     async deleteIncident(username: string, title: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/incident?username=${username}&title=${title}`, {
+        const response = await fetch(`${urlBase}/incident?username=${username}&title=${title}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -61,6 +63,41 @@ class IncidentStore {
         })
         const newPaginatedIncidentList = this.paginatedIncident.content!!.filter((item) => item.title !== title)
         this.updateIncidentList(newPaginatedIncidentList)
+    }
+    async solveSilution(locality: string, incidentId: string, solution:string) {
+              const response = await fetch(`${urlBase}/users/solve/incidence?username=${locality}&incidentId=${incidentId}&solution=${solution}`,{
+            method: 'PUT',
+       
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        if (response.ok) {
+            toast.success('Se ha actualizado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+            setTimeout(function(){
+                window.location.reload();
+             }, 1500);
+        } else {
+            toast.error('No se ha actualizado', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        }
     }
 }
 

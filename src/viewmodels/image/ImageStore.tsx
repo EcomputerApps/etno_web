@@ -1,8 +1,9 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { Image, PaginatedImages } from '../../models/section/Section'
+import { urlBase } from "../../utils/global";
 
 class ImageStore {
-    serverIp : string = "192.168.137.1"
+    serverIp: string = "192.168.137.1"
     static imageStore: ImageStore
 
     static getImageStore(){
@@ -38,10 +39,11 @@ class ImageStore {
         this.paginateImages = paginateImages
     }
     async getRequestImages(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/images?locality=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/images/paginated?locality=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const iamges = await response.json()
+        console.log(iamges)
         this.updatePaginateImages(iamges)
     }
 
@@ -50,7 +52,7 @@ class ImageStore {
         let data = new FormData()
         data.append('image', file)
 
-        const request = await fetch(`http://${this.serverIp}:8080/images?section=${section}&category=${category}&username=${locality}`, {
+        const request = await fetch(`${urlBase}/images?section=${section}&category=${category}&username=${locality}`, {
             method: 'POST',
             body: data
         })

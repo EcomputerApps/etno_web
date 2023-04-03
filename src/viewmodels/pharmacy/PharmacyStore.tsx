@@ -1,11 +1,12 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { toast } from "react-toastify";
 import { Pharmacy, PaginatedPharmacy, PharmacyOnDuty } from "../../models/section/Section";
+import { urlBase } from "../../utils/global";
 import ImageStore from "../image/ImageStore";
 const imageStore = ImageStore.getImageStore()
 
 class PharmacyStore {
-    serverIp : string = "192.168.137.1"
+    serverIp: string = "192.168.241.51"
     static pharmacyStore: PharmacyStore
 
     static getPharmacyStore() {
@@ -19,25 +20,66 @@ class PharmacyStore {
     paginatedPharmacy: PaginatedPharmacy = {}
     pharmacy: Pharmacy = {}
     pharmacyOnDutyList: PharmacyOnDuty = {}
-  
+    selector: number = 0
+    modalCreate: boolean = false
+    modalEdit: boolean = false
+    modalCalendar: boolean = false
+
+
     constructor() {
         makeObservable(this, {
+            modalEdit: observable,
+            modalCreate: observable,
+            modalCalendar: observable,
+            selector: observable,
+            setModalCreate: action,
+            getModalEdit: computed,
+            setModalCalendar: action,
+            getModalCreate: computed,
             paginatedPharmacy: observable,
             pharmacyOnDutyList: observable,
-             updatePOD: action,
+            updatePOD: action,
             pharmacy: observable,
             updatePharmacy: action,
             getPharmacy: computed,
-            getRequestPharmacy: action,
+            getPaginatedPharmacyrequest: action,
+            getRequestPharmacyOnDuty:action,
             addRequestPharmacy: action,
             deletePharmacy: action,
             updatePaginatedPharmacy: action,
             updatePharmacyList: action,
+            setSelector: action,
             getPaginatedPharmacy: computed,
-            getPOD: computed
-
+            getPOD: computed,
+            getModalCalendar: computed,
+            getSelector: computed
         })
     }
+    setSelector(position: number) {
+        this.selector = position
+    }
+    get getSelector() {
+        return this.selector
+    }
+    setModalEdit(mode: boolean) {
+        this.modalEdit = mode
+    }
+    get getModalEdit() {
+        return this.modalEdit
+    }
+    setModalCreate(mode: boolean) {
+        this.modalCreate = mode
+    }
+    get getModalCalendar() {
+        return this.modalCalendar
+    }
+    setModalCalendar(mode: boolean) {
+        this.modalCalendar = mode
+    }
+    get getModalCreate() {
+        return this.modalCreate
+    }
+
     updatePOD(pharmacys: Pharmacy[]) {
         this.pharmacyOnDutyList.content = pharmacys
     }
@@ -61,67 +103,31 @@ class PharmacyStore {
         return this.pharmacy
     }
 
-    async editPharm(locality: string, pharmId: string, pharm: Pharmacy, file: File) {
-        if (file !== undefined) {
-            await imageStore.addImageAPI("Bolea", "farmacia", "farmacia", file!!)
-            pharm.imageUrl = imageStore.getImage.link
-        }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/pharmacy?username=${locality}&pharmacyId=${pharmId}`, {
-            method: 'PUT',
-            body: JSON.stringify(pharm),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        if (response.ok) {
-            toast.success('Se ha actualizado exitosamente', {
-                position: 'bottom-center',
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
-            toast.error('No se ha actualizado', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        }
-    }
 
-    async getRequestPharmacy(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedPharmacyrequest(locality: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/pharmacies/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const pharmacy = await response.json()
         this.updatePaginatedPharmacy(pharmacy)
     }
     async getRequestPharmacyOnDuty(locality: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/pharmacies?username=${locality}`, {
+        const response = await fetch(`${urlBase}/pharmacies?username=${locality}`, {
             method: 'GET'
         })
         const pharmacy = await response.json()
         this.updatePOD(pharmacy)
     }
-    
-    async deletePharmacy(username: string, name: string) {
-        const response = await fetch(`http://${this.serverIp}:8080/users/delete/pharmacy?username=${username}&name=${name}`, {
+
+    async deletePharmacy(username: string, idPharmacy: string) {
+        const response = await fetch(`${urlBase}/users/delete/pharmacy?username=${username}&idPharmacy=${idPharmacy}`, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
         if (response.ok) {
-            const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.name !== name)
+            const newPaginedPharmacy = this.paginatedPharmacy.content!!.filter((item) => item.idPharmacy !== idPharmacy)
             this.updatePharmacyList(newPaginedPharmacy)
             this.updatePOD(newPaginedPharmacy)
             this.updatePharmacy({})
@@ -150,21 +156,21 @@ class PharmacyStore {
 
     }
 
-    async editPharmacy(locality: string, pharmacyId: string, pharmacy: Pharmacy, file: File){
-        if (file !== undefined){
-            await imageStore.addImageAPI('Bolea', 'farmacia', 'farmacia', file)
+    async editPharmacy(locality: string, pharmacyId: string, pharmacy: Pharmacy, file: File) {
+        if (file !== undefined) {
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'farmacia', 'farmacia', file)
             pharmacy.imageUrl = imageStore.getImage.link
         }
-        const response = await fetch(`http://${this.serverIp}:8080/users/update/pharmacy?username=${locality}&pharmacyId=${pharmacyId}`, {
+        const response = await fetch(`${urlBase}/users/update/pharmacy?username=${locality}&pharmacyId=${pharmacyId}`, {
             method: 'PUT',
             body: JSON.stringify(pharmacy),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8'
             }
         })
-        if (response.ok){
+        if (response.ok) {
             toast.success('Se ha actualizado exitosamente', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -173,9 +179,12 @@ class PharmacyStore {
                 progress: undefined,
                 theme: 'light'
             })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
         } else {
             toast.error('No se ha actualizado', {
-                position: 'top-center',
+                position: 'bottom-center',
                 autoClose: 500,
                 hideProgressBar: false,
                 closeOnClick: false,
@@ -188,9 +197,9 @@ class PharmacyStore {
     }
 
     async addRequestPharmacy(username: string, pharmacy: Pharmacy, file: File) {
-        await imageStore.addImageAPI('Bolea', 'farmacia', 'farmacia', file)
+        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'farmacia', 'farmacia', file)
         pharmacy.imageUrl = imageStore.getImage.link
-        const response = await fetch(`http://${this.serverIp}:8080/users/add/pharmacy?username=${username}`, {
+        const response = await fetch(`${urlBase}/users/add/pharmacy?username=${username}`, {
             method: 'POST',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -211,6 +220,9 @@ class PharmacyStore {
                 progress: undefined,
                 theme: "light"
             })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
         } else {
             toast.error('No se ha añadido correctamente', {
                 position: 'bottom-center',
