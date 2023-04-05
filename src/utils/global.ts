@@ -1,6 +1,6 @@
 import Resizer from 'react-image-file-resizer'
 
-export const urlBase: string = 'http://192.168.137.1:8080';
+export const urlBase: string = 'https://etnoapp2-42ec3.lm.r.appspot.com/';
 
 export const resizeFile = (file: File) => new Promise<any>((resolve) => {
     Resizer.imageFileResizer(
