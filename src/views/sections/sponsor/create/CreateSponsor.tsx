@@ -64,7 +64,7 @@ const CreateSponsor = () => {
       })
     } else {
       chekIfEmpty()
-      if (sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" || file === undefined || sponsorTel.length < 9){
+      if (sponsorTitle === "" || sponsorDescription === "" || sponsorTel === ""|| sponsorTel.length < 9){
         toast.error('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 1000,

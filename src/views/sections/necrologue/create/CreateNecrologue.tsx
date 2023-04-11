@@ -62,7 +62,7 @@ const CreateNecrologue = () => {
       })
     } else {
       chekIfEmpty()
-      if (necroName === "" || necroDate === "" || necroDescription === "" || file === undefined) {
+      if (necroName === "" || necroDate === "" || necroDescription === "") {
         toast.info('Rellene todos los campos', {
           position: 'bottom-center',
           autoClose: 1000,

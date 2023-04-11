@@ -45,7 +45,7 @@ const CreateAdvert = () => {
         }
         
             checkIfEmpty()
-           if (advertTitle === '' || advertDescription === '' || advertLink === '' || file === undefined) {
+           if (advertTitle === '' || advertDescription === '' || advertLink === '') {
                 toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 500,

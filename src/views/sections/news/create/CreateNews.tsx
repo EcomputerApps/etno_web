@@ -60,7 +60,7 @@ async function addNews(e: any) {
     }
     
       chekIfEmpty()
-      if (newsCategory === '' || newsTitle === '' || newsDate === '' || file === undefined) {
+      if (newsCategory === '' || newsTitle === '' || newsDate === '') {
         toast.error('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 1000,

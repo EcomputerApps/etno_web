@@ -86,7 +86,7 @@ const CreateTourism = () => {
       })
     } else {
       checkIfEmpty()
-     if (tourismType === '' || tourism.title === '' || tourism.description === '' || long === 0 || lat === 0 || file === undefined) {
+     if (tourismType === '' || tourism.title === '' || tourism.description === '' || long === 0 || lat === 0) {
         toast.error('Rellene los campos vacíos', {
           position: 'bottom-center',
           autoClose: 500,

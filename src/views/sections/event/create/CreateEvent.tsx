@@ -104,7 +104,7 @@ const CreateEvent = () => {
         eventTitle === '' || eventDirection === '' || eventDescription === ''
           || eventOrganization === '' || eventPrice === ''
           || eventSeats === '' || eventLink === '' || eventDateStart === ''
-          || eventDateFin === '' || file === undefined || eventDateStart.localeCompare(eventDateFin) === 1 ?
+          || eventDateFin === ''|| eventDateStart.localeCompare(eventDateFin) === 1 ?
 
           toast.error('Rellene los campos correcto', {
             position: 'bottom-center',

@@ -54,7 +54,7 @@ const CreateBand = () => {
       description: bandDescription,
     }
       chekIfEmpty()
-    if (bandTitle === "" || bandDescription === "" || file === undefined){
+    if (bandTitle === "" || bandDescription === ""){
         toast.error('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 1000,
