@@ -71,7 +71,7 @@ const Home = () => {
     <div className="flex">
       <div
         className={` ${sideBarStore.getPanel.open ? "w-72" : "w-24"
-          } bg-indigo-800 lg:h-screen h-full p-5  pt-8 relative duration-300 `}
+          } bg-indigo-800 h-full p-5  pt-8 relative duration-300 `}
       >
         <img
           src={arrowLogo}
