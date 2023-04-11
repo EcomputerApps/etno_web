@@ -72,8 +72,8 @@ async function addNews(e: any) {
           theme: "light"
         })
       } else {
-        const imageFile = await resizeFile(file!!)
-        newsStore.addRequestNews(localStorage.getItem('user_etno_locality')!, news, imageFile)
+        //const imageFile = await resizeFile(file!!)
+        newsStore.addRequestNews(localStorage.getItem('user_etno_locality')!, news)
         sideBarStore.updateSection('Noticias')
          hoverSectionStore.setName('Noticias')
       }
@@ -82,7 +82,6 @@ async function addNews(e: any) {
   function chekIfEmpty() {
     newsCategory === "" ? setEmptyCategory(true) : setEmptyCategory(false)
     newsTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
-    file === undefined ? setEmptyFile(true) : setEmptyFile(false)
     newsDate === "" ? setEmptyDate(true) : setEmptyDate(false)
     newsDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
   }
@@ -201,7 +200,6 @@ async function addNews(e: any) {
                   accept=".png, .JPG, .jpg, .gif, .jpeg"
                   onChange={(value) => {
                     setFile(value.currentTarget.files!![0])
-                    setEmptyFile(false)
                   }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                   <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

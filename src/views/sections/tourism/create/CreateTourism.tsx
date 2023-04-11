@@ -98,8 +98,8 @@ const CreateTourism = () => {
           theme: 'light'
         })
        } else {
-        const imageFile = await resizeFile(file!!);
-        tourismStore.addRequestTourism(localStorage.getItem('user_etno_locality')!, tourism, imageFile); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
+        //const imageFile = await resizeFile(file!!);
+        tourismStore.addRequestTourism(localStorage.getItem('user_etno_locality')!, tourism); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
        }  
     }
   }
@@ -108,7 +108,6 @@ const CreateTourism = () => {
     tourismType === "" ? setEmptyType(true) : setEmptyType(false)
     tourismTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
     tourismDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-    file === undefined ? setEmptyFile(true) : setEmptyFile(false)
     lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
     long === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
   }

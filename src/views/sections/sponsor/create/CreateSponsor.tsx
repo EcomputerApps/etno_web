@@ -76,15 +76,14 @@ const CreateSponsor = () => {
           theme: "light"
         }) 
       } else {
-        const imageFile = await resizeFile(file!!);
-        sponsorStore.addRequestSponsor(localStorage.getItem('user_etno_locality')!, sponsor, imageFile); sideBarStore.updateSection('Patrocinadores'); hoverSectionStore.setName('Patrocinadores')
+        //const imageFile = await resizeFile(file!!);
+        sponsorStore.addRequestSponsor(localStorage.getItem('user_etno_locality')!, sponsor); sideBarStore.updateSection('Patrocinadores'); hoverSectionStore.setName('Patrocinadores')
       }
     }
   }
 
   function chekIfEmpty() {
     sponsorTitle === "" ? setEmptyName(true) : setEmptyName(false)
-    file === undefined ? setEmptyFile(true) : setEmptyFile(false)
     sponsorTel === "" ? setEmptyTel(true) : setEmptyTel(false)
     sponsorTel.length < 9 ? setEmptyTel(true) : setEmptyTel(false)
     sponsorDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
@@ -180,7 +179,6 @@ const CreateSponsor = () => {
               <form id="form-file-upload" className=" w-full flex justify-center">
                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
                   setFile(e.currentTarget.files!![0])
-                  setEmptyFile(false)
                 }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                   <div className="flex m-auto flex-col items-center font-normal text-gray-400 text-xl">
