@@ -286,7 +286,7 @@ class ReserveStore {
         const pagPlaces = await response.json()
         this.updatePaginatedPlaces(pagPlaces)
     }
-    async addRequestPlace(username: string, place: Place, file: File) {
+    async addRequestPlace(username: string, place: Place, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "lugar", "lugar", file!!)
             place.imageUrl = imageStore.getImage.link
