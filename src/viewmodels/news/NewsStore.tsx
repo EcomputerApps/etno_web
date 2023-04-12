@@ -159,7 +159,7 @@ class NewsStore{
           })
     }
 }
-    async editNews(locality: string, newsId: string, news: News, file: File){
+    async editNews(locality: string, newsId: string, news: News, file?: File){
         if (file !== undefined){
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'noticia', 'noticia', file!!)
             news.imageUrl = imageStore.getImage.link

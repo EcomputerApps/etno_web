@@ -195,7 +195,7 @@ class ServiceStore {
             })
         }
     }
-    async editService(locality: string, serviceID: string, service: Service, file: File) {
+    async editService(locality: string, serviceID: string, service: Service, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file!!)
             service.imageUrl = imageStore.getImage.link

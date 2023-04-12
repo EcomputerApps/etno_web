@@ -121,8 +121,8 @@ const EditEvent = () => {
               startDate: eventDateStart,
               endDate: eventDateFin
             }
-            const imageFile = await resizeFile(file!!);
-            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, imageFile)
+            //const imageFile = await resizeFile(file!!);
+            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_)
             sideBarStore.updateSection('Eventos')
             hoverSectionStore.setName('Eventos')
           }
@@ -159,8 +159,8 @@ const EditEvent = () => {
               startDate: eventDateStart,
               endDate: eventDateFin
             }
-            const imageFile = await resizeFile(file!!);
-            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, imageFile)
+            //const imageFile = await resizeFile(file!!);
+            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_)
             sideBarStore.updateSection('Eventos')
             hoverSectionStore.setName('Eventos')
           }

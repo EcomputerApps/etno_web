@@ -103,8 +103,8 @@ const EditService = () => {
                     schedule: serviceSchedule,
                     imageUrl: service.imageUrl
                 }
-                const imageFile = await resizeFile(file!!);
-                serviceStore.editService(localStorage.getItem('user_etno_locality')!, serviceId, newService, imageFile); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
+                //const imageFile = await resizeFile(file!!);
+                serviceStore.editService(localStorage.getItem('user_etno_locality')!, serviceId, newService); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
             }
     }
 

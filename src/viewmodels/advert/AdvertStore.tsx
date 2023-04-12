@@ -130,7 +130,7 @@ class AdvertStore {
         }
     }
 
-    async editAdvert(locality: string, advertId: string, advert: Ad, file: File) {
+    async editAdvert(locality: string, advertId: string, advert: Ad, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
             advert.imageUrl =  imageStore.getImage.link

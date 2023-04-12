@@ -61,8 +61,8 @@ const EditAdvert = () => {
                     description: advertDescription,
                     webUrl: advertLink
                 }
-                const imageFile = await resizeFile(file!!)
-                advertStore.editAdvert(localStorage.getItem('user_etno_locality')!, advert.idAd!!, advert_, imageFile)
+                //const imageFile = await resizeFile(file!!)
+                advertStore.editAdvert(localStorage.getItem('user_etno_locality')!, advert.idAd!!, advert_)
                 sideBarStore.updateSection('Anuncios')
                 hoverSectionStore.setName('Anuncios')
             }
@@ -153,7 +153,7 @@ const EditAdvert = () => {
                                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg"
                                     onClick={() => setEmptyFile(true)} onChange={(value) => {
                                         setFile(value.currentTarget.files!![0])
-                                        setEmptyFile(false)
+                                        //setEmptyFile(false)
                                     }} />
                                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                     <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
