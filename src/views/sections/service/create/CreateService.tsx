@@ -77,7 +77,6 @@ const CreateService = () => {
     function chekIfEmpty() {
         serviceType === "" ? setEmptyType(true) : setEmptyType(false)
         serviceName === "" ? setEmptyName(true) : setEmptyName(false)
-        file === undefined ? setEmptyFile(true) : setEmptyFile(false)
         serviceWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
         serviceTel === "" ? setEmptyTel(true) : setEmptyTel(false)
         serviceShcedulMorningOne === "" ? setEmptyScheMorningOne(true) : setEmptyScheMorningOne(false)
@@ -101,7 +100,7 @@ const CreateService = () => {
             chekIfEmpty()
             if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
             serviceWebUrl === "" || serviceTel === "" || (serviceShcedulMorningOne === "" || serviceShcedulEvenOne === "" || serviceShcedulMorningTwo === "" || serviceShcedulEvenTwo === "") && serviceShcedulExtra === ""
-            || file === undefined){
+            ){
                 toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
@@ -113,8 +112,8 @@ const CreateService = () => {
                     theme: "light"
                 })
             } else {
-                const imageFile = await resizeFile(file!!);
-                serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service, imageFile); 
+                //const imageFile = await resizeFile(file!!);
+                serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service); 
                 sideBarStore.updateSection('Servicios'); 
                 hoverSectionStore.setName('Servicios')
             }
@@ -361,7 +360,6 @@ const CreateService = () => {
                             <form id="form-file-upload" className=" w-full flex justify-center">
                                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
                                     setFile(e.currentTarget.files!![0])
-                                    setEmptyFile(false)
                                 }} />
                                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                     <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

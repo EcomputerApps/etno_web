@@ -33,7 +33,6 @@ const CreateBand = () => {
   function chekIfEmpty() {
     bandTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
     bandDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-    file === undefined ? setEmptyFile(true) : setEmptyFile(false)
   }
 
   const inputRef = useRef<HTMLInputElement>(null)
@@ -54,7 +53,7 @@ const CreateBand = () => {
       description: bandDescription,
     }
       chekIfEmpty()
-    if (bandTitle === "" || bandDescription === "" || file === undefined){
+    if (bandTitle === "" || bandDescription === ""){
         toast.error('Rellene los campos', {
           position: 'bottom-center',
           autoClose: 1000,
@@ -66,8 +65,8 @@ const CreateBand = () => {
           theme: "light"
         }) 
       } else {
-        const imageFile = await resizeFile(file!!);
-        bandStore.addRequestBand(localStorage.getItem('user_etno_locality')!, bando, imageFile);
+        //const imageFile = await resizeFile(file!!);
+        bandStore.addRequestBand(localStorage.getItem('user_etno_locality')!, bando);
         sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
       }
   }
@@ -146,7 +145,6 @@ const CreateBand = () => {
               <form id="form-file-upload" className=" w-full flex justify-center ">
                 <input type="file" id="input-file-upload" className="visibility: hidden" max={1} size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
                   setFile(value.currentTarget.files!![0])
-                  setEmptyFile(false)
                 }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                   <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

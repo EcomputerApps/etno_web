@@ -134,8 +134,8 @@ class SposnsorStore {
             })
         }
     }
-    async addRequestSponsor(username: string, sponsor: Sponsor, file: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'patrocinador', 'patrocinador', file)
+    async addRequestSponsor(username: string, sponsor: Sponsor, file?: File) {
+        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'patrocinador', 'patrocinador', file!!)
         sponsor.urlImage = imageStore.getImage.link
         const response = await fetch(`${urlBase}/users/add/sponsor?username=${username}`, {
             method: 'POST',
@@ -173,7 +173,7 @@ class SposnsorStore {
             })
         }
     }
-    async editSponsor(locality: string, sponsorId: string, sponsor: Sponsor, file: File) {
+    async editSponsor(locality: string, sponsorId: string, sponsor: Sponsor, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'patrocinador', 'patrocinador', file!!)
             sponsor.urlImage = imageStore.getImage.link

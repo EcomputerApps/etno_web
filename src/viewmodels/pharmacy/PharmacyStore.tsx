@@ -156,9 +156,9 @@ class PharmacyStore {
 
     }
 
-    async editPharmacy(locality: string, pharmacyId: string, pharmacy: Pharmacy, file: File) {
+    async editPharmacy(locality: string, pharmacyId: string, pharmacy: Pharmacy, file?: File) {
         if (file !== undefined) {
-            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'farmacia', 'farmacia', file)
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'farmacia', 'farmacia', file!!)
             pharmacy.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`${urlBase}/users/update/pharmacy?username=${locality}&pharmacyId=${pharmacyId}`, {
@@ -196,8 +196,8 @@ class PharmacyStore {
         }
     }
 
-    async addRequestPharmacy(username: string, pharmacy: Pharmacy, file: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'farmacia', 'farmacia', file)
+    async addRequestPharmacy(username: string, pharmacy: Pharmacy, file?: File) {
+        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'farmacia', 'farmacia', file!!)
         pharmacy.imageUrl = imageStore.getImage.link
         const response = await fetch(`${urlBase}/users/add/pharmacy?username=${username}`, {
             method: 'POST',

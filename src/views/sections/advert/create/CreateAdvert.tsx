@@ -45,7 +45,7 @@ const CreateAdvert = () => {
         }
         
             checkIfEmpty()
-           if (advertTitle === '' || advertDescription === '' || advertLink === '' || file === undefined) {
+           if (advertTitle === '' || advertDescription === '' || advertLink === '') {
                 toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 500,
@@ -57,8 +57,8 @@ const CreateAdvert = () => {
                     theme: "light"
                 })
              } else {
-                const imageFile = await resizeFile(file!!);
-                advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad, imageFile); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
+                //const imageFile = await resizeFile(file!!);
+                advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
              }
     }
 
@@ -66,7 +66,6 @@ const CreateAdvert = () => {
         advertLink === "" ? setEmptyLink(true) : setEmptyLink(false)
         advertTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
         advertDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-        file === undefined ? setEmptyFile(true) : setEmptyFile(false)
     }
 
     function checkIfExist(title: string) {
@@ -151,7 +150,6 @@ const CreateAdvert = () => {
                             <form id="form-file-upload" className=" w-full flex justify-center">
                                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
                                     setFile(value.currentTarget.files!![0])
-                                    setEmptyFile(false)
                                 }} />
                                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                     <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
