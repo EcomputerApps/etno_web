@@ -18,16 +18,24 @@ class ServiceStore {
 
     serviceTypes: Array<ServiceType> = [{
         "idServiceType": "checkOne",
-        "value": "Servicio",
-        "title": "Servicio",
+        "value": "Restaurantes",
+        "title": "Restaurantes",
     }, {
         "idServiceType": "checkTwo",
-        "value": "Salud",
-        "title": "Salud",
+        "value": "Hoteles",
+        "title": "Hoteles",
     }, {
         "idServiceType": "checkThree",
+        "value": "Salud",
+        "title": "Salud",
+    },{
+        "idServiceType": "checkFour",
         "value": "Ocio",
         "title": "Ocio",
+    },{
+        "idServiceType": "checkFive",
+        "value": "Otros",
+        "title": "Otros",
     }]
 
     //Observables =>
