@@ -160,7 +160,7 @@ const EditEvent = () => {
               endDate: eventDateFin
             }
             //const imageFile = await resizeFile(file!!);
-            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_)
+            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
             sideBarStore.updateSection('Eventos')
             hoverSectionStore.setName('Eventos')
           }
