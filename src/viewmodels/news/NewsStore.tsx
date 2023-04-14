@@ -117,9 +117,12 @@ class NewsStore{
      }
 
     async addRequestNews(locality: String, news: News, file?: File){
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'noticia', 'noticia', file!!)
-        news.imageUrl = imageStore.getImage.link
 
+        if (file !== null){ 
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'noticia', 'noticia', file!!)
+            news.imageUrl = imageStore.getImage.link
+        }
+        
         const response = await fetch(`${urlBase}/users/add/news?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(news),

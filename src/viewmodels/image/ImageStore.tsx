@@ -1,9 +1,8 @@
 import { makeObservable, action, computed, observable } from "mobx";
 import { Image, PaginatedImages } from '../../models/section/Section'
-import { urlBase } from "../../utils/global";
+import { resizeFile, urlBase } from "../../utils/global";
 
 class ImageStore {
-    serverIp: string = "192.168.137.1"
     static imageStore: ImageStore
 
     static getImageStore(){
@@ -50,7 +49,9 @@ class ImageStore {
 
     async addImageAPI(locality: string, section: string, category: string, file: File){
         let data = new FormData()
-        data.append('image', file)
+        const imageFile = await resizeFile(file!!)
+        
+        data.append('image', imageFile)
 
         const request = await fetch(`${urlBase}/images?section=${section}&category=${category}&username=${locality}`, {
             method: 'POST',
