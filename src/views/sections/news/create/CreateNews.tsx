@@ -73,7 +73,7 @@ async function addNews(e: any) {
         })
       } else {
         //const imageFile = await resizeFile(file!!)
-        newsStore.addRequestNews(localStorage.getItem('user_etno_locality')!, news)
+        newsStore.addRequestNews(localStorage.getItem('user_etno_locality')!, news, file!!)
         sideBarStore.updateSection('Noticias')
          hoverSectionStore.setName('Noticias')
       }
