@@ -117,7 +117,7 @@ const CreateEvent = () => {
             theme: 'light'
           }) : eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!)
       } else {
-        eventNew.reservePrice = 0
+        eventNew.reservePrice = 0.0
         checkIfEmpty()
         
         if (eventTitle === '' || eventDirection === '' || eventDescription === ''
