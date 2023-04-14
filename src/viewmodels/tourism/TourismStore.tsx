@@ -110,10 +110,12 @@ class TourismStore {
     }
 
     async addRequestTourism(locality: string, tourism: Tourism, file?: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'turismo', 'turismo', file!!)
 
+        if(file !== null){
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'turismo', 'turismo', file!!)
         tourism.imageUrl = imageStore.getImage.link
-
+        }
+        
         const response = await fetch(`${urlBase}/users/add/tourism?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(tourism),

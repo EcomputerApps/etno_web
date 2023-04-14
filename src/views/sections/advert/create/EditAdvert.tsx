@@ -62,7 +62,7 @@ const EditAdvert = () => {
                     webUrl: advertLink
                 }
                 //const imageFile = await resizeFile(file!!)
-                advertStore.editAdvert(localStorage.getItem('user_etno_locality')!, advert.idAd!!, advert_)
+                advertStore.editAdvert(localStorage.getItem('user_etno_locality')!, advert.idAd!!, advert_, file!!)
                 sideBarStore.updateSection('Anuncios')
                 hoverSectionStore.setName('Anuncios')
             }

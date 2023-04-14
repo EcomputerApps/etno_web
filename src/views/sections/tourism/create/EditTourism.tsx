@@ -106,7 +106,7 @@ const EditTourism = () => {
           imageUrl: tourism.imageUrl
         }
         //const imageFile = await resizeFile(file!!);
-        tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_)
+        tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, file!!)
         sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
       }
     }
