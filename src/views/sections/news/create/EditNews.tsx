@@ -68,7 +68,7 @@ const EditNews = () => {
           imageUrl: news.imageUrl
         }
         //const imageFile = await resizeFile(file!!)
-        newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_)
+        newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_, file!!)
         sideBarStore.updateSection('Noticias')
         hoverSectionStore.setName('Noticias')
       }

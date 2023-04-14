@@ -165,8 +165,12 @@ class ServiceStore {
         }
     }
     async addRequestService(username: string, service: Service, file?: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file!!)
+        
+        if(file!==null){
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file!!)
         service.imageUrl = imageStore.getImage.link
+        }
+        
         const response = await fetch(`${urlBase}/users/add/service?username=${username}`, {
             method: 'POST',
             headers: {

@@ -104,7 +104,7 @@ const EditService = () => {
                     imageUrl: service.imageUrl
                 }
                 //const imageFile = await resizeFile(file!!);
-                serviceStore.editService(localStorage.getItem('user_etno_locality')!, serviceId, newService); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
+                serviceStore.editService(localStorage.getItem('user_etno_locality')!, serviceId, newService, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
             }
     }
 

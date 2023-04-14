@@ -58,7 +58,7 @@ const CreateAdvert = () => {
                 })
              } else {
                 //const imageFile = await resizeFile(file!!);
-                advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
+                advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad, file!!); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
              }
     }
 

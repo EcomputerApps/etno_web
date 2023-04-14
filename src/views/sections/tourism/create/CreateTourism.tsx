@@ -99,7 +99,7 @@ const CreateTourism = () => {
         })
        } else {
         //const imageFile = await resizeFile(file!!);
-        tourismStore.addRequestTourism(localStorage.getItem('user_etno_locality')!, tourism); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
+        tourismStore.addRequestTourism(localStorage.getItem('user_etno_locality')!, tourism, file!!); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
        }  
     }
   }

@@ -76,8 +76,12 @@ class EventStore {
     }
 
     async addRequestEvent(locality: string, event: Event, file?: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'evento', 'evento', file!!)
-        event.imageUrl = imageStore.getImage.link
+        
+        if(file!==null){
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'evento', 'evento', file!!)
+            event.imageUrl = imageStore.getImage.link
+        }
+        
         const response = await fetch(`${urlBase}/users/add/event?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(event),

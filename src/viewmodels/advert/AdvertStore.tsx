@@ -90,9 +90,11 @@ class AdvertStore {
     }
 
     async addRequestAdvert(locality: string, ad: Ad, file?: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
+        if(file !== null){
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
         ad.imageUrl = imageStore.getImage.link
-
+        }
+        
         const response = await fetch(`${urlBase}/users/add/ad?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(ad),
