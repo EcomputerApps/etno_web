@@ -220,8 +220,7 @@ const CreatePharmacy = () => {
                     pharmacy.durationDays = 0
                     pharmacy.frequencyInDays = 0
                 }
-                //const imageFile = await resizeFile(file!!);
-                pharmacyStore.addRequestPharmacy(localStorage.getItem('user_etno_locality')!, pharmacy); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
+                pharmacyStore.addRequestPharmacy(localStorage.getItem('user_etno_locality')!, pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
             }
     }
 

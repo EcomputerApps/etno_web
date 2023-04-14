@@ -76,8 +76,7 @@ const CreatePlace = () => {
                     theme: "light"
                 })
             } else {
-                //const imageFile = await resizeFile(file!!);
-                reserveStore.addRequestPlace(localStorage.getItem('user_etno_locality')!, newPlace);
+                reserveStore.addRequestPlace(localStorage.getItem('user_etno_locality')!, newPlace, file!!);
                 reserveStore.updateHallList([])
                 sideBarStore.updateSection('Reservas');
                 hoverSectionStore.setName('Reservas')

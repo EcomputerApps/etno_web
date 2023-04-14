@@ -65,8 +65,7 @@ const CreateBand = () => {
           theme: "light"
         }) 
       } else {
-        //const imageFile = await resizeFile(file!!);
-        bandStore.addRequestBand(localStorage.getItem('user_etno_locality')!, bando);
+        bandStore.addRequestBand(localStorage.getItem('user_etno_locality')!, bando, file!!);
         sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
       }
   }

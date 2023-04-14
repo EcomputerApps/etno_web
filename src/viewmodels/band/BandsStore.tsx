@@ -173,8 +173,11 @@ class BandStore {
         }
     }
     async addRequestBand(username: string, bando: Band, file?: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'bando', 'bando', file!!)
-        bando.imageUrl = imageStore.getImage.link
+        if (file !== undefined) {
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'bando', 'bando', file!!)
+            bando.imageUrl = imageStore.getImage.link
+        }
+        
         const response = await fetch(`${urlBase}/users/add/bando?username=${username}`, {
             method: 'POST',
             headers: {

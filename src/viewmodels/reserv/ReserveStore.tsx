@@ -6,7 +6,6 @@ import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
 class ReserveStore {
-    serverIp: string = "192.168.241.51"
     static reserveStore: ReserveStore
 
     static getReserveStore() {
