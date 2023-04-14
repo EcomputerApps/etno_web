@@ -77,7 +77,7 @@ const CreateSponsor = () => {
         }) 
       } else {
         //const imageFile = await resizeFile(file!!);
-        sponsorStore.addRequestSponsor(localStorage.getItem('user_etno_locality')!, sponsor); sideBarStore.updateSection('Patrocinadores'); hoverSectionStore.setName('Patrocinadores')
+        sponsorStore.addRequestSponsor(localStorage.getItem('user_etno_locality')!, sponsor, file!!); sideBarStore.updateSection('Patrocinadores'); hoverSectionStore.setName('Patrocinadores')
       }
     }
   }

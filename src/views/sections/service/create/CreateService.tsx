@@ -113,7 +113,7 @@ const CreateService = () => {
                 })
             } else {
                 //const imageFile = await resizeFile(file!!);
-                serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service); 
+                serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service, file!!); 
                 sideBarStore.updateSection('Servicios'); 
                 hoverSectionStore.setName('Servicios')
             }

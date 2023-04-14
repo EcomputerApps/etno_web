@@ -74,7 +74,7 @@ const CreateNecrologue = () => {
           theme: "light"
         }) } else {
         //const imageFile = await resizeFile(file!!);
-        necroStore.addRequestNecro(localStorage.getItem('user_etno_locality')!, necro); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
+        necroStore.addRequestNecro(localStorage.getItem('user_etno_locality')!, necro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
         }
     }
   }
