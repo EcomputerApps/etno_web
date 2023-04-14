@@ -117,7 +117,7 @@ const CreateEvent = () => {
             theme: 'light'
           }) : eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!)
       } else {
-        eventNew.reservePrice = 0.0
+        eventNew.reservePrice = 0
         checkIfEmpty()
         
         if (eventTitle === '' || eventDirection === '' || eventDescription === ''
@@ -136,7 +136,7 @@ const CreateEvent = () => {
           }) 
         } else { 
           //const imageFile = await resizeFile(file!!);
-          eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
+          eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
           }
       }
   
@@ -286,7 +286,7 @@ const CreateEvent = () => {
               placeholder="0,00" decimalsLimit={2} onValueChange={(value, name) => console.log(value, name)}
               onInput={(e) => (e.currentTarget.value = e.currentTarget.value.replace(/^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/, ""),
                 e.currentTarget.value = e.currentTarget.value.replace(/[^-,0-9]/, ""))} onChange={(value) => {
-                  setEventPrice(value.currentTarget.value)
+                  setEventPrice(value.currentTarget.value.replace(',', '.'))
                   console.log(eventPrice)
                 }} onKeyDown={(e) => {
                   if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
