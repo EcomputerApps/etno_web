@@ -166,7 +166,7 @@ class ServiceStore {
     }
     async addRequestService(username: string, service: Service, file?: File) {
         
-        if(file!==null){
+        if(file!==undefined){
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file!!)
         service.imageUrl = imageStore.getImage.link
         }

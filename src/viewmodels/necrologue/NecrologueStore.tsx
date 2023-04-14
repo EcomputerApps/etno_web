@@ -138,7 +138,7 @@ class NecrologueStore {
     }
     async addRequestNecro(username: string, necrologue: Necrologue, file?: File) {
         
-        if(file!==null){
+        if(file!==undefined){
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'muerte', 'muerte', file!!)
         necrologue.imageUrl = imageStore.getImage.link
         }

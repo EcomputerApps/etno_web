@@ -118,7 +118,7 @@ class NewsStore{
 
     async addRequestNews(locality: String, news: News, file?: File){
 
-        if (file !== null){ 
+        if (file !== undefined){ 
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'noticia', 'noticia', file!!)
             news.imageUrl = imageStore.getImage.link
         }
