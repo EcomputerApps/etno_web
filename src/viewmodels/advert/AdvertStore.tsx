@@ -89,10 +89,12 @@ class AdvertStore {
         return this.advert
     }
 
-    async addRequestAdvert(locality: string, ad: Ad, file: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
+    async addRequestAdvert(locality: string, ad: Ad, file?: File) {
+        if(file !== undefined){
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
         ad.imageUrl = imageStore.getImage.link
-
+        }
+        
         const response = await fetch(`${urlBase}/users/add/ad?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(ad),
@@ -130,7 +132,7 @@ class AdvertStore {
         }
     }
 
-    async editAdvert(locality: string, advertId: string, advert: Ad, file: File) {
+    async editAdvert(locality: string, advertId: string, advert: Ad, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
             advert.imageUrl =  imageStore.getImage.link

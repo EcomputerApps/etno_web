@@ -62,7 +62,7 @@ const CreateNecrologue = () => {
       })
     } else {
       chekIfEmpty()
-      if (necroName === "" || necroDate === "" || necroDescription === "" || file === undefined) {
+      if (necroName === "" || necroDate === "" || necroDescription === "") {
         toast.info('Rellene todos los campos', {
           position: 'bottom-center',
           autoClose: 1000,
@@ -73,8 +73,8 @@ const CreateNecrologue = () => {
           progress: undefined,
           theme: "light"
         }) } else {
-        const imageFile = await resizeFile(file!!);
-        necroStore.addRequestNecro(localStorage.getItem('user_etno_locality')!, necro, imageFile); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
+        //const imageFile = await resizeFile(file!!);
+        necroStore.addRequestNecro(localStorage.getItem('user_etno_locality')!, necro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
         }
     }
   }
@@ -83,7 +83,6 @@ const CreateNecrologue = () => {
     necroName === "" ? setEmptyName(true) : setEmptyName(false)
     necroDate === "" ? setEmptyDate(true) : setEmptyDate(false)
     necroDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-    file === undefined ? setEmptyFile(true) : setEmptyFile(false)
   }
 
   return (
@@ -175,7 +174,6 @@ const CreateNecrologue = () => {
               <form id="form-file-upload" className=" w-full flex justify-center">
                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
                   setFile(value.currentTarget.files!![0])
-                  setEmptyFile(false)
                 }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                   <div className="flex m-auto flex-col items-center font-normal text-gray-400 text-xl">

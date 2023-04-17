@@ -83,7 +83,7 @@ class BandStore {
         return this.band
     }
 
-    async editBand(locality: string, bandId: string, band: Band, file: File) {
+    async editBand(locality: string, bandId: string, band: Band, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "bando", "bando", file!!)
             band.imageUrl = imageStore.getImage.link
@@ -172,9 +172,12 @@ class BandStore {
             })
         }
     }
-    async addRequestBand(username: string, bando: Band, file: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'bando', 'bando', file)
-        bando.imageUrl = imageStore.getImage.link
+    async addRequestBand(username: string, bando: Band, file?: File) {
+        if (file !== undefined) {
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'bando', 'bando', file!!)
+            bando.imageUrl = imageStore.getImage.link
+        }
+        
         const response = await fetch(`${urlBase}/users/add/bando?username=${username}`, {
             method: 'POST',
             headers: {

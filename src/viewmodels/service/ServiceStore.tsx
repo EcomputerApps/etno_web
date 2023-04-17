@@ -18,16 +18,24 @@ class ServiceStore {
 
     serviceTypes: Array<ServiceType> = [{
         "idServiceType": "checkOne",
-        "value": "Servicio",
-        "title": "Servicio",
+        "value": "Restaurantes",
+        "title": "Restaurantes",
     }, {
         "idServiceType": "checkTwo",
-        "value": "Salud",
-        "title": "Salud",
+        "value": "Hoteles",
+        "title": "Hoteles",
     }, {
         "idServiceType": "checkThree",
+        "value": "Salud",
+        "title": "Salud",
+    },{
+        "idServiceType": "checkFour",
         "value": "Ocio",
         "title": "Ocio",
+    },{
+        "idServiceType": "checkFive",
+        "value": "Otros",
+        "title": "Otros",
     }]
 
     //Observables =>
@@ -156,9 +164,13 @@ class ServiceStore {
             })
         }
     }
-    async addRequestService(username: string, service: Service, file: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file)
+    async addRequestService(username: string, service: Service, file?: File) {
+        
+        if(file!==undefined){
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file!!)
         service.imageUrl = imageStore.getImage.link
+        }
+        
         const response = await fetch(`${urlBase}/users/add/service?username=${username}`, {
             method: 'POST',
             headers: {
@@ -195,7 +207,7 @@ class ServiceStore {
             })
         }
     }
-    async editService(locality: string, serviceID: string, service: Service, file: File) {
+    async editService(locality: string, serviceID: string, service: Service, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'servicio', 'servicio', file!!)
             service.imageUrl = imageStore.getImage.link

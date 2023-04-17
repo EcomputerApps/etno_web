@@ -67,8 +67,8 @@ const EditNews = () => {
           publicationDate: newsDate,
           imageUrl: news.imageUrl
         }
-        const imageFile = await resizeFile(file!!)
-        newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_, imageFile)
+        //const imageFile = await resizeFile(file!!)
+        newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_, file!!)
         sideBarStore.updateSection('Noticias')
         hoverSectionStore.setName('Noticias')
       }
@@ -192,7 +192,7 @@ const EditNews = () => {
               <form id="form-file-upload" className=" w-full flex justify-center ">
                 <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
                   setFile(value.currentTarget.files!![0])
-                  setEmptyFile(false)
+                  //setEmptyFile(false)
                 }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                   <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

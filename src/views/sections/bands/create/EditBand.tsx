@@ -61,8 +61,7 @@ const EditBand = () => {
           title: bandTitle,
           description: bandDescription,
         }
-        const imageFile = await resizeFile(file!!);
-        bandStore.editBand(localStorage.getItem('user_etno_locality')!, bandId, bando, imageFile)
+        bandStore.editBand(localStorage.getItem('user_etno_locality')!, bandId, bando, file!!)
       sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
       }
   }

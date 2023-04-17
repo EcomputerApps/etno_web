@@ -64,7 +64,7 @@ const CreatePlace = () => {
         }
       
             chekIfEmpty()
-            if (placeName === "" || lat === 0 || long === 0 || file === undefined || reserveStore.getHallList?.length === 0 || reserveStore.getHallList!![0].name === "") {
+            if (placeName === "" || lat === 0 || long === 0 || reserveStore.getHallList?.length === 0 || reserveStore.getHallList!![0].name === "") {
                 toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
@@ -76,8 +76,7 @@ const CreatePlace = () => {
                     theme: "light"
                 })
             } else {
-                const imageFile = await resizeFile(file!!);
-                reserveStore.addRequestPlace(localStorage.getItem('user_etno_locality')!, newPlace, imageFile);
+                reserveStore.addRequestPlace(localStorage.getItem('user_etno_locality')!, newPlace, file!!);
                 reserveStore.updateHallList([])
                 sideBarStore.updateSection('Reservas');
                 hoverSectionStore.setName('Reservas')
@@ -92,7 +91,7 @@ const CreatePlace = () => {
     function chekIfEmpty() {
         placeName === "" ? setEmptyName(true) : setEmptyName(false)
         reserveStore.getHallList?.length === 0 || reserveStore.getHallList === undefined ? setEmptyHalls(true) : setEmptyHalls(false)
-        file === undefined ? setEmptyFile(true) : setEmptyFile(false)
+        //file === undefined ? setEmptyFile(true) : setEmptyFile(false)
         long === 0 || lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
     }
 
@@ -143,7 +142,7 @@ const CreatePlace = () => {
                         <form id="form-file-upload" className=" w-full flex justify-center">
                             <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
                                 setFile(e.currentTarget.files!![0])
-                                setEmptyFile(false)
+                                //setEmptyFile(false)
                             }} />
                             <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                 <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

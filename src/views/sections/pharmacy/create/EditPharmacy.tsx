@@ -282,8 +282,8 @@ const EditPharmacy = () => {
                     pharmacy_.durationDays = 0
                     pharmacy_.frequencyInDays = 0
                 }
-                const imageFile = await resizeFile(file!!);
-                pharmacyStore.editPharmacy(localStorage.getItem('user_etno_locality')!, pharmaciId, pharmacy_, imageFile)
+            
+                pharmacyStore.editPharmacy(localStorage.getItem('user_etno_locality')!, pharmaciId, pharmacy_, file!!)
                 sideBarStore.updateSection('Farmacias')
                 hoverSectionStore.setName('Farmacias')
         }

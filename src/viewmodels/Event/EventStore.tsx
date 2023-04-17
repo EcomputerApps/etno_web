@@ -75,9 +75,13 @@ class EventStore {
         return this.modalCreate
     }
 
-    async addRequestEvent(locality: string, event: Event, file: File) {
-        await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'evento', 'evento', file!!)
-        event.imageUrl = imageStore.getImage.link
+    async addRequestEvent(locality: string, event: Event, file?: File) {
+        
+        if(file !== undefined){
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'evento', 'evento', file!!)
+            event.imageUrl = imageStore.getImage.link
+        }
+        
         const response = await fetch(`${urlBase}/users/add/event?username=${locality}`, {
             method: 'POST',
             body: JSON.stringify(event),
@@ -115,7 +119,7 @@ class EventStore {
         }
     }
 
-    async editEvent(locality: string, eventId: string, event: Event, file: File) {
+    async editEvent(locality: string, eventId: string, event: Event, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'evento', 'evento', file!!)
             event.imageUrl = imageStore.getImage.link

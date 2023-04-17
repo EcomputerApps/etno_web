@@ -78,8 +78,8 @@ const EditSponsor = () => {
                     description: sponsorDescription,
                     phone: sponsorTel,
                 }
-                const imageFile = await resizeFile(file!!);
-                sponsorStore.editSponsor(localStorage.getItem('user_etno_locality')!, sponsorId, newSponsor, imageFile)
+                //const imageFile = await resizeFile(file!!);
+                sponsorStore.editSponsor(localStorage.getItem('user_etno_locality')!, sponsorId, newSponsor, file!!)
                 sideBarStore.updateSection('Patrocinadores')
                 hoverSectionStore.setName('Patrocinadores')
             }

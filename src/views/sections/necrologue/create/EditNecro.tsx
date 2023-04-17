@@ -80,8 +80,8 @@ const EditNecrologue = () => {
           description: necroDescription,
           imageUrl: necro.imageUrl
         }
-        const imageFile = await resizeFile(file!!);
-        necroStore.editNecro(localStorage.getItem('user_etno_locality')!, necroId, newNecro, imageFile); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
+        //const imageFile = await resizeFile(file!!);
+        necroStore.editNecro(localStorage.getItem('user_etno_locality')!, necroId, newNecro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
       }
     }
   }

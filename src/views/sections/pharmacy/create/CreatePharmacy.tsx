@@ -73,7 +73,6 @@ const CreatePharmacy = () => {
     function chekIfEmpty() {
         pharmType === "" ? setEmptyType(true) : setEmptyType(false)
         pharmacyName === "" ? setEmptyName(true) : setEmptyName(false)
-        file === undefined ? setEmptyFile(true) : setEmptyFile(false)
         pharmacyWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
         pharmacyTel === "" ? setEmptyTel(true) : setEmptyTel(false)
         pharmacyDirection === "" ? setEmptyDescription(true) : setEmptyDescription(false)
@@ -203,7 +202,7 @@ const CreatePharmacy = () => {
             if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
                 pharmacyTel === "" || pharmacySchedule === "" || pharmacyDirection === "" ||
                 (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === "" ||
-                long === 0 || lat === 0 || file === undefined) {
+                long === 0 || lat === 0) {
                 toast.error('Rellene los campos', {
                     position: 'bottom-center',
                     autoClose: 1000,
@@ -221,8 +220,7 @@ const CreatePharmacy = () => {
                     pharmacy.durationDays = 0
                     pharmacy.frequencyInDays = 0
                 }
-                const imageFile = await resizeFile(file!!);
-                pharmacyStore.addRequestPharmacy(localStorage.getItem('user_etno_locality')!, pharmacy, imageFile); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
+                pharmacyStore.addRequestPharmacy(localStorage.getItem('user_etno_locality')!, pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
             }
     }
 
@@ -424,7 +422,6 @@ const CreatePharmacy = () => {
                         <form id="form-file-upload" className=" w-full flex justify-center">
                             <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
                                 setFile(e.currentTarget.files!![0])
-                                setEmptyFile(false)
                             }} />
                             <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                                 <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">

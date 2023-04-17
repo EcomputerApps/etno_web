@@ -6,7 +6,6 @@ import ImageStore from "../image/ImageStore";
 
 const imageStore = ImageStore.getImageStore()
 class ReserveStore {
-    serverIp: string = "192.168.241.51"
     static reserveStore: ReserveStore
 
     static getReserveStore() {
@@ -286,7 +285,7 @@ class ReserveStore {
         const pagPlaces = await response.json()
         this.updatePaginatedPlaces(pagPlaces)
     }
-    async addRequestPlace(username: string, place: Place, file: File) {
+    async addRequestPlace(username: string, place: Place, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "lugar", "lugar", file!!)
             place.imageUrl = imageStore.getImage.link

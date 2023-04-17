@@ -121,8 +121,8 @@ const EditEvent = () => {
               startDate: eventDateStart,
               endDate: eventDateFin
             }
-            const imageFile = await resizeFile(file!!);
-            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, imageFile)
+            //const imageFile = await resizeFile(file!!);
+            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
             sideBarStore.updateSection('Eventos')
             hoverSectionStore.setName('Eventos')
           }
@@ -159,8 +159,8 @@ const EditEvent = () => {
               startDate: eventDateStart,
               endDate: eventDateFin
             }
-            const imageFile = await resizeFile(file!!);
-            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, imageFile)
+            //const imageFile = await resizeFile(file!!);
+            eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
             sideBarStore.updateSection('Eventos')
             hoverSectionStore.setName('Eventos')
           }
@@ -297,18 +297,19 @@ const EditEvent = () => {
               <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <span className="text-gray-500 sm:text-sm mt-1">€</span>
               </div>
-              <CurrencyInput defaultValue={eventPrice} disabled={!subscription} id="money" value={subscription ? eventPrice : 0} ref={inputRefPric} name="eventPrice" className="pl-7 mt-1 p-2 md:w-1/4 w-1/2 inputCamp peer disabled:bg-gray-200"
-                placeholder="0,00" decimalsLimit={2} onValueChange={(value, name) => console.log(value, name)}
-                onInput={(e) => (e.currentTarget.value = e.currentTarget.value.replace(/^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/, ""),
-                  e.currentTarget.value = e.currentTarget.value.replace(/[^-,0-9]/, ""))} onChange={(value) => {
-                    setEventPrice(value.currentTarget.value)
-                  }} onKeyDown={(e) => {
-                    if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
-                      if (inputRefSeat.current != null) {
-                        inputRefSeat.current.focus()
-                      }
+              <CurrencyInput ref={inputRefPric} disabled={!subscription} name="eventPrice" className="pl-7 mt-1 p-2 md:w-1/4 w-1/2 inputCamp peer disabled:bg-gray-200 disabled:text-gray-200  "
+              placeholder="0,00" decimalsLimit={2} onValueChange={(value, name) => console.log(value, name)}
+              onInput={(e) => (e.currentTarget.value = e.currentTarget.value.replace(/^[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$/, ""),
+                e.currentTarget.value = e.currentTarget.value.replace(/[^-,0-9]/, ""))} onChange={(value) => {
+                  setEventPrice(value.currentTarget.value.replace(',', '.'))
+                  console.log(eventPrice)
+                }} onKeyDown={(e) => {
+                  if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                    if (inputRefSeat.current != null) {
+                      inputRefSeat.current.focus()
                     }
-                  }} />
+                  }
+                }} />
               <label className={"labelFloatDate"}>Precio de reserva </label>
             </div>
           </div>

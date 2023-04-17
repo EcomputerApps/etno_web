@@ -105,8 +105,8 @@ const EditTourism = () => {
           latitude: String(lat),
           imageUrl: tourism.imageUrl
         }
-        const imageFile = await resizeFile(file!!);
-        tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, imageFile)
+        //const imageFile = await resizeFile(file!!);
+        tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, file!!)
         sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
       }
     }
@@ -116,7 +116,7 @@ const EditTourism = () => {
     tourismType === "" ? setEmptyType(true) : setEmptyType(false)
     tourismTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
     tourismDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-    file === undefined && tourism.imageUrl === '' ? setEmptyFile(true) : setEmptyFile(false)
+    //file === undefined && tourism.imageUrl === '' ? setEmptyFile(true) : setEmptyFile(false)
     lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
     long === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
   }
@@ -218,7 +218,7 @@ const EditTourism = () => {
                   onClick={() => setEmptyFile(true)} onChange={(e) => {
 
                     setFile(e.currentTarget.files!![0])
-                    setEmptyFile(false)
+                    //setEmptyFile(false)
                   }} />
                 <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
                   <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
