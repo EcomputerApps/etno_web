@@ -55,6 +55,7 @@ const EditPlace = () => {
     const [lat, setLat] = useState(Number(place.latitude!!))
     const [long, setLong] = useState(Number(place.longitude!!))
     const [file, setFile] = useState<File>()
+    const [image, setImage] = useState<String>(place.imageUrl!!)
     //-Palce camps getters/setters
     //+Check if camp is empty, if so mark that camp
     function chekIfEmpty() {
@@ -93,7 +94,8 @@ const EditPlace = () => {
                     name: placeName,
                     latitude: lat,
                     longitude: long,
-                    halls: reserveStore.getHallList
+                    halls: reserveStore.getHallList,
+                    imageUrl: place.imageUrl
                 }
                 reserveStore.editPlace(localStorage.getItem('user_etno_locality')!, placeId, newPlace, file!!)
                 reserveStore.updateHallList([]);

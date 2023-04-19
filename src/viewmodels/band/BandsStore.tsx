@@ -174,7 +174,7 @@ class BandStore {
     }
     async addRequestBand(username: string, bando: Band, file?: File) {
         if (file !== undefined) {
-            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'bando', 'bando', file!!)
+            await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "bando", "bando", file!!)
             bando.imageUrl = imageStore.getImage.link
         }
         
