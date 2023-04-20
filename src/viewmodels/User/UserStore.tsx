@@ -5,7 +5,6 @@ import { UserLogin } from "../../models/user/UserLogin";
 import { urlBase } from "../../utils/global";
 
 class UserStore {
-    serverIp : string = "192.168.137.1"
     static userStore: UserStore
 
     static getUserStore(){
