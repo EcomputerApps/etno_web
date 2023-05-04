@@ -31,15 +31,18 @@ const Incident = () => {
     { label: 'Resuelta', key: 'isSolved' },
     { label: 'Solución', key: 'solution' }
   ]
-
+  function deleteByGroup(){
+    if(incidentStore.getIncidentsCheckedList.length > 0){
+      incidentStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+    }
+  }
   return (
     <div className="w-full h-full min-w-max relative flex flex-col">
       <div className="flex flex-col gap-3">
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Incidencia</h2>
           <div className="mainButtonsDiv">
-          <button onClick={() => incidentStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
-          } type="button" className={`btnStandard ${incidentStore.getPaginatedIncident.totalElements! < 1 ? 'invisible' : 'visible'}`}>
+          <button onClick={deleteByGroup} type="button" className={`btnStandard ${incidentStore.getPaginatedIncident.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar
             </button>

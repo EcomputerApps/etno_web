@@ -48,7 +48,15 @@ class IncidentStore {
         return this.description
     }
     get getPaginatedIncident() {
-        return this.paginatedIncident
+        const paginatedIncident: PaginatedIncident = {
+            content: this.paginatedIncident.content?.slice().sort((b, a) =>
+              new Date(a.issuedDate!).getTime() - new Date(b.issuedDate!).getTime()
+            ),
+            totalPages: this.paginatedIncident.totalPages,
+            totalElements: this.paginatedIncident.totalElements,
+            pageNum: this.paginatedIncident.pageNum
+          }
+        return paginatedIncident
     }
     get getIncidentsCheckedList(){
         return this.incidentsListChecked

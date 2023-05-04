@@ -28,7 +28,7 @@ const TableAdvert = (prop: PropTable) => {
     const deleteAdvert = async (advert: string) => {
         await advertStore.deleteAdvert(localStorage.getItem('user_etno_locality')!, advert)
         setConfirm(false)
-        window.location.reload()
+        
     }
     function saveNews(advert: Ad) {
         advertStore.updateAdvert(advert)

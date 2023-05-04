@@ -79,7 +79,15 @@ class NecrologueStore {
         this.paginatedNecro = paginatedNecro
     }
     get getPaginatedNecro() {
-        return this.paginatedNecro
+        const paginatedNecro: PaginatedNecro = {
+            content: this.paginatedNecro.content?.slice().sort((b, a) =>
+              new Date(a.deathDate!).getTime() - new Date(b.deathDate!).getTime()
+            ),
+            totalPages: this.paginatedNecro.totalPages,
+            totalElements: this.paginatedNecro.totalElements,
+            pageNum: this.paginatedNecro.pageNum
+          }
+        return paginatedNecro
     }
     updateNecro(necro: Necrologue) {
         this.necro = necro

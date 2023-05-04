@@ -121,7 +121,16 @@ class NewsStore{
         this.news = news
     }
      get getPaginatedNews(){
-        return this.paginatedNews
+        const paginatedNews: PaginatedNews = {
+            content: this.paginatedNews.content?.slice().sort((b, a) =>
+              new Date(a.publicationDate!).getTime() - new Date(b.publicationDate!).getTime()
+            ),
+            totalPages: this.paginatedNews.totalPages,
+            totalElements: this.paginatedNews.totalElements,
+            pageNum: this.paginatedNews.pageNum
+          }
+          
+        return paginatedNews
     }
      get getNews(){
         return this.news

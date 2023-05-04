@@ -36,6 +36,12 @@ const Event = () => {
     setPageNumber(pageNumber - 1)
   }
 
+  function deleteByGroup(){
+    if(eventStore.getEventsListChecked.length > 0){
+      eventStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+    }
+  }
+
   return (
     <div className="w-full h-full  relative">
       <div className=" flex flex-col gap-4">
@@ -53,8 +59,7 @@ const Event = () => {
                   headers={headers} >Exportar a excel
                 </CSVLink>
               </div>)}
-            <button onClick={() => eventStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
-          } type="button" className={`btnStandard ${eventStore.getPaginatedEvents.totalElements! < 1 ? 'invisible' : 'visible'}`}>
+            <button onClick={deleteByGroup} type="button" className={`btnStandard ${eventStore.getPaginatedEvents.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar
             </button>

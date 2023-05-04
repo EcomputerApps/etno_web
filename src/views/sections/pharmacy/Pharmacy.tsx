@@ -26,6 +26,11 @@ const Pharmacy = () => {
   const decrementPage = () => {
     setPageNumber(pageNumber - 1)
   }
+  function deleteByGroup(){
+    if(pharmacyStore.getPharmaciesCheckedList.length > 0){
+      pharmacyStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+    }
+  }
   return (
     <div className="w-full h-full  relative ">
       <div className="flex flex-col gap-4">
@@ -37,8 +42,7 @@ const Pharmacy = () => {
               <img src={POD} alt="de guardia" />
               Farmacias de guardia
             </button>
-            <button onClick={() => pharmacyStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
-          } type="button" className={`btnStandard ${pharmacyStore.getPaginatedPharmacy.totalElements! < 1 ? 'invisible' : 'visible'}`}>
+            <button onClick={deleteByGroup} type="button" className={`btnStandard ${pharmacyStore.getPaginatedPharmacy.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar
             </button>

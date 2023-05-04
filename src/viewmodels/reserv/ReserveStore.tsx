@@ -166,7 +166,15 @@ class ReserveStore {
         this.paginatedReserve = reserve
     }
     get getPaginatedReserve() {
-        return this.paginatedReserve
+        const paginatedReserve: PaginatedReserve = {
+            content: this.paginatedReserve.content?.slice().sort((b, a) =>
+              new Date(a.date!).getTime() - new Date(b.date!).getTime()
+            ),
+            totalPages: this.paginatedReserve.totalPages,
+            totalElements: this.paginatedReserve.totalElements,
+            pageNum: this.paginatedReserve.pageNum
+          }
+        return paginatedReserve
     }
     //-----------------Reserves------------------------//
     //----------------Hall----------------------------//

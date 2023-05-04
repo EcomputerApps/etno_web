@@ -17,6 +17,12 @@ const Advert = () => {
         adverStore.getPaginatedAdvertRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
     }, [pageNumber])
 
+    function deleteByGroup(){
+        if(adverStore.getAdsCheckedList.length > 0){
+          adverStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+        }
+      }
+
     const incrementPage = () => {
         setPageNumber(pageNumber + 1)
     }
@@ -30,8 +36,8 @@ const Advert = () => {
                 <div className="flex flex-row">
                     <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Anuncios</h2>
                     <div className="mainButtonsDiv">
-                    <button onClick={() => adverStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
-          } type="button" className={`btnStandard ${adverStore.getPaginatedAdverts.totalElements! < 1 ? 'invisible' : 'visible'}`}>
+                    <button onClick={deleteByGroup}
+                    type="button" className={`btnStandard ${adverStore.getPaginatedAdverts.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar
             </button>
