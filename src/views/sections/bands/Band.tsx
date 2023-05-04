@@ -52,8 +52,12 @@ const Band = () => {
                   headers={headers} >Exportar a excel
                 </CSVLink>
               </div>)}
+              <button onClick={() => bandStore.setModalCreate(true)} type="button" className="btnStandard">
+              <img src={Pencil} alt="Create"/>
+              Eliminar
+            </button>
             <button onClick={() => bandStore.setModalCreate(true)} type="button" className="btnStandard">
-              <img src={Pencil} alt="Create" />
+              <img src={Pencil} alt="Create"/>
               Crear
             </button>
           </div>
