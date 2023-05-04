@@ -23,6 +23,7 @@ const TableBand = (prop: PropTable) => {
     const deleteBand = async (band: string) => {
         await bandStore.deleteBand(localStorage.getItem('user_etno_locality')!, band)
         setConfirm(false)
+        window.location.reload()
     }
 
     function deleteConfirmation(bando: Band) {

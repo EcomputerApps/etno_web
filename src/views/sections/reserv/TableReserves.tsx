@@ -34,6 +34,7 @@ const TableReserves = (prop: PropTable) => {
     const deleteReserva = async (reserveId: string) => {
         await reserveStore.deleteReserve(localStorage.getItem('user_etno_locality')!, reserveId)
         setConfirm(false)
+        window.location.reload()
     }
 
     function fillDates(dates: string): Date[] {

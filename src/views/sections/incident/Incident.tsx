@@ -6,6 +6,7 @@ import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import TableIncident from "./TableIncident"
 import { CSVLink } from 'react-csv';
 import incidentRed from "../../../assets/menu/incidentRed.svg"
+import Pencil from "../../../assets/menu/create.svg"
 
 const incidentStore = IncidentStore.getIncidentStore()
 
@@ -37,6 +38,11 @@ const Incident = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Incidencia</h2>
           <div className="mainButtonsDiv">
+          <button onClick={() => incidentStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+          } type="button" className={`btnStandard ${incidentStore.getPaginatedIncident.totalElements! < 1 ? 'invisible' : 'visible'}`}>
+              <img src={Pencil} alt="Create" />
+              Eliminar
+            </button>
             {incidentStore.getPaginatedIncident.content! && (
               <div hidden={incidentStore.getPaginatedIncident.content.length === 0}>
                 <CSVLink

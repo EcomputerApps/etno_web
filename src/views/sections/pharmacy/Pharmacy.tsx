@@ -37,6 +37,11 @@ const Pharmacy = () => {
               <img src={POD} alt="de guardia" />
               Farmacias de guardia
             </button>
+            <button onClick={() => pharmacyStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+          } type="button" className={`btnStandard ${pharmacyStore.getPaginatedPharmacy.totalElements! < 1 ? 'invisible' : 'visible'}`}>
+              <img src={Pencil} alt="Create" />
+              Eliminar
+            </button>
             <button onClick={() => pharmacyStore.setModalCreate(true)} type="button"
               className="btnStandard ">
               <img src={Pencil} alt="create" />

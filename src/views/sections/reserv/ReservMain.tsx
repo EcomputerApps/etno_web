@@ -72,7 +72,7 @@ const Reserve = () => {
                             Lugares
                         </button>
                         <button type="button"
-                            className="btnStandard mr-3 h-12"
+                            className={`btnStandard ${reserveStore.getPaginatedReserve.totalElements! < 1 ? 'invisible' : 'visible'}`}
                             onClick={() => reserveStore.deleteAllReserveById(localStorage.getItem('user_etno_locality')!)}>
                             <img src={Pencil} alt="create" />
                             Eliminar

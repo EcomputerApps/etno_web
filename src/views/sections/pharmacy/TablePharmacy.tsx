@@ -25,6 +25,7 @@ const TablePharmacy = (prop: PropTable) => {
     const deletePharmacy = async (idPharmacy: string) => {
         await pharmacyStore.deletePharmacy(localStorage.getItem('user_etno_locality')!, idPharmacy)
         setConfirm(false)
+        window.location.reload()
     }
     function savePharm(pharm: Pharmacy) {
         pharmacyStore.updatePharmacy(pharm)

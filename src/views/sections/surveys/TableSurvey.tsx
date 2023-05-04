@@ -21,6 +21,7 @@ const TableSurvey = () => {
     const deleteSurvey = async (surveyId: string) => {
         await surveyStore.deleteSurvey(localStorage.getItem('user_etno_locality')!, surveyId)
         setConfirm(false)
+        window.location.reload()
     }
 
     return (

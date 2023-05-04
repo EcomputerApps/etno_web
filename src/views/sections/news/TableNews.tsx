@@ -29,6 +29,7 @@ const TableNews = (prop: PropTable) => {
     const deleteNews = async (idNews: string) => {
         await newsStore.deleteNews(localStorage.getItem('user_etno_locality')!, idNews)
         setConfirm(false)
+        window.location.reload()
     }
 
     function saveNews(news: News) {

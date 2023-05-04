@@ -16,6 +16,7 @@ class IncidentStore {
     //Observables =>
     paginatedIncident: PaginatedIncident = {}
     description: string = ""
+    incidentsListChecked: Incident[] = []
 
 
     constructor() {
@@ -29,6 +30,8 @@ class IncidentStore {
             updatePaginatedIncident: action,
             getPaginatedIncident: computed,
             getDescription: computed,
+            getIncidentsCheckedList: computed,
+            incidentsListChecked: observable
            
         })
     }
@@ -46,6 +49,9 @@ class IncidentStore {
     }
     get getPaginatedIncident() {
         return this.paginatedIncident
+    }
+    get getIncidentsCheckedList(){
+        return this.incidentsListChecked
     }
     async getPaginatedIncidentsRequest(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`${urlBase}/incidents/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
@@ -97,6 +103,42 @@ class IncidentStore {
                 progress: undefined,
                 theme: "light"
             })
+        }
+    }
+    async deleteAllById(locality: string) {
+        const response = await fetch(`${urlBase}/incidents/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.incidentsListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
         }
     }
 }
