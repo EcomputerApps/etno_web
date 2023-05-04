@@ -24,6 +24,7 @@ class PharmacyStore {
     modalCreate: boolean = false
     modalEdit: boolean = false
     modalCalendar: boolean = false
+    pharmaciesListChecked: Pharmacy[] = []
 
 
     constructor() {
@@ -52,7 +53,9 @@ class PharmacyStore {
             getPaginatedPharmacy: computed,
             getPOD: computed,
             getModalCalendar: computed,
-            getSelector: computed
+            getSelector: computed,
+            getPharmaciesCheckedList: computed,
+            pharmaciesListChecked: observable
         })
     }
     setSelector(position: number) {
@@ -103,6 +106,9 @@ class PharmacyStore {
         return this.pharmacy
     }
 
+get getPharmaciesCheckedList(){
+        return this.pharmaciesListChecked
+    }
 
     async getPaginatedPharmacyrequest(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`${urlBase}/pharmacies/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
@@ -237,6 +243,42 @@ class PharmacyStore {
                 progress: undefined,
                 theme: "light"
             })
+        }
+    }
+    async deleteAllById(locality: string) {
+        const response = await fetch(`${urlBase}/pharmacies/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.pharmaciesListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
         }
     }
 }

@@ -13,11 +13,18 @@ interface PropTable {
 }
 
 const TableIncident = (prop: PropTable) => {
+    const [confirm, setConfirm] = useState(false)
     const [showModal, setModal] = useState(false)
     const [emptySolution, setEmptySolution] = useState(false)
 
     function chekIfEmpty() {
         incidentSolution === "" || incidentSolution === null ? setEmptySolution(true) : setEmptySolution(false)
+    }
+
+    const deleteBand = async (incident: string) => {
+        await incidentStore.deleteIncident(localStorage.getItem('user_etno_locality')!, incident)
+        setConfirm(false)
+        window.location.reload()
     }
 
     function showDescription(description: string, id: string,

@@ -27,6 +27,7 @@ const TableService = (prop: PropTable) => {
     const deleteService = async (idService: string) => {
         await serviceStore.deleteService(localStorage.getItem('user_etno_locality')!, idService)
         setConfirm(false)
+        window.location.reload()
     }
 
     function saveService(service: Service) {

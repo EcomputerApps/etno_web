@@ -28,6 +28,7 @@ const TableTourism = (prop: PropTable) => {
     const deleteTourism = async (idTourism: string) => {
         await tourismStore.deleteTourism(localStorage.getItem('user_etno_locality')!, idTourism)
         setConfirm(false)
+        window.location.reload()
     }
 
     return (

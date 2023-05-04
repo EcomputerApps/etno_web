@@ -27,6 +27,7 @@ const TableSponsor = (prop: PropTable) => {
     const deleteSponsor = async (idSponsor: string) => {
         await sponsorStore.deleteSponsor(localStorage.getItem('user_etno_locality')!, idSponsor)
         setConfirm(false)
+        window.location.reload()
     }
 
     function saveSponsor(sponsor: Sponsor) {

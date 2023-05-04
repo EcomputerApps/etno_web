@@ -23,6 +23,7 @@ class BandStore {
     band: Band = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
+    bandsListChecked: Band[] = []
 
     constructor() {
         makeObservable(this, {
@@ -43,7 +44,9 @@ class BandStore {
             getPaginatedBands: computed,
             getAllBands: computed,
             getModalEdit: computed,
-            getModalCreate: computed
+            getModalCreate: computed,
+            getBandsCheckedList: computed,
+            bandsListChecked: observable
 
 
         })
@@ -81,6 +84,9 @@ class BandStore {
     }
     get getBand() {
         return this.band
+    }
+    get getBandsCheckedList(){
+        return this.bandsListChecked
     }
 
     async editBand(locality: string, bandId: string, band: Band, file?: File) {
@@ -212,6 +218,43 @@ class BandStore {
                 progress: undefined,
                 theme: "light"
             })
+        }
+    }
+
+    async deleteAllById(locality: string) {
+        const response = await fetch(`${urlBase}/bandos/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.bandsListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
         }
     }
 }

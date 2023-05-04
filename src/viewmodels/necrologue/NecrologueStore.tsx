@@ -23,6 +23,8 @@ class NecrologueStore {
     allNecrologues: NecrologueList = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
+    deathsListChecked: Necrologue[] = []
+
 
     constructor() {
         makeObservable(this, {
@@ -44,7 +46,9 @@ class NecrologueStore {
             deleteNecrologue: action,
             getPaginatedNecro: computed,
             updateAllNecrologues: action,
-            getAllNecrologues: computed
+            getAllNecrologues: computed,
+            getDeathsCheckedList: computed,
+            deathsListChecked: observable
 
         })
 
@@ -82,6 +86,9 @@ class NecrologueStore {
     }
     get getNecro() {
         return this.necro
+    }
+    get getDeathsCheckedList(){
+        return this.deathsListChecked
     }
 
     async getPaginatedNecroRequest(locality: string, pageNum: number, elementSize: number) {
@@ -217,6 +224,42 @@ class NecrologueStore {
                 progress: undefined,
                 theme: "light"
             })
+        }
+    }
+    async deleteAllById(locality: string) {
+        const response = await fetch(`${urlBase}/deaths/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.deathsListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
         }
     }
 }

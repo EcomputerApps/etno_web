@@ -27,7 +27,8 @@ const Tourism = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Turismo</h2>
           <div className="mainButtonsDiv">
-          <button onClick={() => tourisStore.deleteAllById(localStorage.getItem('user_etno_locality')!) } type="button" className="btnStandard">
+          <button onClick={() => tourisStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+          } type="button" className={`btnStandard ${tourisStore.getPaginatedTourism.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create"/>
               Eliminar
             </button>

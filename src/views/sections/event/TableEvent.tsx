@@ -29,6 +29,7 @@ const TableEvent = (prop: PropTable) => {
     const deleteEvent = async (idEvent: string) => {
         await eventStore.deleteEvent(localStorage.getItem('user_etno_locality')!, idEvent)
         setConfirm(false)
+        window.location.reload()
     }
     function showParticipants(event: Event) {
         eventStore.setModalSubs(true)

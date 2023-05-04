@@ -53,7 +53,8 @@ const Event = () => {
                   headers={headers} >Exportar a excel
                 </CSVLink>
               </div>)}
-            <button onClick={() => eventStore.deleteAllById(localStorage.getItem('user_etno_locality')!)} type="button" className="btnStandard ">
+            <button onClick={() => eventStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+          } type="button" className={`btnStandard ${eventStore.getPaginatedEvents.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar
             </button>

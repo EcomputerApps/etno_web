@@ -52,6 +52,11 @@ const Band = () => {
                   headers={headers} >Exportar a excel
                 </CSVLink>
               </div>)}
+              <button onClick={() => bandStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+          } type="button" className={`btnStandard ${bandStore.getPaginatedBands.totalElements! < 1 ? 'invisible' : 'visible'}`}>
+              <img src={Pencil} alt="Create" />
+              Eliminar
+            </button>
             <button onClick={() => bandStore.setModalCreate(true)} type="button" className="btnStandard">
               <img src={Pencil} alt="Create" />
               Crear

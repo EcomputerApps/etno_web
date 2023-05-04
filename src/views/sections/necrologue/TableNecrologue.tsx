@@ -28,6 +28,7 @@ const TableNecrologue = (prop: PropTable) => {
     const deleteNecro = async (idNecro: string) => {
         await necrologueStore.deleteNecrologue(localStorage.getItem('user_etno_locality')!, idNecro)
         setConfirm(false)
+        window.location.reload()
     }
     function saveNecro(necro: Necrologue) {
         necrologueStore.updateNecro(necro)

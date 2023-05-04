@@ -23,6 +23,7 @@ class SposnsorStore {
     allSponsors: SponsorList = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
+    sponsorsListChecked: Sponsor[] = []
 
 
     constructor() {
@@ -45,7 +46,9 @@ class SposnsorStore {
             updateSponsorList: action,
             getPaginatedSponsor: computed,
             updateAllSponsors: action,
-            getAllSponsors: computed
+            getAllSponsors: computed,
+            getSponsorsCheckedList: computed,
+            sponsorsListChecked: observable
 
         })
     }
@@ -84,6 +87,10 @@ class SposnsorStore {
     get getSponsor() {
         return this.sponsor
     }
+    get getSponsorsCheckedList(){
+        return this.sponsorsListChecked
+    }
+
     async getPaginatedSponsorRequest(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`${urlBase}/sponsors/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
@@ -218,7 +225,42 @@ class SposnsorStore {
         }
     }
 
-
+    async deleteAllById(locality: string) {
+        const response = await fetch(`${urlBase}/sponsors/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.sponsorsListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }
+    }
 }
 
 export default SposnsorStore
