@@ -5,7 +5,7 @@ import Pencil from "../../../assets/menu/create.svg"
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import LinkStore from "../../../viewmodels/link/LinkStore"
-import {ToastContainer } from "react-toastify"
+import { ToastContainer } from "react-toastify"
 import { Link } from "../../../models/section/Section"
 import CreateLink from "./create/CreateLink"
 import EditLink from "./create/EditLink"
@@ -52,7 +52,11 @@ const LinkPage = () => {
         <div className="lg:w-full h-full min-w-5/6 relative flex flex-col">
             <div className="flex flex-row">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces</h2>
-                <div className="lg:ml-auto flex ml-1 ">
+                <div className="lg:ml-auto flex ml-1">
+                    <button onClick={() => linkStore.deleteAllById(localStorage.getItem('user_etno_locality')!)} type="button" className="btnStandard">
+                        <img src={Pencil} alt="Delete" />
+                        Eliminar
+                    </button>
                     <button onClick={() => linkStore.setModalCreate(true)} type="button" className="btnStandard">
                         <img src={Pencil} alt="Create" />
                         Crear
@@ -62,7 +66,7 @@ const LinkPage = () => {
                     <div>
                         <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                             <div className="fixed inset-0 w-screen h-screen">
-                                <div className="w-screen  flex justify-start">
+                                <div className="w-screen flex justify-start">
                                     <CreateLink />
                                 </div>
                             </div>
@@ -73,7 +77,7 @@ const LinkPage = () => {
                     <div>
                         <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                             <div className="fixed inset-0 w-screen h-screen">
-                                <div className="w-screen  flex justify-start">
+                                <div className="w-screen flex justify-start">
                                     <EditLink />
                                 </div>
                             </div>
@@ -88,21 +92,28 @@ const LinkPage = () => {
                 </div>
             ) : (
                 <div className="relative  w-full overflow-x-auto shadow-md sm:rounded-lg mt-4 mb-1">
-                <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
-                        <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
+                    <div className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <div className="text-xs text-gray-700 uppercase bg-indigo-100 dark:bg-gray-700 dark:text-gray-400 text-center">
+                            <div className="flex md:w-1/3 w-full m-auto  p-5 shadow-xl  ">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             )}
-             <div className="flex flex-1 overflow-y-auto lg:overflow-hidden w-full h-3/4 ">
+            <div className="flex flex-1 overflow-y-auto lg:overflow-hidden w-full h-3/4 ">
                 <div className={"w-full grid lg:grid-cols-4 lg:grid-rows-3 grid-cols-1"}>
                     {linkStore.paginatedLink.content?.map((linkMap, index) => (
                         linkStore.paginatedLink.content!!.length > 0 &&
                         <div key={index} className={`border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full ${linkStore.paginatedLink.content!!.length > 2 ? 'h-40'
                             : 'h-60'}`}>
-                                <input className="ml-4 w-5 h-5" type="checkbox"></input>
+                            <input type="checkbox" onChange={(value) => {
+                                if (value.currentTarget.checked) {
+                                    linkStore.linksListChecked.push(linkMap);
+                                } else {
+                                    linkStore.linksListChecked.splice(linkStore.linksListChecked.indexOf(linkMap), 1)
+                                }
+                            }
+                            } ></input>
                             <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center">{linkMap.title}</div>
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={linkMap.url}>{linkMap.url}</a></div>
                             <div className="flex m-auto justify-center lg:pt-5 h-1/5 pt-3">
