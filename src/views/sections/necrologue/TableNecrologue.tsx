@@ -73,7 +73,14 @@ const TableNecrologue = (prop: PropTable) => {
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td className="tableCamp">
                                         <div className="overflow-y-auto max-h-20">
-                                            <input type="checkbox"></input>
+                                        <input type="checkbox" onChange={(value) => {
+                                        if (value.currentTarget.checked) {
+                                          necrologueStore.deathsListChecked.push(newNecro);
+                                        } else {
+                                           necrologueStore.deathsListChecked.splice(necrologueStore.getDeathsCheckedList.indexOf(newNecro), 1)
+                                        }
+                                        console.log(value.currentTarget.checked)}
+                                    } ></input>
                                         </div>
                                     </td>
                                     <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center ">

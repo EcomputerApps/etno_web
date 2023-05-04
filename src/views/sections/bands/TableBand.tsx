@@ -75,7 +75,14 @@ const TableBand = (prop: PropTable) => {
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td className="tableCampl text-center">
                                     <div className="overflow-y-auto max-h-20">
-                                        <input type="checkbox"></input>
+                                    <input type="checkbox" onChange={(value) => {
+                                        if (value.currentTarget.checked) {
+                                          bandStore.bandsListChecked.push(bandMap);
+                                        } else {
+                                           bandStore.bandsListChecked.splice(bandStore.getBandsCheckedList.indexOf(bandMap), 1)
+                                        }
+                                        console.log(value.currentTarget.checked)}
+                                    } ></input>
                                         </div>
                                     </td>
                                     <th scope="row" className="tableCampl text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
