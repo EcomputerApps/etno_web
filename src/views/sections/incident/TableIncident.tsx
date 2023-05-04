@@ -96,7 +96,7 @@ const TableIncident = (prop: PropTable) => {
                                         <div className="w-full flex flex-col ">
                                             <label className="text-xl pl-3">Solucion</label>
                                             <textarea defaultValue={incidentSolution} maxLength={100} className={`inputCamp disabled:bg-gray-200 ${emptySolution ? 'border-red-600' : ''}`}
-                                                onChange={(e) => { 
+                                                onChange={(e) => {
                                                     setIncidentSolution(e.currentTarget.value)
                                                     setEmptySolution(false)
                                                 }}
