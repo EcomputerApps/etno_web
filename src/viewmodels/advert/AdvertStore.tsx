@@ -23,6 +23,7 @@ class AdvertStore {
     advert: Ad = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
+    adsListChecked: Ad[] = []
 
     constructor() {
         makeObservable(this, {
@@ -47,7 +48,8 @@ class AdvertStore {
             getPaginatedAdverts: computed,
             getAdvert: computed,
             updateAllAdverts: action,
-            getAllAdverts: computed
+            getAllAdverts: computed,
+            adsListChecked: observable
 
         })
     }
@@ -68,6 +70,9 @@ class AdvertStore {
     }
     get getModalCreate() {
         return this.modalCreate
+    }
+    get getAdsCheckedList(){
+        return this.adsListChecked
     }
     updatePaginatedAdverts(paginatedAdverts: PaginatedAdvert) {
         this.paginatedAdvert = paginatedAdverts
@@ -188,6 +193,44 @@ class AdvertStore {
         this.updateAllAdverts(adverts)
     }
 
+
+    async deleteAllById(locality: string) {
+        const response = await fetch(`${urlBase}/ads/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.adsListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }
+    }
+    
     async deleteAdvert(username: string, idAdvert: string) {
         const response = await fetch(`${urlBase}/users/delete/ad?username=${username}&idAd=${idAdvert}`, {
             method: 'DELETE',

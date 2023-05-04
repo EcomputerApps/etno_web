@@ -24,13 +24,14 @@ const TableTourism = (prop: PropTable) => {
         setDelTitle(tourism.title!!)
         setDelId(tourism.idTourism!!)
     }
+    
     const deleteTourism = async (idTourism: string) => {
         await tourismStore.deleteTourism(localStorage.getItem('user_etno_locality')!, idTourism)
         setConfirm(false)
     }
+
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-
             {tourismStore.getPaginatedTourism.content?.length === 0 ? (
                 <div className="flex flex-row m-1">
                     <img src={tourismRed} alt="BIG" />
@@ -63,6 +64,18 @@ const TableTourism = (prop: PropTable) => {
                             {tourismStore.getPaginatedTourism.content?.map((tourism, index) => (
                                 tourismStore.getPaginatedTourism.content!!.length > 0 &&
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
+                                    <td className="tableCamp">
+                                        <div className="overflow-y-auto max-h-20">
+                                        <input type="checkbox" onChange={(value) => {
+                                        if (value.currentTarget.checked) {
+                                          tourismStore.tourismListChecked.push(tourism);
+                                        } else {
+                                           tourismStore.tourismListChecked.splice(tourismStore.getTourismCheckedList.indexOf(tourism), 1)
+                                        }
+                                        console.log(value.currentTarget.checked)}
+                                    } ></input>
+                                        </div>
+                                    </td>
                                     <th scope="row" className="tableCampfont-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                                         {tourism.type}
                                     </th>

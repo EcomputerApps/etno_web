@@ -96,12 +96,13 @@ const LinkPage = () => {
                 </div>
             </div>
             )}
-             <div className="flex flex-1 overflow-y-auto lg:overflow-hidden w-full h-3/4  ">
+             <div className="flex flex-1 overflow-y-auto lg:overflow-hidden w-full h-3/4 ">
                 <div className={"w-full grid lg:grid-cols-4 lg:grid-rows-3 grid-cols-1"}>
                     {linkStore.paginatedLink.content?.map((linkMap, index) => (
                         linkStore.paginatedLink.content!!.length > 0 &&
-                        <div key={index} className={`border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full  ${linkStore.paginatedLink.content!!.length > 2 ? 'h-40'
+                        <div key={index} className={`border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full ${linkStore.paginatedLink.content!!.length > 2 ? 'h-40'
                             : 'h-60'}`}>
+                                <input className="ml-4 w-5 h-5" type="checkbox"></input>
                             <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center">{linkMap.title}</div>
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 hover:font-medium justify-center  rounded-b-md text-xl overflow-hidden bg-gray-200 "><a href={linkMap.url}>{linkMap.url}</a></div>
                             <div className="flex m-auto justify-center lg:pt-5 h-1/5 pt-3">

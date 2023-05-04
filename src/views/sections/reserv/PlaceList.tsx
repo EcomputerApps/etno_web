@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import ReserveStore from "../../../viewmodels/reserv/ReserveStore";
-import logoEtno from '../../../../src/assets/logo_etno.png' 
+import logoEtno from '../../../../src/assets/logo_etno.png'
 import arrowRight from "../../../assets/menu/arrowRight.svg"
 import arrowLeft from "../../../assets/menu/arrowLeft.svg"
 import CreatePlace from "./create/CreatePlace";
@@ -20,7 +20,7 @@ const ReservPlaceList = (prop: PropTable) => {
 
     const headersPlaces = [
         { label: 'Nombre', key: 'name' }
-       
+
     ]
     const headersHalls = [
         { label: 'Nombre', key: 'name' }
@@ -110,31 +110,43 @@ const ReservPlaceList = (prop: PropTable) => {
                         {lugares.map((placeMap, index) => (
                             lugares.length > 0 &&
                             <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" >
-                                <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                <div className="overflow-y-auto max-h-20">
-                                    {placeMap.name}
-                                    </div>
-                                </th>
-                                <td className="tableCamp flex flex-col">
-                                <div className="overflow-y-auto max-h-20">
-                                <div className=" flex flex-2 justify-center w-full">
-                                        <CSVLink
-                                            data={placeMap.halls}
-                                            filename={'halls.csv'}
-                                            enclosingCharacter={` `}
-                                            className={"btnStandard mr-3 h-5"}
-                                            target="_blank"
-                                            headers={headersHalls} >Exportar salas
-                                        </CSVLink>
-                                    </div>
-                                    <div className=" flex flex-1 flex-col overflow-y-auto">
-                                        {placeMap.halls?.map((item, index) => (
-                                            <label key={index}>{item.name}</label>
-                                        ))}
-                                    </div>
+                                <td scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                    <div className="overflow-y-auto max-h-20">
+                                    <input type="checkbox" onChange={(value) => {
+                                        if (value.currentTarget.checked) {
+                                          reserveStore.placeListChecked.push(placeMap);
+                                        } else {
+                                           reserveStore.placeListChecked.splice(reserveStore.getPlacesCheckedList.indexOf(placeMap), 1)
+                                        }
+                                        console.log(value.currentTarget.checked)}
+                                    } ></input>
                                     </div>
                                 </td>
-                                <td className="px-6 py-4">
+                                <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
+                                    <div className="overflow-y-auto max-h-20">
+                                        {placeMap.name}
+                                    </div>
+                                </th>
+                                <td className="tableCamp flex flex-col justify-center items-center">
+                                    <div className="overflow-y-auto max-h-20 items-center justify-center m-9">
+                                        <div className=" flex flex-2 justify-center w-full items-center">
+                                            <CSVLink
+                                                data={placeMap.halls}
+                                                filename={'halls.csv'}
+                                                enclosingCharacter={` `}
+                                                className={"btnStandard mr-3 h-5"}
+                                                target="_blank"
+                                                headers={headersHalls} >Exportar salas
+                                            </CSVLink>
+                                        </div>
+                                        <div className=" flex flex-1 flex-col overflow-y-auto items-center justify-center">
+                                            {placeMap.halls?.map((item, index) => (
+                                                <label key={index}>{item.name}</label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="px-6 py-4 items-center justify-center">
                                     <div className="h-20 flex items-center justify-center">
                                         <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline" onClick={() => savePlace(placeMap)} >Editar</a>
                                         <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline m-2" onClick={() => deleteConfirmation(placeMap)}>Eliminar</a>
@@ -168,6 +180,7 @@ const ReservPlaceList = (prop: PropTable) => {
                     Anterior
                 </button>
                 <div className=" flex lg:flex-row flex-col ">
+                <button name="bandBtnCancel" className="btnStandard mr-3" onClick={() => reserveStore.deleteAllPlaceById(localStorage.getItem('user_etno_locality')!)}>Eliminar</button>
                     <button name="bandBtnCancel" className="btnStandard mr-3" onClick={() => reserveStore.setModalCreatePlaces(true)}>Crear lugar</button>
                     {reserveStore.getPaginatedPlaces.content! && (
                         <div hidden={reserveStore.getPaginatedPlaces.content.length === 0}>

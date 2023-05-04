@@ -26,6 +26,8 @@ class ReserveStore {
     //Modals
     reserve: Reserve = {}
     place: Place = {}
+    placeListChecked: Place[] = []
+    reserveListChecked: Reserve[] = []
     allReserves: ReserveList = {}
     placeList: PlaceList = {}
     paginatedReserve: PaginatedReserve = {}
@@ -42,6 +44,8 @@ class ReserveStore {
             modalCreate: observable,
             modalCalendar: observable,
             modalPlaces: observable,
+            placeListChecked: observable,
+            reserveListChecked: observable,
             modalAddHalls: observable,
             modalCreatePlaces: observable,
             paginatedReserve: observable,
@@ -58,6 +62,8 @@ class ReserveStore {
             updateReserveUser: action,
             updatePaginatedReserveContent: action,
             updatePaginatedPlacesContent: action,
+            savePlaceList: action,
+            saveReserveList: action,
             updateReserve: action,
             udpateAllReserves: action,
             updatePaginatedReserve: action,
@@ -79,8 +85,9 @@ class ReserveStore {
             getModalEditHalls: computed,
             getAllPlaces: computed,
             getModalPlaceList: computed,
-            getReserveUser: computed
-
+            getReserveUser: computed,
+            getPlacesCheckedList: computed,
+            getReservesCheckedList: computed
         })
     }
     setModalEditHalls(mode: boolean) {
@@ -88,6 +95,12 @@ class ReserveStore {
     }
     get getModalEditHalls() {
         return this.modalEditHalls
+    }
+    savePlaceList(places: Place[]){
+        this.placeListChecked = places
+    }
+    saveReserveList(reserves: Reserve[]){
+        this.reserveListChecked = this.reserveListChecked
     }
     setModalEdit(mode: boolean) {
         this.modalEdit = mode
@@ -137,6 +150,13 @@ class ReserveStore {
     get getReserveUser() {
         return this.reserveUser
     }
+    get getPlacesCheckedList(){
+        return this.placeListChecked
+    }
+    get getReservesCheckedList(){
+        return this.reserveListChecked
+    }
+
     //----------------------------------------------------------------------------
     //------------Reserves---------------------------//
     updatePaginatedReserveContent(reserve: Reserve[]) {
@@ -421,8 +441,8 @@ class ReserveStore {
                 theme: "light"
             })
         }
-
     }
+
     async addRequestReserve(username: string, reserve: Reserve, idHall: string, idPlace: string) {
 
         const response = await fetch(`${urlBase}/users/add/reserve?username=${username}&idHall=${idHall}&idPlace=${idPlace}`,
@@ -469,6 +489,79 @@ class ReserveStore {
         })
         const reserves = await response.json()
         this.updatePaginatedReserve(reserves)
+    }
+
+    async deleteAllPlaceById(locality: string) {
+        const response = await fetch(`${urlBase}/places/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.placeListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }
+    }
+    async deleteAllReserveById(locality: string) {
+        const response = await fetch(`${urlBase}/reserves/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.reserveListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }
     }
 }
 export default ReserveStore

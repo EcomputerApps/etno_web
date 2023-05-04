@@ -40,6 +40,7 @@ class NewsStore{
        //Observables =>
        paginatedNews : PaginatedNews = {}
        newsList: NewsList = {}
+       newsListChecked: News[] = []
        news: News = {}
        modalCreate: boolean = false
        modalEdit: boolean = false
@@ -50,8 +51,11 @@ class NewsStore{
             newsTypes: observable,
             modalEdit: observable,
             modalCreate: observable,
+            newsListChecked: observable,
             setModalCreate: action,
             getModalEdit: computed,
+            getNewsCheckedList: computed,
+            saveNewsList: action,
             getModalCreate: computed,
             setModalEdit: action,
             paginatedNews : observable,
@@ -60,6 +64,7 @@ class NewsStore{
             getPaginatedNewsRequest:action,
             getNews: computed,
             addRequestNews: action,
+            deleteAllById: action,
             editNews: action,
             deleteNews : action,
             updateNewsList: action,
@@ -76,6 +81,9 @@ class NewsStore{
     updateAllNews(news : News[]){
         this.newsList.news = news
     }
+    saveNewsList(news: News[]){
+        this.newsListChecked = news
+    }
     get getAllNews(){
         return this.newsList
     }
@@ -84,6 +92,9 @@ class NewsStore{
     }
     get getNewsTypes(){
         return this.newsTypes
+    }
+    get getNewsCheckedList(){
+        return this.newsListChecked
     }
     setModalEdit(mode: boolean) {
         this.modalEdit = mode
@@ -242,6 +253,42 @@ class NewsStore{
                 progress: undefined,
                 theme: "light"
           })
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }
+    }
+    async deleteAllById(locality: string) {
+        const response = await fetch(`${urlBase}/news/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.newsListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
         }else{
             toast.error('No se ha podido borrar', {
                 position: 'bottom-center',

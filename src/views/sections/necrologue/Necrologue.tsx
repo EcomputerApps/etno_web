@@ -47,7 +47,7 @@ const Necrologue = () => {
             </div>
           ) : <></>}
         </div>
-        <TableNecrologue currentPage={pageNumber} headerList={['nombre', 'fecha de fallecimiento', 'Descripción', 'Acciones']} />
+        <TableNecrologue currentPage={pageNumber} headerList={['Seleccionar', 'nombre', 'fecha de fallecimiento', 'Descripción', 'Acciones']} />
       </div>
       <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
         <button onClick={decrementPage} disabled={pageNumber < 1}

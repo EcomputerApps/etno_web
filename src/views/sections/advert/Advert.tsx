@@ -30,6 +30,11 @@ const Advert = () => {
                 <div className="flex flex-row">
                     <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Anuncios</h2>
                     <div className="mainButtonsDiv">
+                    <button onClick={() => adverStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+          } type="button" className="btnStandard">
+              <img src={Pencil} alt="Create" />
+              Eliminar
+            </button>
                         <button onClick={() => adverStore.setModalCreate(true)} type="button" className="btnStandard">
                             <img src={Pencil} alt="Create" />
                             Crear
@@ -47,7 +52,7 @@ const Advert = () => {
                         </div>
                     ) : <></>}
                 </div>
-                <TableAdvert currentPage={pageNumber} headerList={['Título', 'Descripción', 'Enlace', 'Acciones']} />
+                <TableAdvert currentPage={pageNumber} headerList={['Seleccionar','Título', 'Descripción', 'Enlace', 'Acciones']} />
             </div>
             <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
                 <button onClick={decrementPage} disabled={pageNumber < 1} className="btnStandard mr-10">

@@ -19,6 +19,7 @@ const TableNews = (prop: PropTable) => {
     const [confirm, setConfirm] = useState(false)
     const [delTitle, setDelTitle] = useState<string>("")
     const [delId, setDelId] = useState<string>("")
+    const [listNewsChecked, setListNewsChecked] = useState<News[]>()
 
     function deleteConfirmation(news: News) {
         setConfirm(true)
@@ -71,6 +72,14 @@ const TableNews = (prop: PropTable) => {
                             {newsStore.getPaginatedNews.content?.map((news, index) => (
                                 newsStore.getPaginatedNews.content!!.length > 0 &&
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
+                                    <input type="checkbox" onChange={(value) => {
+                                        if (value.currentTarget.checked) {
+                                          newsStore.newsListChecked.push(news);
+                                        } else {
+                                           newsStore.newsListChecked.splice(newsStore.getNewsCheckedList.indexOf(news), 1)
+                                        }
+                                        console.log(value.currentTarget.checked)}
+                                    } ></input>
                                     <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {news.category}
                                     </th>
@@ -116,7 +125,6 @@ const TableNews = (prop: PropTable) => {
                     ) : <></>}
                 </div>
             )}
-
         </div>
     )
 }

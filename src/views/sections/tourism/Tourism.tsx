@@ -27,6 +27,10 @@ const Tourism = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Turismo</h2>
           <div className="mainButtonsDiv">
+          <button onClick={() => tourisStore.deleteAllById(localStorage.getItem('user_etno_locality')!) } type="button" className="btnStandard">
+              <img src={Pencil} alt="Create"/>
+              Eliminar
+            </button>
             <button onClick={() => tourisStore.setModalCreate(true)} type="button" className="btnStandard">
               <img src={Pencil} alt="Create"/>
               Crear
@@ -44,7 +48,7 @@ const Tourism = () => {
         </div>
       ) : <></>}
         </div>
-        <TableTourism currentPage={pageNumber} headerList={['tipo', 'Título', 'Descripción', 'Acciones']} />
+        <TableTourism currentPage={pageNumber} headerList={['Seleccionar', 'tipo', 'Título', 'Descripción', 'Acciones']} />
       </div>
       <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
         <button onClick={decrementPage} disabled={pageNumber < 1}

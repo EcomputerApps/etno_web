@@ -50,7 +50,7 @@ const Sponsor = () => {
             </div>
           ) : <></>}
         </div>
-        <TableSponsor currentPage={pageNumber} headerList={['Título', 'Descripción', 'Teléfono', 'acciones']} />
+        <TableSponsor currentPage={pageNumber} headerList={['Seleccionar', 'Título', 'Descripción', 'Teléfono', 'acciones']} />
       </div>
       <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
         <button onClick={decrementPage} disabled={pageNumber < 1}

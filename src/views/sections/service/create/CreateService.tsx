@@ -92,7 +92,7 @@ const CreateService = () => {
             category: serviceType,
             owner: serviceName,
             description: serviceDescription,
-            urlWeb: serviceWebUrl,
+            webUrl: serviceWebUrl,
             number: serviceTel,
             schedule: serviceSchedule,
         }
@@ -216,6 +216,7 @@ const CreateService = () => {
                             : ''
                             }`} onChange={(e) => {
                                 setServiceWebUrl(e.currentTarget.value)
+                                console.log(e.currentTarget.value)
                                 setEmptyWebUrl(false)
                             }} onKeyDown={(e) => {
                                 if ((e.code === "Enter") || (e.code === "NumpadEnter")) {

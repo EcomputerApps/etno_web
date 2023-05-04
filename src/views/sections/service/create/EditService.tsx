@@ -44,7 +44,7 @@ const EditService = () => {
     const [serviceType, setServiceType] = useState<string>(service.category!!)
     const [serviceName, setServiceName] = useState<string>(service.owner!!)
     const [serviceNameTemp] = useState<string>(service.owner!!)
-    const [serviceWebUrl, setServiceWebUrl] = useState<string>(service.urlWeb!!)
+    const [serviceWebUrl, setServiceWebUrl] = useState<string>(service.webUrl!!)
     const [serviceDescription, setServiceDescription] = useState<string>(service.description!!)
     const [serviceTel, setServiceTel] = useState<string>(service.number!!)
     const [serviceShcedulSelector, setServiceShcedulSelector] = useState<string>(timeCutter(service.schedule!!).length === 6 ? timeCutter(service.schedule!!)!![0] + "-" + timeCutter(service.schedule!!)!![1] : "Otro")
@@ -98,7 +98,7 @@ const EditService = () => {
                     category: serviceType,
                     owner: serviceName,
                     description: serviceDescription,
-                    urlWeb: serviceWebUrl,
+                    webUrl: serviceWebUrl,
                     number: serviceTel,
                     schedule: serviceSchedule,
                     imageUrl: service.imageUrl
@@ -227,7 +227,7 @@ const EditService = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                     <div className="flex flex-col p-1 relative">
-                        <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" defaultValue={service.urlWeb} type="text"
+                        <input ref={inputWebUrl} placeholder=" " name="pharmacyUrl" defaultValue={service.webUrl} type="text"
                             className={`inputCamp peer ${emptyWebUrl ? 'border-red-600'
                                 : ''
                                 }`} onChange={(e) => {

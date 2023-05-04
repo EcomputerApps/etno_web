@@ -100,6 +100,7 @@ const CustomLinkPage = () => {
                         customLinkStore.getPaginatedCustomLink.content!!.length > 0 &&
                         <div key={index} className={`border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full  ${customLinkStore.paginatedCustomLink.content!!.length > 2 ? 'h-40'
                             : 'h-60'}`}>
+                                <input className="ml-4 w-5 h-5" type="checkbox"></input>
                             <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center flex-col">{item.name}</div>
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 
                             hover:font-medium justify-center   text-xl overflow-hidden bg-gray-200 flex-col"><a href={item.webUrl}>{item.webUrl}</a></div>

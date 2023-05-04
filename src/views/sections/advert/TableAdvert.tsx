@@ -67,6 +67,19 @@ const TableAdvert = (prop: PropTable) => {
                         {advertStore.getPaginatedAdverts.content?.map((advert, index) => (
                             advertStore.getPaginatedAdverts.content!!.length > 0 &&
                             <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
+                                 <td className="tableCamp">
+                                    <div className="overflow-y-auto max-h-20">
+                                    <input type="checkbox" onChange={(value) => {
+                                        if (value.currentTarget.checked) {
+                                         advertStore.adsListChecked.push(advert);
+                                        } else {
+                                          advertStore.adsListChecked.splice(advertStore.getAdsCheckedList.indexOf(advert), 1)
+                                        }
+                                        console.log(value.currentTarget.checked)}
+                                    } ></input>
+                                    </div>
+                                </td>
+                                 
                                 <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <div className="overflow-y-auto max-h-20">
                                         {advert.title}

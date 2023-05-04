@@ -70,6 +70,11 @@ const TableService = (prop: PropTable) => {
                     {serviceStore.getPaginatedService.content?.map((service, index) => (
                         serviceStore.getPaginatedService.content!!.length > 0 &&
                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600  ">
+                            <td className="tableCamp ">
+                                <div className="overflow-y-auto max-h-20">
+                                <input type="checkbox"></input>
+                                </div>
+                            </td>
                             <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                                 {service.category}
                             </th>
@@ -79,7 +84,6 @@ const TableService = (prop: PropTable) => {
                                 </div>
                             </td>
                             <td className="tableCamp ">
-
                                 {service.number}
                             </td>
                             <td className="tableCamp ">
@@ -93,7 +97,7 @@ const TableService = (prop: PropTable) => {
                                 </div>
                             </td>
                             <td className="tableCamp ">
-                                <a className=" text-blue-500 hover:text-blue-600" href={service.urlWeb}>{service.urlWeb}</a>
+                                <a className=" text-blue-500 hover:text-blue-600" href={service.webUrl}>{service.webUrl}</a>
                             </td>
                             <td className="flex items-center justify-center px-6 py-4">
                                 <div className="h-20 flex items-center justify-center">

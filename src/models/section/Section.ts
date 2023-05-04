@@ -256,7 +256,7 @@ interface Service {
     category?: string,
     owner?: string,
     description?: string,
-    urlWeb?: string,
+    webUrl?: string,
     number?: string,
     schedule?: string,
     imageUrl?: string

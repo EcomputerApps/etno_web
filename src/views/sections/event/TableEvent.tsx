@@ -83,15 +83,27 @@ const TableEvent = (prop: PropTable) => {
                                 {eventStore.getPaginatedEvents.content?.map((eventMap, index) => (
                                     eventStore.getPaginatedEvents.content!!.length > 0 &&
                                     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
+                                        <td className="tableCamp">
+                                            <div className="overflow-y-auto max-h-20">
+                                            <input type="checkbox" onChange={(value) => {
+                                        if (value.currentTarget.checked) {
+                                         eventStore.eventListChecked.push(eventMap);
+                                        } else {
+                                          eventStore.eventListChecked.splice(eventStore.getEventsListChecked.indexOf(eventMap), 1)
+                                        }
+                                    }
+                                    } ></input>
+                                            </div>
+                                        </td>
                                         <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                        <div className="overflow-y-auto max-h-20">
-                                            {eventMap.title}
+
+                                            <div className="overflow-y-auto max-h-20">
+                                                {eventMap.title}
                                             </div>
                                         </th>
                                         <td className="tableCamp">
-                                        <div className="overflow-y-auto max-h-20">
-                                            {eventMap.description}
+                                            <div className="overflow-y-auto max-h-20">
+                                                {eventMap.description}
                                             </div>
                                         </td>
                                         <td className="tableCamp ">
@@ -110,13 +122,13 @@ const TableEvent = (prop: PropTable) => {
                                             {eventMap.username}
                                         </td>
                                         <td className="tableCamp">
-                                        <div className="overflow-y-auto max-h-20">
-                                            {eventMap.address}
+                                            <div className="overflow-y-auto max-h-20">
+                                                {eventMap.address}
                                             </div>
                                         </td>
                                         <td className="tableCamp">
-                                        <div className="overflow-y-auto max-h-20">
-                                            {eventMap.organization}
+                                            <div className="overflow-y-auto max-h-20">
+                                                {eventMap.organization}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 ">

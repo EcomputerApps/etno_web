@@ -86,6 +86,18 @@ const TableReserves = (prop: PropTable) => {
                                 <tr onClick={() => console.log(reservMap.name)} key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <th scope="row" className="tableCamp">
                                         <div className="overflow-y-auto max-h-20">
+                                        <input type="checkbox" onChange={(value) => {
+                                        if (value.currentTarget.checked) {
+                                          reserveStore.reserveListChecked.push(reservMap);
+                                        } else {
+                                           reserveStore.reserveListChecked.splice(reserveStore.getReservesCheckedList.indexOf(reservMap), 1)
+                                        }
+                                        console.log(value.currentTarget.checked)}
+                                    } ></input>
+                                        </div>
+                                    </th>
+                                    <th scope="row" className="tableCamp">
+                                        <div className="overflow-y-auto max-h-20">
                                             {reservMap.name}
                                         </div>
                                     </th>

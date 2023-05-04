@@ -36,6 +36,7 @@ class TourismStore {
     tourism: Tourism = {}
     modalCreate: boolean = false
     modalEdit: boolean = false
+    tourismListChecked: Tourism[] = []
 
     constructor() {
         makeObservable(this, {
@@ -43,6 +44,7 @@ class TourismStore {
             tourismTypes: observable,
             modalEdit: observable,
             modalCreate: observable,
+            tourismListChecked: observable,
             setModalCreate: action,
             getModalEdit: computed,
             getModalCreate: computed,
@@ -60,6 +62,7 @@ class TourismStore {
             updateTourismTypes: action,
             getTourismTypes: computed,
             updateAllTourism: action,
+            deleteAllById: action,
             getAllTourism: computed
 
         })
@@ -76,7 +79,9 @@ class TourismStore {
     get getTourismTypes() {
         return this.tourismTypes
     }
-
+    get getTourismCheckedList(){
+        return this.tourismListChecked
+    }
     setModalEdit(mode: boolean) {
         this.modalEdit = mode
     }
@@ -243,6 +248,42 @@ class TourismStore {
                 progress: undefined,
                 theme: "light"
             })
+        }
+    }
+    async deleteAllById(locality: string) {
+        const response = await fetch(`${urlBase}/tourism/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.tourismListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
         }
     }
 }

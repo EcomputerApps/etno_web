@@ -47,7 +47,7 @@ const Service = () => {
             </div>
           ) : <></>}
         </div>
-        <TableService currentPage={pageNumber} headerList={['Categoría', 'nombre', 'Teléfono', 'horario', 'Descripción', 'Pagina Web', 'acciones']} />
+        <TableService currentPage={pageNumber} headerList={['Seleccionar','Categoría', 'nombre', 'Teléfono', 'horario', 'Descripción', 'Pagina Web', 'acciones']} />
       </div>
       <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center md:flex-row flex-col">
         <button onClick={decrementPage} disabled={pageNumber < 1}

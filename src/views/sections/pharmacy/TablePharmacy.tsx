@@ -68,6 +68,11 @@ const TablePharmacy = (prop: PropTable) => {
                             {pharmacyStore.getPaginatedPharmacy.content?.map((pharmMap, index) => (
                                 pharmacyStore.getPaginatedPharmacy.content!!.length > 0 &&
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 " >
+                                    <td className="tableCamp">
+                                        <div className="overflow-y-auto max-h-20">
+                                        <input type="checkbox"></input>
+                                        </div>
+                                    </td>
                                     <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center max-w-prose">
                                         {pharmMap.type}
                                     </th>

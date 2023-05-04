@@ -63,7 +63,7 @@ const Pharmacy = () => {
               </div> </div>
           ) : <></>}
         </div>
-        <TablePharmacy currentPage={pageNumber} headerList={['tipo', 'nombre', 'horario', 'Dirección', 'Teléfono', 'Pagina Web', 'acciones']} />
+        <TablePharmacy currentPage={pageNumber} headerList={['Selección', 'tipo', 'nombre', 'horario', 'Dirección', 'Teléfono', 'Pagina Web', 'acciones']} />
       </div>
       <div className="flex absolute left-0 bottom-0 right-0  items-center justify-center lg:flex-row flex-col">
         <button onClick={decrementPage} disabled={pageNumber < 1} className="btnStandard mr-10">

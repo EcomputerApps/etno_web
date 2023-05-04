@@ -72,6 +72,12 @@ const Reserve = () => {
                             Lugares
                         </button>
                         <button type="button"
+                            className="btnStandard mr-3 h-12"
+                            onClick={() => reserveStore.deleteAllReserveById(localStorage.getItem('user_etno_locality')!)}>
+                            <img src={Pencil} alt="create" />
+                            Eliminar
+                        </button>
+                        <button type="button"
                             className="btnStandard h-12"
                             onClick={() => reserveStore.setModalCreate(true)}>
                             <img src={Pencil} alt="create" />
@@ -79,13 +85,13 @@ const Reserve = () => {
                         </button>
                     </div>
                 </div>
-                <TableReserves currentPage={pageNumber} headerList={["Nombre", "Lugar", "Sala", "Fecha", "Hora", "Tipo", "Status", "Acciones"]} />
+                <TableReserves currentPage={pageNumber} headerList={["Selección", "Nombre", "Lugar", "Sala", "Fecha", "Hora", "Tipo", "Status", "Acciones"]} />
                 {reserveStore.getModalPlaceList ? (
                     <div>
                         <div className=" fixed inset-0 z-50 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
                             <div className=" w-screen h-screen top-0 -left-1 fixed">
                                 <div className="w-screen  flex justify-start">
-                                    <PlaceList headerList={["Nombre", "Salas", "Acciones"]} />
+                                    <PlaceList headerList={["Selección","Nombre", "Salas", "Acciones"]} />
                                 </div>
                             </div>
                         </div>

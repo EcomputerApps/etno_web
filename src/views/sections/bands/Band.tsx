@@ -58,7 +58,7 @@ const Band = () => {
             </button>
           </div>
         </div>
-        <TableBand currentPage={pageNumber} headerList={['Título', 'Descripción', 'fecha', 'acciones']} />
+        <TableBand currentPage={pageNumber} headerList={['Selección','Título', 'Descripción', 'fecha', 'acciones']} />
       </div>
       {bandStore.getModalCreate ? (
         <div>
