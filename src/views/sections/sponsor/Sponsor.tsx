@@ -26,15 +26,18 @@ const Sponsor = () => {
     if (pageNumber > 0)
       setPageNumber(pageNumber - 1)
   }
-
+  function deleteByGroup(){
+    if(sponsorStore.getSponsorsCheckedList.length > 0){
+      sponsorStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
+    }
+  }
   return (
     <div className="w-full h-full relative">
       <div className="flex flex-col gap-4">
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Patrocinadores</h2>
           <div className="mainButtonsDiv">
-          <button onClick={() => sponsorStore.deleteAllById(localStorage.getItem('user_etno_locality')!)
-          } type="button" className={`btnStandard ${sponsorStore.getPaginatedSponsor.totalElements! < 1 ? 'invisible' : 'visible'}`}>
+          <button onClick={deleteByGroup} type="button" className={`btnStandard ${sponsorStore.getPaginatedSponsor.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar
             </button>

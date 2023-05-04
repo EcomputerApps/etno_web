@@ -42,7 +42,11 @@ const Reserve = () => {
     const decrementPage = () => {
         setPageNumber(pageNumber - 1)
     }
-
+    function deleteByGroup(){
+        if(reserveStore.getReservesCheckedList.length > 0){
+          reserveStore.deleteAllReserveById(localStorage.getItem('user_etno_locality')!)
+        }
+      }
     return (
         <div className="w-full h-full  relative">
             <div className="flex flex-col gap-4">
@@ -73,7 +77,7 @@ const Reserve = () => {
                         </button>
                         <button type="button"
                             className={`btnStandard ${reserveStore.getPaginatedReserve.totalElements! < 1 ? 'invisible' : 'visible'}`}
-                            onClick={() => reserveStore.deleteAllReserveById(localStorage.getItem('user_etno_locality')!)}>
+                            onClick={deleteByGroup}>
                             <img src={Pencil} alt="create" />
                             Eliminar
                         </button>
