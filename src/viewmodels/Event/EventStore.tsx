@@ -193,7 +193,15 @@ class EventStore {
     }
 
     get getPaginatedEvents() {
-        return this.paginatedEvent
+        const paginatedEvents: PaginatedEvent = {
+            content: this.paginatedEvent.content?.slice().sort((b, a) =>
+              new Date(a.startDate!).getTime() - new Date(b.startDate!).getTime()
+            ),
+            totalPages: this.paginatedEvent.totalPages,
+            totalElements: this.paginatedEvent.totalElements,
+            pageNum: this.paginatedEvent.pageNum
+          }
+        return paginatedEvents
     }
     get getEvent() {
         return this.event
