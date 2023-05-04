@@ -58,7 +58,7 @@ const Band = () => {
               Eliminar
             </button>
             <button onClick={() => bandStore.setModalCreate(true)} type="button" className="btnStandard">
-              <img src={Pencil} alt="Create" />
+              <img src={Pencil} alt="Create"/>
               Crear
             </button>
           </div>
