@@ -15,6 +15,7 @@ const pharmacyStore = PharmacyStore.getPharmacyStore()
 const Pharmacy = () => {
 
   const [pageNumber, setPageNumber] = useState(0)
+  const [searchFilter, setSearchFilter] = useState<string>('')
 
   useEffect(() => {
     pharmacyStore.getPaginatedPharmacyrequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
@@ -43,7 +44,7 @@ const Pharmacy = () => {
               Farmacias de guardia
             </button>
             <label htmlFor="input-text">Buscar:</label>
-          <input type="text" id="input-text"></input>
+          <input type="text" id="input-text" onChange={(value) => console.log(value.currentTarget.value)}></input>
             <button onClick={deleteByGroup} type="button" className={`btnStandard ${pharmacyStore.getPaginatedPharmacy.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar

@@ -18,6 +18,7 @@ const CustomLinkPage = () => {
     const [confirm, setConfirm] = useState<boolean>(false)
     const [delName, setDelName] = useState<string>("")
     const [delId, setDelId] = useState<string>("")
+    const [searchFilter, setSearchFilter] = useState<string>('')
 
     useEffect(() => {
         customLinkStore.getPaginatedCLinkRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 12)
@@ -55,7 +56,7 @@ const CustomLinkPage = () => {
                         Eliminar
                     </button>
                 <label htmlFor="input-text">Buscar:</label>
-          <input type="text" id="input-text"></input>
+          <input type="text" id="input-text" onChange={(value) => console.log(value.currentTarget.value)}></input>
                     <button type="button" className="btnStandard" onClick={() => customLinkStore.setCreateLinkModal(true)}>
                         <img src={Pencil} alt="Create" />
                         Crear

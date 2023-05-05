@@ -11,6 +11,7 @@ const tourisStore = TourismStore.getTourismStore()
 
 const Tourism = () => {
   const [pageNumber, setPageNumber] = useState(0)
+  const [searchFilter, setSearchFilter] = useState<string>('')
 
   useEffect(() => {
     tourisStore.getPaginatedTourismRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
@@ -33,7 +34,7 @@ const Tourism = () => {
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Turismo</h2>
           <div className="mainButtonsDiv">
           <label htmlFor="input-text">Buscar:</label>
-          <input type="text" id="input-text"></input>
+          <input type="text" id="input-text" onChange={(value) => console.log(value.currentTarget.value)}></input>
           <button onClick={deleteByGroup} type="button" className={`btnStandard ${tourisStore.getPaginatedTourism.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create"/>
               Eliminar

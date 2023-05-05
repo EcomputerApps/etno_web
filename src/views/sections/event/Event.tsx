@@ -24,6 +24,7 @@ const Event = () => {
   ]
 
   const [pageNumber, setPageNumber] = useState(0)
+  const [searchFilter, setSearchFilter] = useState<string>('')
 
   useEffect(() => {
     eventStore.getPaginatedEventsRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
@@ -60,7 +61,7 @@ const Event = () => {
                 </CSVLink>
               </div>)}
               <label htmlFor="input-text">Buscar:</label>
-          <input type="text" id="input-text"></input>
+          <input type="text" id="input-text" onChange={(value) => console.log(value.currentTarget.value)}></input>
             <button onClick={deleteByGroup} type="button" className={`btnStandard ${eventStore.getPaginatedEvents.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar

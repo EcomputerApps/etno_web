@@ -19,6 +19,7 @@ const LinkPage = () => {
     const [confirm, setConfirm] = useState(false)
     const [delName, setDelName] = useState<string>("")
     const [delId, setDelId] = useState<string>("")
+    const [searchFilter, setSearchFilter] = useState<string>('')
 
     useEffect(() => {
         linkStore.getPaginatedLinkRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 12)
@@ -54,7 +55,7 @@ const LinkPage = () => {
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces</h2>
                 <div className="lg:ml-auto flex ml-1 ">
                 <label htmlFor="input-text">Buscar:</label>
-          <input type="text" id="input-text"></input>
+          <input type="text" id="input-text" onChange={(value) => console.log(value.currentTarget.value)}></input>
                     <button onClick={() => linkStore.setModalCreate(true)} type="button" className="btnStandard">
                         <img src={Pencil} alt="Create" />
                         Crear
