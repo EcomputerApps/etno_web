@@ -65,12 +65,12 @@ const Band = () => {
               Eliminar
             </button>
             <button onClick={() => bandStore.setModalCreate(true)} type="button" className="btnStandard">
-              <img src={Pencil} alt="Create"/>
+              <img src={Pencil} alt="Create" />
               Crear
             </button>
           </div>
         </div>
-        <TableBand currentPage={pageNumber} headerList={['Selección','Título', 'Descripción', 'fecha', 'acciones']} />
+        <TableBand currentPage={pageNumber} headerList={['Selección', 'Título', 'Descripción', 'fecha', 'acciones']} />
       </div>
       {bandStore.getModalCreate ? (
         <div>

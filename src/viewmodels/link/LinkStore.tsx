@@ -26,12 +26,14 @@ class LinkStore {
     linkString: string = ""
     modalCreate: boolean = false
     modalEdit: boolean = false
+    linksListChecked: Link[] = []
 
     constructor() {
         makeObservable(this, {
             allLinks: observable,
             modalEdit: observable,
             modalCreate: observable,
+            linksListChecked: observable,
             setModalCreate: action,
             getModalEdit: computed,
             getModalCreate: computed,
@@ -55,7 +57,8 @@ class LinkStore {
             getId: computed,
             getLinkString: computed,
             updateAllLinks: action,
-            getAllLinks: computed
+            getAllLinks: computed,
+            getLinksCheckedList: computed
         })
     }
     updateAllLinks(links: Link[]) {
@@ -110,6 +113,10 @@ class LinkStore {
     get getLink() {
         return this.link
     }
+    get getLinksCheckedList() {
+        return this.linksListChecked
+    }
+
     async getPaginatedLinkRequest(locality: string, pageNum: number, elementSize: number) {
         const response = await fetch(`${urlBase}/links/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
@@ -232,6 +239,43 @@ class LinkStore {
                 progress: undefined,
                 theme: "light"
             })
+        }
+    }
+
+    async deleteAllById(locality: string) {
+        const response = await fetch(`${urlBase}/links/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.linksListChecked)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
         }
     }
 }

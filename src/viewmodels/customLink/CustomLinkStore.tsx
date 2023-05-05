@@ -5,6 +5,7 @@ import { CustomLink, CustomLinkList, PaginatedCustomLink } from "../../models/se
 import { urlBase } from "../../utils/global"
 
 
+
 class CustomLinkStore {
     serverIp: string = "192.168.241.51"
     static customLinkStore: CustomLinkStore
@@ -21,6 +22,7 @@ class CustomLinkStore {
     customLink: CustomLink = {}
     allCustomLinks: CustomLinkList = {}
     paginatedCustomLink: PaginatedCustomLink = {}
+    customLinksCheckedList: CustomLink[] = []
 
     constructor() {
         makeAutoObservable(this, {
@@ -41,8 +43,9 @@ class CustomLinkStore {
             getEditLinkModal: computed,
             getPaginatedCustomLink: computed,
             updateAllCustomLinks: action,
-            getAllCustomLinks: computed
-
+            getAllCustomLinks: computed,
+            customLinksCheckedList: observable,
+            getCustomLinksCheckedList: computed
         })
     }
     updateAllCustomLinks(customLinks: CustomLink[]) {
@@ -66,6 +69,9 @@ class CustomLinkStore {
     }
     get getPaginatedCustomLink() {
         return this.paginatedCustomLink
+    }
+    get getCustomLinksCheckedList() {
+        return this.customLinksCheckedList
     }
     setCreateLinkModal(mode: boolean) {
         this.modalCreateLink = mode
@@ -169,7 +175,6 @@ class CustomLinkStore {
 
     }
     async editCustomLink(locality: string, customLinkId: string, customLink: CustomLink) {
-
         const response = await fetch(`${urlBase}/users/update/custom_link?username=${locality}&idCustomLink=${customLinkId}`, {
             method: 'PUT',
             body: JSON.stringify(customLink),
@@ -204,7 +209,42 @@ class CustomLinkStore {
             })
         }
     }
-
-
+    async deleteAllById(locality: string) {
+        const response = await fetch(`${urlBase}/custom_links/delete/some?username=${locality}`, {
+            method: 'DELETE',
+            headers : {
+                'Access-Control-Allow-Origin':'*',
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(this.customLinksCheckedList)
+        })
+        if(response.ok){
+            toast.success('Se han borrado exitosamente', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+          setTimeout(function(){
+            window.location.reload();
+         }, 1500);
+        }else{
+            toast.error('No se ha podido borrar', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+          })
+        }
+    }
 }
+
 export default CustomLinkStore

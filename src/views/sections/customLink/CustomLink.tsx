@@ -50,6 +50,10 @@ const CustomLinkPage = () => {
             <div className="flex flex-row">
                 <h2 className="lg:text-2xl text-xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces Personalizados</h2>
                 <div className="mainButtonsDiv">
+                    <button type="button" className="btnStandard" onClick={() => customLinkStore.deleteAllById(localStorage.getItem('user_etno_locality')!)}>
+                        <img src={Pencil} alt="Delete"/>
+                        Eliminar
+                    </button>
                 <label htmlFor="input-text">Buscar:</label>
           <input type="text" id="input-text"></input>
                     <button type="button" className="btnStandard" onClick={() => customLinkStore.setCreateLinkModal(true)}>
