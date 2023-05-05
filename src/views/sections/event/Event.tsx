@@ -59,6 +59,8 @@ const Event = () => {
                   headers={headers} >Exportar a excel
                 </CSVLink>
               </div>)}
+              <label htmlFor="input-text">Buscar:</label>
+          <input type="text" id="input-text"></input>
             <button onClick={deleteByGroup} type="button" className={`btnStandard ${eventStore.getPaginatedEvents.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar

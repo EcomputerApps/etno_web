@@ -42,6 +42,8 @@ const Pharmacy = () => {
               <img src={POD} alt="de guardia" />
               Farmacias de guardia
             </button>
+            <label htmlFor="input-text">Buscar:</label>
+          <input type="text" id="input-text"></input>
             <button onClick={deleteByGroup} type="button" className={`btnStandard ${pharmacyStore.getPaginatedPharmacy.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar

@@ -42,6 +42,8 @@ const Incident = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Incidencia</h2>
           <div className="mainButtonsDiv">
+          <label htmlFor="input-text">Buscar:</label>
+          <input type="text" id="input-text"></input>
           <button onClick={deleteByGroup} type="button" className={`btnStandard ${incidentStore.getPaginatedIncident.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar

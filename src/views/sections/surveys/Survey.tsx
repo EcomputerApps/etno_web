@@ -24,6 +24,8 @@ const Survey = () => {
                         <button type="button" className="btnStandard mr-3" onClick={() => surveyStore.setModalResult(true)}>
                             <label className="lg:text-base text-xs">Resultados</label>
                         </button>
+                        <label htmlFor="input-text">Buscar:</label>
+          <input type="text" id="input-text"></input>
                         <button type="button" className="btnStandard " onClick={() => surveyStore.setCreateSurvey(true)}>
                             <img src={Pencil} alt="Create" />
                             <label className="lg:text-base text-xs ">Crear</label>

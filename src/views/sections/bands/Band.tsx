@@ -58,6 +58,8 @@ const Band = () => {
                   headers={headers} >Exportar a excel
                 </CSVLink>
               </div>)}
+              <label htmlFor="input-text">Buscar:</label>
+          <input type="text" id="input-text"></input>
               <button onClick={deleteByGroup} type="button" className={`btnStandard ${bandStore.getPaginatedBands.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar

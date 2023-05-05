@@ -75,6 +75,8 @@ const Reserve = () => {
                             onClick={() => reserveStore.setModalPlaceList(true)}>
                             Lugares
                         </button>
+                        <label htmlFor="input-text">Buscar:</label>
+          <input type="text" id="input-text"></input>
                         <button type="button"
                             className={`btnStandard ${reserveStore.getPaginatedReserve.totalElements! < 1 ? 'invisible' : 'visible'}`}
                             onClick={deleteByGroup}>
