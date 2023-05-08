@@ -24,6 +24,7 @@ const Event = () => {
   ]
 
   const [pageNumber, setPageNumber] = useState(0)
+  const [searchFilter, setSearchFilter] = useState<string>('')
 
   useEffect(() => {
     eventStore.getPaginatedEventsRequest(localStorage.getItem('user_etno_locality')!, '', pageNumber, 5)
@@ -59,6 +60,10 @@ const Event = () => {
                   headers={headers} >Exportar a excel
                 </CSVLink>
               </div>)}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <label htmlFor="input-text" style={{ marginRight: '10px'}}>Buscar:</label>
+                        <input type="text" style={{ marginRight: '10px'}} id="input-text" onChange={(value) => console.log(value.currentTarget.value)} />
+                    </div>
             <button onClick={deleteByGroup} type="button" className={`btnStandard ${eventStore.getPaginatedEvents.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar

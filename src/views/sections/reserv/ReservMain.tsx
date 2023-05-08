@@ -26,6 +26,7 @@ const Reserve = () => {
         { label: 'Status', key: 'isReserved' }
     ]
     const [pageNumber, setPageNumber] = useState(0)
+    const [searchFilter, setSearchFilter] = useState<string>('')
 
     useEffect(() => {
         reserveStore.getPaginatedReserveRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
@@ -75,6 +76,10 @@ const Reserve = () => {
                             onClick={() => reserveStore.setModalPlaceList(true)}>
                             Lugares
                         </button>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <label htmlFor="input-text" style={{ marginRight: '10px'}}>Buscar:</label>
+                        <input type="text" style={{ marginRight: '10px'}} id="input-text" onChange={(value) => console.log(value.currentTarget.value)} />
+                    </div>
                         <button type="button"
                             className={`btnStandard ${reserveStore.getPaginatedReserve.totalElements! < 1 ? 'invisible' : 'visible'}`}
                             onClick={deleteByGroup}>

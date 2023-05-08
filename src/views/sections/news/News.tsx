@@ -12,6 +12,7 @@ const newsStore = NewsStore.getNewsStore()
 
 const News = () => {
   const [pageNumber, setPageNumber] = useState(0)
+  const [searchFilter, setSearchFilter] = useState<string>('')
 
   useEffect(() => {
     newsStore.getPaginatedNewsRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
@@ -38,6 +39,10 @@ const News = () => {
         <div className="flex flex-row">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Noticias</h2>
           <div className="mainButtonsDiv">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <label htmlFor="input-text" style={{ marginRight: '10px'}}>Buscar:</label>
+                        <input type="text" style={{ marginRight: '10px'}} id="input-text" onChange={(value) => console.log(value.currentTarget.value)} />
+                    </div>
           <button onClick={deleteByGroup} type="button" className={`btnStandard ${newsStore.getPaginatedNews.totalElements! < 1 ? 'invisible' : 'visible'}`}>
               <img src={Pencil} alt="Create" />
               Eliminar

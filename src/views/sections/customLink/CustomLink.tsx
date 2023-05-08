@@ -18,6 +18,7 @@ const CustomLinkPage = () => {
     const [confirm, setConfirm] = useState<boolean>(false)
     const [delName, setDelName] = useState<string>("")
     const [delId, setDelId] = useState<string>("")
+    const [searchFilter, setSearchFilter] = useState<string>('')
 
     useEffect(() => {
         customLinkStore.getPaginatedCLinkRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 12)
@@ -40,7 +41,6 @@ const CustomLinkPage = () => {
         setDelName(link.name!!)
         setDelId(link.idCustomLink!!)
     }
-
     const deleteCustomLink = async (idLink: string) => {
         await customLinkStore.deleteCustomLink(localStorage.getItem('user_etno_locality')!, idLink)
         setConfirm(false)
@@ -51,7 +51,11 @@ const CustomLinkPage = () => {
             <div className="flex flex-row">
                 <h2 className="lg:text-2xl text-xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces Personalizados</h2>
                 <div className="mainButtonsDiv">
-                    <button type="button" className={`btnStandard ${customLinkStore.getPaginatedCustomLink.totalElements! < 1 ? 'invisible' : 'visible'}`} onClick={() => customLinkStore.deleteAllById(localStorage.getItem('user_etno_locality')!)}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <label htmlFor="input-text" style={{ marginRight: '10px'}}>Buscar:</label>
+                        <input type="text" style={{ marginRight: '10px'}} id="input-text" onChange={(value) => console.log(value.currentTarget.value)} />
+                    </div>
+                    <button type="button" className="btnStandard" onClick={() => customLinkStore.deleteAllById(localStorage.getItem('user_etno_locality')!)}>
                         <img src={Pencil} alt="Delete"/>
                         Eliminar
                     </button>
@@ -103,16 +107,9 @@ const CustomLinkPage = () => {
                 <div className="w-full grid lg:grid-cols-4 lg:grid-rows-3  grid-cols-1">
                     {customLinkStore.getPaginatedCustomLink.content?.map((item, index) => (
                         customLinkStore.getPaginatedCustomLink.content!!.length > 0 &&
-                        <div key={index} className={`border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full ${customLinkStore.paginatedCustomLink.content!!.length > 2 ? 'h-40'
+                        <div key={index} className={`border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full  ${customLinkStore.paginatedCustomLink.content!!.length > 2 ? 'h-40'
                             : 'h-60'}`}>
-                               <input type="checkbox" onChange={(value) => {
-                                if (value.currentTarget.checked) {
-                                    customLinkStore.customLinksCheckedList.push(item);
-                                } else {
-                                    customLinkStore.customLinksCheckedList.splice(customLinkStore.customLinksCheckedList.indexOf(item), 1)
-                                }
-                            }
-                            }></input>
+                                <input className="ml-4 w-5 h-5" type="checkbox"></input>
                             <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center flex-col">{item.name}</div>
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 
                             hover:font-medium justify-center   text-xl overflow-hidden bg-gray-200 flex-col"><a href={item.webUrl}>{item.webUrl}</a></div>
