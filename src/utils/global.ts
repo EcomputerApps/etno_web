@@ -1,6 +1,6 @@
 import Resizer from 'react-image-file-resizer'
 
-export const urlBase: string = 'https://tomcat.vpsecomputer.com:8080';
+export const urlBase: string =  'http://localhost:8080';
 
 export const resizeFile = (file: File) => new Promise<any>((resolve) => {
     Resizer.imageFileResizer(

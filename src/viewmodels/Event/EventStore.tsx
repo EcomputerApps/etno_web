@@ -167,8 +167,8 @@ class EventStore {
         }
     }
 
-    async getPaginatedEventsRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/events/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedEventsRequest(locality: string, title: String, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/events/paginated?username=${locality}&title=${title}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const events = await response.json()

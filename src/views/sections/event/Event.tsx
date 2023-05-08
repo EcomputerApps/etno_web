@@ -26,7 +26,7 @@ const Event = () => {
   const [pageNumber, setPageNumber] = useState(0)
 
   useEffect(() => {
-    eventStore.getPaginatedEventsRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
+    eventStore.getPaginatedEventsRequest(localStorage.getItem('user_etno_locality')!, '', pageNumber, 5)
   }, [pageNumber])
 
   const incrementPage = () => {

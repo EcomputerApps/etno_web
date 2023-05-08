@@ -177,8 +177,8 @@ class AdvertStore {
         }
     }
 
-    async getPaginatedAdvertRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/ads/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedAdvertRequest(locality: string, title: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/ads/paginated?username=${locality}&title=${title}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const adverts = await response.json()

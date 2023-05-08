@@ -29,7 +29,6 @@ const Photo = () => {
         <div className="flex relative flex-col h-full w-full ">
             <div className="flex justify-between">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Fotos</h2>
-                <button className="btnStandard" onClick={() => console.log('Its working')}>Añadir</button>
             </div>
             <div>
                 {showModal ? (

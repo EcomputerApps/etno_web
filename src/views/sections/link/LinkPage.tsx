@@ -53,7 +53,7 @@ const LinkPage = () => {
             <div className="flex flex-row">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces</h2>
                 <div className="lg:ml-auto flex ml-1">
-                    <button onClick={() => linkStore.deleteAllById(localStorage.getItem('user_etno_locality')!)} type="button" className="btnStandard">
+                    <button onClick={() => linkStore.deleteAllById(localStorage.getItem('user_etno_locality')!)} type="button" className={`btnStandard ${linkStore.getPaginatedLink.totalElements! < 1 ? 'invisible' : 'visible'}`}>
                         <img src={Pencil} alt="Delete" />
                         Eliminar
                     </button>

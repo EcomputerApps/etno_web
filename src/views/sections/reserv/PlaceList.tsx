@@ -110,18 +110,7 @@ const ReservPlaceList = (prop: PropTable) => {
                         {lugares.map((placeMap, index) => (
                             lugares.length > 0 &&
                             <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" >
-                                <td scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
-                                    <div className="overflow-y-auto max-h-20">
-                                    <input type="checkbox" onChange={(value) => {
-                                        if (value.currentTarget.checked) {
-                                          reserveStore.placeListChecked.push(placeMap);
-                                        } else {
-                                           reserveStore.placeListChecked.splice(reserveStore.getPlacesCheckedList.indexOf(placeMap), 1)
-                                        }
-                                        console.log(value.currentTarget.checked)}
-                                    } ></input>
-                                    </div>
-                                </td>
+                                
                                 <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
                                     <div className="overflow-y-auto max-h-20">
                                         {placeMap.name}
@@ -180,7 +169,6 @@ const ReservPlaceList = (prop: PropTable) => {
                     Anterior
                 </button>
                 <div className=" flex lg:flex-row flex-col ">
-                <button name="bandBtnCancel" className="btnStandard mr-3" onClick={() => reserveStore.deleteAllPlaceById(localStorage.getItem('user_etno_locality')!)}>Eliminar</button>
                     <button name="bandBtnCancel" className="btnStandard mr-3" onClick={() => reserveStore.setModalCreatePlaces(true)}>Crear lugar</button>
                     {reserveStore.getPaginatedPlaces.content! && (
                         <div hidden={reserveStore.getPaginatedPlaces.content.length === 0}>

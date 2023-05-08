@@ -136,7 +136,7 @@ const CreateEvent = () => {
           }) 
         } else { 
           //const imageFile = await resizeFile(file!!);
-          eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
+          eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
           }
       }
   

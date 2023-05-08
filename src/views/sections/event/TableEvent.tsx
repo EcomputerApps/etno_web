@@ -83,17 +83,17 @@ const TableEvent = (prop: PropTable) => {
                             <tbody>
                                 {eventStore.getPaginatedEvents.content?.map((eventMap, index) => (
                                     eventStore.getPaginatedEvents.content!!.length > 0 &&
-                                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <tr onClick={() => console.log(eventMap.imageUrl)} key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td className="tableCamp">
                                             <div className="overflow-y-auto max-h-20">
-                                            <input type="checkbox" onChange={(value) => {
-                                        if (value.currentTarget.checked) {
-                                         eventStore.eventListChecked.push(eventMap);
-                                        } else {
-                                          eventStore.eventListChecked.splice(eventStore.getEventsListChecked.indexOf(eventMap), 1)
-                                        }
-                                    }
-                                    } ></input>
+                                                <input type="checkbox" onChange={(value) => {
+                                                    if (value.currentTarget.checked) {
+                                                        eventStore.eventListChecked.push(eventMap);
+                                                    } else {
+                                                        eventStore.eventListChecked.splice(eventStore.getEventsListChecked.indexOf(eventMap), 1)
+                                                    }
+                                                }
+                                                } ></input>
                                             </div>
                                         </td>
                                         <th scope="row" className="tableCamp font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">

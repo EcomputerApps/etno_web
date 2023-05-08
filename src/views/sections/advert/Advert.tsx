@@ -14,7 +14,7 @@ const Advert = () => {
     const [pageNumber, setPageNumber] = useState(0)
   
     useEffect(() => {
-        adverStore.getPaginatedAdvertRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
+        adverStore.getPaginatedAdvertRequest(localStorage.getItem('user_etno_locality')!, '', pageNumber, 5)
     }, [pageNumber])
 
     function deleteByGroup(){

@@ -33,7 +33,7 @@ const CreateAdvert = () => {
 
 
     useEffect(() => {
-        advertStore.getPaginatedAdvertRequest(localStorage.getItem('user_etno_locality')!, 0, 5)
+        advertStore.getPaginatedAdvertRequest(localStorage.getItem('user_etno_locality')!, '', 0, 5)
         advertStore.getAllAdvertRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
 

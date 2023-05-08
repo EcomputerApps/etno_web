@@ -307,7 +307,7 @@ class ReserveStore {
         }
     }
     async getPaginatedPlacesRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/places/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/places/paginated?username=${locality}&name=&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const pagPlaces = await response.json()
@@ -492,7 +492,7 @@ class ReserveStore {
         }
     }
     async getPaginatedReserveRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/reserves/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/reserves/paginated?username=${locality}&name=&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const reserves = await response.json()

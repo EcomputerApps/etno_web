@@ -51,7 +51,7 @@ const CustomLinkPage = () => {
             <div className="flex flex-row">
                 <h2 className="lg:text-2xl text-xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Enlaces Personalizados</h2>
                 <div className="mainButtonsDiv">
-                    <button type="button" className="btnStandard" onClick={() => customLinkStore.deleteAllById(localStorage.getItem('user_etno_locality')!)}>
+                    <button type="button" className={`btnStandard ${customLinkStore.getPaginatedCustomLink.totalElements! < 1 ? 'invisible' : 'visible'}`} onClick={() => customLinkStore.deleteAllById(localStorage.getItem('user_etno_locality')!)}>
                         <img src={Pencil} alt="Delete"/>
                         Eliminar
                     </button>
