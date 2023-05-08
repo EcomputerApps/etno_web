@@ -128,8 +128,8 @@ class BandStore {
             })
         }
     }
-    async getPaginatedBandrequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/bandos/paginated?username=${locality}&title=&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedBandrequest(locality: string, title: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/bandos/paginated?username=${locality}&title=${title}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const band = await response.json()

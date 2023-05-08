@@ -91,8 +91,8 @@ class SposnsorStore {
         return this.sponsorsListChecked
     }
 
-    async getPaginatedSponsorRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/sponsors/paginated?username=${locality}&title=&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedSponsorRequest(locality: string, title: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/sponsors/paginated?username=${locality}&title=${title}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const sponsor = await response.json()

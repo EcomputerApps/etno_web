@@ -61,8 +61,8 @@ class IncidentStore {
     get getIncidentsCheckedList(){
         return this.incidentsListChecked
     }
-    async getPaginatedIncidentsRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/incidents/paginated?username=${locality}&title=&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedIncidentsRequest(locality: string, title: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/incidents/paginated?username=${locality}&title=${title}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const incident = await response.json()

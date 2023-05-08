@@ -199,8 +199,8 @@ class TourismStore {
         }
     }
 
-    async getPaginatedTourismRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/tourism/paginated/?username=${locality}&title=&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedTourismRequest(locality: string, title: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/tourism/paginated/?username=${locality}&title=${title}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const tourism = await response.json()

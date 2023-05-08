@@ -306,8 +306,8 @@ class ReserveStore {
             })
         }
     }
-    async getPaginatedPlacesRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/places/paginated?username=${locality}&name=&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedPlacesRequest(locality: string, title: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/places/paginated?username=${locality}&name=${title}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const pagPlaces = await response.json()

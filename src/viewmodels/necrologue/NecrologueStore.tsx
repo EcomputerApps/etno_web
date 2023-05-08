@@ -99,8 +99,8 @@ class NecrologueStore {
         return this.deathsListChecked
     }
 
-    async getPaginatedNecroRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/deaths/paginated?username=${locality}&name=&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedNecroRequest(locality: string, title: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/deaths/paginated?username=${locality}&name=${title}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
 
         })

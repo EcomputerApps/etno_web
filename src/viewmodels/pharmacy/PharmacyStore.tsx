@@ -110,8 +110,8 @@ get getPharmaciesCheckedList(){
         return this.pharmaciesListChecked
     }
 
-    async getPaginatedPharmacyrequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/pharmacies/paginated?username=${locality}&name=&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedPharmacyrequest(locality: string, title: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/pharmacies/paginated?username=${locality}&name=${title}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET'
         })
         const pharmacy = await response.json()

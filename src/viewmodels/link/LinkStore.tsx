@@ -117,8 +117,8 @@ class LinkStore {
         return this.linksListChecked
     }
 
-    async getPaginatedLinkRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/links/paginated?username=${locality}&title=&pageNum=${pageNum}&elementSize=${elementSize}`, {
+    async getPaginatedLinkRequest(locality: string, title: string, pageNum: number, elementSize: number) {
+        const response = await fetch(`${urlBase}/links/paginated?username=${locality}&title=${title}&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const link = await response.json()
