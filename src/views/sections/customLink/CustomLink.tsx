@@ -59,10 +59,7 @@ const CustomLinkPage = () => {
               <input onChange={(value) => setSearchFilter(value.currentTarget.value)} type="search" id="default-search" className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Título de noticia" required />
               <button onClick={() => customLinkStore.getPaginatedCLinkRequest(localStorage.getItem('user_etno_locality')!, searchFilter, pageNumber, 5)} type="submit" className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
             </div>
-                    <button type="button" className="btnStandard" onClick={() => customLinkStore.deleteAllById(localStorage.getItem('user_etno_locality')!)}>
-                        <img src={Pencil} alt="Delete"/>
-                        Eliminar
-                    </button>
+                    
                     <button type="button" className="btnStandard" onClick={() => customLinkStore.setCreateLinkModal(true)}>
                         <img src={Pencil} alt="Create" />
                         Crear
@@ -113,7 +110,6 @@ const CustomLinkPage = () => {
                         customLinkStore.getPaginatedCustomLink.content!!.length > 0 &&
                         <div key={index} className={`border-2 p-1 rounded-md relative bg-gray-100 shadow-md lg:h-full  ${customLinkStore.paginatedCustomLink.content!!.length > 2 ? 'h-40'
                             : 'h-60'}`}>
-                                <input className="ml-4 w-5 h-5" type="checkbox"></input>
                             <div className="h-1/3 p-2 text-center overflow-hidden  flex items-center justify-center flex-col">{item.name}</div>
                             <div className="h-1/3 flex m-auto items-center text-blue-500 hover:text-blue-600 
                             hover:font-medium justify-center   text-xl overflow-hidden bg-gray-200 flex-col"><a href={item.webUrl}>{item.webUrl}</a></div>

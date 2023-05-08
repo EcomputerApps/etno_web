@@ -31,6 +31,7 @@ const ReservPlaceList = (prop: PropTable) => {
     const [deltitle, setDelTitle] = useState<string>("")
     const [delId, setDelId] = useState<string>("")
     const [pageNumber, setPageNumber] = useState(0)
+    const [searchFilter, setSearchFilter] = useState<string>('')
 
     const incrementPage = () => {
         setPageNumber(pageNumber + 1)
@@ -39,7 +40,7 @@ const ReservPlaceList = (prop: PropTable) => {
         setPageNumber(pageNumber - 1)
     }
     useEffect(() => {
-        reserveStore.getPaginatedPlacesRequest(localStorage.getItem('user_etno_locality')!, pageNumber, 5)
+        reserveStore.getPaginatedPlacesRequest(localStorage.getItem('user_etno_locality')!, searchFilter, pageNumber, 5)
     }, [pageNumber])
 
     function savePlace(place: Place) {
