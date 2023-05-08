@@ -224,7 +224,7 @@ class NewsStore{
     }
   
     async getPaginatedNewsRequest( locality : string, pageNum: number, elementSize: number){
-        const response = await fetch(`${urlBase}/news/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`,{
+        const response = await fetch(`${urlBase}/news/paginated?username=${locality}&title=&pageNum=${pageNum}&elementSize=${elementSize}`,{
             method: 'GET',
            
         })

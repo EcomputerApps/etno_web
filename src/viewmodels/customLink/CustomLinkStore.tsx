@@ -123,7 +123,7 @@ class CustomLinkStore {
         }
     }
     async getPaginatedCLinkRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/custom_links/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/custom_links/paginated?username=${locality}&name=&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
         })
         const link = await response.json()

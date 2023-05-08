@@ -120,7 +120,7 @@ class ServiceStore {
     }
 
     async getPaginatedServiceRequest(locality: string, pageNum: number, elementSize: number) {
-        const response = await fetch(`${urlBase}/services/paginated?username=${locality}&pageNum=${pageNum}&elementSize=${elementSize}`, {
+        const response = await fetch(`${urlBase}/services/paginated?username=${locality}&owner=&pageNum=${pageNum}&elementSize=${elementSize}`, {
             method: 'GET',
 
         })
