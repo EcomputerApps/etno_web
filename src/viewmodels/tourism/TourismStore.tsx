@@ -16,16 +16,22 @@ class TourismStore {
         return this.tourismStore
     }
 
-    tourismTypes: Array<TourismType> = [{
-        "id": "checkOne",
+    tourismTypes: Array<TourismType> = [
+        {
+        "id": 'checkOne',
+        "value": 'General',
+        "title": 'General'
+        },
+        {
+        "id": "checkTwo",
         "value": "Restaurante",
         "title": "Restaurante",
     }, {
-        "id": "checkTwo",
+        "id": "checkThree",
         "value": "Museo",
         "title": "Museo",
     }, {
-        "id": "checkThree",
+        "id": "checkFour",
         "value": "Hotel",
         "title": "Hotel",
     }]
