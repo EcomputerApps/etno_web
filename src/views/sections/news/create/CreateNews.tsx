@@ -30,7 +30,7 @@ const CreateNews = () => {
     return flag 
   }
 
-  
+  const inputRefCatg = useRef<HTMLInputElement>(null)
   const inputRefTit = useRef<HTMLInputElement>(null)
   const inputRefDate = useRef<HTMLInputElement>(null)
   const inputRefLink = useRef<HTMLInputElement>(null)
@@ -48,7 +48,6 @@ const CreateNews = () => {
   const [emptyFile, setEmptyFile] = useState<boolean>(false)
   const [emptyDate, setEmptyDate] = useState<boolean>(false)
   const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
-
 
 
 async function addNews(e: any) {
@@ -111,30 +110,6 @@ async function addNews(e: any) {
             <p className='flex  text-white lg:text-3xl text-2xl p-3'>NOTICIAS</p>
           </div>
         </div>
-        <div className="w-full flex flex-1 flex-col mt-8 pl-3">
-          <div className={`rounded-md border-2  ${emptyCategory ? 'border-red-600'
-            : 'border-transparent'
-            }`}>
-            <div className="flex flex-col p-1 relative">
-              <div className="flex  flex-wrap">
-                {newsStore.getNewsTypes.map((chkBtn, index) => (
-                  <div key={index} className='flex lg:w-1/6 w-1/3'>
-                    <input type="radio" id={chkBtn.id} name="tipeCheck" className="sr-only peer" value={chkBtn.value} onChange={(e) => {
-                      setNewsCategory(e.currentTarget.value)
-                      setEmptyCategory(false)
-                    }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
-                    <label htmlFor={chkBtn.id} className="w-full  text-center uppercase cursor-pointer  p-2 mr-3 my-2 font-medium text-xs rounded-md peer-checked:bg-indigo-800 border 
-                            border-gray-300 
-                            peer-checked:hover:bg-indigo-700 
-                            peer-checked:text-white 
-                            ring-indigo-500 peer-checked:ring-2 overflow-hidden ">{chkBtn.title}</label>
-                  </div>
-                ))}
-              </div>
-              <label className={"labelFloatDate"}>Categoría</label>
-            </div>
-          </div>
-        </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
             <input ref={inputRefTit} placeholder=" " autoFocus name="newsTitle" type="text" className={`inputCamp peer ${emptyTitle ? 'border-red-600'
@@ -152,6 +127,24 @@ async function addNews(e: any) {
             <label className={"labelFloatInput"}>Titulo</label>
           </div>
         </div>
+        <div className="w-full flex flex-1 flex-col pl-3">
+          <div className="flex flex-col p-1 mt-3 relative">
+            <input ref={inputRefCatg} placeholder=" " name="newsCatg" type="text" className={`inputCamp peer ${emptyCategory ? 'border-red-600'
+              : ''
+              }`} onChange={(value) => {
+                setNewsCategory(value.currentTarget.value)
+                setEmptyCategory(false)
+              }} onKeyUp={(e) => {
+                if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+                  if (inputRefDate.current != null) {
+                    inputRefDate.current.focus()
+                  }
+                }
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
+            <label className={"labelFloatInput"}>Categoría</label>
+          </div>
+        </div>
+       
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
             <input ref={inputRefDate} type="date" name="newsDate" className={`inputCamp peer w-40 ${emptyDate ? 'border-red-600'

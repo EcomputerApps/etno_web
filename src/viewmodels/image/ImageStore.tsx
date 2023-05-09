@@ -46,7 +46,6 @@ class ImageStore {
         this.updatePaginateImages(iamges)
     }
 
-
     async addImageAPI(locality: string, section: string, category: string, file: File){
         let data = new FormData()
         const imageFile = await resizeFile(file!!)
