@@ -40,7 +40,7 @@ const TableNecrologue = (prop: PropTable) => {
             {necrologueStore.getPaginatedNecro.content?.length === 0 ? (
                 <div className="flex flex-row m-1">
                     <img src={deathRed} alt="BIG" />
-                    <label className="text-xl my-auto ml-5 font-medium">No hay Fallesimientos</label>
+                    <label className="text-xl my-auto ml-5 font-medium">No hay Fallecimientos</label>
                 </div>
             ) : (
                 <div>
