@@ -75,7 +75,7 @@ const CreateBand = () => {
   }
 
   return (
-    <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto overflow-y-scroll border-2 rounded-md bg-white">
+    <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen    overflow-y-scroll border-2 rounded-md bg-white">
       {confirm ? (
         <div>
           <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center">
