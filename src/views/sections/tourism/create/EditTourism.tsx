@@ -63,13 +63,16 @@ const EditTourism = () => {
   const [tourismDescription, setTourismDescription] = useState<string>(tourism.description!!)
   const [tourismLong, setTourismLong] = useState<string>(tourism.longitude!!)
   const [tourismLat, setTourismLat] = useState<string>(tourism.latitude!!)
-  const [file, setFile] = useState<File>()
+  //const [file, setFile] = useState<File>()
   const [confirm, setConfirm] = useState<boolean>(false)
   const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
   const [emptyType, setEmptyType] = useState<boolean>(false)
   const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
   const [emptyFile, setEmptyFile] = useState<boolean>(false)
   const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
+
+  const [file, setFile] = useState<File | null>(null);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
   async function updateTourism() {
     if (checkIfExist(tourismTitle)) {
@@ -122,7 +125,7 @@ const EditTourism = () => {
   }
 
   return (
-    <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white">
+    <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto overflow-y-scroll border-2 rounded-md bg-white">
       {confirm ? (
         <div>
           <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
@@ -207,24 +210,40 @@ const EditTourism = () => {
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="text-left p-1">
-            <div className={`photoBoard  ${emptyFile ? 'border-red-600'
-              : ''
-              }`}>
-              <div className='absolute left-2'>
-                Fotos {file?.name}
-              </div>
-              <form id="form-file-upload" className=" w-full flex justify-center">
-                <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg"
-                  onClick={() => setEmptyFile(true)} onChange={(e) => {
-
-                    setFile(e.currentTarget.files!![0])
-                    //setEmptyFile(false)
-                  }} />
-                <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
-                  <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
-                    <img src={add_Photo} alt="add_photo" />
-                    <p>Pulse en la zona para añadir una imagen</p>
-                  </div>
+            <div className={`photoBoard ${emptyFile ? 'border-red-600' : ''}`}>
+              <div className="absolute left-3">Foto {file?.name}</div>
+              <form id="form-file-upload" className="w-full flex justify-center">
+                <input
+                  type="file"
+                  id="input-file-upload"
+                  className="visibility: hidden"
+                  size={10485760}
+                  accept=".png, .JPG, .jpg, .gif, .jpeg"
+                  onChange={(value) => {
+                    const selectedFile = value.currentTarget.files!![0];
+                    setFile(selectedFile);
+                    const reader = new FileReader();
+                    reader.readAsDataURL(selectedFile);
+                    reader.onload = () => {
+                      setSelectedImageUrl(reader.result as string);
+                    };
+                  }}
+                />
+                <label
+                  id="label-file-upload"
+                  htmlFor="input-file-upload"
+                  className="w-full p-5"
+                >
+                  {selectedImageUrl ? (
+                    <div className="flex m-auto flex-col items-center">
+                      <img src={selectedImageUrl} alt="selected photo" />
+                    </div>
+                  ) : (
+                    <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
+                      <img src={add_Photo} alt="photo" />
+                      <p>Pulse en la zona para añadir una imagen</p>
+                    </div>
+                  )}
                 </label>
               </form>
             </div>

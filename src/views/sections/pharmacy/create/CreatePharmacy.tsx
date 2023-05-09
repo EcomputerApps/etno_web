@@ -23,21 +23,22 @@ interface Marker {
 
 const pharmacyStore = PharmacyStore.getPharmacyStore()
 
+
 const CreatePharmacy = () => {
-    
+
     useEffect(() => {
         pharmacyStore.getRequestPharmacyOnDuty(localStorage.getItem('user_etno_locality')!)
-      }, [])
-    
-      function checkIfExist(name: string) {
+    }, [])
+
+    function checkIfExist(name: string) {
         var flag: boolean = false
         pharmacyStore.getPOD.content?.map((item) => {
-          if (item.name === name) {
-            flag = true
-          }
+            if (item.name === name) {
+                flag = true
+            }
         })
         return flag
-      }
+    }
     const greorgian_es = {
         name: "greorgian_es",
         months: [
@@ -84,7 +85,7 @@ const CreatePharmacy = () => {
     }
 
 
-    const [file, setFile] = useState<File>()
+    //const [file, setFile] = useState<File>()
     const [datePanel, setDatePanel] = useState(true)
     const [dateGuardia, setDateGuardia] = useState({
         startDate: new Date(),
@@ -145,6 +146,9 @@ const CreatePharmacy = () => {
     const [pharmPeriod, setPharmPeriod] = useState<number>(0)
     const [pharmFrequency, setPharmFrequency] = useState<number>(0)
 
+    const [file, setFile] = useState<File | null>(null);
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+
     function handleScheduleInput() {
         if (pharmacyShcedulSelector === "Otro") {
             setPharmacySchedule(pharmacyShcedulExtra)
@@ -178,7 +182,7 @@ const CreatePharmacy = () => {
         return arrayDeFechas
     }
 
-   async function addPharmacy() {
+    async function addPharmacy() {
         if (fillDates(dutyDates?.toString()!!).length != 1) {
             setPharmPeriod(0)
             setPharmFrequency(0)
@@ -197,31 +201,31 @@ const CreatePharmacy = () => {
             frequencyInDays: pharmFrequency,
             dates: fillPharmacyDates(fillDates(dutyDates?.toString()!!))
         }
-        
-            chekIfEmpty()
-            if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-                pharmacyTel === "" || pharmacySchedule === "" || pharmacyDirection === "" ||
-                (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === "" ||
-                long === 0 || lat === 0) {
-                toast.error('Rellene los campos', {
-                    position: 'bottom-center',
-                    autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light"
-                })
-            } else {
-                if (pharmType === "Normal") {
-                    pharmacy.startDate = undefined
-                    pharmacy.dates = undefined
-                    pharmacy.durationDays = 0
-                    pharmacy.frequencyInDays = 0
-                }
-                pharmacyStore.addRequestPharmacy(localStorage.getItem('user_etno_locality')!, pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
+
+        chekIfEmpty()
+        if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
+            pharmacyTel === "" || pharmacySchedule === "" || pharmacyDirection === "" ||
+            (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === "" ||
+            long === 0 || lat === 0) {
+            toast.error('Rellene los campos', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            if (pharmType === "Normal") {
+                pharmacy.startDate = undefined
+                pharmacy.dates = undefined
+                pharmacy.durationDays = 0
+                pharmacy.frequencyInDays = 0
             }
+            pharmacyStore.addRequestPharmacy(localStorage.getItem('user_etno_locality')!, pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
+        }
     }
 
     const datePickerRef = useRef<any>();
@@ -243,7 +247,7 @@ const CreatePharmacy = () => {
     ]
 
     return (
-        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12  h-screen overflow-y-auto border-2 rounded-md bg-white">
+        <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto overflow-y-scroll border-2 rounded-md bg-white">
             {confirm ? (
                 <div>
                     <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
@@ -324,7 +328,7 @@ const CreatePharmacy = () => {
                                 }}
                                 multiple>
                                 <button
-                                    style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px",width: "70px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
+                                    style={{ margin: "5px", background: "#303F9F", textDecorationColor: "white", borderRadius: "6px", width: "70px", height: "30px", paddingRight: "3px", paddingLeft: "3px", cursor: "pointer" }}
                                     onClick={() => setDutyDates(new Date())}
                                 >
                                     <label className='text-white cursor-pointer'>Hoy</label>
@@ -390,7 +394,7 @@ const CreatePharmacy = () => {
                                     inputWebUrl.current.focus()
                                 }
                             }
-                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                     <label className={"labelFloatInput"}>Nombre</label>
                 </div>
             </div>
@@ -407,27 +411,46 @@ const CreatePharmacy = () => {
                                     inputTel.current.focus()
                                 }
                             }
-                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                     <label className={"labelFloatInput"}>Pagina Web</label>
                 </div>
             </div>
             <div className="w-full flex flex-1 flex-col pl-3 ">
                 <div className="text-left p-1">
-                    <div className={`photoBoard  ${emptyFile ? 'border-red-600'
-                        : ''
-                        }`} >
-                        <div className='pl-3'>
-                            Foto {file?.name}
-                        </div>
-                        <form id="form-file-upload" className=" w-full flex justify-center">
-                            <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
-                                setFile(e.currentTarget.files!![0])
-                            }} />
-                            <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
-                                <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
-                                    <img src={add_Photo} alt="photo" />
-                                    <p>Pulse en la zona para añadir una imagen</p>
-                                </div>
+                    <div className={`photoBoard ${emptyFile ? 'border-red-600' : ''}`}>
+                        <div className="absolute left-3">Foto {file?.name}</div>
+                        <form id="form-file-upload" className="w-full flex justify-center">
+                            <input
+                                type="file"
+                                id="input-file-upload"
+                                className="visibility: hidden"
+                                size={10485760}
+                                accept=".png, .JPG, .jpg, .gif, .jpeg"
+                                onChange={(value) => {
+                                    const selectedFile = value.currentTarget.files!![0];
+                                    setFile(selectedFile);
+                                    const reader = new FileReader();
+                                    reader.readAsDataURL(selectedFile);
+                                    reader.onload = () => {
+                                        setSelectedImageUrl(reader.result as string);
+                                    };
+                                }}
+                            />
+                            <label
+                                id="label-file-upload"
+                                htmlFor="input-file-upload"
+                                className="w-full p-5"
+                            >
+                                {selectedImageUrl ? (
+                                    <div className="flex m-auto flex-col items-center">
+                                        <img src={selectedImageUrl} alt="selected photo" />
+                                    </div>
+                                ) : (
+                                    <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
+                                        <img src={add_Photo} alt="photo" />
+                                        <p>Pulse en la zona para añadir una imagen</p>
+                                    </div>
+                                )}
                             </label>
                         </form>
                     </div>
@@ -556,7 +579,7 @@ const CreatePharmacy = () => {
             </div>
             <div className="w-full flex flex-1 flex-col mt-3 pl-3">
                 <div className="flex flex-col p-1 relative">
-                    <input ref={txtAreaRef} placeholder=" " name="pharmacyDescription"  className={`inputCamp peer  ${emptyDescption ? 'border-red-600'
+                    <input ref={txtAreaRef} placeholder=" " name="pharmacyDescription" className={`inputCamp peer  ${emptyDescption ? 'border-red-600'
                         : ''
                         }`} onKeyDown={(e) => {
                             if ((e.code === "NumpadEnter")) {
@@ -567,7 +590,7 @@ const CreatePharmacy = () => {
                         }} onChange={(e) => {
                             setPharmacyDirection(e.target.value)
                             setEmptyDescription(false)
-                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}  />
+                        }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
                     <label className={"labelFloatTxtArea"}>Direccion</label>
                 </div>
             </div>
