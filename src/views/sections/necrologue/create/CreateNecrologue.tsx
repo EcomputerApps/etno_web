@@ -36,14 +36,17 @@ const CreateNecrologue = () => {
   const [necroName, setNecroName] = useState<string>("")
   const [necroDate, setNecroDate] = useState<string>("")
   const [necroDescription, setNecroDescription] = useState<string>("")
-  const [file, setFile] = useState<File>()
+  //const [file, setFile] = useState<File>()
   const [emptyName, setEmptyName] = useState<boolean>(false)
   const [emptyDate, setEmptyDate] = useState<boolean>(false)
   const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
   const [emptyFile, setEmptyFile] = useState<boolean>(false)
   const [confirm, setConfirm] = useState<boolean>(false)
 
- async function addNecrologue() {
+  const [file, setFile] = useState<File | null>(null);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+
+  async function addNecrologue() {
     const necro: Necrologue = {
       name: necroName,
       deathDate: necroDate,
@@ -72,10 +75,11 @@ const CreateNecrologue = () => {
           draggable: true,
           progress: undefined,
           theme: "light"
-        }) } else {
+        })
+      } else {
         //const imageFile = await resizeFile(file!!);
         necroStore.addRequestNecro(localStorage.getItem('user_etno_locality')!, necro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
-        }
+      }
     }
   }
 
@@ -86,7 +90,7 @@ const CreateNecrologue = () => {
   }
 
   return (
-    <div className="flex flex-col lg:m-auto lg:w-1/2 w-11/12 lg:h-screen border-2 rounded-md bg-white">
+    <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto overflow-y-scroll border-2 rounded-md bg-white">
       {confirm ? (
         <div>
           <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
@@ -165,21 +169,40 @@ const CreateNecrologue = () => {
         <div className="w-full flex flex-1 flex-col mt-3 pl-3">
           <div className="text-left p-1 relative">
 
-            <div className={`photoBoard  ${emptyFile ? 'border-red-600'
-              : ''
-              }`}>
-              <div className='pl-3'>
-                Foto {file?.name}
-              </div>
-              <form id="form-file-upload" className=" w-full flex justify-center">
-                <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
-                  setFile(value.currentTarget.files!![0])
-                }} />
-                <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
-                  <div className="flex m-auto flex-col items-center font-normal text-gray-400 text-xl">
-                    <img src={add_Photo} alt="add_photo" />
-                    <p>Pulse en la zona para añadir una imagen</p>
-                  </div>
+            <div className={`photoBoard ${emptyFile ? 'border-red-600' : ''}`}>
+              <div className="absolute left-3">Foto {file?.name}</div>
+              <form id="form-file-upload" className="w-full flex justify-center">
+                <input
+                  type="file"
+                  id="input-file-upload"
+                  className="visibility: hidden"
+                  size={10485760}
+                  accept=".png, .JPG, .jpg, .gif, .jpeg"
+                  onChange={(value) => {
+                    const selectedFile = value.currentTarget.files!![0];
+                    setFile(selectedFile);
+                    const reader = new FileReader();
+                    reader.readAsDataURL(selectedFile);
+                    reader.onload = () => {
+                      setSelectedImageUrl(reader.result as string);
+                    };
+                  }}
+                />
+                <label
+                  id="label-file-upload"
+                  htmlFor="input-file-upload"
+                  className="w-full p-5"
+                >
+                  {selectedImageUrl ? (
+                    <div className="flex m-auto flex-col items-center">
+                      <img src={selectedImageUrl} alt="selected photo" />
+                    </div>
+                  ) : (
+                    <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
+                      <img src={add_Photo} alt="photo" />
+                      <p>Pulse en la zona para añadir una imagen</p>
+                    </div>
+                  )}
                 </label>
               </form>
             </div>
@@ -187,7 +210,7 @@ const CreateNecrologue = () => {
         </div>
       </div>
       <div>
-        <div className="lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
+        <div className="flex m-auto justify-center left-0 right-0 p-3 bottom-1">
           <button ref={btnRef} name="pharmacyBtnSave" className="btnStandard mr-10" onClick={() => {
             addNecrologue()
           }}>Publicar</button>

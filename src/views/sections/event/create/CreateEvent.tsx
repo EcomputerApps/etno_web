@@ -70,7 +70,7 @@ const CreateEvent = () => {
   const [eventLink, setEventLink] = useState<string>("")
   const [eventDateStart, setEventDateStart] = useState<string>("")
   const [eventDateFin, setEventDateFin] = useState<string>("")
-  const [file, setFile] = useState<File>()
+  //const [file, setFile] = useState<File>()
   const [confirm, setConfirm] = useState<boolean>(false)
   const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
   const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
@@ -83,7 +83,10 @@ const CreateEvent = () => {
   const [emptyFinDate, setEmptyFinDate] = useState<boolean>(false)
   const [dateFail, setDateFail] = useState<boolean>(false)
 
- async function addEvent() {
+  const [file, setFile] = useState<File | null>(null);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+
+  async function addEvent() {
     const eventNew: Event = {
       title: eventTitle,
       address: eventDirection,
@@ -98,48 +101,48 @@ const CreateEvent = () => {
       lat: lat,
       long: long
     }
-    
-      if (subscription) {
-        checkIfEmpty()
-        eventTitle === '' || eventDirection === '' || eventDescription === ''
-          || eventOrganization === '' || eventPrice === ''
-          || eventSeats === '' || eventLink === '' || eventDateStart === ''
-          || eventDateFin === ''|| eventDateStart.localeCompare(eventDateFin) === 1 ?
 
-          toast.error('Rellene los campos correcto', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'light'
-          }) : eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!)
-      } else {
-        eventNew.reservePrice = 0
-        checkIfEmpty()
-        
-        if (eventTitle === '' || eventDirection === '' || eventDescription === ''
+    if (subscription) {
+      checkIfEmpty()
+      eventTitle === '' || eventDirection === '' || eventDescription === ''
+        || eventOrganization === '' || eventPrice === ''
+        || eventSeats === '' || eventLink === '' || eventDateStart === ''
+        || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1 ?
+
+        toast.error('Rellene los campos correcto', {
+          position: 'bottom-center',
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light'
+        }) : eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!)
+    } else {
+      eventNew.reservePrice = 0
+      checkIfEmpty()
+
+      if (eventTitle === '' || eventDirection === '' || eventDescription === ''
         || eventOrganization === ''
         || eventSeats === '' || eventLink === '' || eventDateStart === ''
-        || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1){
-          toast.error('Rellene los campos correcto', {
-            position: 'bottom-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'light'
-          }) 
-        } else { 
-          //const imageFile = await resizeFile(file!!);
-          eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
-          }
+        || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1) {
+        toast.error('Rellene los campos correcto', {
+          position: 'bottom-center',
+          autoClose: 500,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light'
+        })
+      } else {
+        //const imageFile = await resizeFile(file!!);
+        eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
       }
-  
+    }
+
   }
 
   const freeOrNot = (payType: boolean) => {
@@ -163,7 +166,7 @@ const CreateEvent = () => {
   }
 
   return (
-    <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12    h-screen overflow-y-auto border-2 rounded-md bg-white">
+    <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto overflow-y-scroll border-2 rounded-md bg-white">
       {confirm ? (
         <div>
           <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
@@ -333,21 +336,40 @@ const CreateEvent = () => {
         </div>
         <div className="w-full flex flex-1 flex-col ">
           <div className="text-left p-1 ">
-            <div className={`photoBoard ${emptyFile ? 'border-red-600'
-              : ''
-              }`}>
-              <div className='absolute left-3'>
-                Foto {file?.name}
-              </div>
-              <form id="form-file-upload" className=" w-full flex justify-center">
-                <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
-                  setFile(value.currentTarget.files!![0])
-                }} />
-                <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
-                  <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
-                    <img src={add_Photo} alt="photo"></img>
-                    <p>Pulse en la zona para añadir una imagen</p>
-                  </div>
+            <div className={`photoBoard ${emptyFile ? 'border-red-600' : ''}`}>
+              <div className="absolute left-3">Foto {file?.name}</div>
+              <form id="form-file-upload" className="w-full flex justify-center">
+                <input
+                  type="file"
+                  id="input-file-upload"
+                  className="visibility: hidden"
+                  size={10485760}
+                  accept=".png, .JPG, .jpg, .gif, .jpeg"
+                  onChange={(value) => {
+                    const selectedFile = value.currentTarget.files!![0];
+                    setFile(selectedFile);
+                    const reader = new FileReader();
+                    reader.readAsDataURL(selectedFile);
+                    reader.onload = () => {
+                      setSelectedImageUrl(reader.result as string);
+                    };
+                  }}
+                />
+                <label
+                  id="label-file-upload"
+                  htmlFor="input-file-upload"
+                  className="w-full p-5"
+                >
+                  {selectedImageUrl ? (
+                    <div className="flex m-auto flex-col items-center">
+                      <img src={selectedImageUrl} alt="selected photo" />
+                    </div>
+                  ) : (
+                    <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
+                      <img src={add_Photo} alt="photo" />
+                      <p>Pulse en la zona para añadir una imagen</p>
+                    </div>
+                  )}
                 </label>
               </form>
             </div>

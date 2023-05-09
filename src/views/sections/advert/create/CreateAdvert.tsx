@@ -24,42 +24,44 @@ const CreateAdvert = () => {
     const [advertTitle, setAdvertTitle] = useState<string>("")
     const [advertDescription, setAdvertDescription] = useState<string>("")
     const [advertLink, setAdvertLink] = useState<string>("")
-    const [file, setFile] = useState<File>()
+    //const [file, setFile] = useState<File>()
     const [confirm, setConfirm] = useState<boolean>(false)
     const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
     const [emptyLink, setEmptyLink] = useState<boolean>(false)
     const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
     const [emptyFile, setEmptyFile] = useState<boolean>(false)
 
+    const [file, setFile] = useState<File | null>(null);
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
         advertStore.getPaginatedAdvertRequest(localStorage.getItem('user_etno_locality')!, '', 0, 5)
         advertStore.getAllAdvertRequest(localStorage.getItem('user_etno_locality')!)
     }, [])
 
-   async function addAd() {
+    async function addAd() {
         const ad: Ad = {
             title: advertTitle,
             description: advertDescription,
             webUrl: advertLink
         }
-        
-            checkIfEmpty()
-           if (advertTitle === '' || advertDescription === '' || advertLink === '') {
-                toast.error('Rellene los campos', {
-                    position: 'bottom-center',
-                    autoClose: 500,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light"
-                })
-             } else {
-                //const imageFile = await resizeFile(file!!);
-                advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad, file!!); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
-             }
+
+        checkIfEmpty()
+        if (advertTitle === '' || advertDescription === '' || advertLink === '') {
+            toast.error('Rellene los campos', {
+                position: 'bottom-center',
+                autoClose: 500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            //const imageFile = await resizeFile(file!!);
+            advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad, file!!); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
+        }
     }
 
     function checkIfEmpty() {
@@ -79,7 +81,7 @@ const CreateAdvert = () => {
     }
 
     return (
-        <div className="flex flex-col md:m-auto lg:w-1/2 w-11/12 md:h-screen border-2 rounded-md bg-white">
+        <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto overflow-y-scroll border-2 rounded-md bg-white">
             {confirm ? (
                 <div>
                     <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
@@ -141,21 +143,40 @@ const CreateAdvert = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className="text-left p-1">
-                        <div className={`photoBoard ${emptyFile ? 'border-red-600'
-                            : ''
-                            }`}>
-                            <div className='absolute left-2'>
-                                Foto {file?.name}
-                            </div>
-                            <form id="form-file-upload" className=" w-full flex justify-center">
-                                <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
-                                    setFile(value.currentTarget.files!![0])
-                                }} />
-                                <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
-                                    <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
-                                        <img src={add_Photo} alt="photo"></img>
-                                        <p>Pulse en la zona para añadir una imagen</p>
-                                    </div>
+                        <div className={`photoBoard ${emptyFile ? 'border-red-600' : ''}`}>
+                            <div className="absolute left-3">Foto {file?.name}</div>
+                            <form id="form-file-upload" className="w-full flex justify-center">
+                                <input
+                                    type="file"
+                                    id="input-file-upload"
+                                    className="visibility: hidden"
+                                    size={10485760}
+                                    accept=".png, .JPG, .jpg, .gif, .jpeg"
+                                    onChange={(value) => {
+                                        const selectedFile = value.currentTarget.files!![0];
+                                        setFile(selectedFile);
+                                        const reader = new FileReader();
+                                        reader.readAsDataURL(selectedFile);
+                                        reader.onload = () => {
+                                            setSelectedImageUrl(reader.result as string);
+                                        };
+                                    }}
+                                />
+                                <label
+                                    id="label-file-upload"
+                                    htmlFor="input-file-upload"
+                                    className="w-full p-5"
+                                >
+                                    {selectedImageUrl ? (
+                                        <div className="flex m-auto flex-col items-center">
+                                            <img src={selectedImageUrl} alt="selected photo" />
+                                        </div>
+                                    ) : (
+                                        <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
+                                            <img src={add_Photo} alt="photo" />
+                                            <p>Pulse en la zona para añadir una imagen</p>
+                                        </div>
+                                    )}
                                 </label>
                             </form>
                         </div>
@@ -179,7 +200,7 @@ const CreateAdvert = () => {
                         <label className={"labelFloatInput"}>Enlace</label>
                     </div>
                 </div>
-                <div className=" md:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
+                <div className="flex m-auto justify-center left-0 right-0 p-3 bottom-1">
                     <button ref={btnRef} name="advertBtnSave" className="btnStandard mr-10" onClick={addAd}>Publicar</button>
                     <button name="advertBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>
                 </div>

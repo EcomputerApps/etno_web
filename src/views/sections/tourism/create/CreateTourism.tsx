@@ -16,6 +16,7 @@ const tourismStore = TourismStore.getTourismStore()
 const sideBarStore = SideBarStore.getSideBarStore()
 const hoverSectionStore = HoverSectionStore.getHoverSectionStore()
 
+
 interface Marker {
   lat: number,
   lng: number,
@@ -26,7 +27,7 @@ const CreateTourism = () => {
   useEffect(() => {
     tourismStore.getAllTourismRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
-  
+
   function checkIfExist(title: string) {
     var flag: boolean = false
     tourismStore.getAllTourism.tourism?.map((item) => {
@@ -34,7 +35,7 @@ const CreateTourism = () => {
         flag = true
       }
     })
-    return flag 
+    return flag
   }
 
   const defaultProps = {
@@ -57,7 +58,7 @@ const CreateTourism = () => {
   const [tourismType, setTourismType] = useState<string>("")
   const [tourismTitle, setTourismTitle] = useState<string>("")
   const [tourismDescription, setTourismDescription] = useState<string>("")
-  const [file, setFile] = useState<File>()
+  //const [file, setFile] = useState<File>()
   const [emptyTitle, setEmptyTitle] = useState<boolean>(false)
   const [emptyType, setEmptyType] = useState<boolean>(false)
   const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
@@ -65,7 +66,10 @@ const CreateTourism = () => {
   const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
   const [confirm, setConfirm] = useState<boolean>(false)
 
- async function addTourism() {
+  const [file, setFile] = useState<File | null>(null);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+
+  async function addTourism() {
     const tourism: Tourism = {
       type: tourismType,
       title: tourismTitle,
@@ -86,7 +90,7 @@ const CreateTourism = () => {
       })
     } else {
       checkIfEmpty()
-     if (tourismType === '' || tourism.title === '' || tourism.description === '' || long === 0 || lat === 0) {
+      if (tourismType === '' || tourism.title === '' || tourism.description === '' || long === 0 || lat === 0) {
         toast.error('Rellene los campos vacíos', {
           position: 'bottom-center',
           autoClose: 500,
@@ -97,10 +101,10 @@ const CreateTourism = () => {
           progress: undefined,
           theme: 'light'
         })
-       } else {
+      } else {
         //const imageFile = await resizeFile(file!!);
         tourismStore.addRequestTourism(localStorage.getItem('user_etno_locality')!, tourism, file!!); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
-       }  
+      }
     }
   }
 
@@ -113,7 +117,7 @@ const CreateTourism = () => {
   }
 
   return (
-    <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto border-2 rounded-md bg-white">
+    <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto overflow-y-scroll border-2 rounded-md bg-white">
       {confirm ? (
         <div>
           <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
@@ -175,7 +179,7 @@ const CreateTourism = () => {
               }} onChange={(e) => {
                 setTourismTitle(e.currentTarget.value)
                 setEmptyTitle(false)
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className="labelFloatInput">Título</label>
           </div>
         </div >
@@ -192,28 +196,46 @@ const CreateTourism = () => {
               }} onChange={(e) => {
                 setTourismDescription(e.currentTarget.value)
                 setEmptyDescription(false)
-              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')}/>
+              }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
             <label className={"labelFloatTxtArea"}>Descripcíon</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">
           <div className="text-left p-1">
-            <div className={`photoBoard  ${emptyFile ? 'border-red-600'
-              : ''
-              }`}>
-              <div className='absolute left-2'>
-                Fotos {file?.name}
-              </div>
-              <form id="form-file-upload" className=" w-full flex justify-center ">
-                <input type="file" id="input-file-upload" className="visibility: hidden" max={1} size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(value) => {
-                  setFile(value.currentTarget.files!![0])
-                  setEmptyFile(false)
-                }} />
-                <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
-                  <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
-                    <img src={add_Photo} alt="add_photo" />
-                    <p>Pulse en la zona para añadir una imagen</p>
-                  </div>
+            <div className={`photoBoard ${emptyFile ? 'border-red-600' : ''}`}>
+              <div className="absolute left-3">Foto {file?.name}</div>
+              <form id="form-file-upload" className="w-full flex justify-center">
+                <input
+                  type="file"
+                  id="input-file-upload"
+                  className="visibility: hidden"
+                  size={10485760}
+                  accept=".png, .JPG, .jpg, .gif, .jpeg"
+                  onChange={(value) => {
+                    const selectedFile = value.currentTarget.files!![0];
+                    setFile(selectedFile);
+                    const reader = new FileReader();
+                    reader.readAsDataURL(selectedFile);
+                    reader.onload = () => {
+                      setSelectedImageUrl(reader.result as string);
+                    };
+                  }}
+                />
+                <label
+                  id="label-file-upload"
+                  htmlFor="input-file-upload"
+                  className="w-full p-5"
+                >
+                  {selectedImageUrl ? (
+                    <div className="flex m-auto flex-col items-center">
+                      <img src={selectedImageUrl} alt="selected photo" />
+                    </div>
+                  ) : (
+                    <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
+                      <img src={add_Photo} alt="photo" />
+                      <p>Pulse en la zona para añadir una imagen</p>
+                    </div>
+                  )}
                 </label>
               </form>
             </div>

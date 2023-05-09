@@ -52,7 +52,7 @@ const CreateService = () => {
     const [serviceShcedulEvenTwo, setServiceShcedulEvenTwo] = useState<string>("")
     const [serviceShcedulExtra, setServiceShcedulExtra] = useState<string>("")
     const [serviceSchedule, setServiceSchedule] = useState<string>("")
-    const [file, setFile] = useState<File>()
+    //const [file, setFile] = useState<File>()
     const [emptyType, setEmptyType] = useState<boolean>(false)
     const [emptyName, setEmptyName] = useState<boolean>(false)
     const [emptyFile, setEmptyFile] = useState<boolean>(false)
@@ -64,6 +64,9 @@ const CreateService = () => {
     const [emptyScheEveningTwo, setEmptyScheEveningTwo] = useState<boolean>(false)
     const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
     const [confirm, setConfirm] = useState<boolean>(false)
+
+    const [file, setFile] = useState<File | null>(null);
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
     function handleScheduleInput() {
         if (serviceShcedulSelector === "Otro") {
@@ -87,7 +90,7 @@ const CreateService = () => {
 
     }
 
-   async function addService() {
+    async function addService() {
         const service: Service = {
             category: serviceType,
             owner: serviceName,
@@ -96,27 +99,27 @@ const CreateService = () => {
             number: serviceTel,
             schedule: serviceSchedule,
         }
-       
-            chekIfEmpty()
-            if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
+
+        chekIfEmpty()
+        if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
             serviceWebUrl === "" || serviceTel === "" || (serviceShcedulMorningOne === "" || serviceShcedulEvenOne === "" || serviceShcedulMorningTwo === "" || serviceShcedulEvenTwo === "") && serviceShcedulExtra === ""
-            ){
-                toast.error('Rellene los campos', {
-                    position: 'bottom-center',
-                    autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light"
-                })
-            } else {
-                //const imageFile = await resizeFile(file!!);
-                serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service, file!!); 
-                sideBarStore.updateSection('Servicios'); 
-                hoverSectionStore.setName('Servicios')
-            }
+        ) {
+            toast.error('Rellene los campos', {
+                position: 'bottom-center',
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light"
+            })
+        } else {
+            //const imageFile = await resizeFile(file!!);
+            serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service, file!!);
+            sideBarStore.updateSection('Servicios');
+            hoverSectionStore.setName('Servicios')
+        }
     }
 
     const selectorOptions = [
@@ -127,7 +130,7 @@ const CreateService = () => {
     ]
 
     return (
-        <div className="flex flex-col lg:m-auto  lg:w-1/2  w-11/12   h-screen overflow-y-auto border-2 rounded-md bg-white">
+        <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen overflow-y-auto overflow-y-scroll border-2 rounded-md bg-white">
             {confirm ? (
                 <div>
                     <div className=" fixed inset-0 z-50  bg-opacity-50 backdrop-blur-sm flex justify-center items-center"  >
@@ -352,27 +355,46 @@ const CreateService = () => {
                 </div>
                 <div className="w-full flex flex-1 flex-col pl-3">
                     <div className="text-left p-1">
-                        <div className={`photoBoard peer ${emptyFile ? 'border-red-600'
-                            : ''
-                            }`}>
-                            <div className='pl-3'>
-                                Foto {file?.name}
-                            </div>
-                            <form id="form-file-upload" className=" w-full flex justify-center">
-                                <input type="file" id="input-file-upload" className="visibility: hidden" size={10485760} accept=".png, .JPG, .jpg, .gif, .jpeg" onChange={(e) => {
-                                    setFile(e.currentTarget.files!![0])
-                                }} />
-                                <label id="label-file-upload" htmlFor="input-file-upload" className="  w-full p-5 ">
-                                    <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
-                                        <img src={add_Photo} alt="add_photo"></img>
-                                        <p>Pulse en la zona para añadir una imagen</p>
-                                    </div>
+                        <div className={`photoBoard ${emptyFile ? 'border-red-600' : ''}`}>
+                            <div className="absolute left-3">Foto {file?.name}</div>
+                            <form id="form-file-upload" className="w-full flex justify-center">
+                                <input
+                                    type="file"
+                                    id="input-file-upload"
+                                    className="visibility: hidden"
+                                    size={10485760}
+                                    accept=".png, .JPG, .jpg, .gif, .jpeg"
+                                    onChange={(value) => {
+                                        const selectedFile = value.currentTarget.files!![0];
+                                        setFile(selectedFile);
+                                        const reader = new FileReader();
+                                        reader.readAsDataURL(selectedFile);
+                                        reader.onload = () => {
+                                            setSelectedImageUrl(reader.result as string);
+                                        };
+                                    }}
+                                />
+                                <label
+                                    id="label-file-upload"
+                                    htmlFor="input-file-upload"
+                                    className="w-full p-5"
+                                >
+                                    {selectedImageUrl ? (
+                                        <div className="flex m-auto flex-col items-center">
+                                            <img src={selectedImageUrl} alt="selected photo" />
+                                        </div>
+                                    ) : (
+                                        <div className="flex m-auto flex-col items-center text-gray-400 font-normal text-xl">
+                                            <img src={add_Photo} alt="photo" />
+                                            <p>Pulse en la zona para añadir una imagen</p>
+                                        </div>
+                                    )}
                                 </label>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div className="lg:absolute flex m-auto justify-center left-0 right-0 p-3 bottom-1">
+                <div className="flex m-auto justify-center left-0 right-0 p-3 bottom-1">
                     <button ref={btnRef} name="serviceBtnSave" className="btnStandard mr-10" onFocus={() => handleScheduleInput()} onClick={() => {
                         addService()
                     }}>Publicar</button>
