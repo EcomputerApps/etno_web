@@ -264,7 +264,7 @@ const CreateEvent = () => {
               if (e.currentTarget.value.length === 1 && e.currentTarget.value !== "0") {
                 e.currentTarget.value = ""; // Limpiar el campo si el valor ingresado no es 0
               }
-            }}
+            }} 
             minLength={1}
             maxLength={5}
             className={`inputCamp peer p-2 mt-1 md:w-1/4 w-1/2 ${emptySeats ? "border-red-600" : ""
