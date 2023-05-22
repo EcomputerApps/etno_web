@@ -18,6 +18,16 @@ const bandStore = BandStore.getBandStore()
 
 const CreateBand = () => {
 
+  const inputDate = useRef<HTMLInputElement>(null)
+  const inputTime = useRef<HTMLInputElement>(null)
+  const [finalDate, setFinalDate] = useState<string>("")
+  const [finalTime, setFinalTime] = useState<string>("")
+    
+  const [emptyDate, setEmptyDate] = useState<boolean>(false)
+  const [emptyTime, setEmptyTime] = useState<boolean>(false)
+  const inputAnswerOne = useRef<HTMLInputElement>(null)
+    
+
   useEffect(() => {
     bandStore.getAllBandRequest(localStorage.getItem('user_etno_locality')!)
   }, [])
@@ -46,15 +56,18 @@ const CreateBand = () => {
   const [emptyFile, setEmptyFile] = useState<boolean>(false)
   const [bandTitle, setBandTitle] = useState<string>("")
   const [bandDescription, setBandDescription] = useState<string>("")
+  
   //const [file, setFile] = useState<File>()
   const [confirm, setConfirm] = useState<boolean>(false)
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | undefined>(undefined);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
   async function addBand() {
     const bando: Band = {
       title: bandTitle,
       description: bandDescription,
+      datePicker: new Date(finalDate + " " + finalTime),
+      isProgrammed: true
     }
     chekIfEmpty()
     if (bandTitle === "" || bandDescription === "") {
@@ -135,7 +148,7 @@ const CreateBand = () => {
                   }
                 }
               }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
-            <label className={"labelFloatTxtArea"}>Descripcíon</label>
+            <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">
@@ -151,12 +164,14 @@ const CreateBand = () => {
                   accept=".png, .JPG, .jpg, .gif, .jpeg"
                   onChange={(value) => {
                     const selectedFile = value.currentTarget.files!![0];
-                    setFile(selectedFile);
-                    const reader = new FileReader();
-                    reader.readAsDataURL(selectedFile);
-                    reader.onload = () => {
+                    if (selectedFile !== undefined){
+                      setFile(selectedFile);
+                      const reader = new FileReader();
+                      reader.readAsDataURL(selectedFile);
+                      reader.onload = () => {
                       setSelectedImageUrl(reader.result as string);
-                    };
+                    }
+                    }
                   }}
                 />
                 <label
@@ -179,6 +194,33 @@ const CreateBand = () => {
             </div>
           </div>
         </div>
+        <div className="w-full flex flex-1 flex-col pl-3">
+                    <div className=" flex flex-row p-1 mt-5  relative">
+                        <input placeholder=" " ref={inputDate}
+                            type="date"
+                            className={`inputCamp peer ${emptyDate ? 'border-red-600'
+                                : ''
+                                }`} onChange={(e) => { setFinalDate(e.currentTarget.value) }} onKeyDown={(e) => {
+                                    if (e.code === "NumpadEnter") {
+                                        if (inputTime.current != null) {
+                                            inputTime.current.focus()
+                                        }
+                                    }
+                                }} />
+                        <input placeholder=" " ref={inputTime}
+                            type="time"
+                            className={`inputCamp peer ${emptyTime ? 'border-red-600'
+                                : ''
+                                }`} onChange={(e) => { setFinalTime(e.currentTarget.value) }} onKeyDown={(e) => {
+                                    if (e.code === "NumpadEnter") {
+                                        if (inputAnswerOne.current != null) {
+                                            inputAnswerOne.current.focus()
+                                        }
+                                    }
+                                }} />
+                        <label className="labelFloatInput">Fecha de envío</label>
+                    </div>
+                </div>
         <div className="flex m-auto justify-center left-0 right-0 p-3 bottom-1">
           <button ref={btnRef} name="bandBtnSave" className="btnStandard mr-10" onClick={addBand}>Publicar</button>
           <button name="bandBtnCancel" className="btnStandard" onClick={() => setConfirm(true)}>Cancelar</button>

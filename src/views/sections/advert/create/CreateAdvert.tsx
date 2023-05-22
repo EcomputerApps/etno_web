@@ -31,7 +31,7 @@ const CreateAdvert = () => {
     const [emptyDescription, setEmptyDescription] = useState<boolean>(false)
     const [emptyFile, setEmptyFile] = useState<boolean>(false)
 
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | undefined>(undefined);
     const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
     useEffect(() => {

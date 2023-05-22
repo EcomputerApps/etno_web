@@ -48,7 +48,7 @@ class ImageStore {
 
     async addImageAPI(locality: string, section: string, category: string, file: File){
         let data = new FormData()
-        const imageFile = await resizeFile(file!!)
+        const imageFile = await resizeFile(file)
         
         data.append('image', imageFile)
 

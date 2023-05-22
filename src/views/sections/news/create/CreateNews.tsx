@@ -49,7 +49,7 @@ const CreateNews = () => {
   const [emptyDate, setEmptyDate] = useState<boolean>(false)
   const [emptyDescption, setEmptyDescription] = useState<boolean>(false)
 
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | undefined>(undefined);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
 
@@ -147,7 +147,7 @@ const CreateNews = () => {
             <label className={"labelFloatInput"}>Categoría</label>
           </div>
         </div>
-       
+
         <div className="w-full flex flex-1 flex-col mt-5 pl-3">
           <div className="flex flex-col p-1 mt-3 relative">
             <input ref={inputRefDate} type="date" name="newsDate" className={`inputCamp peer w-40 ${emptyDate ? 'border-red-600'
@@ -195,12 +195,16 @@ const CreateNews = () => {
                   accept=".png, .JPG, .jpg, .gif, .jpeg"
                   onChange={(value) => {
                     const selectedFile = value.currentTarget.files!![0];
-                    setFile(selectedFile);
-                    const reader = new FileReader();
-                    reader.readAsDataURL(selectedFile);
-                    reader.onload = () => {
-                      setSelectedImageUrl(reader.result as string);
-                    };
+                    if (selectedFile !== undefined) {
+                      setFile(selectedFile);
+                      const reader = new FileReader();
+                      reader.readAsDataURL(selectedFile);
+                      reader.onload = () => {
+                        setSelectedImageUrl(reader.result as string);
+                      }
+                    } else {
+                      setFile(undefined)
+                    }
                   }}
                 />
                 <label

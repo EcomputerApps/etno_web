@@ -41,8 +41,8 @@ const EditAdvert = () => {
     const [advertDescription, setAdvertDescription] = useState<string>(advert.description!!)
     const [advertLink, setAdvertLink] = useState<string>(advert.webUrl!!)
     //const [file, setFile] = useState<File>()
-    const [file, setFile] = useState<File | null>(null);
-    const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+    const [file, setFile] = useState<File | undefined>(undefined);
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(advert.imageUrl!!);
 
     async function updateAdvert() {
         checkIfEmpty()

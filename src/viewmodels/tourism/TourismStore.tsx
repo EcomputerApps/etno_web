@@ -165,7 +165,7 @@ class TourismStore {
     }
 
     async editTourism(locality: string, tourismId: string, tourism: Tourism, file?: File) {
-        if (file !== undefined) {
+        if (file !== undefined || file !== null) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'turismo', 'turismo', file!!)
             tourism.imageUrl = imageStore.getImage.link
         }

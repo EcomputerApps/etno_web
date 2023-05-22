@@ -66,7 +66,7 @@ const CreateTourism = () => {
   const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
   const [confirm, setConfirm] = useState<boolean>(false)
 
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | undefined>(undefined);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
   async function addTourism() {

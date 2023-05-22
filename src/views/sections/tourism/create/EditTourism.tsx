@@ -71,8 +71,8 @@ const EditTourism = () => {
   const [emptyFile, setEmptyFile] = useState<boolean>(false)
   const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
 
-  const [file, setFile] = useState<File | null>(null);
-  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(tourism.imageUrl!!);
 
   async function updateTourism() {
     if (checkIfExist(tourismTitle)) {
@@ -108,7 +108,6 @@ const EditTourism = () => {
           latitude: String(lat),
           imageUrl: tourism.imageUrl
         }
-        //const imageFile = await resizeFile(file!!);
         tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, file!!)
         sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
       }
@@ -205,7 +204,7 @@ const EditTourism = () => {
                 setTourismDescription(e.currentTarget.value)
                 setEmptyDescription(false)
               }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
-            <label className={"labelFloatTxtArea"}>Descripcíon</label>
+            <label className={"labelFloatTxtArea"}>Descripción</label>
           </div>
         </div>
         <div className="w-full flex flex-1 flex-col pl-3">

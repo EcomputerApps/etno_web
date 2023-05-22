@@ -30,6 +30,8 @@ const CreateSurvey = () => {
     const [confirm, setConfirm] = useState<boolean>(false)
 
     function addSurvey() {
+       // console.log(new Date(finalDate + ' ' + finalTime))
+        
         const newSurvey: Survey = {
             question: question,
             answerOne: answerOne,
@@ -52,6 +54,7 @@ const CreateSurvey = () => {
                 progress: undefined,
                 theme: "light"
             }) : surveyStore.addRequestSurvey(localStorage.getItem('user_etno_locality')!, newSurvey)
+            
     }
 
     function minimumReplies() {

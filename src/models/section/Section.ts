@@ -41,8 +41,8 @@ interface Event {
     endDate?: string,
     publicationDate?: string,
     time?: string,
-    lat?: number,
-    long?: number,
+    latitude?: number,
+    longitude?: number,
     userSubscriptions?: SubscriptionUser[]
 }
 
@@ -199,7 +199,9 @@ interface Band {
     title?: string,
     description?: string,
     issuedDate?: string,
-    imageUrl?: string
+    imageUrl?: string,
+    datePicker?: DateTime | Date,
+    isProgrammed?: boolean
 }
 
 interface PaginatedBand {

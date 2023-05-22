@@ -74,14 +74,14 @@ const EditEvent = () => {
   const [emptyStartdate, setEmptyStartdate] = useState<boolean>(false)
   const [emptyFinDate, setEmptyFinDate] = useState<boolean>(false)
 
-  const [lat, setLat] = useState<number>(event.lat!!)
-  const [long, setLong] = useState<number>(event.long!!)
+  const [lat, setLat] = useState<number>(event.latitude!!)
+  const [long, setLong] = useState<number>(event.longitude!!)
   const [emptyLongLat, setEmptyLongLat] = useState<boolean>(false)
   const AnyReactComponent = (props: Marker) => <img style={{ width: '200', height: '200' }} src={props.text}></img>;
 
 
-  const [file, setFile] = useState<File | null>(null);
-  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(event.imageUrl!!);
 
   const [emptyFile, setEmptyFile] = useState(false)
 
@@ -101,7 +101,7 @@ const EditEvent = () => {
         || eventOrganization === '' || eventPrice === ''
         || eventSeats === '' || eventLink === '' || eventDateStart === ''
         || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1) {
-        toast.error('Rellene los campos correcto', {
+        toast.error('Rellene los campos correctos', {
           position: 'bottom-center',
           autoClose: 500,
           hideProgressBar: false,
@@ -117,13 +117,13 @@ const EditEvent = () => {
           address: eventDirection,
           description: eventDescription,
           organization: eventOrganization,
-          hasSubscription: subscription,
+          hasSubscription: false,
           reservePrice: Number(eventPrice),
           capacity: Number(eventSeats),
           seats: Number(eventSeats),
           imageUrl: event.imageUrl,
-          long: long,
-          lat: lat,
+          longitude: long,
+          latitude: lat,
           link: eventLink,
           startDate: eventDateStart,
           endDate: eventDateFin
@@ -139,7 +139,7 @@ const EditEvent = () => {
         || eventOrganization === ''
         || eventSeats === '' || eventLink === '' || eventDateStart === ''
         || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1) {
-        toast.error('Rellene los campos correcto', {
+        toast.error('Rellene los campos correctos', {
           position: 'bottom-center',
           autoClose: 500,
           hideProgressBar: false,
@@ -155,14 +155,14 @@ const EditEvent = () => {
           address: eventDirection,
           description: eventDescription,
           organization: eventOrganization,
-          hasSubscription: subscription,
+          hasSubscription: false,
           reservePrice: Number(eventPrice),
           capacity: Number(eventSeats),
           seats: Number(eventSeats),
           imageUrl: event.imageUrl,
           link: eventLink,
-          long: long,
-          lat: lat,
+          longitude: long,
+          latitude: lat,
           startDate: eventDateStart,
           endDate: eventDateFin
         }
@@ -289,16 +289,7 @@ const EditEvent = () => {
             }} onInput={(e) => e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')} />
           <label className={"labelFloatTxtArea"}>Organización</label>
         </div>
-        <div className="flex flex-row p-1 mt-5 relative ">
-          <label className="relative inline-flex items-center mr-5 cursor-pointer w-14">
-            <input type="checkbox" value="" checked={subscription} className="sr-only peer" onChange={(e) => {
-              setSubscription(e.currentTarget.checked)
-            }}></input>
-            <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600
-             peer-checked:bg-indigo-600"></div>
-          </label>
-          <span className="ml-3 text-xl font-medium text-gray-900 dark:text-gray-300">{freeOrNot(subscription)}</span>
-        </div>
+       
         <div className="flex flex-col mt-5 p-1">
           <div className="relative flex flex-row rounded-md">
             <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

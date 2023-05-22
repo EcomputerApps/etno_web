@@ -83,7 +83,7 @@ const CreateEvent = () => {
   const [emptyFinDate, setEmptyFinDate] = useState<boolean>(false)
   const [dateFail, setDateFail] = useState<boolean>(false)
 
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | undefined>(undefined);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
   async function addEvent() {
@@ -92,14 +92,14 @@ const CreateEvent = () => {
       address: eventDirection,
       description: eventDescription,
       organization: eventOrganization,
-      hasSubscription: subscription,
+      hasSubscription: false,
       reservePrice: Number(eventPrice),
       capacity: Number(eventSeats),
       link: eventLink,
       startDate: eventDateStart,
       endDate: eventDateFin,
-      lat: lat,
-      long: long
+      latitude: lat,
+      longitude: long
     }
 
     if (subscription) {
@@ -252,34 +252,39 @@ const CreateEvent = () => {
           <label className={"labelFloatTxtArea"}>Organización</label>
         </div>
         <div className="flex flex-col p-1 mt-5 relative">
-          <input ref={inputRefSeat} type="text" name="eventSeats" placeholder="0" onInput={(e) => (
-            e.currentTarget.value = e.currentTarget.value.replace(/^[^1-9]/, ""),
-            e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/, ""),
-            e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, '')
-          )} minLength={1} maxLength={5} className={`inputCamp peer  p-2 mt-1 md:w-1/4 w-1/2 ${emptySeats ? 'border-red-600'
-            : ''
-            }`} onChange={(value) => {
-              setEventSeats(value.currentTarget.value)
-              setEmptySeats(false)
-            }} onKeyDown={(e) => {
-              if ((e.code === "Enter") || (e.code === "NumpadEnter")) {
+          <input
+            ref={inputRefSeat}
+            type="text"
+            name="eventSeats"
+            placeholder="0"
+            onInput={(e) => {
+              e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "");
+              e.currentTarget.value = e.currentTarget.value.replace(/^\s+/g, "");
+
+              if (e.currentTarget.value.length === 1 && e.currentTarget.value !== "0") {
+                e.currentTarget.value = ""; // Limpiar el campo si el valor ingresado no es 0
+              }
+            }}
+            minLength={1}
+            maxLength={5}
+            className={`inputCamp peer p-2 mt-1 md:w-1/4 w-1/2 ${emptySeats ? "border-red-600" : ""
+              }`}
+            onChange={(value) => {
+              setEventSeats(value.currentTarget.value);
+              setEmptySeats(false);
+            }}
+            onKeyDown={(e) => {
+              if (e.code === "Enter" || e.code === "NumpadEnter") {
                 if (inputRefLink.current != null) {
-                  inputRefLink.current.focus()
+                  inputRefLink.current.focus();
                 }
               }
-            }} />
+            }}
+          />
           <label className={"labelFloatDate"}>Aforo</label>
         </div>
-        <div className="flex flex-row p-1 mt-5 relative ">
-          <label className="relative inline-flex items-center mr-5 cursor-pointer w-14">
-            <input type="checkbox" value="" className="sr-only peer" onChange={(e) => {
-              setSubscription(e.currentTarget.checked)
-            }}></input>
-            <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600
-             peer-checked:bg-indigo-600"></div>
-          </label>
-          <span className="ml-3 text-xl font-medium text-gray-900 dark:text-gray-300">{freeOrNot(subscription)}</span>
-        </div>
+
+
         <div className="flex flex-col mt-5 p-1">
           <div className="relative flex flex-row rounded-md">
             <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

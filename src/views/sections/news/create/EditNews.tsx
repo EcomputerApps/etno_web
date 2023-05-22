@@ -46,8 +46,8 @@ const EditNews = () => {
   //const [file, setFile] = useState<File>()
   const [confirm, setConfirm] = useState(false)
 
-  const [file, setFile] = useState<File | null>(null);
-  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(news.imageUrl!!);
 
   async function updateNews() {
     chekIfEmpty()

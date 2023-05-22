@@ -146,7 +146,7 @@ const CreatePharmacy = () => {
     const [pharmPeriod, setPharmPeriod] = useState<number>(0)
     const [pharmFrequency, setPharmFrequency] = useState<number>(0)
 
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | undefined>(undefined);
     const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
     function handleScheduleInput() {
