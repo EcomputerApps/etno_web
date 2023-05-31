@@ -48,31 +48,13 @@ const EditBand = () => {
   const [emptyFile, setEmptyFile] = useState(false)
   async function updateBand(bandId: string) {
 
-    chekIfEmpty()
-    if (bandTitle === "" || bandDescription === "") {
-      toast.error('Rellene los campos', {
-        position: 'bottom-center',
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
       const bando: Band = {
         title: bandTitle,
         description: bandDescription,
       }
       bandStore.editBand(localStorage.getItem('user_etno_locality')!, bandId, bando, file!!)
       sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
-    }
-  }
-
-  function chekIfEmpty() {
-    bandTitle === "" ? setEmptyType(true) : setEmptyType(false)
-    bandDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+    
   }
 
   return (

@@ -162,10 +162,10 @@ get getPharmaciesCheckedList(){
 
     }
 
-    async editPharmacy(locality: string, pharmacyId: string, pharmacy: Pharmacy, file?: File) {
+    async editPharmacy(locality?: string, pharmacyId?: string, pharmacy?: Pharmacy, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'farmacia', 'farmacia', file!!)
-            pharmacy.imageUrl = imageStore.getImage.link
+            pharmacy!!.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`${urlBase}/users/update/pharmacy?username=${locality}&pharmacyId=${pharmacyId}`, {
             method: 'PUT',
@@ -202,10 +202,10 @@ get getPharmaciesCheckedList(){
         }
     }
 
-    async addRequestPharmacy(username: string, pharmacy: Pharmacy, file?: File) {
+    async addRequestPharmacy(username?: string, pharmacy?: Pharmacy, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'farmacia', 'farmacia', file!!)
-            pharmacy.imageUrl = imageStore.getImage.link
+            pharmacy!!.imageUrl = imageStore.getImage.link
         }
         
         const response = await fetch(`${urlBase}/users/add/pharmacy?username=${username}`, {
@@ -216,9 +216,9 @@ get getPharmaciesCheckedList(){
             body: JSON.stringify(pharmacy)
         })
         if (response.ok) {
-            this.paginatedPharmacy.content?.push(pharmacy)
-            this.pharmacyOnDutyList.content?.push(pharmacy)
-            this.pharmacy = pharmacy
+            this.paginatedPharmacy.content?.push(pharmacy!!)
+            this.pharmacyOnDutyList.content?.push(pharmacy!!)
+            this.pharmacy = pharmacy!!
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,

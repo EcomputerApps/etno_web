@@ -77,43 +77,8 @@ const CreateTourism = () => {
       longitude: String(long),
       latitude: String(lat)
     }
-    if (checkIfExist(tourism.title!!)) {
-      toast.info('Ya existe este turismo', {
-        position: 'bottom-center',
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
-      checkIfEmpty()
-      if (tourismType === '' || tourism.title === '' || tourism.description === '' || long === 0 || lat === 0) {
-        toast.error('Rellene los campos vacíos', {
-          position: 'bottom-center',
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
-      } else {
         //const imageFile = await resizeFile(file!!);
         tourismStore.addRequestTourism(localStorage.getItem('user_etno_locality')!, tourism, file!!); sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
-      }
-    }
-  }
-
-  function checkIfEmpty() {
-    tourismType === "" ? setEmptyType(true) : setEmptyType(false)
-    tourismTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
-    tourismDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-    lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
-    long === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
   }
 
   return (

@@ -77,19 +77,6 @@ const CreateService = () => {
         }
     }
 
-    function chekIfEmpty() {
-        serviceType === "" ? setEmptyType(true) : setEmptyType(false)
-        serviceName === "" ? setEmptyName(true) : setEmptyName(false)
-        serviceWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
-        serviceTel === "" ? setEmptyTel(true) : setEmptyTel(false)
-        serviceShcedulMorningOne === "" ? setEmptyScheMorningOne(true) : setEmptyScheMorningOne(false)
-        serviceShcedulEvenOne === "" ? setEmptyScheEveningOne(true) : setEmptyScheEveningOne(false)
-        serviceShcedulMorningTwo === "" ? setEmptyScheMorningTwo(true) : setEmptyScheMorningTwo(false)
-        serviceShcedulEvenTwo === "" ? setEmptyScheEveningTwo(true) : setEmptyScheEveningTwo(false)
-        serviceDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-
-    }
-
     async function addService() {
         const service: Service = {
             category: serviceType,
@@ -99,34 +86,17 @@ const CreateService = () => {
             number: serviceTel,
             schedule: serviceSchedule,
         }
-
-        chekIfEmpty()
-        if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
-            serviceWebUrl === "" || serviceTel === "" || (serviceShcedulMorningOne === "" || serviceShcedulEvenOne === "" || serviceShcedulMorningTwo === "" || serviceShcedulEvenTwo === "") && serviceShcedulExtra === ""
-        ) {
-            toast.error('Rellene los campos', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
             //const imageFile = await resizeFile(file!!);
             serviceStore.addRequestService(localStorage.getItem('user_etno_locality')!, service, file!!);
             sideBarStore.updateSection('Servicios');
             hoverSectionStore.setName('Servicios')
-        }
     }
 
     const selectorOptions = [
         { value: 'Lunes-Viernes', label: 'De lunes a viernes.' },
         { value: 'Lunes-Sabado', label: 'De lunes a sabado.' },
         { value: 'Lunes-Domingo', label: 'Todos los dias.' },
-        { value: 'Otro', label: 'Otro horrario' }
+        { value: 'Otro', label: 'Otro horario' }
     ]
 
     return (

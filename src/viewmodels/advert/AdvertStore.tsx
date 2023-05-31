@@ -94,10 +94,10 @@ class AdvertStore {
         return this.advert
     }
 
-    async addRequestAdvert(locality: string, ad: Ad, file?: File) {
+    async addRequestAdvert(locality?: string, ad?: Ad, file?: File) {
         if(file !== undefined){
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
-        ad.imageUrl = imageStore.getImage.link
+        ad!!.imageUrl = imageStore.getImage.link
         }
         
         const response = await fetch(`${urlBase}/users/add/ad?username=${locality}`, {
@@ -108,8 +108,8 @@ class AdvertStore {
             }
         })
         if (response.ok) {
-            this.paginatedAdvert.content?.push(ad)
-            this.advert = ad
+            this.paginatedAdvert.content?.push(ad!!)
+            this.advert = ad!!
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 300,
@@ -137,10 +137,10 @@ class AdvertStore {
         }
     }
 
-    async editAdvert(locality: string, advertId: string, advert: Ad, file?: File) {
+    async editAdvert(locality?: string, advertId?: string, advert?: Ad, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'anuncio', 'anuncio', file!!)
-            advert.imageUrl =  imageStore.getImage.link
+            advert!!.imageUrl =  imageStore.getImage.link
         }
         const response = await fetch(`${urlBase}/users/update/ad?username=${locality}&adId=${advertId}`, {
             method: 'PUT',

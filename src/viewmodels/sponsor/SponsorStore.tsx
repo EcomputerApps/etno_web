@@ -141,11 +141,11 @@ class SposnsorStore {
             })
         }
     }
-    async addRequestSponsor(username: string, sponsor: Sponsor, file?: File) {
+    async addRequestSponsor(username?: string, sponsor?: Sponsor, file?: File) {
         
         if(file!==undefined){
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'patrocinador', 'patrocinador', file!!)
-        sponsor.urlImage = imageStore.getImage.link
+        sponsor!!.urlImage = imageStore.getImage.link
         }
         
         const response = await fetch(`${urlBase}/users/add/sponsor?username=${username}`, {
@@ -156,8 +156,8 @@ class SposnsorStore {
             body: JSON.stringify(sponsor)
         })
         if (response.ok) {
-            this.paginatedSponsor.content?.push(sponsor)
-            this.sponsor = sponsor
+            this.paginatedSponsor.content?.push(sponsor!!)
+            this.sponsor = sponsor!!
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 500,
@@ -184,10 +184,10 @@ class SposnsorStore {
             })
         }
     }
-    async editSponsor(locality: string, sponsorId: string, sponsor: Sponsor, file?: File) {
+    async editSponsor(locality?: string, sponsorId?: string, sponsor?: Sponsor, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'patrocinador', 'patrocinador', file!!)
-            sponsor.urlImage = imageStore.getImage.link
+            sponsor!!.urlImage = imageStore.getImage.link
         }
         const response = await fetch(`${urlBase}/users/update/sponsor?username=${locality}&sponsorId=${sponsorId}`, {
             method: 'PUT',

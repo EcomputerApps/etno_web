@@ -60,33 +60,11 @@ const CreateNews = () => {
       description: newsDescription,
       publicationDate: newsDate
     }
-
-    chekIfEmpty()
-    if (newsCategory === '' || newsTitle === '' || newsDate === '') {
-      toast.error('Rellene los campos', {
-        position: 'bottom-center',
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
       newsStore.addRequestNews(localStorage.getItem('user_etno_locality')!, news, file!!)
       sideBarStore.updateSection('Noticias')
       hoverSectionStore.setName('Noticias')
-    }
   }
-
-  function chekIfEmpty() {
-    newsCategory === "" ? setEmptyCategory(true) : setEmptyCategory(false)
-    newsTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
-    newsDate === "" ? setEmptyDate(true) : setEmptyDate(false)
-    newsDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-  }
-
+  
   return (
     <div className="flex flex-col lg:m-auto  lg:w-1/2 w-11/12 h-screen    overflow-y-scroll border-2 rounded-md bg-white">
       {confirm ? (

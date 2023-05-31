@@ -71,20 +71,6 @@ const CreatePharmacy = () => {
         ],
     }
 
-    function chekIfEmpty() {
-        pharmType === "" ? setEmptyType(true) : setEmptyType(false)
-        pharmacyName === "" ? setEmptyName(true) : setEmptyName(false)
-        pharmacyWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
-        pharmacyTel === "" ? setEmptyTel(true) : setEmptyTel(false)
-        pharmacyDirection === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-        pharmacyShcedulMorningOne === "" ? setEmptyScheMorningOne(true) : setEmptyScheMorningOne(false)
-        pharmacyShcedulEvenOne === "" ? setEmptyScheEveningOne(true) : setEmptyScheEveningOne(false)
-        pharmacyShcedulMorningTwo === "" ? setEmptyScheMorningTwo(true) : setEmptyScheMorningTwo(false)
-        pharmacyShcedulEvenTwo === "" ? setEmptyScheEveningTwo(true) : setEmptyScheEveningTwo(false)
-        long === 0 || lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
-    }
-
-
     //const [file, setFile] = useState<File>()
     const [datePanel, setDatePanel] = useState(true)
     const [dateGuardia, setDateGuardia] = useState({
@@ -183,10 +169,6 @@ const CreatePharmacy = () => {
     }
 
     async function addPharmacy() {
-        if (fillDates(dutyDates?.toString()!!).length != 1) {
-            setPharmPeriod(0)
-            setPharmFrequency(0)
-        }
         const pharmacy: Pharmacy = {
             type: pharmType,
             name: pharmacyName,
@@ -201,23 +183,6 @@ const CreatePharmacy = () => {
             frequencyInDays: pharmFrequency,
             dates: fillPharmacyDates(fillDates(dutyDates?.toString()!!))
         }
-
-        chekIfEmpty()
-        if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-            pharmacyTel === "" || pharmacySchedule === "" || pharmacyDirection === "" ||
-            (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === "" ||
-            long === 0 || lat === 0) {
-            toast.error('Rellene los campos', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
             if (pharmType === "Normal") {
                 pharmacy.startDate = undefined
                 pharmacy.dates = undefined
@@ -225,7 +190,6 @@ const CreatePharmacy = () => {
                 pharmacy.frequencyInDays = 0
             }
             pharmacyStore.addRequestPharmacy(localStorage.getItem('user_etno_locality')!, pharmacy, file!!); sideBarStore.updateSection('Farmacias'); hoverSectionStore.setName('Farmacias')
-        }
     }
 
     const datePickerRef = useRef<any>();
@@ -243,7 +207,7 @@ const CreatePharmacy = () => {
         { value: 'Lunes-Viernes', label: 'De lunes a viernes.' },
         { value: 'Lunes-Sabado', label: 'De lunes a sabado.' },
         { value: 'Lunes-Domingo', label: 'Todos los dias.' },
-        { value: 'Otro', label: 'Otro horrario' }
+        { value: 'Otro', label: 'Otro horario' }
     ]
 
     return (

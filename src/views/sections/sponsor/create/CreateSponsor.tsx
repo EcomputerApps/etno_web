@@ -66,30 +66,9 @@ const CreateSponsor = () => {
         theme: "light"
       })
     } else {
-      chekIfEmpty()
-      if (sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" || sponsorTel.length < 9) {
-        toast.error('Rellene los campos', {
-          position: 'bottom-center',
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light"
-        })
-      } else {
         //const imageFile = await resizeFile(file!!);
         sponsorStore.addRequestSponsor(localStorage.getItem('user_etno_locality')!, sponsor, file!!); sideBarStore.updateSection('Patrocinadores'); hoverSectionStore.setName('Patrocinadores')
-      }
     }
-  }
-
-  function chekIfEmpty() {
-    sponsorTitle === "" ? setEmptyName(true) : setEmptyName(false)
-    sponsorTel === "" ? setEmptyTel(true) : setEmptyTel(false)
-    sponsorTel.length < 9 ? setEmptyTel(true) : setEmptyTel(false)
-    sponsorDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
   }
 
   return (

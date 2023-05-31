@@ -82,11 +82,11 @@ class EventStore {
         return this.modalCreate
     }
 
-    async addRequestEvent(locality: string, event: Event, file?: File) {
+    async addRequestEvent(locality?: string, event?: Event, file?: File) {
         
         if(file !== undefined){
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'evento', 'evento', file!!)
-            event.imageUrl = imageStore.getImage.link
+            event!!.imageUrl = imageStore.getImage.link
         }
         
         const response = await fetch(`${urlBase}/users/add/event?username=${locality}`, {
@@ -97,8 +97,8 @@ class EventStore {
             }
         })
         if (response.ok) {
-            this.paginatedEvent.content?.push(event)
-            this.event = event
+            this.paginatedEvent.content?.push(event!!)
+            this.event = event!!
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 100,
@@ -126,10 +126,10 @@ class EventStore {
         }
     }
 
-    async editEvent(locality: string, eventId: string, event: Event, file?: File) {
+    async editEvent(locality?: string, eventId?: string, event?: Event, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'evento', 'evento', file!!)
-            event.imageUrl = imageStore.getImage.link
+            event!!.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`${urlBase}/users/update/event?username=${locality}&eventId=${eventId}`, {
             method: 'PUT',

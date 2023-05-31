@@ -136,11 +136,11 @@ class NewsStore{
         return this.news
      }
 
-    async addRequestNews(locality: String, news: News, file?: File){
+    async addRequestNews(locality?: String, news?: News, file?: File){
 
         if (file !== undefined){ 
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'noticia', 'noticia', file!!)
-            news.imageUrl = imageStore.getImage.link
+            news!!.imageUrl = imageStore.getImage.link
         }
         
         const response = await fetch(`${urlBase}/users/add/news?username=${locality}`, {
@@ -152,8 +152,8 @@ class NewsStore{
         },
         )
         if(response.ok){
-            this.paginatedNews.content?.push(news)
-            this.news = news
+            this.paginatedNews.content?.push(news!!)
+            this.news = news!!
             
            toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
@@ -182,10 +182,10 @@ class NewsStore{
           })
     }
 }
-    async editNews(locality: string, newsId: string, news: News, file?: File){
+    async editNews(locality?: string, newsId?: string, news?: News, file?: File){
         if (file !== undefined){
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'noticia', 'noticia', file!!)
-            news.imageUrl = imageStore.getImage.link
+            news!!.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`${urlBase}/users/update/news?username=${locality}&newsId=${newsId}`, {
             method: 'PUT',

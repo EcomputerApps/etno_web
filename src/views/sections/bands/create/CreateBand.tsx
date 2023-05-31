@@ -42,10 +42,6 @@ const CreateBand = () => {
     return flag
   }
 
-  function chekIfEmpty() {
-    bandTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
-    bandDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-  }
 
   const inputRef = useRef<HTMLInputElement>(null)
   const txtAreaRef = useRef<HTMLTextAreaElement>(null)
@@ -69,22 +65,9 @@ const CreateBand = () => {
       datePicker: new Date(finalDate + " " + finalTime),
       isProgrammed: true
     }
-    chekIfEmpty()
-    if (bandTitle === "" || bandDescription === "") {
-      toast.error('Rellene los campos', {
-        position: 'bottom-center',
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
       bandStore.addRequestBand(localStorage.getItem('user_etno_locality')!, bando, file!!);
       sideBarStore.updateSection('Bandos'); hoverSectionStore.setName('Bandos')
-    }
+    
   }
 
   return (

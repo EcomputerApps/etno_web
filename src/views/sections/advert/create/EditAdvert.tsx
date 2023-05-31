@@ -45,19 +45,7 @@ const EditAdvert = () => {
     const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(advert.imageUrl!!);
 
     async function updateAdvert() {
-        checkIfEmpty()
-        if (advertTitle === '' || advertDescription === '' || advertLink === '' || emptyFile) {
-            toast.info('Rellene los campos', {
-                position: 'top-center',
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: 'light'
-            })
-        } else {
+     
             const advert_: Ad = {
                 title: advertTitle,
                 description: advertDescription,
@@ -68,14 +56,7 @@ const EditAdvert = () => {
             sideBarStore.updateSection('Anuncios')
             hoverSectionStore.setName('Anuncios')
         }
-    }
-
-    function checkIfEmpty() {
-        advertLink === "" ? setEmptyLink(true) : setEmptyLink(false)
-        advertTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
-        advertDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-
-    }
+    
 
     const [emptyTitle, setEmptyTitle] = useState(false)
     const [emptyLink, setEmptyLink] = useState(false)

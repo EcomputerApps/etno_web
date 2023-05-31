@@ -89,10 +89,10 @@ class BandStore {
         return this.bandsListChecked
     }
 
-    async editBand(locality: string, bandId: string, band: Band, file?: File) {
+    async editBand(locality?: string, bandId?: string, band?: Band, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "bando", "bando", file!!)
-            band.imageUrl = imageStore.getImage.link
+            band!!.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`${urlBase}/users/update/bando?username=${locality}&bandoId=${bandId}`, {
             method: 'PUT',
@@ -178,10 +178,10 @@ class BandStore {
             })
         }
     }
-    async addRequestBand(username: string, bando: Band, file?: File) {
+    async addRequestBand(username?: string, bando?: Band, file?: File) {
         if (file !== undefined && file !== null) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "bando", "bando", file!!)
-            bando.imageUrl = imageStore.getImage.link
+            bando!!.imageUrl = imageStore.getImage.link
         }
         
         const response = await fetch(`${urlBase}/users/add/bando?username=${username}`, {
@@ -192,8 +192,8 @@ class BandStore {
             body: JSON.stringify(bando)
         })
         if (response.ok) {
-            this.paginatedBand.content?.push(bando)
-            this.band = bando
+            this.paginatedBand.content?.push(bando!!)
+            this.band = bando!!
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 300,

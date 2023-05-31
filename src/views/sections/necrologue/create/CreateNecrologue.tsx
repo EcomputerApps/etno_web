@@ -52,41 +52,10 @@ const CreateNecrologue = () => {
       deathDate: necroDate,
       description: necroDescription,
     }
-    if (checkIfExist(necro.name!!)) {
-      toast.info('Ya existe este necrólogo', {
-        position: 'bottom-center',
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
-      chekIfEmpty()
-      if (necroName === "" || necroDate === "" || necroDescription === "") {
-        toast.info('Rellene todos los campos', {
-          position: 'bottom-center',
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light"
-        })
-      } else {
+    
         //const imageFile = await resizeFile(file!!);
         necroStore.addRequestNecro(localStorage.getItem('user_etno_locality')!, necro, file!!); sideBarStore.updateSection('Fallecimientos'); hoverSectionStore.setName('Fallecimientos')
-      }
-    }
-  }
-
-  function chekIfEmpty() {
-    necroName === "" ? setEmptyName(true) : setEmptyName(false)
-    necroDate === "" ? setEmptyDate(true) : setEmptyDate(false)
-    necroDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
+    
   }
 
   return (

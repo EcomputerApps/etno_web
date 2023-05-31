@@ -51,32 +51,6 @@ const EditSponsor = () => {
     const [emptyFile, setEmptyFile] = useState(false)
 
     async function updateSponsor(sponsorId: string) {
-        if (checkIfExist(sponsorTitle)) {
-            toast.info('Ya existe este patrocinador', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
-            chekIfEmpty()
-            if (sponsorTitle === "" || sponsorDescription === "" || sponsorTel === "" || sponsorTel.length < 9
-            ) {
-                toast.error('Rellene los campos', {
-                    position: 'bottom-center',
-                    autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light"
-                })
-            } else {
                 const newSponsor: Sponsor = {
                     title: sponsorTitle,
                     description: sponsorDescription,
@@ -86,15 +60,6 @@ const EditSponsor = () => {
                 sponsorStore.editSponsor(localStorage.getItem('user_etno_locality')!, sponsorId, newSponsor, file!!)
                 sideBarStore.updateSection('Patrocinadores')
                 hoverSectionStore.setName('Patrocinadores')
-            }
-        }
-    }
-
-    function chekIfEmpty() {
-        sponsorTitle === "" ? setEmptyName(true) : setEmptyName(false)
-        sponsorTel === "" ? setEmptyTel(true) : setEmptyTel(false)
-        sponsorTel.length < 9 ? setEmptyTel(true) : setEmptyTel(false)
-        sponsorDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
     }
 
     return (

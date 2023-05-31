@@ -267,10 +267,10 @@ class ReserveStore {
             })
         }
     }
-    async editPlace(locality: string, palceId: string, place: Place, file: File) {
+    async editPlace(locality?: string, palceId?: string, place?: Place, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "lugar", "lugar", file!!)
-            place.imageUrl = imageStore.getImage.link
+            place!!.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`${urlBase}/users/update/place?username=${locality}&placeId=${palceId}`, {
             method: 'PUT',
@@ -313,10 +313,10 @@ class ReserveStore {
         const pagPlaces = await response.json()
         this.updatePaginatedPlaces(pagPlaces)
     }
-    async addRequestPlace(username: string, place: Place, file?: File) {
+    async addRequestPlace(username?: string, place?: Place, file?: File) {
         if (file !== undefined) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, "lugar", "lugar", file!!)
-            place.imageUrl = imageStore.getImage.link
+            place!!.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`${urlBase}/users/add/place?username=${username}`,
             {
@@ -329,7 +329,7 @@ class ReserveStore {
                 body: JSON.stringify(place)
             })
         if (response.ok) {
-            this.place = place
+            this.place = place!!
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 300,

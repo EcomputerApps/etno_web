@@ -95,61 +95,6 @@ const EditEvent = () => {
   };
 
   async function updateEvent() {
-    if (subscription) {
-      checkIfEmpty()
-      if (eventTitle === '' || eventDirection === '' || eventDescription === ''
-        || eventOrganization === '' || eventPrice === ''
-        || eventSeats === '' || eventLink === '' || eventDateStart === ''
-        || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1) {
-        toast.error('Rellene los campos correctos', {
-          position: 'bottom-center',
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
-      } else {
-        const event_: Event = {
-          title: eventTitle,
-          address: eventDirection,
-          description: eventDescription,
-          organization: eventOrganization,
-          hasSubscription: false,
-          reservePrice: Number(eventPrice),
-          capacity: Number(eventSeats),
-          seats: Number(eventSeats),
-          imageUrl: event.imageUrl,
-          longitude: long,
-          latitude: lat,
-          link: eventLink,
-          startDate: eventDateStart,
-          endDate: eventDateFin
-        }
-        //const imageFile = await resizeFile(file!!);
-        eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
-        sideBarStore.updateSection('Eventos')
-        hoverSectionStore.setName('Eventos')
-      }
-    } else {
-      checkIfEmpty()
-      if (eventTitle === '' || eventDirection === '' || eventDescription === ''
-        || eventOrganization === ''
-        || eventSeats === '' || eventLink === '' || eventDateStart === ''
-        || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1) {
-        toast.error('Rellene los campos correctos', {
-          position: 'bottom-center',
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
-      } else {
         const event_: Event = {
           title: eventTitle,
           address: eventDirection,
@@ -170,8 +115,6 @@ const EditEvent = () => {
         eventStore.editEvent(localStorage.getItem('user_etno_locality')!, event.idEvent!!, event_, file!!)
         sideBarStore.updateSection('Eventos')
         hoverSectionStore.setName('Eventos')
-      }
-    }
   }
 
   const freeOrNot = (payType: boolean) => {

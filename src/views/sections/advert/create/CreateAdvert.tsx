@@ -45,29 +45,8 @@ const CreateAdvert = () => {
             description: advertDescription,
             webUrl: advertLink
         }
-
-        checkIfEmpty()
-        if (advertTitle === '' || advertDescription === '' || advertLink === '') {
-            toast.error('Rellene los campos', {
-                position: 'bottom-center',
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
             //const imageFile = await resizeFile(file!!);
             advertStore.addRequestAdvert(localStorage.getItem('user_etno_locality')!, ad, file!!); sideBarStore.updateSection('Anuncios'); hoverSectionStore.setName('Anuncios')
-        }
-    }
-
-    function checkIfEmpty() {
-        advertLink === "" ? setEmptyLink(true) : setEmptyLink(false)
-        advertTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
-        advertDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
     }
 
     function checkIfExist(title: string) {

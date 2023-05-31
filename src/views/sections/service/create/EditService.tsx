@@ -84,21 +84,6 @@ const EditService = () => {
     }
 
     async function editService(serviceId: string) {
-        chekIfEmpty()
-        if (serviceType === "" || serviceName === "" || serviceDescription === "" ||
-            serviceWebUrl === "" || serviceTel === "" || serviceSchedule === ""
-        ) {
-            toast.info('Rellene los campos', {
-                position: 'bottom-center',
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light"
-            })
-        } else {
             const newService: Service = {
                 category: serviceType,
                 owner: serviceName,
@@ -110,7 +95,6 @@ const EditService = () => {
             }
             //const imageFile = await resizeFile(file!!);
             serviceStore.editService(localStorage.getItem('user_etno_locality')!, serviceId, newService, file!!); sideBarStore.updateSection('Servicios'); hoverSectionStore.setName('Servicios')
-        }
     }
 
     function chekIfEmpty() {
@@ -147,7 +131,7 @@ const EditService = () => {
         { value: 'Lunes-Viernes', label: 'De lunes a viernes.' },
         { value: 'Lunes-Sabado', label: 'De lunes a sabado.' },
         { value: 'Lunes-Domingo', label: 'Todos los dias.' },
-        { value: 'Otro', label: 'Otro horrario' }
+        { value: 'Otro', label: 'Otro horario' }
     ]
 
     return (

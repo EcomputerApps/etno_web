@@ -75,31 +75,6 @@ const EditTourism = () => {
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(tourism.imageUrl!!);
 
   async function updateTourism() {
-    if (checkIfExist(tourismTitle)) {
-      toast.info('Ya existe este turismo', {
-        position: 'bottom-center',
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
-      checkIfEmpty()
-      if (tourismType === '' || tourismTitle === '' || tourismDescription === '' || tourismLong === '' || tourismLat === '' || emptyFile) {
-        toast.info('Rellene los campos', {
-          position: 'top-center',
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
-      } else {
         const tourism_: Tourism = {
           type: tourismType,
           title: tourismTitle,
@@ -110,17 +85,6 @@ const EditTourism = () => {
         }
         tourismStore.editTourism(localStorage.getItem('user_etno_locality')!, tourism.idTourism!!, tourism_, file!!)
         sideBarStore.updateSection('Turismo'); hoverSectionStore.setName('Turismo')
-      }
-    }
-  }
-
-  function checkIfEmpty() {
-    tourismType === "" ? setEmptyType(true) : setEmptyType(false)
-    tourismTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
-    tourismDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-    //file === undefined && tourism.imageUrl === '' ? setEmptyFile(true) : setEmptyFile(false)
-    lat === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
-    long === 0 ? setEmptyLongLat(true) : setEmptyLongLat(false)
   }
 
   return (

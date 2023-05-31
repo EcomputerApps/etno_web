@@ -101,48 +101,9 @@ const CreateEvent = () => {
       latitude: lat,
       longitude: long
     }
-
-    if (subscription) {
-      checkIfEmpty()
-      eventTitle === '' || eventDirection === '' || eventDescription === ''
-        || eventOrganization === '' || eventPrice === ''
-        || eventSeats === '' || eventLink === '' || eventDateStart === ''
-        || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1 ?
-
-        toast.error('Rellene los campos correcto', {
-          position: 'bottom-center',
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        }) : eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!)
-    } else {
       eventNew.reservePrice = 0
-      checkIfEmpty()
-
-      if (eventTitle === '' || eventDirection === '' || eventDescription === ''
-        || eventOrganization === ''
-        || eventSeats === '' || eventLink === '' || eventDateStart === ''
-        || eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1) {
-        toast.error('Rellene los campos correcto', {
-          position: 'bottom-center',
-          autoClose: 500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
-      } else {
         //const imageFile = await resizeFile(file!!);
         eventStore.addRequestEvent(localStorage.getItem('user_etno_locality')!, eventNew, file!!); sideBarStore.updateSection('Eventos'); hoverSectionStore.setName('Eventos')
-      }
-    }
-
   }
 
   const freeOrNot = (payType: boolean) => {
@@ -151,18 +112,6 @@ const CreateEvent = () => {
     } else {
       return "Evento gratuito."
     }
-  }
-
-  function checkIfEmpty() {
-    eventTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
-    eventDirection === "" ? setEmptyDirection(true) : setEmptyDirection(false)
-    eventDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-    eventOrganization === "" ? setEmptyOrganization(true) : setEmptyOrganization(false)
-    eventSeats === '' ? setEmptySeats(true) : setEmptySeats(false)
-    eventLink === '' ? setEmptyLink(true) : setEmptyLink(false)
-    eventDateStart === '' || eventDateStart.localeCompare(eventDateFin) === 1 ? setEmptyStartdate(true) : setEmptyStartdate(false)
-    eventDateFin === '' || eventDateStart.localeCompare(eventDateFin) === 1 ? setEmptyFinDate(true) : setEmptyFinDate(false)
-    eventDateStart.localeCompare(eventDateFin) === 1 ? setDateFail(true) : setDateFail(false)
   }
 
   return (

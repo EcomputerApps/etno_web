@@ -50,19 +50,6 @@ const EditNews = () => {
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(news.imageUrl!!);
 
   async function updateNews() {
-    chekIfEmpty()
-    if (newsCategory === '' || newsTitle === '' || newsDate === '' || newsDescription === '') {
-      toast.error('Rellene los campos', {
-        position: 'bottom-center',
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light"
-      })
-    } else {
       const news_: News = {
         category: newsCategory,
         title: newsTitle,
@@ -74,15 +61,8 @@ const EditNews = () => {
       newsStore.editNews(localStorage.getItem('user_etno_locality')!, news.idNew!!, news_, file!!)
       sideBarStore.updateSection('Noticias')
       hoverSectionStore.setName('Noticias')
-    }
   }
-
-  function chekIfEmpty() {
-    newsTitle === "" ? setEmptyTitle(true) : setEmptyTitle(false)
-    newsDate === "" ? setEmptyDate(true) : setEmptyDate(false)
-    newsDescription === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-  }
-
+  
   const [emptyTitle, setEmptyTitle] = useState(false)
   const [emptyFile, setEmptyFile] = useState(false)
   const [emptyDate, setEmptyDate] = useState(false)

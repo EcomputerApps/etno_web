@@ -120,11 +120,11 @@ class TourismStore {
         return this.tourism
     }
 
-    async addRequestTourism(locality: string, tourism: Tourism, file?: File) {
+    async addRequestTourism(locality?: string, tourism?: Tourism, file?: File) {
 
         if(file !== undefined){
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'turismo', 'turismo', file!!)
-        tourism.imageUrl = imageStore.getImage.link
+        tourism!!.imageUrl = imageStore.getImage.link
         }
         
         const response = await fetch(`${urlBase}/users/add/tourism?username=${locality}`, {
@@ -135,8 +135,8 @@ class TourismStore {
             }
         })
         if (response.ok) {
-            this.paginatedTourism.content?.push(tourism)
-            this.tourism = tourism
+            this.paginatedTourism.content?.push(tourism!!)
+            this.tourism = tourism!!
             toast.success('Se ha añadido exitosamente', {
                 position: 'bottom-center',
                 autoClose: 100,
@@ -164,10 +164,10 @@ class TourismStore {
         }
     }
 
-    async editTourism(locality: string, tourismId: string, tourism: Tourism, file?: File) {
+    async editTourism(locality?: string, tourismId?: string, tourism?: Tourism, file?: File) {
         if (file !== undefined || file !== null) {
             await imageStore.addImageAPI(localStorage.getItem('user_etno_locality')!, 'turismo', 'turismo', file!!)
-            tourism.imageUrl = imageStore.getImage.link
+            tourism!!.imageUrl = imageStore.getImage.link
         }
         const response = await fetch(`${urlBase}/users/update/tourism?username=${locality}&tourismId=${tourismId}`, {
             method: 'PUT',

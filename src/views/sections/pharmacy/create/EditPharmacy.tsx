@@ -159,13 +159,6 @@ const EditPharmacy = () => {
         }
     }
 
-    function chekIfEmpty() {
-        pharmacyName === "" ? setEmptyName(true) : setEmptyName(false)
-        pharmacyWebUrl === "" ? setEmptyWebUrl(true) : setEmptyWebUrl(false)
-        pharmacyTel === "" ? setEmptyTel(true) : setEmptyTel(false)
-        pharmacyDirection === "" ? setEmptyDescription(true) : setEmptyDescription(false)
-    }
-
     const greorgian_es = {
         name: "greorgian_es",
         months: [
@@ -246,26 +239,7 @@ const EditPharmacy = () => {
     }
 
     async function updatePharmacy(pharmaciId: string) {
-        if (fillDates(dutyDates?.toString()!!).length !== 1) {
-            setPharmPeriod(0)
-            setPharmFrequency(0)
-        }
-        chekIfEmpty()
-        if (pharmType === "" || pharmacyName === "" || pharmacyWebUrl === "" ||
-            pharmacyTel === "" || pharmacySchedule === "" || pharmacyDirection === "" ||
-            (pharmacyShcedulMorningOne === "" || pharmacyShcedulEvenOne === "" || pharmacyShcedulMorningTwo === "" || pharmacyShcedulEvenTwo === "") && pharmacyShcedulExtra === ""
-        ) {
-            toast.info('Rellene los campos', {
-                position: 'top-center',
-                autoClose: 500,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: 'light'
-            })
-        } else {
+        
             const pharmacy_: Pharmacy = {
                 type: pharmType,
                 name: pharmacyName,
@@ -281,17 +255,11 @@ const EditPharmacy = () => {
                 dates: fillPharmacyDates(fillDates(dutyDates?.toString()!!))
 
             }
-            if (pharmType === "Normal") {
-                pharmacy_.startDate = undefined
-                pharmacy_.dates = undefined
-                pharmacy_.durationDays = 0
-                pharmacy_.frequencyInDays = 0
-            }
 
             pharmacyStore.editPharmacy(localStorage.getItem('user_etno_locality')!, pharmaciId, pharmacy_, file!!)
             sideBarStore.updateSection('Farmacias')
             hoverSectionStore.setName('Farmacias')
-        }
+        
     }
 
     function chekDatesCount() {
@@ -306,7 +274,7 @@ const EditPharmacy = () => {
         { value: 'Lunes-Viernes', label: 'De lunes a viernes.' },
         { value: 'Lunes-Sabado', label: 'De lunes a sabado.' },
         { value: 'Lunes-Domingo', label: 'Todos los dias.' },
-        { value: 'Otro', label: 'Otro horrario' }
+        { value: 'Otro', label: 'Otro horario' }
     ]
 
     return (
